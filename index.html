@@ -334,6 +334,12 @@
       return `${t1} \u2013 ${t2}`;
     }
 
+    function isEventSpace(rawName) {
+      if (!rawName) return false;
+      const str = (typeof rawName === 'object' && rawName.CourtName) ? rawName.CourtName : String(rawName);
+      return /event\s*space/i.test(str);
+    }
+
     function cleanCourtName(rawName) {
       if (!rawName) return '';
       return String(rawName)
@@ -362,9 +368,8 @@
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
       let cleaned = toSentenceCase(firstSegment);
 
-      // Shorten skill level names while preserving casing
       cleaned = cleaned
-        .replace(/\bAdvanced\s+Beginner\b/gi, 'AdvBen')
+        .replace(/\bAdvanced\s+Beginner\b/gi, 'AdvBeg')
         .replace(/\bIntermediate\b/gi, 'Int')
         .replace(/\bAdvanced\b/gi, 'Adv');
 
@@ -402,18 +407,23 @@
         const sessions = [];
         const privates = [];
 
-        // 1. Group Scheduled Events
+        // 1. Group Scheduled Events (excluding Event Space)
         const eventMap = {};
         (data.events || []).forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
-          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
           let courtsRaw = e.courts || e.Courts || [];
           if (!Array.isArray(courtsRaw)) courtsRaw = [courtsRaw];
+
+          // Exclude event if assigned to Event Space
+          if (courtsRaw.some(isEventSpace)) return;
+
           const courtNumbers = courtsRaw
             .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
             .filter(Boolean)
             .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
+
+          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
           if (!eventMap[key]) {
             eventMap[key] = {
@@ -439,12 +449,18 @@
           });
         });
 
-        // 2. Separate Private Reservations with full fallback parsing
+        // 2. Separate Private Reservations (excluding Event Space)
         (data.reservations || []).forEach(r => {
           if (!isRunningAtTarget(r.startTime, r.endTime)) return;
 
           let rawCourt = r.court || r.Courts || r.CourtName || '';
-          if (Array.isArray(rawCourt)) rawCourt = rawCourt.map(c => c && c.CourtName ? c.CourtName : c).join(', ');
+          if (Array.isArray(rawCourt)) {
+            if (rawCourt.some(isEventSpace)) return;
+            rawCourt = rawCourt.map(c => c && c.CourtName ? c.CourtName : c).join(', ');
+          } else if (isEventSpace(rawCourt)) {
+            return;
+          }
+
           const courtClean = cleanCourtName(rawCourt);
 
           let holder = '';
