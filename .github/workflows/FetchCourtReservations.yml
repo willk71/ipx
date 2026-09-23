@@ -23,112 +23,62 @@ jobs:
         run: |
           mkdir -p data
 
-          # Compute America/New_York relative query window
-          START_DATE=$(date -d "4 hours ago" +"%Y-%m-%dT%H:%M:%S")
-          END_DATE=$(date -d "16 hours" +"%Y-%m-%dT%H:%M:%S")
+          START_DATE=$(date -u -d "4 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
+          END_DATE=$(date -u -d "16 hours" +"%Y-%m-%dT%H:%M:%SZ")
           AUTH_HEADER="Basic $(echo -n "${CR_USERNAME}:${CR_PASSWORD}" | base64 -w 0)"
 
-          echo "Querying CourtReserve from $START_DATE to $END_DATE..."
-
-          # Fetch active reservations
+          echo "Fetching Reservations from $START_DATE to $END_DATE..."
           curl -s -X GET "https://api.courtreserve.com/api/v1/reservationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
             -H "Authorization: ${AUTH_HEADER}" \
             -H "Accept: application/json" > raw_reservations.json
 
-          # Fetch active events
+          echo "Fetching Events from $START_DATE to $END_DATE..."
           curl -s -X GET "https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
             -H "Authorization: ${AUTH_HEADER}" \
             -H "Accept: application/json" > raw_events.json
 
-          # Print debug inspection into the GitHub Actions run logs
-          echo "--- RAW RESERVATIONS SAMPLE ---"
-          head -c 300 raw_reservations.json || true
-          echo -e "\n--- RAW EVENTS SAMPLE ---"
-          head -c 300 raw_events.json || true
-          echo -e "\n--------------------------------"
-
-          # Parse and generate data/schedule.json
           jq -n \
             --arg now "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
             --slurpfile res raw_reservations.json \
             --slurpfile ev raw_events.json \
-            '
-            def unwrap(x):
-              if (x | type) == "array" then x
-              elif (x | type) == "object" then (x.Data // x.Items // x.data // x.items // [x])
-              else []
-              end;
-
-            def extract_holder:
-              if ((.MemberFirstName // .FirstName // .UserFirstName // "") != "" and (.MemberLastName // .LastName // .UserLastName // "") != "") then
-                ("(" + (.MemberFirstName // .FirstName // .UserFirstName) + " " + ((.MemberLastName // .LastName // .UserLastName)[0:1]) + ")")
-              elif ((.MemberName // .UserName // .ReservedBy // .OwnerName // "") != "") then
-                ((.MemberName // .UserName // .ReservedBy // .OwnerName) | 
-                  if contains(",") then
-                    (split(",") | [.[1] | ltrimstr(" ") | rtrimstr(" "), .[0] | ltrimstr(" ") | rtrimstr(" ")]) |
-                    if (.[0] != "" and .[1] != "") then "(" + .[0] + " " + .[1][0:1] + ")" else "(" + .[0] + ")" end
-                  else
-                    (split(" ") | map(select(length > 0))) |
-                    if length > 1 then
-                      "(" + .[0] + " " + .[-1][0:1] + ")"
-                    elif length == 1 then
-                      "(" + .[0] + ")"
+            '{
+              lastUpdated: $now,
+              reservations: [
+                ($res[0] | if type == "array" then . else [] end)[] | {
+                  reservationId: (.ReservationId // .Id),
+                  court: (.CourtName // .Courts // .Court // "TBD"),
+                  startTime: (.StartTime // .ReservationStartTime),
+                  endTime: (.EndTime // .ReservationEndTime),
+                  holderLabel: (
+                    if ((.MemberFirstName // .FirstName // "") != "" and (.MemberLastName // .LastName // "") != "") then
+                      ("(" + (.MemberFirstName // .FirstName) + " " + ((.MemberLastName // .LastName)[0:1]) + ")")
+                    elif ((.MemberName // "") != "") then
+                      ((.MemberName | split(" ")) | if length > 1 then "(" + .[0] + " " + .[-1][0:1] + ")" elif length == 1 then "(" + .[0] + ")" else "" end)
                     else
                       ""
                     end
-                  end
-                )
-              elif (.Member.FirstName? and .Member.LastName?) then
-                ("(" + .Member.FirstName + " " + (.Member.LastName[0:1]) + ")")
-              elif (.Member.Name?) then
-                (.Member.Name | split(" ") | "(" + .[0] + " " + .[-1][0:1] + ")")
-              else
-                ""
-              end;
-
-            def extract_player:
-              if ((.MemberFirstName // .FirstName // .UserFirstName // "") != "" and (.MemberLastName // .LastName // .UserLastName // "") != "") then
-                ((.MemberFirstName // .FirstName // .UserFirstName) + " " + ((.MemberLastName // .LastName // .UserLastName)[0:1]))
-              elif ((.MemberName // .UserName // .PlayerName // "") != "") then
-                ((.MemberName // .UserName // .PlayerName) | 
-                  if contains(",") then
-                    (split(",") | [.[1] | ltrimstr(" ") | rtrimstr(" "), .[0] | ltrimstr(" ") | rtrimstr(" ")]) |
-                    if (.[0] != "" and .[1] != "") then (.[0] + " " + .[1][0:1]) else .[0] end
-                  else
-                    (split(" ") | map(select(length > 0))) |
-                    if length > 1 then (.[0] + " " + .[-1][0:1]) elif length == 1 then .[0] else null end
-                  end
-                )
-              else
-                null
-              end;
-
-            {
-              lastUpdated: $now,
-              reservations: [
-                unwrap($res[0])[] | select(type == "object") | {
-                  reservationId: (.ReservationId // .reservationId // .Id // .id),
-                  court: (.CourtName // .courtName // .Courts // .courts // .Court // "TBD"),
-                  startTime: (.StartTime // .startTime // .ReservationStartTime),
-                  endTime: (.EndTime // .endTime // .ReservationEndTime),
-                  holderLabel: extract_holder
+                  )
                 }
               ],
               events: [
-                unwrap($ev[0])[] | select(type == "object") | {
-                  eventId: (.EventId // .eventId // .Id // .id),
-                  title: (.EventName // .DivisionName // .Title // .title // "Event"),
-                  startTime: (.StartTime // .startTime // .EventStartTime),
-                  endTime: (.EndTime // .endTime // .EventEndTime),
-                  courts: (.Courts // .courts // .CourtName // []),
-                  playerName: extract_player
+                ($ev[0] | if type == "array" then . else [] end)[] | {
+                  eventId: (.EventId // .Id),
+                  title: (.EventName // .DivisionName // .Title // "Event"),
+                  startTime: (.StartTime // .EventStartTime),
+                  endTime: (.EndTime // .EventEndTime),
+                  courts: (.Courts // .CourtName // []),
+                  playerName: (
+                    if ((.MemberFirstName // .FirstName // "") != "" and (.MemberLastName // .LastName // "") != "") then
+                      ((.MemberFirstName // .FirstName) + " " + ((.MemberLastName // .LastName)[0:1]))
+                    elif ((.MemberName // "") != "") then
+                      ((.MemberName | split(" ")) | if length > 1 then .[0] + " " + .[-1][0:1] else .[0] end)
+                    else
+                      null
+                    end
+                  )
                 }
               ]
             }' > data/schedule.json
-
-          echo "Processed counts:"
-          echo "Reservations: $(jq '.reservations | length' data/schedule.json)"
-          echo "Events/Registrations: $(jq '.events | length' data/schedule.json)"
 
           rm -f raw_reservations.json raw_events.json
 
