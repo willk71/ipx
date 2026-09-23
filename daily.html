@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>IPX &ndash; Daily Court Schedule</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%);
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-active: rgba(255, 214, 10, 0.55);
+
+      --yellow: #ffd60a;
+      --live-green: #30d158;
+      --text-main: #ffffff;
+      --text-sub: #ebebf5;
+      --text-muted: #8e8e93;
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack) !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 2.2vh 3vw 1.5vh 3vw;
+      position: relative;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1.2vh;
+      flex-shrink: 0;
+      gap: 2vw;
+    }
+
+    .header-left h1 {
+      font-size: clamp(1.8rem, 2.7vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-separator {
+      margin: 0 0.55em;
+      color: var(--text-muted);
+      font-weight: 300;
+      opacity: 0.7;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2vw;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .clock {
+      font-size: clamp(2rem, 3vw, 3.4rem);
+      font-weight: 300;
+      color: var(--yellow);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .date-display {
+      font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      margin-top: 1.8vh;
+      padding-right: 0.5vw;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2vh;
+    }
+
+    /* Custom scrollbar for TV/Chromium */
+    main::-webkit-scrollbar {
+      width: 6px;
+    }
+    main::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    .schedule-row {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 6px solid var(--yellow);
+      border-radius: 12px;
+      padding: 1.2vh 1.4vw;
+      display: grid;
+      grid-template-columns: 14vw 14vw 1fr auto;
+      align-items: center;
+      gap: 1.5vw;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: border-color 0.2s ease;
+    }
+
+    .schedule-row.is-now {
+      border-color: var(--card-border-active);
+      border-left-color: var(--live-green);
+      box-shadow: 0 0 25px rgba(48, 209, 88, 0.15);
+      background: rgba(48, 209, 88, 0.04);
+    }
+
+    .schedule-row.is-private {
+      border-left-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .time-slot {
+      font-size: clamp(1.05rem, 1.35vw, 1.55rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .courts-slot {
+      font-size: clamp(1rem, 1.25vw, 1.45rem);
+      font-weight: 600;
+      color: var(--yellow);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .schedule-row.is-private .courts-slot {
+      color: var(--text-sub);
+    }
+
+    .title-slot {
+      font-size: clamp(1.05rem, 1.3vw, 1.5rem);
+      font-weight: 500;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 0.6em;
+    }
+
+    .holder-tag {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .badge-slot {
+      justify-self: end;
+    }
+
+    .status-badge {
+      font-size: clamp(0.72rem, 0.8vw, 0.9rem);
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .status-badge.live {
+      background: rgba(48, 209, 88, 0.2);
+      border: 1px solid rgba(48, 209, 88, 0.5);
+      color: #72f08e;
+    }
+
+    .status-badge.event {
+      background: rgba(255, 214, 10, 0.15);
+      border: 1px solid rgba(255, 214, 10, 0.4);
+      color: var(--yellow);
+    }
+
+    .status-badge.private {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+    }
+
+    .no-data {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      text-align: center;
+      padding: 6vh;
+    }
+
+    .no-data h2 {
+      font-size: clamp(1.8rem, 2.5vw, 2.8rem);
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+
+    footer {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      padding-top: 0.8vh;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1><span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>Today's Court Schedule</span></h1>
+    </div>
+    <div class="header-right">
+      <div class="clock" id="live-clock">--:-- --</div>
+      <div class="date-display" id="live-date">Loading...</div>
+    </div>
+  </header>
+
+  <main id="schedule-container">
+    <div class="no-data">
+      <h2>Loading Schedule...</h2>
+    </div>
+  </main>
+
+  <footer>
+    <span id="data-refresh-time">Data Sync: --</span>
+    <span>&bull;</span>
+    <span id="page-refresh-time">Display Updated: --</span>
+  </footer>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      document.getElementById('live-date').textContent = now.toLocaleDateString([], {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function formatTime(isoString) {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function cleanCourtName(rawName) {
+      if (!rawName) return '';
+      return String(rawName)
+        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+        .replace(/^Court\s*/i, '')
+        .trim();
+    }
+
+    function toSentenceCase(str) {
+      if (!str) return '';
+      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }).trim();
+    }
+
+    function cleanTitle(rawTitle) {
+      if (!rawTitle) return '';
+      let firstSegment = String(rawTitle).split('|')[0].trim();
+      firstSegment = firstSegment
+        .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
+        .replace(/\bOpen\s*Play\b/gi, '')
+        .replace(/\bPrime\s*Time\b/gi, '')
+        .replace(/\bStrategic\b/gi, '');
+
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
+      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+      return toSentenceCase(firstSegment);
+    }
+
+    async function loadSchedule() {
+      try {
+        const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
+        if (!res.ok) throw new Error("Schedule file not found");
+        const data = await res.json();
+
+        const now = new Date();
+        document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
+        if (data.lastUpdated) {
+          const syncDate = new Date(data.lastUpdated);
+          document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+        }
+
+        // Use local day bounds to prevent UTC day-boundary dropouts
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+
+        const items = [];
+
+        // 1. Process Events (aggregate grouped registrants by EventId + StartTime)
+        const eventMap = {};
+        (data.events || []).forEach(e => {
+          const s = new Date(e.startTime || e.StartTime);
+          const end = new Date(e.endTime || e.EndTime);
+          // Only show sessions that overlap with today
+          if (end < startOfDay || s > endOfDay) return;
+
+          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
+
+          let courtsRaw = e.courts || e.Courts || [];
+          if (!Array.isArray(courtsRaw)) courtsRaw = [courtsRaw];
+          const courtNumbers = courtsRaw
+            .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
+            .filter(Boolean)
+            .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
+
+          if (!eventMap[key]) {
+            eventMap[key] = {
+              type: 'event',
+              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
+              startTime: e.startTime || e.StartTime,
+              endTime: e.endTime || e.EndTime,
+              courts: new Set(courtNumbers)
+            };
+          } else {
+            courtNumbers.forEach(c => eventMap[key].courts.add(c));
+          }
+        });
+
+        Object.values(eventMap).forEach(ev => {
+          const arr = Array.from(ev.courts);
+          items.push({
+            type: 'event',
+            title: ev.title,
+            courtsLabel: arr.length > 0 ? `Court ${arr.join(', ')}` : 'Court TBD',
+            startTime: ev.startTime,
+            endTime: ev.endTime
+          });
+        });
+
+        // 2. Process Reservations
+        (data.reservations || []).forEach(r => {
+          const s = new Date(r.startTime || r.StartTime);
+          const end = new Date(r.endTime || r.EndTime);
+          if (end < startOfDay || s > endOfDay) return;
+
+          let rawCourt = r.court || r.Courts || r.CourtName || '';
+          if (Array.isArray(rawCourt)) rawCourt = rawCourt.map(c => c && c.CourtName ? c.CourtName : c).join(', ');
+          const courtClean = cleanCourtName(rawCourt);
+
+          items.push({
+            type: 'reservation',
+            title: 'Private Reservation',
+            holderLabel: r.holderLabel || '',
+            courtsLabel: courtClean ? `Court ${courtClean}` : 'Court TBD',
+            startTime: r.startTime || r.StartTime,
+            endTime: r.endTime || r.EndTime
+          });
+        });
+
+        // Sort chronologically by start time, then end time
+        items.sort((a, b) => new Date(a.startTime) - new Date(b.startTime) || new Date(a.endTime) - new Date(b.endTime));
+
+        const container = document.getElementById('schedule-container');
+        container.innerHTML = '';
+
+        if (items.length === 0) {
+          container.innerHTML = `
+            <div class="no-data">
+              <h2>No Scheduled Sessions for Today</h2>
+            </div>
+          `;
+          return;
+        }
+
+        items.forEach(item => {
+          const s = new Date(item.startTime);
+          const e = new Date(item.endTime);
+          const isLive = now >= s && now <= e;
+
+          const row = document.createElement('div');
+          row.className = `schedule-row ${isLive ? 'is-now' : ''} ${item.type === 'reservation' ? 'is-private' : ''}`;
+
+          let badgeHtml = '';
+          if (isLive) {
+            badgeHtml = `<span class="status-badge live">Live Now</span>`;
+          } else if (item.type === 'event') {
+            badgeHtml = `<span class="status-badge event">Session</span>`;
+          } else {
+            badgeHtml = `<span class="status-badge private">Private</span>`;
+          }
+
+          row.innerHTML = `
+            <div class="time-slot">${formatTime(item.startTime)} &ndash; ${formatTime(item.endTime)}</div>
+            <div class="courts-slot">${item.courtsLabel}</div>
+            <div class="title-slot">
+              <span>${item.title}</span>
+              ${item.holderLabel ? `<span class="holder-tag">${item.holderLabel}</span>` : ''}
+            </div>
+            <div class="badge-slot">${badgeHtml}</div>
+          `;
+
+          container.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error("Error loading daily schedule:", err);
+      }
+    }
+
+    loadSchedule();
+    setInterval(loadSchedule, 30000);
+  </script>
+</body>
+</html>

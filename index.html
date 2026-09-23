@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to IPX! &ndash; Live Court Assignments</title>
+  <style>
+    :root {
+      /* Apple HIG System Dark Palette */
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.10);
+      --card-border-active: rgba(255, 214, 10, 0.55);
+
+      --yellow: #ffd60a;       /* Apple Dark Mode systemYellow */
+      --live-green: #30d158;   /* Apple Dark Mode systemGreen */
+      --text-main: #ffffff;
+      --text-sub: #ebebf5;
+      --text-muted: #8e8e93;
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack) !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 2vh 2.8vw 1vh 2.8vw;
+      position: relative;
+    }
+
+    /* Top Bar: Optical Baseline Alignment */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1vh;
+      flex-shrink: 0;
+      gap: 2vw;
+    }
+
+    .header-left {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-left h1 {
+      font-size: clamp(1.6rem, 2.4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-separator {
+      margin: 0 0.5em;
+      color: var(--text-muted);
+      font-weight: 300;
+      opacity: 0.7;
+    }
+
+    .header-window {
+      color: var(--yellow);
+      font-weight: 600;
+      margin-left: 0.4em;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2vw;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .clock {
+      font-size: clamp(2rem, 3vw, 3.4rem);
+      font-weight: 300;
+      color: var(--yellow);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .date-display {
+      font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    /* Main Grid */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2vh;
+      margin-top: 1.2vh;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .events-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.6vh 1.6vw;
+      width: 100%;
+      min-height: 0;
+    }
+
+    /* Density mode: 5 to 6 sessions */
+    .events-grid.compact {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1vh 1.2vw;
+    }
+
+    .event-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-left: 12px solid var(--yellow);
+      border-radius: 18px;
+      padding: 2.2vh 2.2vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.8vh;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.3);
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .events-grid.compact .event-card {
+      padding: 1.2vh 1.4vw;
+      border-left-width: 8px;
+      border-radius: 14px;
+      gap: 0.3vh;
+    }
+
+    .event-card.is-now {
+      border-color: var(--card-border-active);
+      box-shadow: 0 0 35px rgba(255, 214, 10, 0.2);
+    }
+
+    .line-title {
+      font-size: clamp(2.4rem, 4vw, 5.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      line-height: 1.1;
+      word-wrap: break-word;
+    }
+
+    .events-grid.compact .line-title {
+      font-size: clamp(1.9rem, 2.7vw, 3.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+    }
+
+    .line-courts {
+      font-size: clamp(2.1rem, 3.4vw, 4.4rem);
+      font-weight: 600;
+      color: var(--yellow);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+
+    .events-grid.compact .line-courts {
+      font-size: clamp(1.6rem, 2.3vw, 3.0rem);
+      line-height: 1.1;
+    }
+
+    /* Private Courts Section */
+    .privates-section {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6vh;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+      padding-top: 1vh;
+    }
+
+    .privates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 0.6vh 1.2vw;
+      width: 100%;
+    }
+
+    .private-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 6px solid var(--yellow);
+      border-radius: 12px;
+      padding: 0.8vh 1.3vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .compact-mode .private-pill {
+      padding: 0.5vh 1vw;
+    }
+
+    .private-label {
+      font-size: clamp(1.2rem, 1.6vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    .compact-mode .private-label {
+      font-size: clamp(1.1rem, 1.4vw, 1.6rem);
+    }
+
+    .private-time {
+      font-size: clamp(1.05rem, 1.3vw, 1.5rem);
+      font-weight: 500;
+      color: var(--yellow);
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .compact-mode .private-time {
+      font-size: clamp(1rem, 1.2vw, 1.35rem);
+    }
+
+    /* Telemetry Footer */
+    footer {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      padding-top: 0.5vh;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.35);
+      font-variant-numeric: tabular-nums;
+    }
+
+    footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Empty State */
+    .no-sessions {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      text-align: center;
+      padding: 4vh;
+    }
+
+    .no-sessions h2 {
+      font-size: clamp(2rem, 3.5vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1 id="header-title">
+        <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Live Court Assignments</span>
+      </h1>
+    </div>
+    <div class="header-right">
+      <div class="clock" id="live-clock">--:-- --</div>
+      <div class="date-display" id="live-date">Loading...</div>
+    </div>
+  </header>
+
+  <main id="schedule-container">
+    <div class="no-sessions">
+      <h2>Loading Schedule...</h2>
+    </div>
+  </main>
+
+  <footer>
+    <span id="target-mode-pill">Target: +15m</span>
+    <span>&bull;</span>
+    <span id="data-refresh-time">Data Sync: --</span>
+    <span>&bull;</span>
+    <span id="page-refresh-time">Display Updated: --</span>
+  </footer>
+
+  <script>
+    // Read lookahead minutes from URL (e.g., ?ahead=60 or default to 15)
+    const urlParams = new URLSearchParams(window.location.search);
+    const lookaheadMinutes = parseInt(urlParams.get('ahead') || '15', 10);
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      document.getElementById('live-date').textContent = now.toLocaleDateString([], {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function formatTime(isoString) {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function formatTimeWindow(startIso, endIso) {
+      if (!startIso || !endIso) return '';
+      return `${formatTime(startIso)} \u2013 ${formatTime(endIso)}`;
+    }
+
+    function cleanCourtName(rawName) {
+      if (!rawName) return '';
+      return String(rawName)
+        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+        .replace(/^Court\s*/i, '')
+        .trim();
+    }
+
+    function toSentenceCase(str) {
+      if (!str) return '';
+      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }).trim();
+    }
+
+    function cleanTitle(rawTitle) {
+      if (!rawTitle) return '';
+      let firstSegment = String(rawTitle).split('|')[0].trim();
+
+      firstSegment = firstSegment
+        .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
+        .replace(/\bOpen\s*Play\b/gi, '')
+        .replace(/\bPrime\s*Time\b/gi, '')
+        .replace(/\bStrategic\b/gi, '');
+
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
+      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+
+      return toSentenceCase(firstSegment);
+    }
+
+    function getPrivatePlayerLabel(r) {
+      if (!r) return '';
+      const list = r.ReservationMembers || 
+                   r.Players || 
+                   r.Members || 
+                   r.OrganizationMembers || 
+                   r.Participants || 
+                   [];
+
+      let first = '';
+      let last = '';
+      let extraCount = 0;
+
+      if (Array.isArray(list) && list.length > 0) {
+        const item = list[0];
+        const p = item.Member || item.Player || item.OrganizationMember || item;
+        first = p.FirstName || (p.MemberName ? p.MemberName.split(' ')[0] : '') || '';
+        last = p.LastName || (p.MemberName ? p.MemberName.split(' ')[1] : '') || '';
+        extraCount = list.length - 1;
+      }
+
+      if (!first && !last) {
+        first = r.FirstName || r.MemberFirstName || (r.MemberName ? r.MemberName.split(' ')[0] : '') || '';
+        last = r.LastName || r.MemberLastName || (r.MemberName ? r.MemberName.split(' ')[1] : '') || '';
+      }
+
+      if (first) {
+        const primary = last ? `${first.trim()} ${last.trim().charAt(0).toUpperCase()}.` : first.trim();
+        return extraCount > 0 ? `(${primary} +${extraCount})` : `(${primary})`;
+      }
+      return '';
+    }
+
+    async function refreshDisplay() {
+      try {
+        const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
+        if (!res.ok) throw new Error("Schedule file not found");
+        const data = await res.json();
+
+        const now = new Date();
+        document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
+        document.getElementById('target-mode-pill').textContent = `Target: +${lookaheadMinutes}m`;
+
+        if (data.lastUpdated) {
+          const syncDate = new Date(data.lastUpdated);
+          document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+        }
+
+        // Target point in time based on lookaheadMinutes
+        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
+
+        const isRunningAtTarget = (startIso, endIso) => {
+          if (!startIso || !endIso) return false;
+          const s = new Date(startIso);
+          const e = new Date(endIso);
+          return s <= targetTime && e > targetTime;
+        };
+
+        const events = data.events || [];
+        const reservations = data.reservations || [];
+
+        // 1. Process Events
+        const activeEvents = {};
+        events.forEach(e => {
+          if (e.IsPublic === false || e.IsHidden === true) return;
+          if (!isRunningAtTarget(e.StartTime, e.EndTime)) return;
+
+          const key = `${e.EventId}_${e.StartTime}`;
+          const courtNumbers = (e.Courts || [])
+            .map(c => cleanCourtName(c.CourtName))
+            .filter(Boolean)
+            .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
+
+          if (!activeEvents[key]) {
+            activeEvents[key] = {
+              title: cleanTitle(e.DivisionName || e.EventName || 'Event'),
+              startTime: e.StartTime,
+              endTime: e.EndTime,
+              courts: new Set(courtNumbers)
+            };
+          } else {
+            courtNumbers.forEach(c => activeEvents[key].courts.add(c));
+          }
+        });
+
+        const eventItems = [];
+        Object.values(activeEvents).forEach(ev => {
+          const arr = Array.from(ev.courts);
+          const courtsLabel = arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD';
+
+          eventItems.push({
+            title: ev.title,
+            courtsLabel: courtsLabel,
+            startTime: ev.startTime,
+            endTime: ev.endTime
+          });
+        });
+
+        // 2. Process Private Reservations
+        const privateItems = [];
+        reservations.forEach(r => {
+          if (!isRunningAtTarget(r.StartTime, r.EndTime)) return;
+
+          const courtNum = cleanCourtName(r.Courts);
+          const playerTag = getPrivatePlayerLabel(r);
+          const locationText = courtNum ? `on ${courtNum}` : 'on TBD';
+          const label = playerTag ? `Private ${locationText} ${playerTag}` : `Private ${locationText}`;
+
+          privateItems.push({
+            courtsLabel: label,
+            startTime: r.StartTime,
+            endTime: r.EndTime
+          });
+        });
+
+        // Compute dominant header time window
+        const allItems = [...eventItems, ...privateItems];
+        let bestWindowTag = '';
+        if (allItems.length > 0) {
+          const windowCounts = {};
+          allItems.forEach(item => {
+            const w = formatTimeWindow(item.startTime, item.endTime);
+            windowCounts[w] = (windowCounts[w] || 0) + 1;
+          });
+          const bestWindow = Object.keys(windowCounts).reduce((a, b) => windowCounts[a] >= windowCounts[b] ? a : b);
+          bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
+        }
+
+        const subtitleText = lookaheadMinutes > 15 ? `Upcoming Court Assignments (+${lookaheadMinutes}m Preview)` : 'Live Court Assignments';
+        const titleEl = document.getElementById('header-title');
+        titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
+
+        const container = document.getElementById('schedule-container');
+        container.innerHTML = '';
+
+        if (eventItems.length === 0 && privateItems.length === 0) {
+          container.className = '';
+          container.innerHTML = `
+            <div class="no-sessions">
+              <h2>No Sessions Found (+${lookaheadMinutes}m)</h2>
+            </div>
+          `;
+          return;
+        }
+
+        eventItems.sort((a, b) => new Date(a.startTime) - new Date(b.startTime) || new Date(a.endTime) - new Date(b.endTime));
+
+        const isCompact = eventItems.length > 4;
+        if (isCompact) {
+          container.classList.add('compact-mode');
+        } else {
+          container.classList.remove('compact-mode');
+        }
+
+        if (eventItems.length > 0) {
+          const eventsGrid = document.createElement('div');
+          eventsGrid.className = `events-grid ${isCompact ? 'compact' : ''}`;
+          
+          if (eventItems.length === 1) {
+            eventsGrid.style.gridTemplateColumns = '1fr';
+          }
+
+          eventItems.forEach(item => {
+            const s = new Date(item.startTime);
+            const e = new Date(item.endTime);
+            const isNow = now >= s && now <= e;
+
+            const card = document.createElement('div');
+            card.className = `event-card ${isNow ? 'is-now' : ''}`;
+            card.innerHTML = `
+              <div class="line-title">${item.title}</div>
+              <div class="line-courts">${item.courtsLabel}</div>
+            `;
+            eventsGrid.appendChild(card);
+          });
+          container.appendChild(eventsGrid);
+        }
+
+        if (privateItems.length > 0) {
+          const privatesSection = document.createElement('div');
+          privatesSection.className = 'privates-section';
+
+          let pillsHtml = privateItems.map(p => `
+            <div class="private-pill">
+              <div class="private-label">${p.courtsLabel}</div>
+              <div class="private-time">${formatTimeWindow(p.startTime, p.endTime)}</div>
+            </div>
+          `).join('');
+
+          privatesSection.innerHTML = `
+            <div class="privates-grid">${pillsHtml}</div>
+          `;
+          container.appendChild(privatesSection);
+        }
+
+      } catch (err) {
+        console.error("Error updating TV display:", err);
+      }
+    }
+
+    refreshDisplay();
+    setInterval(refreshDisplay, 30000);
+  </script>
+</body>
+</html>

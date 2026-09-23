@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Welcome to IPX! &ndash; Live Session Rosters</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.10);
+      --card-border-active: rgba(255, 214, 10, 0.55);
+
+      --yellow: #ffd60a;
+      --text-main: #ffffff;
+      --text-sub: #ebebf5;
+      --text-muted: #8e8e93;
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack) !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 2.2vh 3vw 1.5vh 3vw;
+      position: relative;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1.2vh;
+      flex-shrink: 0;
+      gap: 2vw;
+    }
+
+    .header-left {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-left h1 {
+      font-size: clamp(1.8rem, 2.7vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-separator {
+      margin: 0 0.55em;
+      color: var(--text-muted);
+      font-weight: 300;
+      opacity: 0.7;
+    }
+
+    .header-window {
+      color: var(--yellow);
+      font-weight: 600;
+      margin-left: 0.4em;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2vw;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .clock {
+      font-size: clamp(2rem, 3vw, 3.4rem);
+      font-weight: 300;
+      color: var(--yellow);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .date-display {
+      font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      gap: 1.6vh 1.6vw;
+      margin-top: 1.8vh;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    main.count-1 { grid-template-columns: 1fr 1fr; }
+    main.count-2 { grid-template-columns: 1fr 1fr; }
+    main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+    main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+
+    .roster-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 10px solid var(--yellow);
+      border-radius: 18px;
+      padding: 1.8vh 1.8vw;
+      display: flex;
+      flex-direction: column;
+      gap: 1vh;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .roster-card.single-session {
+      grid-column: 1 / 2;
+    }
+
+    .roster-card.is-now {
+      border-color: var(--card-border-active);
+      box-shadow: 0 0 35px rgba(255, 214, 10, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.8vh;
+      flex-shrink: 0;
+    }
+
+    .header-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2vh;
+      min-width: 0;
+    }
+
+    .line-title {
+      font-size: var(--title-font-size, clamp(1.35rem, 1.7vw, 2.1rem));
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--text-main);
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .line-courts {
+      font-size: var(--courts-font-size, clamp(1.05rem, 1.35vw, 1.6rem));
+      font-weight: 500;
+      color: var(--yellow);
+      letter-spacing: -0.01em;
+    }
+
+    .card-meta {
+      text-align: right;
+      flex-shrink: 0;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .count-badge {
+      font-size: clamp(0.75rem, 0.85vw, 0.95rem);
+      color: #ffffff;
+      background: rgba(255, 214, 10, 0.2);
+      border: 1px solid rgba(255, 214, 10, 0.4);
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Fills down column 1, then column 2 */
+    .player-list {
+      column-count: var(--roster-cols, 2);
+      column-gap: var(--roster-col-gap, 1.8vw);
+      column-fill: auto;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .player-item {
+      font-size: var(--roster-font-size, clamp(0.95rem, 1.1vw, 1.3rem));
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-main);
+      margin-bottom: var(--roster-row-gap, 0.7vh);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .player-empty {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding-top: 0.5vh;
+    }
+
+    footer {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      padding-top: 0.8vh;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.35);
+      font-variant-numeric: tabular-nums;
+    }
+
+    footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .no-sessions {
+      grid-column: 1 / -1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      text-align: center;
+      padding: 6vh;
+    }
+
+    .no-sessions h2 {
+      font-size: clamp(1.8rem, 2.8vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1 id="header-title">
+        <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Live Session Rosters</span>
+      </h1>
+    </div>
+    <div class="header-right">
+      <div class="clock" id="live-clock">--:-- --</div>
+      <div class="date-display" id="live-date">Loading...</div>
+    </div>
+  </header>
+
+  <main id="roster-container">
+    <div class="no-sessions">
+      <h2>Loading Rosters...</h2>
+    </div>
+  </main>
+
+  <footer>
+    <span id="target-mode-pill">Target: +15m</span>
+    <span>&bull;</span>
+    <span id="data-refresh-time">Data Sync: --</span>
+    <span>&bull;</span>
+    <span id="page-refresh-time">Display Updated: --</span>
+  </footer>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const isNamed60 = window.location.pathname.includes('60');
+    const defaultAhead = isNamed60 ? '60' : '15';
+    const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      document.getElementById('live-date').textContent = now.toLocaleDateString([], {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function formatTime(isoString) {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function formatTimeWindow(startIso, endIso) {
+      if (!startIso || !endIso) return '';
+      return `${formatTime(startIso)} \u2013 ${formatTime(endIso)}`;
+    }
+
+    function cleanCourtName(rawName) {
+      if (!rawName) return '';
+      return String(rawName)
+        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+        .replace(/^Court\s*/i, '')
+        .trim();
+    }
+
+    function toSentenceCase(str) {
+      if (!str) return '';
+      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }).trim();
+    }
+
+    function cleanTitle(rawTitle) {
+      if (!rawTitle) return '';
+      let firstSegment = String(rawTitle).split('|')[0].trim();
+      firstSegment = firstSegment
+        .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
+        .replace(/\bOpen\s*Play\b/gi, '')
+        .replace(/\bPrime\s*Time\b/gi, '')
+        .replace(/\bStrategic\b/gi, '');
+
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
+      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+      return toSentenceCase(firstSegment);
+    }
+
+    async function refreshDisplay() {
+      try {
+        const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
+        if (!res.ok) throw new Error("Schedule file not found");
+        const data = await res.json();
+
+        const now = new Date();
+        document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
+        document.getElementById('target-mode-pill').textContent = `Target: +${lookaheadMinutes}m`;
+        
+        if (data.lastUpdated) {
+          const syncDate = new Date(data.lastUpdated);
+          document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+        }
+
+        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
+
+        const isRunningAtTarget = (startIso, endIso) => {
+          if (!startIso || !endIso) return false;
+          const s = new Date(startIso);
+          const e = new Date(endIso);
+          return s <= targetTime && e > targetTime;
+        };
+
+        const events = data.events || [];
+        const sessions = [];
+
+        const eventMap = {};
+        events.forEach(e => {
+          if (!isRunningAtTarget(e.startTime, e.endTime)) return;
+          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
+
+          let courtsRaw = e.courts || e.Courts || [];
+          if (!Array.isArray(courtsRaw)) courtsRaw = [courtsRaw];
+          const courtNumbers = courtsRaw
+            .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
+            .filter(Boolean)
+            .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
+
+          if (!eventMap[key]) {
+            eventMap[key] = {
+              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
+              startTime: e.startTime || e.StartTime,
+              endTime: e.endTime || e.EndTime,
+              courts: new Set(courtNumbers),
+              players: new Set()
+            };
+          } else {
+            courtNumbers.forEach(c => eventMap[key].courts.add(c));
+          }
+
+          let pName = e.playerName;
+          if (!pName) {
+            const f = e.FirstName || e.MemberFirstName || e.UserFirstName || '';
+            const l = e.LastName || e.MemberLastName || e.UserLastName || '';
+            if (f) {
+              pName = `${f} ${l ? l.charAt(0) : ''}`.trim();
+            } else if (e.MemberName) {
+              pName = e.MemberName;
+            }
+          }
+
+          if (pName) {
+            eventMap[key].players.add(toSentenceCase(pName));
+          }
+        });
+
+        Object.values(eventMap).forEach(ev => {
+          const arr = Array.from(ev.courts);
+          const courtsLabel = arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD';
+          const sortedPlayers = Array.from(ev.players).sort((a, b) => a.localeCompare(b));
+
+          sessions.push({
+            title: ev.title,
+            courtsLabel: courtsLabel,
+            startTime: ev.startTime,
+            endTime: ev.endTime,
+            players: sortedPlayers
+          });
+        });
+
+        let bestWindowTag = '';
+        if (sessions.length > 0) {
+          const windowCounts = {};
+          sessions.forEach(item => {
+            const w = formatTimeWindow(item.startTime, item.endTime);
+            windowCounts[w] = (windowCounts[w] || 0) + 1;
+          });
+          const bestWindow = Object.keys(windowCounts).reduce((a, b) => windowCounts[a] >= windowCounts[b] ? a : b);
+          bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
+        }
+
+        const subtitleText = lookaheadMinutes > 15 ? `Upcoming Session Rosters (+${lookaheadMinutes}m Preview)` : 'Live Session Rosters';
+        const titleEl = document.getElementById('header-title');
+        titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
+
+        const container = document.getElementById('roster-container');
+        container.innerHTML = '';
+
+        if (sessions.length === 0) {
+          container.className = '';
+          container.innerHTML = `
+            <div class="no-sessions">
+              <h2>No Sessions Found (+${lookaheadMinutes}m)</h2>
+            </div>
+          `;
+          return;
+        }
+
+        // Sort sections from lowest to highest by first 3 characters of title
+        sessions.sort((a, b) => {
+          const keyA = (a.title || '').trim().substring(0, 3);
+          const keyB = (b.title || '').trim().substring(0, 3);
+          const numA = parseFloat(keyA);
+          const numB = parseFloat(keyB);
+
+          if (!isNaN(numA) && !isNaN(numB)) {
+            if (numA !== numB) return numA - numB;
+          } else {
+            const strComp = keyA.localeCompare(keyB, undefined, { numeric: true, sensitivity: 'base' });
+            if (strComp !== 0) return strComp;
+          }
+
+          return new Date(a.startTime) - new Date(b.startTime);
+        });
+
+        const totalSessions = Math.min(sessions.length, 6);
+        const isSingle = sessions.length === 1;
+
+        container.className = `count-${totalSessions}`;
+
+        sessions.forEach(item => {
+          const s = new Date(item.startTime);
+          const e = new Date(item.endTime);
+          const isNow = now >= s && now <= e;
+          const count = item.players.length;
+
+          let cols = 2;
+          let fontSize = 'clamp(1rem, 1.25vw, 1.45rem)';
+          let rowGap = '0.7vh';
+          let colGap = '1.8vw';
+          let titleSize = 'clamp(1.5rem, 1.9vw, 2.3rem)';
+          let courtsSize = 'clamp(1.15rem, 1.45vw, 1.7rem)';
+
+          if (isSingle) {
+            if (count > 44) {
+              cols = 3;
+              fontSize = 'clamp(0.95rem, 1.05vw, 1.2rem)';
+              rowGap = '0.5vh';
+              colGap = '1.4vw';
+            } else if (count > 22) {
+              cols = 2;
+              fontSize = 'clamp(1.05rem, 1.15vw, 1.3rem)';
+              rowGap = '0.65vh';
+            }
+          } else if (totalSessions === 2) {
+            if (count > 48) {
+              cols = 3;
+              fontSize = 'clamp(0.92rem, 1.05vw, 1.2rem)';
+              rowGap = '0.45vh';
+              colGap = '1.2vw';
+            } else if (count > 26) {
+              cols = 2;
+              fontSize = 'clamp(1.05rem, 1.15vw, 1.3rem)';
+              rowGap = '0.6vh';
+            }
+          } else if (totalSessions === 3) {
+            titleSize = 'clamp(1.3rem, 1.5vw, 1.8rem)';
+            courtsSize = 'clamp(1.0rem, 1.25vw, 1.45rem)';
+            if (count > 30) {
+              cols = 2;
+              fontSize = 'clamp(0.85rem, 0.95vw, 1.15rem)';
+              rowGap = '0.4vh';
+              colGap = '1.0vw';
+            } else {
+              cols = 2;
+              fontSize = 'clamp(0.95rem, 1.08vw, 1.25rem)';
+              rowGap = '0.55vh';
+              colGap = '1.2vw';
+            }
+          } else {
+            titleSize = 'clamp(1.15rem, 1.35vw, 1.6rem)';
+            courtsSize = 'clamp(0.95rem, 1.1vw, 1.35rem)';
+            if (count > 24) {
+              cols = 3;
+              fontSize = 'clamp(0.76rem, 0.85vw, 1.0rem)';
+              rowGap = '0.3vh';
+              colGap = '0.7vw';
+            } else if (count > 12) {
+              cols = 2;
+              fontSize = 'clamp(0.82rem, 0.92vw, 1.1rem)';
+              rowGap = '0.4vh';
+              colGap = '1.0vw';
+            } else {
+              cols = 2;
+              fontSize = 'clamp(0.9rem, 1.0vw, 1.2rem)';
+              rowGap = '0.5vh';
+              colGap = '1.2vw';
+            }
+          }
+
+          const card = document.createElement('div');
+          card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''}`;
+          card.style.setProperty('--title-font-size', titleSize);
+          card.style.setProperty('--courts-font-size', courtsSize);
+
+          const listHtml = count > 0 
+            ? item.players.map(name => `<div class="player-item">${name}</div>`).join('')
+            : `<div class="player-empty">No registered players</div>`;
+
+          card.innerHTML = `
+            <div class="card-header">
+              <div class="header-titles">
+                <div class="line-title">${item.title}</div>
+                <div class="line-courts">${item.courtsLabel}</div>
+              </div>
+              <div class="card-meta">
+                <div class="count-badge">${count} ${count === 1 ? 'Player' : 'Players'}</div>
+              </div>
+            </div>
+            <div class="player-list" style="
+              --roster-cols: ${cols};
+              --roster-font-size: ${fontSize};
+              --roster-row-gap: ${rowGap};
+              --roster-col-gap: ${colGap};
+            ">
+              ${listHtml}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error("Error updating rosters display:", err);
+      }
+    }
+
+    refreshDisplay();
+    setInterval(refreshDisplay, 30000);
+  </script>
+</body>
+</html>

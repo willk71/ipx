@@ -1,0 +1,42 @@
+name: Dump CourtReserve Help Docs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dump-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch and Print Help Documentation
+        env:
+          CR_USER: ${{ secrets.CR_USERNAME }}
+          CR_PASS: ${{ secrets.CR_PASSWORD }}
+        run: |
+          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
+
+          # 1. Download the help index
+          curl -s -H "Authorization: $AUTH_HEADER" "https://api.courtreserve.com/help" -o help.html
+
+          # 2. Extract every documented endpoint link
+          echo "=== All Available Endpoints in Help ==="
+          grep -o 'href="[^"]*"' help.html | grep -i 'help' | sort -u
+
+          # 3. Find the exact link that contains 'reservationreport' or 'listactive'
+          TARGET_PATH=$(grep -o 'href="[^"]*"' help.html | grep -i 'reservationreport' | head -n 1 | cut -d'"' -f2)
+
+          if [ -n "$TARGET_PATH" ]; then
+            echo ""
+            echo "=== Found Target Documentation at: $TARGET_PATH ==="
+            # Fetch the actual endpoint detail page
+            curl -s -H "Authorization: $AUTH_HEADER" "https://api.courtreserve.com${TARGET_PATH}" -o endpoint.html
+            
+            # Strip tags and print the text clean
+            python3 -c "
+          from bs4 import BeautifulSoup
+          soup = BeautifulSoup(open('endpoint.html'), 'html.parser')
+          for table in soup.find_all('table'):
+              print(table.get_text(separator=' | ', strip=True))
+          " 2>/dev/null || sed -e 's/<[^>]*>/ /g' endpoint.html | tr -s ' ' | head -n 60
+          else
+            echo "No explicit link matching 'reservationreport' found in index."
+          fi

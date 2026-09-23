@@ -1,0 +1,32 @@
+name: Test Direct Interval Bindings
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-direct:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Non-Bracket Query Patterns
+        env:
+          CR_USER: ${{ secrets.CR_USERNAME }}
+          CR_PASS: ${{ secrets.CR_PASSWORD }}
+        run: |
+          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
+          TODAY="2026-09-21"
+
+          declare -A TESTS=(
+            ["REPEATED_DATES"]="https://api.courtreserve.com/api/v1/reservationreport/listactive?dateIntervals=${TODAY}T00:00:00&dateIntervals=${TODAY}T23:59:59"
+            ["COMMA_RANGE"]="https://api.courtreserve.com/api/v1/reservationreport/listactive?dateInterval=${TODAY}T00:00:00,${TODAY}T23:59:59"
+            ["SLASH_RANGE"]="https://api.courtreserve.com/api/v1/reservationreport/listactive?dateInterval=${TODAY}T00:00:00/${TODAY}T23:59:59"
+            ["FROM_TO_INTERVAL"]="https://api.courtreserve.com/api/v1/reservationreport/listactive?from=${TODAY}T00:00:00&to=${TODAY}T23:59:59"
+            ["START_END_DATES"]="https://api.courtreserve.com/api/v1/reservationreport/listactive?startDate=${TODAY}&endDate=${TODAY}&intervalType=Day"
+          )
+
+          for NAME in "${!TESTS[@]}"; do
+            URL="${TESTS[$NAME]}"
+            echo "--- Testing: $NAME ---"
+            RESP=$(curl -g -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$URL")
+            echo "$RESP" | head -c 250
+            echo ""
+          done

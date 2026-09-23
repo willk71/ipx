@@ -1,0 +1,42 @@
+name: Discover Exact Parameters
+
+on:
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Route Metadata
+        env:
+          CR_USER: ${{ secrets.CR_USERNAME }}
+          CR_PASS: ${{ secrets.CR_PASSWORD }}
+        run: |
+          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
+
+          echo "=== 1. Checking CourtReserve Swagger & Docs Locations ==="
+          DOC_PATHS=(
+            "https://api.courtreserve.com/swagger/docs/v1"
+            "https://api.courtreserve.com/swagger/v1/swagger.json"
+            "https://api.courtreserve.com/swagger"
+            "https://app.courtreserve.com/swagger/docs/v1"
+            "https://api.courtreserve.com/help"
+          )
+
+          for URL in "${DOC_PATHS[@]}"; do
+            CODE=$(curl -s -o temp_doc.txt -w "%{http_code}" -H "Authorization: $AUTH_HEADER" "$URL")
+            echo "$URL -> HTTP $CODE"
+            if [ "$CODE" -eq 200 ]; then
+              echo "Found documentation at $URL!"
+              grep -o -E '.{0,100}reservationreport.{0,100}' temp_doc.txt | head -n 5 || head -n 20 temp_doc.txt
+            fi
+          done
+
+          echo "=== 2. Testing CourtReserve Interval Query Encoding ==="
+          TODAY="2026-09-21"
+          # Test with properly formatted URL parameters matching ASP.NET DateTime interval bindings
+          TEST_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?intervals%5B0%5D.start=${TODAY}T00%3A00%3A00&intervals%5B0%5D.end=${TODAY}T23%3A59%3A59"
+          echo "Testing: $TEST_URL"
+          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$TEST_URL" -o test_out.json
+          cat test_out.json
+          echo ""

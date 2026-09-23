@@ -1,0 +1,35 @@
+name: Inspect Help Docs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scrape Controller Documentation
+        env:
+          CR_USER: ${{ secrets.CR_USERNAME }}
+          CR_PASS: ${{ secrets.CR_PASSWORD }}
+        run: |
+          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
+
+          echo "=== 1. Searching Help Index for Reservation Report ==="
+          curl -s -H "Authorization: $AUTH_HEADER" "https://api.courtreserve.com/help" -o help_index.html
+          
+          # Extract any links matching reservationreport
+          grep -i -o 'href="[^"]*reservationreport[^"]*"' help_index.html || grep -i -o '/Help/Api/[^"]*' help_index.html | grep -i 'reservation' | head -n 10
+
+          echo "=== 2. Fetching Specific Help Page ==="
+          # Standard ASP.NET Web API Help Page route format:
+          HELP_URL="https://api.courtreserve.com/Help/Api/GET-api-v1-reservationreport-listactive"
+          curl -s -H "Authorization: $AUTH_HEADER" "$HELP_URL" -o endpoint_help.html
+
+          # If the page exists (not a 404), strip HTML and print the parameter table
+          if grep -q "Parameters" endpoint_help.html || grep -q "Request Information" endpoint_help.html; then
+            echo "Found endpoint documentation page! Parameters:"
+            sed -e 's/<[^>]*>/ /g' endpoint_help.html | tr -s ' ' | grep -A 30 -i "parameter" | head -n 40
+          else
+            echo "Dumping raw link matches from Help index:"
+            grep -i -o 'href="[^"]*Api[^"]*"' help_index.html | head -n 30
+          fi
