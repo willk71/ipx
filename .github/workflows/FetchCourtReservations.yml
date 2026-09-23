@@ -44,24 +44,16 @@ jobs:
             '{
               lastUpdated: $now,
               reservations: [
-                (($res[0] | if type == "array" then . elif type == "object" then (.Data // .Items // .data // .items // []) else [] end) // [])[] | {
+                ($res[0] // [])[] | {
                   reservationId: (.ReservationId // .Id),
                   court: (.CourtName // .Courts // .Court // "TBD"),
                   startTime: (.StartTime // .ReservationStartTime),
                   endTime: (.EndTime // .ReservationEndTime),
-                  holderLabel: (
-                    if ((.MemberFirstName // .FirstName // "") != "" and (.MemberLastName // .LastName // "") != "") then
-                      ("(" + (.MemberFirstName // .FirstName) + " " + ((.MemberLastName // .LastName)[0:1]) + ")")
-                    elif ((.MemberName // "") != "") then
-                      ((.MemberName | split(" ")) | if length > 1 then "(" + .[0] + " " + .[-1][0:1] + ")" elif length == 1 then "(" + .[0] + ")" else "" end)
-                    else
-                      ""
-                    end
-                  )
+                  holderLabel: ""
                 }
               ],
               events: [
-                (($ev[0] | if type == "array" then . elif type == "object" then (.Data // .Items // .data // .items // []) else [] end) // [])[] | {
+                ($ev[0] // [])[] | {
                   eventId: (.EventId // .Id),
                   title: (.EventName // .DivisionName // .Title // "Event"),
                   startTime: (.StartTime // .EventStartTime),
