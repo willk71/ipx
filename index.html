@@ -113,7 +113,6 @@
       white-space: nowrap;
     }
 
-    /* Content Area */
     .content-area {
       flex: 1;
       display: flex;
@@ -124,7 +123,6 @@
       overflow: hidden;
     }
 
-    /* Main Sessions Grid */
     main#schedule-container {
       flex: 1;
       display: grid;
@@ -192,7 +190,6 @@
       font-size: clamp(1.4rem, 1.9vw, 2.4rem);
     }
 
-    /* Private Reservations Box (Silver Accent) */
     .privates-container {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -301,7 +298,6 @@
       </div>
     </main>
 
-    <!-- Silver container rendered here if privates exist -->
     <div id="privates-box" class="privates-container" style="display: none;">
       <div class="privates-title">Private Reservations</div>
       <div id="privates-list" class="privates-list"></div>
@@ -459,14 +455,25 @@
           if (Array.isArray(rawCourt)) rawCourt = rawCourt.map(c => c && c.CourtName ? c.CourtName : c).join(', ');
           const courtClean = cleanCourtName(rawCourt);
 
+          let holder = r.holderLabel || '';
+          if (!holder) {
+            const f = r.MemberFirstName || r.FirstName || '';
+            const l = r.MemberLastName || r.LastName || '';
+            if (f) {
+              holder = `(${f} ${l ? l.charAt(0) : ''})`.trim();
+            } else if (r.MemberName) {
+              const parts = r.MemberName.trim().split(/\s+/);
+              holder = parts.length > 1 ? `(${parts[0]} ${parts[parts.length - 1].charAt(0)})` : `(${parts[0]})`;
+            }
+          }
+
           privates.push({
             court: courtClean || 'TBD',
-            holder: r.holderLabel || '',
+            holder: holder,
             startTime: r.startTime || r.StartTime
           });
         });
 
-        // Sort privates numerically by court number
         privates.sort((a, b) => (parseInt(a.court) || 0) - (parseInt(b.court) || 0));
 
         let bestWindowTag = '';
@@ -493,7 +500,6 @@
         const titleEl = document.getElementById('header-title');
         titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
 
-        // Render Sessions Grid
         const container = document.getElementById('schedule-container');
         container.innerHTML = '';
 
@@ -508,7 +514,6 @@
           return;
         }
 
-        // Sort sessions lowest to highest by first 3 chars
         sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
@@ -539,7 +544,6 @@
           container.appendChild(card);
         });
 
-        // Render Silver Privates Container
         const privatesBox = document.getElementById('privates-box');
         const privatesList = document.getElementById('privates-list');
 
