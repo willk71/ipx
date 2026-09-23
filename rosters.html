@@ -205,7 +205,7 @@
       white-space: nowrap;
     }
 
-    /* Fills down column 1, then column 2 */
+    /* Column-first distribution: fills col 1 top-to-bottom, then col 2 */
     .player-list {
       column-count: var(--roster-cols, 2);
       column-gap: var(--roster-col-gap, 1.8vw);
@@ -280,7 +280,7 @@
   <header>
     <div class="header-left">
       <h1 id="header-title">
-        <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Live Session Rosters</span>
+        <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Rosters</span>
       </h1>
     </div>
     <div class="header-right">
@@ -333,7 +333,14 @@
 
     function formatTimeWindow(startIso, endIso) {
       if (!startIso || !endIso) return '';
-      return `${formatTime(startIso)} \u2013 ${formatTime(endIso)}`;
+      const t1 = formatTime(startIso);
+      const t2 = formatTime(endIso);
+      const parts1 = t1.split(' ');
+      const parts2 = t2.split(' ');
+      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
+        return `${parts1[0]} \u2013 ${t2}`;
+      }
+      return `${t1} \u2013 ${t2}`;
     }
 
     function cleanCourtName(rawName) {
@@ -356,6 +363,7 @@
       if (!rawTitle) return '';
       let firstSegment = String(rawTitle).split('|')[0].trim();
       firstSegment = firstSegment
+        .replace(/\bSessions?\b/gi, '')
         .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
         .replace(/\bOpen\s*Play\b/gi, '')
         .replace(/\bPrime\s*Time\b/gi, '')
@@ -458,7 +466,7 @@
           bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
         }
 
-        const subtitleText = lookaheadMinutes > 15 ? `Upcoming Session Rosters (+${lookaheadMinutes}m Preview)` : 'Live Session Rosters';
+        const subtitleText = lookaheadMinutes > 15 ? `Rosters (+${lookaheadMinutes}m Preview)` : 'Rosters';
         const titleEl = document.getElementById('header-title');
         titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
 
@@ -475,7 +483,7 @@
           return;
         }
 
-        // Sort sections from lowest to highest by first 3 characters of title
+        // Sort sections lowest to highest by first 3 characters of title
         sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
