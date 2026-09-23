@@ -23,7 +23,6 @@ jobs:
         run: |
           mkdir -p data
 
-          # Compute rolling UTC window (America/New_York relative)
           START_DATE=$(date -u -d "4 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
           END_DATE=$(date -u -d "16 hours" +"%Y-%m-%dT%H:%M:%SZ")
           AUTH_HEADER="Basic $(echo -n "${CR_USERNAME}:${CR_PASSWORD}" | base64 -w 0)"
@@ -31,60 +30,65 @@ jobs:
           echo "Fetching Reservations from $START_DATE to $END_DATE..."
           curl -s -X GET "https://api.courtreserve.com/api/v1/reservationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
             -H "Authorization: ${AUTH_HEADER}" \
-            -H "Accept: application/json" > raw_reservations.json
+            -H "Accept: application/json" > raw_reservations.json || echo "[]" > raw_reservations.json
 
           echo "Fetching Events from $START_DATE to $END_DATE..."
           curl -s -X GET "https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
             -H "Authorization: ${AUTH_HEADER}" \
-            -H "Accept: application/json" > raw_events.json
+            -H "Accept: application/json" > raw_events.json || echo "[]" > raw_events.json
 
-          # Merge, scrub PII, and generate data/schedule.json
+          # Merge, scrub PII, and generate data/schedule.json defensively
           jq -n \
             --arg now "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
             --slurpfile res raw_reservations.json \
             --slurpfile ev raw_events.json \
-            '{
+            '
+            def safe_array(val):
+              if (val | type) == "array" then val
+              elif (val | type) == "object" then (val.Data // val.Items // val.data // val.items // [])
+              else []
+              end;
+
+            def scrub_holder:
+              if ((.MemberFirstName // .FirstName // .UserFirstName // "") != "" and (.MemberLastName // .LastName // .UserLastName // "") != "") then
+                ("(" + (.MemberFirstName // .FirstName // .UserFirstName) + " " + ((.MemberLastName // .LastName // .UserLastName)[0:1]) + ")")
+              elif ((.MemberName // .UserName // .ReservedBy // .OwnerName // "") != "") then
+                ((.MemberName // .UserName // .ReservedBy // .OwnerName) | 
+                  if contains(",") then
+                    (split(",") | [.[1] | ltrimstr(" ") | rtrimstr(" "), .[0] | ltrimstr(" ") | rtrimstr(" ")]) |
+                    if (.[0] != "" and .[1] != "") then "(" + .[0] + " " + .[1][0:1] + ")" else "(" + .[0] + ")" end
+                  else
+                    (split(" ") | map(select(length > 0))) |
+                    if length > 1 then
+                      "(" + .[0] + " " + .[-1][0:1] + ")"
+                    elif length == 1 then
+                      "(" + .[0] + ")"
+                    else
+                      ""
+                    end
+                  end
+                )
+              elif (.Member.FirstName? and .Member.LastName?) then
+                ("(" + .Member.FirstName + " " + (.Member.LastName[0:1]) + ")")
+              elif (.Member.Name?) then
+                (.Member.Name | split(" ") | "(" + .[0] + " " + .[-1][0:1] + ")")
+              else
+                ""
+              end;
+
+            {
               lastUpdated: $now,
               reservations: [
-                ($res[0] // [])[] | {
+                safe_array($res[0])[] | select(type == "object") | {
                   reservationId: (.ReservationId // .Id),
                   court: (.CourtName // .Courts // .Court // "TBD"),
                   startTime: (.StartTime // .ReservationStartTime),
                   endTime: (.EndTime // .ReservationEndTime),
-                  holderLabel: (
-                    # 1. Check dedicated separate first/last keys
-                    if ((.MemberFirstName // .FirstName // .UserFirstName // "") != "" and (.MemberLastName // .LastName // .UserLastName // "") != "") then
-                      ("(" + (.MemberFirstName // .FirstName // .UserFirstName) + " " + ((.MemberLastName // .LastName // .UserLastName)[0:1]) + ")")
-                    # 2. Check full name strings (e.g., "John Doe" or "Doe, John")
-                    elif ((.MemberName // .UserName // .ReservedBy // .OwnerName // "") != "") then
-                      ((.MemberName // .UserName // .ReservedBy // .OwnerName) | 
-                        if contains(",") then
-                          (split(",") | [.[1] | ltrimstr(" ") | rtrimstr(" "), .[0] | ltrimstr(" ") | rtrimstr(" ")]) |
-                          if (.[0] != "" and .[1] != "") then "(" + .[0] + " " + .[1][0:1] + ")" else "(" + .[0] + ")" end
-                        else
-                          (split(" ") | map(select(length > 0))) |
-                          if length > 1 then
-                            "(" + .[0] + " " + .[-1][0:1] + ")"
-                          elif length == 1 then
-                            "(" + .[0] + ")"
-                          else
-                            ""
-                          end
-                        end
-                      )
-                    # 3. Check nested Member/User object keys
-                    elif (.Member.FirstName? and .Member.LastName?) then
-                      ("(" + .Member.FirstName + " " + (.Member.LastName[0:1]) + ")")
-                    elif (.Member.Name?) then
-                      (.Member.Name | split(" ") | "(" + .[0] + " " + .[-1][0:1] + ")")
-                    else
-                      ""
-                    end
-                  )
+                  holderLabel: scrub_holder
                 }
               ],
               events: [
-                ($ev[0] // [])[] | {
+                safe_array($ev[0])[] | select(type == "object") | {
                   eventId: (.EventId // .Id),
                   title: (.EventName // .DivisionName // .Title // "Event"),
                   startTime: (.StartTime // .EventStartTime),
