@@ -59,7 +59,7 @@
     }
 
     .header-left h1 {
-      font-size: clamp(1.8rem, 2.7vw, 3.2rem);
+      font-size: clamp(2rem, 3vw, 3.6rem);
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main);
@@ -87,27 +87,17 @@
     .header-right {
       display: flex;
       align-items: baseline;
-      gap: 1.2vw;
       flex-shrink: 0;
       text-align: right;
     }
 
     .clock {
-      font-size: clamp(2rem, 3vw, 3.4rem);
+      font-size: clamp(2.4rem, 3.5vw, 4rem);
       font-weight: 300;
       color: var(--yellow);
       letter-spacing: -0.03em;
       line-height: 1;
       font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    .date-display {
-      font-size: clamp(0.9rem, 1.2vw, 1.3rem);
-      color: var(--text-muted);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1;
       white-space: nowrap;
     }
 
@@ -205,7 +195,7 @@
       white-space: nowrap;
     }
 
-    /* Column-first distribution: fills down column 1, then column 2 */
+    /* Column-first distribution: fills col 1 top-to-bottom, then col 2 */
     .player-list {
       column-count: var(--roster-cols, 2);
       column-gap: var(--roster-col-gap, 1.8vw);
@@ -285,7 +275,6 @@
     </div>
     <div class="header-right">
       <div class="clock" id="live-clock">--:-- --</div>
-      <div class="date-display" id="live-date">Loading...</div>
     </div>
   </header>
 
@@ -305,9 +294,13 @@
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
+    const hasExplicitAhead = urlParams.has('ahead');
     const isNamed60 = window.location.pathname.includes('60');
     const defaultAhead = isNamed60 ? '60' : '15';
     const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
+    
+    // Only treat as preview if an explicit non-default query param is set
+    const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
 
     function updateClock() {
       const now = new Date();
@@ -315,11 +308,6 @@
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
-      });
-      document.getElementById('live-date').textContent = now.toLocaleDateString([], {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric'
       });
     }
     setInterval(updateClock, 1000);
@@ -364,10 +352,8 @@
       let firstSegment = String(rawTitle).split('|')[0].trim();
       firstSegment = firstSegment
         .replace(/\bSessions?\b/gi, '')
-        .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
         .replace(/\bOpen\s*Play\b/gi, '')
-        .replace(/\bPrime\s*Time\b/gi, '')
-        .replace(/\bStrategic\b/gi, '');
+        .replace(/\bPrime\s*Time\b/gi, '');
 
       firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
@@ -391,10 +377,10 @@
         const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
         const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
-        // Display exact preview time on footer pill
-        document.getElementById('target-mode-pill').textContent = lookaheadMinutes !== 0 
+        // Default +15m shows "Target: Live", explicit override shows exact target time
+        document.getElementById('target-mode-pill').textContent = isPreview 
           ? `Target: ${targetTimeString}` 
-          : 'Target: Now';
+          : 'Target: Live';
 
         const isRunningAtTarget = (startIso, endIso) => {
           if (!startIso || !endIso) return false;
@@ -471,8 +457,8 @@
           bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
         }
 
-        // Subtitle shows exact preview time instead of minutes count
-        const subtitleText = lookaheadMinutes !== 0 
+        // Subtitle shows "Rosters" cleanly on default, only displays Preview when explicitly queried
+        const subtitleText = isPreview 
           ? `Rosters (${targetTimeString} Preview)` 
           : 'Rosters';
 
@@ -486,7 +472,7 @@
           container.className = '';
           container.innerHTML = `
             <div class="no-sessions">
-              <h2>No Sessions Found (${targetTimeString})</h2>
+              <h2>No Sessions Found</h2>
             </div>
           `;
           return;
