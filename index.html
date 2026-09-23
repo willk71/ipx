@@ -13,6 +13,8 @@
       --card-border-active: rgba(255, 214, 10, 0.55);
 
       --yellow: #ffd60a;
+      --silver: #8e8e93;
+      --silver-border: rgba(255, 255, 255, 0.35);
       --text-main: #ffffff;
       --text-sub: #ebebf5;
       --text-muted: #8e8e93;
@@ -111,37 +113,30 @@
       white-space: nowrap;
     }
 
-    main {
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8vh;
+      margin-top: 2.2vh;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* Main Sessions Grid */
+    main#schedule-container {
       flex: 1;
       display: grid;
       gap: 2vh 2vw;
-      margin-top: 2.2vh;
       overflow: hidden;
       min-height: 0;
     }
 
-    /* 1 session: full width card */
-    main.count-1 {
-      grid-template-columns: 1fr;
-    }
-
-    /* 2 sessions: side by side */
-    main.count-2 {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    /* 3 or 4 sessions: 2x2 grid */
-    main.count-3, main.count-4 {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-    }
-
-    /* 5 or 6 sessions: 2 across x 3 down grid */
-    main.count-5, main.count-6 {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr;
-      gap: 1.4vh 2vw;
-    }
+    main.count-1 { grid-template-columns: 1fr; }
+    main.count-2 { grid-template-columns: 1fr 1fr; }
+    main.count-3, main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 1.4vh 2vw; }
 
     .session-card {
       background: var(--card-bg);
@@ -160,17 +155,12 @@
       overflow: hidden;
     }
 
-    /* Tighter padding and scaled fonts when 5-6 sessions are present */
     main.count-5 .session-card,
     main.count-6 .session-card {
       padding: 2vh 2.2vw;
       gap: 0.6vh;
       border-left-width: 10px;
       border-radius: 16px;
-    }
-
-    .session-card.is-private {
-      border-left-color: rgba(255, 255, 255, 0.35);
     }
 
     .line-title {
@@ -202,15 +192,52 @@
       font-size: clamp(1.4rem, 1.9vw, 2.4rem);
     }
 
-    .session-card.is-private .line-courts {
-      color: var(--text-sub);
+    /* Private Reservations Box (Silver Accent) */
+    .privates-container {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 10px solid var(--silver-border);
+      border-radius: 16px;
+      padding: 1.6vh 2vw;
+      display: flex;
+      align-items: center;
+      gap: 2vw;
+      flex-shrink: 0;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
-    .holder-tag {
-      font-size: 0.9em;
+    .privates-title {
+      font-size: clamp(1.1rem, 1.4vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      padding-right: 1.5vw;
+    }
+
+    .privates-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1vh 2vw;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .private-item {
+      font-size: clamp(1.2rem, 1.6vw, 2rem);
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .private-item .holder {
       color: var(--text-muted);
       font-weight: 400;
-      margin-left: 0.35em;
+      margin-left: 0.25em;
     }
 
     .no-sessions {
@@ -267,11 +294,19 @@
     </div>
   </header>
 
-  <main id="schedule-container">
-    <div class="no-sessions">
-      <h2>Loading Schedule...</h2>
+  <div class="content-area">
+    <main id="schedule-container">
+      <div class="no-sessions">
+        <h2>Loading Schedule...</h2>
+      </div>
+    </main>
+
+    <!-- Silver container rendered here if privates exist -->
+    <div id="privates-box" class="privates-container" style="display: none;">
+      <div class="privates-title">Private Reservations</div>
+      <div id="privates-list" class="privates-list"></div>
     </div>
-  </main>
+  </div>
 
   <footer>
     <span id="target-mode-pill">Target: --</span>
@@ -377,8 +412,9 @@
         };
 
         const sessions = [];
+        const privates = [];
 
-        // 1. Group Events
+        // 1. Group Scheduled Events
         const eventMap = {};
         (data.events || []).forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
@@ -410,13 +446,12 @@
             type: 'event',
             title: ev.title,
             courtsLabel: arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD',
-            holderLabel: '',
             startTime: ev.startTime,
             endTime: ev.endTime
           });
         });
 
-        // 2. Reservations
+        // 2. Separate Private Reservations
         (data.reservations || []).forEach(r => {
           if (!isRunningAtTarget(r.startTime, r.endTime)) return;
 
@@ -424,25 +459,31 @@
           if (Array.isArray(rawCourt)) rawCourt = rawCourt.map(c => c && c.CourtName ? c.CourtName : c).join(', ');
           const courtClean = cleanCourtName(rawCourt);
 
-          sessions.push({
-            type: 'reservation',
-            title: 'Private Reservation',
-            holderLabel: r.holderLabel || '',
-            courtsLabel: courtClean ? `on ${courtClean}` : 'on TBD',
-            startTime: r.startTime || r.StartTime,
-            endTime: r.endTime || r.EndTime
+          privates.push({
+            court: courtClean || 'TBD',
+            holder: r.holderLabel || '',
+            startTime: r.startTime || r.StartTime
           });
         });
 
+        // Sort privates numerically by court number
+        privates.sort((a, b) => (parseInt(a.court) || 0) - (parseInt(b.court) || 0));
+
         let bestWindowTag = '';
-        if (sessions.length > 0) {
+        const allItems = [...sessions, ...privates];
+        if (allItems.length > 0) {
           const windowCounts = {};
-          sessions.forEach(item => {
-            const w = formatTimeWindow(item.startTime, item.endTime);
-            windowCounts[w] = (windowCounts[w] || 0) + 1;
+          allItems.forEach(item => {
+            if (item.startTime && item.endTime) {
+              const w = formatTimeWindow(item.startTime, item.endTime);
+              windowCounts[w] = (windowCounts[w] || 0) + 1;
+            }
           });
-          const bestWindow = Object.keys(windowCounts).reduce((a, b) => windowCounts[a] >= windowCounts[b] ? a : b);
-          bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
+          const keys = Object.keys(windowCounts);
+          if (keys.length > 0) {
+            const bestWindow = keys.reduce((a, b) => windowCounts[a] >= windowCounts[b] ? a : b);
+            bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
+          }
         }
 
         const subtitleText = lookaheadMinutes !== 0 
@@ -452,20 +493,22 @@
         const titleEl = document.getElementById('header-title');
         titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
 
+        // Render Sessions Grid
         const container = document.getElementById('schedule-container');
         container.innerHTML = '';
 
-        if (sessions.length === 0) {
+        if (sessions.length === 0 && privates.length === 0) {
           container.className = '';
           container.innerHTML = `
             <div class="no-sessions">
               <h2>No Scheduled Sessions (${targetTimeString})</h2>
             </div>
           `;
+          document.getElementById('privates-box').style.display = 'none';
           return;
         }
 
-        // Sort lowest to highest by first 3 chars
+        // Sort sessions lowest to highest by first 3 chars
         sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
@@ -487,17 +530,28 @@
 
         sessions.forEach(item => {
           const card = document.createElement('div');
-          card.className = `session-card ${item.type === 'reservation' ? 'is-private' : ''}`;
+          card.className = 'session-card';
 
           card.innerHTML = `
             <div class="line-title">${item.title}</div>
-            <div class="line-courts">
-              ${item.courtsLabel}
-              ${item.holderLabel ? `<span class="holder-tag">${item.holderLabel}</span>` : ''}
-            </div>
+            <div class="line-courts">${item.courtsLabel}</div>
           `;
           container.appendChild(card);
         });
+
+        // Render Silver Privates Container
+        const privatesBox = document.getElementById('privates-box');
+        const privatesList = document.getElementById('privates-list');
+
+        if (privates.length > 0) {
+          privatesBox.style.display = 'flex';
+          privatesList.innerHTML = privates.map(p => {
+            const holderSpan = p.holder ? `<span class="holder">${p.holder}</span>` : '';
+            return `<div class="private-item">Court ${p.court} ${holderSpan}</div>`;
+          }).join('');
+        } else {
+          privatesBox.style.display = 'none';
+        }
 
       } catch (err) {
         console.error("Error refreshing index display:", err);
