@@ -44,7 +44,7 @@ jobs:
             '{
               lastUpdated: $now,
               reservations: [
-                ($res[0] | if type == "array" then . else [] end)[] | {
+                (($res[0] | if type == "array" then . elif type == "object" then (.Data // .Items // .data // .items // []) else [] end) // [])[] | {
                   reservationId: (.ReservationId // .Id),
                   court: (.CourtName // .Courts // .Court // "TBD"),
                   startTime: (.StartTime // .ReservationStartTime),
@@ -61,7 +61,7 @@ jobs:
                 }
               ],
               events: [
-                ($ev[0] | if type == "array" then . else [] end)[] | {
+                (($ev[0] | if type == "array" then . elif type == "object" then (.Data // .Items // .data // .items // []) else [] end) // [])[] | {
                   eventId: (.EventId // .Id),
                   title: (.EventName // .DivisionName // .Title // "Event"),
                   startTime: (.StartTime // .EventStartTime),
