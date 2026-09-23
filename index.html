@@ -120,22 +120,27 @@
       min-height: 0;
     }
 
+    /* 1 session: full width card */
     main.count-1 {
       grid-template-columns: 1fr;
     }
 
+    /* 2 sessions: side by side */
     main.count-2 {
       grid-template-columns: 1fr 1fr;
     }
 
+    /* 3 or 4 sessions: 2x2 grid */
     main.count-3, main.count-4 {
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
     }
 
+    /* 5 or 6 sessions: 2 across x 3 down grid */
     main.count-5, main.count-6 {
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 1.4vh 2vw;
     }
 
     .session-card {
@@ -155,12 +160,21 @@
       overflow: hidden;
     }
 
+    /* Tighter padding and scaled fonts when 5-6 sessions are present */
+    main.count-5 .session-card,
+    main.count-6 .session-card {
+      padding: 2vh 2.2vw;
+      gap: 0.6vh;
+      border-left-width: 10px;
+      border-radius: 16px;
+    }
+
     .session-card.is-private {
       border-left-color: rgba(255, 255, 255, 0.35);
     }
 
     .line-title {
-      font-size: clamp(2.6rem, 3.8vw, 4.6rem);
+      font-size: clamp(2.4rem, 3.4vw, 4.4rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-main);
@@ -170,12 +184,22 @@
       text-overflow: ellipsis;
     }
 
+    main.count-5 .line-title,
+    main.count-6 .line-title {
+      font-size: clamp(1.8rem, 2.4vw, 3.2rem);
+    }
+
     .line-courts {
-      font-size: clamp(2rem, 2.8vw, 3.4rem);
+      font-size: clamp(1.8rem, 2.6vw, 3.2rem);
       font-weight: 600;
       color: var(--yellow);
       letter-spacing: -0.01em;
       line-height: 1.15;
+    }
+
+    main.count-5 .line-courts,
+    main.count-6 .line-courts {
+      font-size: clamp(1.4rem, 1.9vw, 2.4rem);
     }
 
     .session-card.is-private .line-courts {
