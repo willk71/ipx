@@ -23,29 +23,38 @@ jobs:
         run: |
           mkdir -p data
 
-          START_DATE=$(date -u -d "4 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
-          END_DATE=$(date -u -d "16 hours" +"%Y-%m-%dT%H:%M:%SZ")
+          # Compute America/New_York relative dates formatted for CourtReserve API
+          START_DATE=$(date -u -d "4 hours ago" +"%Y-%m-%dT%H:%M:%S")
+          END_DATE=$(date -u -d "16 hours" +"%Y-%m-%dT%H:%M:%S")
           AUTH_HEADER="Basic $(echo -n "${CR_USERNAME}:${CR_PASSWORD}" | base64 -w 0)"
 
           echo "Fetching Reservations from $START_DATE to $END_DATE..."
-          curl -s -X GET "https://api.courtreserve.com/api/v1/reservationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
+          HTTP_RES=$(curl -s -w "%{http_code}" -X GET "https://api.courtreserve.com/api/v1/reservationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
             -H "Authorization: ${AUTH_HEADER}" \
-            -H "Accept: application/json" > raw_reservations.json || echo "[]" > raw_reservations.json
+            -H "Accept: application/json" -o raw_reservations.json)
 
           echo "Fetching Events from $START_DATE to $END_DATE..."
-          curl -s -X GET "https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
+          HTTP_EV=$(curl -s -w "%{http_code}" -X GET "https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
             -H "Authorization: ${AUTH_HEADER}" \
-            -H "Accept: application/json" > raw_events.json || echo "[]" > raw_events.json
+            -H "Accept: application/json" -o raw_events.json)
 
-          # Merge, scrub PII, and generate data/schedule.json defensively
+          echo "HTTP Responses: Reservations=$HTTP_RES, Events=$HTTP_EV"
+
+          # If either API call failed with a non-200 code, abort so we don't wipe existing schedule
+          if [ "$HTTP_RES" != "200" ] && [ "$HTTP_EV" != "200" ]; then
+            echo "CourtReserve API error (HTTP $HTTP_RES / $HTTP_EV). Preserving previous data."
+            exit 0
+          fi
+
+          # Merge, scrub PII, and generate data/schedule.json
           jq -n \
             --arg now "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
             --slurpfile res raw_reservations.json \
             --slurpfile ev raw_events.json \
             '
-            def safe_array(val):
-              if (val | type) == "array" then val
-              elif (val | type) == "object" then (val.Data // val.Items // val.data // val.items // [])
+            def get_items(input_data):
+              if (input_data | type) == "array" then input_data
+              elif (input_data | type) == "object" then (input_data.Data // input_data.Items // input_data.data // input_data.items // [])
               else []
               end;
 
@@ -79,7 +88,7 @@ jobs:
             {
               lastUpdated: $now,
               reservations: [
-                safe_array($res[0])[] | select(type == "object") | {
+                get_items($res[0])[] | select(type == "object" and ((.ReservationId // .Id) != null)) | {
                   reservationId: (.ReservationId // .Id),
                   court: (.CourtName // .Courts // .Court // "TBD"),
                   startTime: (.StartTime // .ReservationStartTime),
@@ -88,7 +97,7 @@ jobs:
                 }
               ],
               events: [
-                safe_array($ev[0])[] | select(type == "object") | {
+                get_items($ev[0])[] | select(type == "object" and ((.EventId // .Id) != null)) | {
                   eventId: (.EventId // .Id),
                   title: (.EventName // .DivisionName // .Title // "Event"),
                   startTime: (.StartTime // .EventStartTime),
@@ -105,7 +114,15 @@ jobs:
                   )
                 }
               ]
-            }' > data/schedule.json
+            }' > data/schedule.json.tmp
+
+          # Only replace schedule.json if the temporary file contains valid JSON
+          if jq . data/schedule.json.tmp >/dev/null 2>&1; then
+            mv data/schedule.json.tmp data/schedule.json
+          else
+            echo "Invalid JSON generated, keeping previous schedule.json"
+            rm -f data/schedule.json.tmp
+          fi
 
           rm -f raw_reservations.json raw_events.json
 
