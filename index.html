@@ -360,7 +360,15 @@
 
       firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
-      return toSentenceCase(firstSegment);
+      let cleaned = toSentenceCase(firstSegment);
+
+      // Shorten skill level names while preserving casing
+      cleaned = cleaned
+        .replace(/\bAdvanced\s+Beginner\b/gi, 'AdvBen')
+        .replace(/\bIntermediate\b/gi, 'Int')
+        .replace(/\bAdvanced\b/gi, 'Adv');
+
+      return cleaned;
     }
 
     async function refreshDisplay() {
