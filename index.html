@@ -60,7 +60,7 @@
     }
 
     .header-left h1 {
-      font-size: clamp(1.8rem, 2.7vw, 3.2rem);
+      font-size: clamp(2rem, 2.8vw, 3.4rem);
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main);
@@ -94,7 +94,7 @@
     }
 
     .clock {
-      font-size: clamp(2rem, 3vw, 3.4rem);
+      font-size: clamp(2.2rem, 3.2vw, 3.6rem);
       font-weight: 300;
       color: var(--yellow);
       letter-spacing: -0.03em;
@@ -104,7 +104,7 @@
     }
 
     .date-display {
-      font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+      font-size: clamp(0.95rem, 1.25vw, 1.35rem);
       color: var(--text-muted);
       font-weight: 400;
       letter-spacing: -0.01em;
@@ -115,27 +115,44 @@
     main {
       flex: 1;
       display: grid;
-      gap: 1.6vh 1.6vw;
-      margin-top: 1.8vh;
+      gap: 2vh 2vw;
+      margin-top: 2vh;
       overflow: hidden;
       min-height: 0;
     }
 
-    main.count-1 { grid-template-columns: 1fr 1fr; }
-    main.count-2 { grid-template-columns: 1fr 1fr; }
-    main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
-    main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    /* 1 session: full width card */
+    main.count-1 {
+      grid-template-columns: 1fr;
+    }
+
+    /* 2 sessions: side by side */
+    main.count-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* 3 or 4 sessions: 2x2 grid */
+    main.count-3, main.count-4 {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    /* 5 or 6 sessions: 3x2 grid */
+    main.count-5, main.count-6 {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
 
     .session-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-left: 10px solid var(--yellow);
-      border-radius: 18px;
-      padding: 2.2vh 2vw;
+      border-left: 12px solid var(--yellow);
+      border-radius: 20px;
+      padding: 3vh 2.5vw;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 1.6vh;
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -143,40 +160,32 @@
       overflow: hidden;
     }
 
-    .session-card.single-session {
-      grid-column: 1 / 2;
-    }
-
     .session-card.is-now {
       border-color: var(--card-border-active);
-      box-shadow: 0 0 35px rgba(255, 214, 10, 0.15);
+      box-shadow: 0 0 40px rgba(255, 214, 10, 0.18);
     }
 
     .session-card.is-private {
       border-left-color: rgba(255, 255, 255, 0.35);
     }
 
-    .card-top {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8vh;
-    }
-
     .line-title {
-      font-size: clamp(1.6rem, 2.2vw, 2.6rem);
+      font-size: clamp(2.4rem, 3.6vw, 4.4rem);
       font-weight: 700;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
       color: var(--text-main);
-      line-height: 1.15;
+      line-height: 1.1;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .line-courts {
-      font-size: clamp(1.2rem, 1.6vw, 1.9rem);
+      font-size: clamp(1.8rem, 2.5vw, 3.2rem);
       font-weight: 600;
       color: var(--yellow);
       letter-spacing: -0.01em;
+      line-height: 1.15;
     }
 
     .session-card.is-private .line-courts {
@@ -184,33 +193,32 @@
     }
 
     .holder-tag {
-      font-size: clamp(1rem, 1.25vw, 1.45rem);
+      font-size: clamp(1.3rem, 1.8vw, 2.2rem);
       color: var(--text-muted);
       font-weight: 400;
-      margin-top: 0.2vh;
+      margin-left: 0.4em;
     }
 
-    .card-bottom {
+    .card-meta-inline {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 1.2vh;
+      gap: 1.2vw;
+      margin-top: 0.5vh;
       font-variant-numeric: tabular-nums;
     }
 
     .window-label {
-      font-size: clamp(1.05rem, 1.35vw, 1.6rem);
+      font-size: clamp(1.2rem, 1.6vw, 2rem);
       font-weight: 500;
       color: var(--text-sub);
     }
 
     .status-badge {
-      font-size: clamp(0.75rem, 0.85vw, 0.95rem);
-      padding: 0.22rem 0.65rem;
+      font-size: clamp(0.75rem, 0.9vw, 1rem);
+      padding: 0.25rem 0.75rem;
       border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -247,7 +255,7 @@
     }
 
     .no-sessions h2 {
-      font-size: clamp(1.8rem, 2.8vw, 3rem);
+      font-size: clamp(2rem, 3vw, 3.4rem);
       font-weight: 600;
       letter-spacing: -0.03em;
       color: var(--text-sub);
@@ -360,10 +368,8 @@
       let firstSegment = String(rawTitle).split('|')[0].trim();
       firstSegment = firstSegment
         .replace(/\bSessions?\b/gi, '')
-        .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
         .replace(/\bOpen\s*Play\b/gi, '')
-        .replace(/\bPrime\s*Time\b/gi, '')
-        .replace(/\bStrategic\b/gi, '');
+        .replace(/\bPrime\s*Time\b/gi, '');
 
       firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
@@ -387,7 +393,6 @@
         const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
         const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
-        // Footer pill
         document.getElementById('target-mode-pill').textContent = lookaheadMinutes !== 0 
           ? `Target: ${targetTimeString}` 
           : 'Target: Now';
@@ -401,7 +406,7 @@
 
         const sessions = [];
 
-        // 1. Group Events into session cards
+        // 1. Group Events
         const eventMap = {};
         (data.events || []).forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
@@ -429,17 +434,18 @@
 
         Object.values(eventMap).forEach(ev => {
           const arr = Array.from(ev.courts);
+          const courtsWord = arr.length === 1 ? 'Court' : 'Courts';
           sessions.push({
             type: 'event',
             title: ev.title,
-            courtsLabel: arr.length > 0 ? `Courts ${arr.join(', ')}` : 'Courts TBD',
+            courtsLabel: arr.length > 0 ? `${courtsWord} ${arr.join(', ')}` : 'Courts TBD',
             holderLabel: '',
             startTime: ev.startTime,
             endTime: ev.endTime
           });
         });
 
-        // 2. Private reservations as session cards
+        // 2. Reservations
         (data.reservations || []).forEach(r => {
           if (!isRunningAtTarget(r.startTime, r.endTime)) return;
 
@@ -468,7 +474,6 @@
           bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
         }
 
-        // Subtitle shows target time preview
         const subtitleText = lookaheadMinutes !== 0 
           ? `Schedule (${targetTimeString} Preview)` 
           : 'Schedule';
@@ -489,7 +494,7 @@
           return;
         }
 
-        // Sort sections lowest to highest by first 3 characters of title
+        // Sort sections lowest to highest by first 3 chars
         sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
@@ -507,8 +512,6 @@
         });
 
         const totalSessions = Math.min(sessions.length, 6);
-        const isSingle = sessions.length === 1;
-
         container.className = `count-${totalSessions}`;
 
         sessions.forEach(item => {
@@ -517,7 +520,7 @@
           const isNow = now >= s && now <= e;
 
           const card = document.createElement('div');
-          card.className = `session-card ${isNow ? 'is-now' : ''} ${item.type === 'reservation' ? 'is-private' : ''} ${isSingle ? 'single-session' : ''}`;
+          card.className = `session-card ${isNow ? 'is-now' : ''} ${item.type === 'reservation' ? 'is-private' : ''}`;
 
           let badgeHtml = '';
           if (isNow) {
@@ -529,12 +532,12 @@
           }
 
           card.innerHTML = `
-            <div class="card-top">
-              <div class="line-title">${item.title}</div>
-              <div class="line-courts">${item.courtsLabel}</div>
-              ${item.holderLabel ? `<div class="holder-tag">${item.holderLabel}</div>` : ''}
+            <div class="line-title">${item.title}</div>
+            <div class="line-courts">
+              ${item.courtsLabel}
+              ${item.holderLabel ? `<span class="holder-tag">${item.holderLabel}</span>` : ''}
             </div>
-            <div class="card-bottom">
+            <div class="card-meta-inline">
               <span class="window-label">${formatTimeWindow(item.startTime, item.endTime)}</span>
               ${badgeHtml}
             </div>
