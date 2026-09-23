@@ -61,7 +61,7 @@
     }
 
     .header-left h1 {
-      font-size: clamp(2rem, 2.8vw, 3.4rem);
+      font-size: clamp(2rem, 3vw, 3.6rem);
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main);
@@ -89,27 +89,17 @@
     .header-right {
       display: flex;
       align-items: baseline;
-      gap: 1.2vw;
       flex-shrink: 0;
       text-align: right;
     }
 
     .clock {
-      font-size: clamp(2.2rem, 3.2vw, 3.6rem);
+      font-size: clamp(2.4rem, 3.5vw, 4rem);
       font-weight: 300;
       color: var(--yellow);
       letter-spacing: -0.03em;
       line-height: 1;
       font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    .date-display {
-      font-size: clamp(0.95rem, 1.25vw, 1.35rem);
-      color: var(--text-muted);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1;
       white-space: nowrap;
     }
 
@@ -287,7 +277,6 @@
     </div>
     <div class="header-right">
       <div class="clock" id="live-clock">--:-- --</div>
-      <div class="date-display" id="live-date">Loading...</div>
     </div>
   </header>
 
@@ -322,11 +311,6 @@
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
-      });
-      document.getElementById('live-date').textContent = now.toLocaleDateString([], {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric'
       });
     }
     setInterval(updateClock, 1000);
