@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-23T04:56:35Z",
+  "lastUpdated": "2026-09-23T05:16:15Z",
   "date": "2026-09-23",
   "reservations": [
     {
@@ -21,28 +21,10 @@
       "endTime": "2026-09-23T22:00:00"
     },
     {
-      "court": "Court 6",
-      "holderLabel": "",
-      "startTime": "2026-09-22T19:00:00",
-      "endTime": "2026-09-22T21:00:00"
-    },
-    {
       "court": "Court 3",
       "holderLabel": "",
       "startTime": "2026-09-23T07:00:00",
       "endTime": "2026-09-23T08:00:00"
-    },
-    {
-      "court": "Court 9",
-      "holderLabel": "",
-      "startTime": "2026-09-22T20:00:00",
-      "endTime": "2026-09-22T21:00:00"
-    },
-    {
-      "court": "Court 11",
-      "holderLabel": "",
-      "startTime": "2026-09-22T20:00:00",
-      "endTime": "2026-09-22T21:00:00"
     }
   ],
   "events": [
@@ -2126,6 +2108,20 @@
       "checkedIn": false
     },
     {
+      "eventId": 2261136,
+      "title": "3.5-4.0 Prime Time Open Play | Thursday | 6pm-8pm",
+      "startTime": "2026-09-24T18:00:00",
+      "endTime": "2026-09-24T20:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Earl B",
+      "checkedIn": false
+    },
+    {
       "eventId": 2266125,
       "title": "3.25-3.75 Prime Time Open Play | Thursday | 8pm-10pm",
       "startTime": "2026-09-24T20:00:00",
@@ -2136,20 +2132,6 @@
         "Court 7 (Livestreaming)",
         "Court 6",
         "Court 8"
-      ],
-      "playerName": "Earl B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2261136,
-      "title": "3.5-4.0 Prime Time Open Play | Thursday | 6pm-8pm",
-      "startTime": "2026-09-24T18:00:00",
-      "endTime": "2026-09-24T20:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 11"
       ],
       "playerName": "Earl B",
       "checkedIn": false
@@ -2260,17 +2242,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Gated Open Play | Wednesday",
-      "startTime": "2026-09-23T19:30:00",
-      "endTime": "2026-09-23T21:30:00",
-      "courts": [
-        "Court 2"
-      ],
-      "playerName": "Jimmy J",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281270,
       "title": "3.75-4.25 Gated Open Play | Wednesday",
       "startTime": "2026-09-23T17:30:00",
@@ -2279,6 +2250,17 @@
         "Court 2",
         "Court 4 (Livestreaming)",
         "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Jimmy J",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Gated Open Play | Wednesday",
+      "startTime": "2026-09-23T19:30:00",
+      "endTime": "2026-09-23T21:30:00",
+      "courts": [
+        "Court 2"
       ],
       "playerName": "Jimmy J",
       "checkedIn": false
@@ -2377,21 +2359,6 @@
         "Court 7 (Livestreaming)",
         "Court 3",
         "Court 5"
-      ],
-      "playerName": "Lee G",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2266125,
-      "title": "3.25-3.75 Prime Time Open Play | Thursday | 8pm-10pm",
-      "startTime": "2026-09-24T20:00:00",
-      "endTime": "2026-09-24T22:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5",
-        "Court 7 (Livestreaming)",
-        "Court 6",
-        "Court 8"
       ],
       "playerName": "Lee G",
       "checkedIn": false
@@ -2606,6 +2573,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281270,
+      "title": "3.75-4.25 Gated Open Play | Wednesday",
+      "startTime": "2026-09-23T17:30:00",
+      "endTime": "2026-09-23T19:30:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "YuYi H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2261136,
       "title": "3.5-4.0 Prime Time Open Play | Thursday | 6pm-8pm",
       "startTime": "2026-09-24T18:00:00",
@@ -2615,19 +2595,6 @@
         "Court 10 (Livestreaming)",
         "Court 4 (Livestreaming)",
         "Court 11"
-      ],
-      "playerName": "YuYi H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281270,
-      "title": "3.75-4.25 Gated Open Play | Wednesday",
-      "startTime": "2026-09-23T17:30:00",
-      "endTime": "2026-09-23T19:30:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)"
       ],
       "playerName": "YuYi H",
       "checkedIn": false
@@ -3312,6 +3279,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2261121,
+      "title": "3.25+ Prime Time Open Play | Thursday | 6pm-8pm",
+      "startTime": "2026-09-24T18:00:00",
+      "endTime": "2026-09-24T20:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Jack L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2281284,
       "title": "3.25+ Open Play | Wednesday",
       "startTime": "2026-09-23T17:30:00",
@@ -3567,6 +3547,21 @@
         "Court 11"
       ],
       "playerName": "Wyatt W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2266125,
+      "title": "3.25-3.75 Prime Time Open Play | Thursday | 8pm-10pm",
+      "startTime": "2026-09-24T20:00:00",
+      "endTime": "2026-09-24T22:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5",
+        "Court 7 (Livestreaming)",
+        "Court 6",
+        "Court 8"
+      ],
+      "playerName": "Lee G",
       "checkedIn": false
     },
     {
