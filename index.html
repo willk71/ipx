@@ -13,7 +13,6 @@
       --card-border-active: rgba(255, 214, 10, 0.55);
 
       --yellow: #ffd60a;
-      --live-green: #30d158;
       --text-main: #ffffff;
       --text-sub: #ebebf5;
       --text-muted: #8e8e93;
@@ -116,28 +115,24 @@
       flex: 1;
       display: grid;
       gap: 2vh 2vw;
-      margin-top: 2vh;
+      margin-top: 2.2vh;
       overflow: hidden;
       min-height: 0;
     }
 
-    /* 1 session: full width card */
     main.count-1 {
       grid-template-columns: 1fr;
     }
 
-    /* 2 sessions: side by side */
     main.count-2 {
       grid-template-columns: 1fr 1fr;
     }
 
-    /* 3 or 4 sessions: 2x2 grid */
     main.count-3, main.count-4 {
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
     }
 
-    /* 5 or 6 sessions: 3x2 grid */
     main.count-5, main.count-6 {
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 1fr;
@@ -146,13 +141,13 @@
     .session-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-left: 12px solid var(--yellow);
+      border-left: 14px solid var(--yellow);
       border-radius: 20px;
-      padding: 3vh 2.5vw;
+      padding: 3.5vh 3vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.6vh;
+      gap: 1.2vh;
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -160,17 +155,12 @@
       overflow: hidden;
     }
 
-    .session-card.is-now {
-      border-color: var(--card-border-active);
-      box-shadow: 0 0 40px rgba(255, 214, 10, 0.18);
-    }
-
     .session-card.is-private {
       border-left-color: rgba(255, 255, 255, 0.35);
     }
 
     .line-title {
-      font-size: clamp(2.4rem, 3.6vw, 4.4rem);
+      font-size: clamp(2.6rem, 3.8vw, 4.6rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-main);
@@ -181,7 +171,7 @@
     }
 
     .line-courts {
-      font-size: clamp(1.8rem, 2.5vw, 3.2rem);
+      font-size: clamp(2rem, 2.8vw, 3.4rem);
       font-weight: 600;
       color: var(--yellow);
       letter-spacing: -0.01em;
@@ -193,52 +183,10 @@
     }
 
     .holder-tag {
-      font-size: clamp(1.3rem, 1.8vw, 2.2rem);
+      font-size: 0.9em;
       color: var(--text-muted);
       font-weight: 400;
-      margin-left: 0.4em;
-    }
-
-    .card-meta-inline {
-      display: flex;
-      align-items: center;
-      gap: 1.2vw;
-      margin-top: 0.5vh;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .window-label {
-      font-size: clamp(1.2rem, 1.6vw, 2rem);
-      font-weight: 500;
-      color: var(--text-sub);
-    }
-
-    .status-badge {
-      font-size: clamp(0.75rem, 0.9vw, 1rem);
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .status-badge.live {
-      background: rgba(48, 209, 88, 0.2);
-      border: 1px solid rgba(48, 209, 88, 0.5);
-      color: #72f08e;
-    }
-
-    .status-badge.upcoming {
-      background: rgba(255, 214, 10, 0.15);
-      border: 1px solid rgba(255, 214, 10, 0.4);
-      color: var(--yellow);
-    }
-
-    .status-badge.private {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: var(--text-muted);
+      margin-left: 0.35em;
     }
 
     .no-sessions {
@@ -434,11 +382,10 @@
 
         Object.values(eventMap).forEach(ev => {
           const arr = Array.from(ev.courts);
-          const courtsWord = arr.length === 1 ? 'Court' : 'Courts';
           sessions.push({
             type: 'event',
             title: ev.title,
-            courtsLabel: arr.length > 0 ? `${courtsWord} ${arr.join(', ')}` : 'Courts TBD',
+            courtsLabel: arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD',
             holderLabel: '',
             startTime: ev.startTime,
             endTime: ev.endTime
@@ -457,7 +404,7 @@
             type: 'reservation',
             title: 'Private Reservation',
             holderLabel: r.holderLabel || '',
-            courtsLabel: courtClean ? `Court ${courtClean}` : 'Court TBD',
+            courtsLabel: courtClean ? `on ${courtClean}` : 'on TBD',
             startTime: r.startTime || r.StartTime,
             endTime: r.endTime || r.EndTime
           });
@@ -494,7 +441,7 @@
           return;
         }
 
-        // Sort sections lowest to highest by first 3 chars
+        // Sort lowest to highest by first 3 chars
         sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
@@ -515,31 +462,14 @@
         container.className = `count-${totalSessions}`;
 
         sessions.forEach(item => {
-          const s = new Date(item.startTime);
-          const e = new Date(item.endTime);
-          const isNow = now >= s && now <= e;
-
           const card = document.createElement('div');
-          card.className = `session-card ${isNow ? 'is-now' : ''} ${item.type === 'reservation' ? 'is-private' : ''}`;
-
-          let badgeHtml = '';
-          if (isNow) {
-            badgeHtml = `<span class="status-badge live">Live Now</span>`;
-          } else if (item.type === 'event') {
-            badgeHtml = `<span class="status-badge upcoming">Upcoming</span>`;
-          } else {
-            badgeHtml = `<span class="status-badge private">Private</span>`;
-          }
+          card.className = `session-card ${item.type === 'reservation' ? 'is-private' : ''}`;
 
           card.innerHTML = `
             <div class="line-title">${item.title}</div>
             <div class="line-courts">
               ${item.courtsLabel}
               ${item.holderLabel ? `<span class="holder-tag">${item.holderLabel}</span>` : ''}
-            </div>
-            <div class="card-meta-inline">
-              <span class="window-label">${formatTimeWindow(item.startTime, item.endTime)}</span>
-              ${badgeHtml}
             </div>
           `;
           container.appendChild(card);
