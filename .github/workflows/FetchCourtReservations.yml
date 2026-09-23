@@ -2,86 +2,92 @@ name: Sync CourtReserve Schedule
 
 on:
   schedule:
-    # Run every 5 minutes
-    - cron: '*/5 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  sync:
+  sync-schedule:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch and process CourtReserve data
+      - name: Fetch Reservations and Events
         env:
-          CR_USERNAME: ${{ secrets.CR_USERNAME }}
-          CR_PASSWORD: ${{ secrets.CR_PASSWORD }}
+          CR_USER: ${{ secrets.CR_USERNAME }}
+          CR_PASS: ${{ secrets.CR_PASSWORD }}
         run: |
           mkdir -p data
 
-          START_DATE=$(date -u -d "4 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
-          END_DATE=$(date -u -d "16 hours" +"%Y-%m-%dT%H:%M:%SZ")
-          AUTH_HEADER="Basic $(echo -n "${CR_USERNAME}:${CR_PASSWORD}" | base64 -w 0)"
+          TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
+          echo "Current NY Date: $TODAY_NY"
 
-          echo "Fetching Reservations from $START_DATE to $END_DATE..."
-          curl -s -X GET "https://api.courtreserve.com/api/v1/reservationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
-            -H "Authorization: ${AUTH_HEADER}" \
-            -H "Accept: application/json" > raw_reservations.json
+          # 36-hour window (-12h to +24h)
+          FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
+          TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
 
-          echo "Fetching Events from $START_DATE to $END_DATE..."
-          curl -s -X GET "https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?startDateTime=${START_DATE}&endDateTime=${END_DATE}" \
-            -H "Authorization: ${AUTH_HEADER}" \
-            -H "Accept: application/json" > raw_events.json
+          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
 
+          # 1. Fetch Reservations
+          RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
+          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
+
+          # 2. Fetch Events & Registrations
+          EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
+          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
+
+          # 3. Process with exact Swagger fields
           jq -n \
-            --arg now "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-            --slurpfile res raw_reservations.json \
-            --slurpfile ev raw_events.json \
+            --slurpfile res data/reservations.json \
+            --slurpfile ev data/events.json \
             '{
-              lastUpdated: $now,
+              lastUpdated: (now | todate),
+              date: "'"$TODAY_NY"'",
               reservations: [
-                ($res[0] // [])[] | {
-                  reservationId: (.ReservationId // .Id),
-                  court: (.CourtName // .Courts // .Court // "TBD"),
-                  startTime: (.StartTime // .ReservationStartTime),
-                  endTime: (.EndTime // .ReservationEndTime),
-                  holderLabel: ""
+                ($res[0].Data // $res[0] // [])[] | {
+                  court: (.Courts // .CourtName // ""),
+                  holderLabel: (
+                    if .FirstName then
+                      ("(" + (.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end) + ")")
+                    elif .MemberName then
+                      ("(" + (.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]) + ")")
+                    else "" end
+                  ),
+                  startTime: .StartTime,
+                  endTime: .EndTime
                 }
               ],
               events: [
-                ($ev[0] // [])[] | {
-                  eventId: (.EventId // .Id),
-                  title: (.EventName // .DivisionName // .Title // "Event"),
-                  startTime: (.StartTime // .EventStartTime),
-                  endTime: (.EndTime // .EventEndTime),
-                  courts: (.Courts // .CourtName // []),
+                ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) | {
+                  eventId: .EventId,
+                  title: (.DivisionName // .EventName // "Event"),
+                  startTime: .StartTime,
+                  endTime: .EndTime,
+                  courts: (if .Courts then [(.Courts[]?.CourtName // .Courts[]? // empty)] else [] end),
                   playerName: (
-                    if ((.MemberFirstName // .FirstName // "") != "" and (.MemberLastName // .LastName // "") != "") then
-                      ((.MemberFirstName // .FirstName) + " " + ((.MemberLastName // .LastName)[0:1]))
-                    elif ((.MemberName // "") != "") then
-                      ((.MemberName | split(" ")) | if length > 1 then .[0] + " " + .[-1][0:1] else .[0] end)
+                    if .FirstName then
+                      ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end))
+                    elif .MemberName then
+                      ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]))
+                    else "" end
+                  ),
+                  checkedIn: (
+                    if .IsCheckedIn == true or .AttendanceStatus == 1 or .AttendanceStatus == "CheckedIn" or .CheckedIn == true then
+                      true
                     else
-                      null
+                      false
                     end
                   )
                 }
               ]
             }' > data/schedule.json
 
-          rm -f raw_reservations.json raw_events.json
+          rm -f data/reservations.json data/events.json
 
-      - name: Commit and push changes
+      - name: Commit and Push Updated Data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/schedule.json
-          if git diff --staged --quiet; then
-            echo "No schedule changes detected."
-          else
-            git commit -m "Automated schedule sync: $(date -u +'%Y-%m-%d %H:%M:%SZ')"
-            git push
-          fi
+          git add data/
+          git diff --staged --quiet || git commit -m "Auto-update CourtReserve schedule (NY Time) [skip ci]"
+          git push origin main
