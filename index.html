@@ -431,7 +431,7 @@
           });
         });
 
-        // 2. Separate Private Reservations
+        // 2. Separate Private Reservations with full fallback parsing
         (data.reservations || []).forEach(r => {
           if (!isRunningAtTarget(r.startTime, r.endTime)) return;
 
@@ -439,15 +439,26 @@
           if (Array.isArray(rawCourt)) rawCourt = rawCourt.map(c => c && c.CourtName ? c.CourtName : c).join(', ');
           const courtClean = cleanCourtName(rawCourt);
 
-          let holder = r.holderLabel || '';
-          if (!holder) {
-            const f = r.MemberFirstName || r.FirstName || '';
-            const l = r.MemberLastName || r.LastName || '';
+          let holder = '';
+          if (r.holderLabel && r.holderLabel.trim() !== '') {
+            holder = r.holderLabel.trim();
+            if (!holder.startsWith('(')) holder = `(${holder})`;
+          } else {
+            const f = r.MemberFirstName || r.FirstName || r.UserFirstName || '';
+            const l = r.MemberLastName || r.LastName || r.UserLastName || '';
             if (f) {
-              holder = `(${f} ${l ? l.charAt(0) : ''})`.trim();
-            } else if (r.MemberName) {
-              const parts = r.MemberName.trim().split(/\s+/);
-              holder = parts.length > 1 ? `(${parts[0]} ${parts[parts.length - 1].charAt(0)})` : `(${parts[0]})`;
+              holder = `(${toSentenceCase(f)} ${l ? l.charAt(0).toUpperCase() : ''})`.trim();
+            } else {
+              const rawName = r.MemberName || r.UserName || r.ReservedBy || '';
+              if (rawName) {
+                if (rawName.includes(',')) {
+                  const parts = rawName.split(',').map(s => s.trim());
+                  holder = `(${toSentenceCase(parts[1])} ${parts[0].charAt(0).toUpperCase()})`;
+                } else {
+                  const parts = rawName.trim().split(/\s+/);
+                  holder = parts.length > 1 ? `(${toSentenceCase(parts[0])} ${parts[parts.length - 1].charAt(0).toUpperCase()})` : `(${toSentenceCase(parts[0])})`;
+                }
+              }
             }
           }
 
