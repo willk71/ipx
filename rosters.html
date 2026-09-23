@@ -457,7 +457,6 @@
           bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
         }
 
-        // Subtitle shows "Rosters" cleanly on default, only displays Preview when explicitly queried
         const subtitleText = isPreview 
           ? `Rosters (${targetTimeString} Preview)` 
           : 'Rosters';
@@ -497,8 +496,89 @@
 
         const totalSessions = Math.min(sessions.length, 6);
         const isSingle = sessions.length === 1;
-
         container.className = `count-${totalSessions}`;
+
+        // Calculate total names across the entire report
+        const totalReportPlayers = sessions.reduce((sum, s) => sum + s.players.length, 0);
+
+        // Uniform styling applied consistently across all event cards in the same report
+        let uniformCols = 2;
+        let uniformFontSize = 'clamp(1rem, 1.25vw, 1.45rem)';
+        let uniformRowGap = '0.7vh';
+        let uniformColGap = '1.8vw';
+        let uniformTitleSize = 'clamp(1.5rem, 1.9vw, 2.3rem)';
+        let uniformCourtsSize = 'clamp(1.15rem, 1.45vw, 1.7rem)';
+
+        if (isSingle) {
+          if (totalReportPlayers > 44) {
+            uniformCols = 3;
+            uniformFontSize = 'clamp(0.95rem, 1.05vw, 1.2rem)';
+            uniformRowGap = '0.5vh';
+            uniformColGap = '1.4vw';
+          } else if (totalReportPlayers > 22) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.05rem, 1.15vw, 1.3rem)';
+            uniformRowGap = '0.65vh';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.2rem, 1.4vw, 1.6rem)';
+            uniformRowGap = '0.9vh';
+          }
+        } else if (totalSessions === 2) {
+          if (totalReportPlayers > 60) {
+            uniformCols = 3;
+            uniformFontSize = 'clamp(0.9rem, 1.0vw, 1.15rem)';
+            uniformRowGap = '0.45vh';
+            uniformColGap = '1.2vw';
+          } else if (totalReportPlayers > 30) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.0rem, 1.1vw, 1.25rem)';
+            uniformRowGap = '0.6vh';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.15rem, 1.3vw, 1.5rem)';
+            uniformRowGap = '0.8vh';
+          }
+        } else if (totalSessions === 3) {
+          uniformTitleSize = 'clamp(1.3rem, 1.5vw, 1.8rem)';
+          uniformCourtsSize = 'clamp(1.0rem, 1.25vw, 1.45rem)';
+          if (totalReportPlayers > 65) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.85rem, 0.95vw, 1.15rem)';
+            uniformRowGap = '0.4vh';
+            uniformColGap = '1.0vw';
+          } else if (totalReportPlayers > 30) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.95rem, 1.08vw, 1.25rem)';
+            uniformRowGap = '0.55vh';
+            uniformColGap = '1.2vw';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.08rem, 1.22vw, 1.4rem)';
+            uniformRowGap = '0.7vh';
+            uniformColGap = '1.4vw';
+          }
+        } else {
+          // 4 to 6 sessions
+          uniformTitleSize = 'clamp(1.15rem, 1.35vw, 1.6rem)';
+          uniformCourtsSize = 'clamp(0.95rem, 1.1vw, 1.35rem)';
+          if (totalReportPlayers > 70) {
+            uniformCols = 3;
+            uniformFontSize = 'clamp(0.76rem, 0.85vw, 1.0rem)';
+            uniformRowGap = '0.3vh';
+            uniformColGap = '0.7vw';
+          } else if (totalReportPlayers > 40) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.82rem, 0.92vw, 1.1rem)';
+            uniformRowGap = '0.4vh';
+            uniformColGap = '1.0vw';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.95rem, 1.05vw, 1.25rem)';
+            uniformRowGap = '0.55vh';
+            uniformColGap = '1.2vw';
+          }
+        }
 
         sessions.forEach(item => {
           const s = new Date(item.startTime);
@@ -506,74 +586,10 @@
           const isNow = now >= s && now <= e;
           const count = item.players.length;
 
-          let cols = 2;
-          let fontSize = 'clamp(1rem, 1.25vw, 1.45rem)';
-          let rowGap = '0.7vh';
-          let colGap = '1.8vw';
-          let titleSize = 'clamp(1.5rem, 1.9vw, 2.3rem)';
-          let courtsSize = 'clamp(1.15rem, 1.45vw, 1.7rem)';
-
-          if (isSingle) {
-            if (count > 44) {
-              cols = 3;
-              fontSize = 'clamp(0.95rem, 1.05vw, 1.2rem)';
-              rowGap = '0.5vh';
-              colGap = '1.4vw';
-            } else if (count > 22) {
-              cols = 2;
-              fontSize = 'clamp(1.05rem, 1.15vw, 1.3rem)';
-              rowGap = '0.65vh';
-            }
-          } else if (totalSessions === 2) {
-            if (count > 48) {
-              cols = 3;
-              fontSize = 'clamp(0.92rem, 1.05vw, 1.2rem)';
-              rowGap = '0.45vh';
-              colGap = '1.2vw';
-            } else if (count > 26) {
-              cols = 2;
-              fontSize = 'clamp(1.05rem, 1.15vw, 1.3rem)';
-              rowGap = '0.6vh';
-            }
-          } else if (totalSessions === 3) {
-            titleSize = 'clamp(1.3rem, 1.5vw, 1.8rem)';
-            courtsSize = 'clamp(1.0rem, 1.25vw, 1.45rem)';
-            if (count > 30) {
-              cols = 2;
-              fontSize = 'clamp(0.85rem, 0.95vw, 1.15rem)';
-              rowGap = '0.4vh';
-              colGap = '1.0vw';
-            } else {
-              cols = 2;
-              fontSize = 'clamp(0.95rem, 1.08vw, 1.25rem)';
-              rowGap = '0.55vh';
-              colGap = '1.2vw';
-            }
-          } else {
-            titleSize = 'clamp(1.15rem, 1.35vw, 1.6rem)';
-            courtsSize = 'clamp(0.95rem, 1.1vw, 1.35rem)';
-            if (count > 24) {
-              cols = 3;
-              fontSize = 'clamp(0.76rem, 0.85vw, 1.0rem)';
-              rowGap = '0.3vh';
-              colGap = '0.7vw';
-            } else if (count > 12) {
-              cols = 2;
-              fontSize = 'clamp(0.82rem, 0.92vw, 1.1rem)';
-              rowGap = '0.4vh';
-              colGap = '1.0vw';
-            } else {
-              cols = 2;
-              fontSize = 'clamp(0.9rem, 1.0vw, 1.2rem)';
-              rowGap = '0.5vh';
-              colGap = '1.2vw';
-            }
-          }
-
           const card = document.createElement('div');
           card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''}`;
-          card.style.setProperty('--title-font-size', titleSize);
-          card.style.setProperty('--courts-font-size', courtsSize);
+          card.style.setProperty('--title-font-size', uniformTitleSize);
+          card.style.setProperty('--courts-font-size', uniformCourtsSize);
 
           const listHtml = count > 0 
             ? item.players.map(name => `<div class="player-item">${name}</div>`).join('')
@@ -590,10 +606,10 @@
               </div>
             </div>
             <div class="player-list" style="
-              --roster-cols: ${cols};
-              --roster-font-size: ${fontSize};
-              --roster-row-gap: ${rowGap};
-              --roster-col-gap: ${colGap};
+              --roster-cols: ${uniformCols};
+              --roster-font-size: ${uniformFontSize};
+              --roster-row-gap: ${uniformRowGap};
+              --roster-col-gap: ${uniformColGap};
             ">
               ${listHtml}
             </div>
