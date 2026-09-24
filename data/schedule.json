@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-24T06:45:32Z",
+  "lastUpdated": "2026-09-24T07:12:48Z",
   "date": "2026-09-24",
   "reservations": [
     {
@@ -13,12 +13,6 @@
       "holderLabel": "",
       "startTime": "2026-09-24T19:00:00",
       "endTime": "2026-09-24T20:00:00"
-    },
-    {
-      "court": "Court 10 (Livestreaming)",
-      "holderLabel": "",
-      "startTime": "2026-09-23T21:00:00",
-      "endTime": "2026-09-23T23:00:00"
     },
     {
       "court": "Court 3",
@@ -511,6 +505,20 @@
       "checkedIn": false
     },
     {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play | Thursday | 10pm-1am",
+      "startTime": "2026-09-24T22:00:00",
+      "endTime": "2026-09-24T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Timothy Y",
+      "checkedIn": false
+    },
+    {
       "eventId": 2118697,
       "title": "3.5-4.0 Open Play | Wednesday",
       "startTime": "2026-09-23T21:30:00",
@@ -536,17 +544,6 @@
         "Court 8"
       ],
       "playerName": "Phil K",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118705,
-      "title": "4.0+ Gated Open Play | Wednesday | 9:30pm-1am",
-      "startTime": "2026-09-23T21:30:00",
-      "endTime": "2026-09-23T23:59:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "David C",
       "checkedIn": false
     },
     {
@@ -981,6 +978,17 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Edin C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118705,
+      "title": "4.0+ Gated Open Play | Wednesday | 9:30pm-1am",
+      "startTime": "2026-09-23T21:30:00",
+      "endTime": "2026-09-23T23:59:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "David C",
       "checkedIn": false
     },
     {
@@ -1627,6 +1635,19 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Maureen V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220842,
+      "title": "Rise and Grind Drill/Play | Thursday | 7am-9am",
+      "startTime": "2026-09-24T07:00:00",
+      "endTime": "2026-09-24T09:00:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "David O",
       "checkedIn": false
     },
     {
@@ -2472,18 +2493,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2285393,
-      "title": "Guided Open Play with Coach Martin (Intermediate - Advanced)",
-      "startTime": "2026-09-24T16:00:00",
-      "endTime": "2026-09-24T18:00:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "YuYi H",
-      "checkedIn": false
-    },
-    {
       "eventId": 2261136,
       "title": "3.5-4.0 Open Play | Thursday | 6pm-8pm",
       "startTime": "2026-09-24T18:00:00",
@@ -2635,18 +2644,6 @@
         "Court 11"
       ],
       "playerName": "Karl H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2285393,
-      "title": "Guided Open Play with Coach Martin (Intermediate - Advanced)",
-      "startTime": "2026-09-24T16:00:00",
-      "endTime": "2026-09-24T18:00:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Stephen J",
       "checkedIn": false
     },
     {
@@ -2802,19 +2799,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2261121,
-      "title": "3.25+ Open Play | Thursday | 6pm-8pm",
-      "startTime": "2026-09-24T18:00:00",
-      "endTime": "2026-09-24T20:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Wilson L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2268293,
       "title": "Intermediate - Advanced Open Play | Friday | Afternoon",
       "startTime": "2026-09-25T14:00:00",
@@ -2823,6 +2807,19 @@
         "Court 10 (Livestreaming)",
         "Court 7 (Livestreaming)",
         "Court 8"
+      ],
+      "playerName": "Wilson L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2261121,
+      "title": "3.25+ Open Play | Thursday | 6pm-8pm",
+      "startTime": "2026-09-24T18:00:00",
+      "endTime": "2026-09-24T20:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 5"
       ],
       "playerName": "Wilson L",
       "checkedIn": false
@@ -3346,6 +3343,30 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Derek L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2285393,
+      "title": "Guided Open Play with Coach Martin (Intermediate - Advanced)",
+      "startTime": "2026-09-24T16:00:00",
+      "endTime": "2026-09-24T18:00:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "YuYi H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2285393,
+      "title": "Guided Open Play with Coach Martin (Intermediate - Advanced)",
+      "startTime": "2026-09-24T16:00:00",
+      "endTime": "2026-09-24T18:00:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Stephen J",
       "checkedIn": false
     },
     {
