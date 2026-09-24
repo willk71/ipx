@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-24T21:29:28Z",
+  "lastUpdated": "2026-09-24T21:41:39Z",
   "date": "2026-09-24",
   "reservations": [
     {
@@ -31,6 +31,12 @@
       "holderLabel": "",
       "startTime": "2026-09-25T18:00:00",
       "endTime": "2026-09-25T19:00:00"
+    },
+    {
+      "court": "Court 6",
+      "holderLabel": "",
+      "startTime": "2026-09-25T15:00:00",
+      "endTime": "2026-09-25T16:00:00"
     }
   ],
   "events": [
@@ -309,7 +315,7 @@
         "Court 5"
       ],
       "playerName": "Stephen J",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2261121,
@@ -977,7 +983,7 @@
         "Court 10 (Livestreaming)",
         "Court 8"
       ],
-      "playerName": "Alex O",
+      "playerName": "Dickson F",
       "checkedIn": false
     },
     {
@@ -1131,21 +1137,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2266125,
-      "title": "3.25-3.75 Open Play | Thursday",
-      "startTime": "2026-09-24T20:00:00",
-      "endTime": "2026-09-24T22:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5",
-        "Court 7 (Livestreaming)",
-        "Court 6",
-        "Court 8"
-      ],
-      "playerName": "Jordi F",
-      "checkedIn": false
-    },
-    {
       "eventId": 2118698,
       "title": "3.5-4.0 Open Play | Thursday | 10pm-1am",
       "startTime": "2026-09-24T22:00:00",
@@ -1155,6 +1146,21 @@
         "Court 9",
         "Court 7 (Livestreaming)",
         "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Jordi F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2266125,
+      "title": "3.25-3.75 Open Play | Thursday",
+      "startTime": "2026-09-24T20:00:00",
+      "endTime": "2026-09-24T22:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5",
+        "Court 7 (Livestreaming)",
+        "Court 6",
         "Court 8"
       ],
       "playerName": "Jordi F",
@@ -1198,6 +1204,21 @@
         "Court 9"
       ],
       "playerName": "Andrew H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play | Thursday | 10pm-1am",
+      "startTime": "2026-09-24T22:00:00",
+      "endTime": "2026-09-24T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Waiho Z",
       "checkedIn": false
     },
     {
@@ -1478,7 +1499,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Morgan J",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118698,
@@ -1505,7 +1526,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Stephen J",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118698,
@@ -1564,21 +1585,6 @@
         "Court 9"
       ],
       "playerName": "Wright L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118698,
-      "title": "3.5-4.0 Open Play | Thursday | 10pm-1am",
-      "startTime": "2026-09-24T22:00:00",
-      "endTime": "2026-09-24T23:59:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 9",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Chris O",
       "checkedIn": false
     },
     {
@@ -1976,6 +1982,21 @@
         "Court 8"
       ],
       "playerName": "Aaron G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play | Thursday | 10pm-1am",
+      "startTime": "2026-09-24T22:00:00",
+      "endTime": "2026-09-24T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Alex O",
       "checkedIn": false
     },
     {
@@ -2838,6 +2859,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2220873,
+      "title": "Morning Espress-o Round Robin",
+      "startTime": "2026-09-25T07:00:00",
+      "endTime": "2026-09-25T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Albee^^ l",
+      "checkedIn": false
+    },
+    {
       "eventId": 2118694,
       "title": "3.25+ Open Play | Friday | 9:30pm-1am",
       "startTime": "2026-09-25T21:30:00",
@@ -2927,6 +2961,21 @@
       "checkedIn": true
     },
     {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play | Thursday | 10pm-1am",
+      "startTime": "2026-09-24T22:00:00",
+      "endTime": "2026-09-24T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Chris O",
+      "checkedIn": false
+    },
+    {
       "eventId": 2118699,
       "title": "3.5-4.0 Open Play | Friday | 9:30pm-1am",
       "startTime": "2026-09-25T21:30:00",
@@ -2963,6 +3012,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Yvannca U",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2287717,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-09-25T13:30:00",
+      "endTime": "2026-09-25T15:30:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 9"
+      ],
+      "playerName": "Meg S",
       "checkedIn": false
     },
     {
