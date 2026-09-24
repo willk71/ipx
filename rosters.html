@@ -17,6 +17,9 @@
       --text-sub: #ebebf5;
       --text-muted: #8e8e93;
 
+      --accent-green: #34c759;
+      --accent-green-glow: rgba(52, 199, 89, 0.65);
+
       --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     }
 
@@ -195,7 +198,6 @@
       white-space: nowrap;
     }
 
-    /* Column-first distribution: fills col 1 top-to-bottom, then col 2 */
     .player-list {
       column-count: var(--roster-cols, 2);
       column-gap: var(--roster-col-gap, 1.8vw);
@@ -212,10 +214,40 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: var(--text-main);
       margin-bottom: var(--roster-row-gap, 0.7vh);
       break-inside: avoid;
       page-break-inside: avoid;
+      display: flex;
+      align-items: center;
+      gap: 0.55em;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 0.55em;
+      height: 0.55em;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Checked-in: Bright text + Apple glowing green dot */
+    .player-item.is-checked-in {
+      color: var(--text-main);
+      opacity: 1;
+    }
+    .player-item.is-checked-in .status-dot {
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green-glow);
+    }
+
+    /* Pending / Not checked-in: Faded text + subtle outline dot */
+    .player-item.is-pending {
+      color: var(--text-muted);
+      opacity: 0.65;
+    }
+    .player-item.is-pending .status-dot {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
     .player-empty {
@@ -299,7 +331,6 @@
     const defaultAhead = isNamed60 ? '60' : '15';
     const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
     
-    // Only treat as preview if an explicit non-default query param is set
     const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
 
     function updateClock() {
@@ -377,7 +408,6 @@
         const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
         const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
-        // Default +15m shows "Target: Live", explicit override shows exact target time
         document.getElementById('target-mode-pill').textContent = isPreview 
           ? `Target: ${targetTimeString}` 
           : 'Target: Live';
@@ -389,7 +419,7 @@
           return s <= targetTime && e > targetTime;
         };
 
-        const events = data.events || [];
+        const events = Array.isArray(data) ? data : (data.events || []);
         const sessions = [];
 
         const eventMap = {};
@@ -410,7 +440,7 @@
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
               courts: new Set(courtNumbers),
-              players: new Set()
+              players: new Map()
             };
           } else {
             courtNumbers.forEach(c => eventMap[key].courts.add(c));
@@ -428,14 +458,20 @@
           }
 
           if (pName) {
-            eventMap[key].players.add(toSentenceCase(pName));
+            const formattedName = toSentenceCase(pName);
+            const isChecked = e.checkedIn === true || e.IsCheckedIn === true;
+            const currentStatus = eventMap[key].players.get(formattedName);
+            eventMap[key].players.set(formattedName, currentStatus || isChecked);
           }
         });
 
         Object.values(eventMap).forEach(ev => {
           const arr = Array.from(ev.courts);
           const courtsLabel = arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD';
-          const sortedPlayers = Array.from(ev.players).sort((a, b) => a.localeCompare(b));
+          
+          const sortedPlayers = Array.from(ev.players.entries())
+            .map(([name, checkedIn]) => ({ name, checkedIn }))
+            .sort((a, b) => a.name.localeCompare(b.name));
 
           sessions.push({
             title: ev.title,
@@ -477,7 +513,6 @@
           return;
         }
 
-        // Sort sections lowest to highest by first 3 characters of title
         sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
@@ -498,10 +533,8 @@
         const isSingle = sessions.length === 1;
         container.className = `count-${totalSessions}`;
 
-        // Calculate total names across the entire report
         const totalReportPlayers = sessions.reduce((sum, s) => sum + s.players.length, 0);
 
-        // Uniform styling applied consistently across all event cards in the same report
         let uniformCols = 2;
         let uniformFontSize = 'clamp(1rem, 1.25vw, 1.45rem)';
         let uniformRowGap = '0.7vh';
@@ -559,7 +592,6 @@
             uniformColGap = '1.4vw';
           }
         } else {
-          // 4 to 6 sessions
           uniformTitleSize = 'clamp(1.15rem, 1.35vw, 1.6rem)';
           uniformCourtsSize = 'clamp(0.95rem, 1.1vw, 1.35rem)';
           if (totalReportPlayers > 70) {
@@ -592,7 +624,12 @@
           card.style.setProperty('--courts-font-size', uniformCourtsSize);
 
           const listHtml = count > 0 
-            ? item.players.map(name => `<div class="player-item">${name}</div>`).join('')
+            ? item.players.map(p => `
+                <div class="player-item ${p.checkedIn ? 'is-checked-in' : 'is-pending'}">
+                  <span class="status-dot"></span>
+                  <span class="player-name">${p.name}</span>
+                </div>
+              `).join('')
             : `<div class="player-empty">No registered players</div>`;
 
           card.innerHTML = `
