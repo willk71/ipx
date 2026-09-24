@@ -2,8 +2,26 @@ name: Sync CourtReserve Schedule
 
 on:
   schedule:
+    # 15-minute baseline around the clock
     - cron: '*/15 * * * *'
+
+    # Burst 1: 5:20 PM - 6:30 PM EDT (21:20 - 22:30 UTC)
+    - cron: '20-55/5 21 * * *'
+    - cron: '0-30/5 22 * * *'
+
+    # Burst 2: 7:20 PM - 8:30 PM EDT (23:20 - 00:30 UTC)
+    - cron: '20-55/5 23 * * *'
+    - cron: '0-30/5 0 * * *'
+
+    # Burst 3: 9:20 PM - 10:30 PM EDT (01:20 - 02:30 UTC)
+    - cron: '20-55/5 1 * * *'
+    - cron: '0-30/5 2 * * *'
+
   workflow_dispatch:
+
+concurrency:
+  group: sync-courtreserve
+  cancel-in-progress: false
 
 jobs:
   sync-schedule:
@@ -12,7 +30,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch Reservations and Events
+      - name: Fetch Reservations, Events, and Check-Ins
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
@@ -36,10 +54,18 @@ jobs:
           EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
           curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
 
-          # 3. Process with exact Swagger fields
+          # 3. Fetch Check-In Attendance Report
+          CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
+          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
+
+      - name: Process Schedule JSON
+        run: |
+          TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
+
           jq -n \
             --slurpfile res data/reservations.json \
             --slurpfile ev data/events.json \
+            --slurpfile chk data/checkins.json \
             '{
               lastUpdated: (now | todate),
               date: "'"$TODAY_NY"'",
@@ -57,37 +83,49 @@ jobs:
                   endTime: .EndTime
                 }
               ],
-              events: [
-                ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) | {
-                  eventId: .EventId,
-                  title: (.DivisionName // .EventName // "Event"),
-                  startTime: .StartTime,
-                  endTime: .EndTime,
-                  courts: (if .Courts then [(.Courts[]?.CourtName // .Courts[]? // empty)] else [] end),
-                  playerName: (
-                    if .FirstName then
-                      ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end))
-                    elif .MemberName then
-                      ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]))
-                    else "" end
-                  ),
-                  checkedIn: (
-                    if .IsCheckedIn == true or .AttendanceStatus == 1 or .AttendanceStatus == "CheckedIn" or .CheckedIn == true then
-                      true
-                    else
-                      false
-                    end
-                  )
-                }
-              ]
+              events: (
+                # Build dictionary lookup: { "id:10616870": true, "name:clara ma": true }
+                (($chk[0].Data // $chk[0] // []) | reduce .[] as $item ({};
+                  if ($item.CheckInStatusName == "Checked-in" or ($item.CheckinDateTime != null and $item.CheckinDateTime != "")) then
+                    (if $item.OrganizationMemberId then .["id:" + ($item.OrganizationMemberId | tostring)] = true else . end) |
+                    (if $item.MemberFirstName and $item.MemberLastName then .["name:" + (($item.MemberFirstName + " " + $item.MemberLastName) | ascii_downcase)] = true else . end)
+                  else . end
+                )) as $checkedMap |
+
+                [
+                  ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) | {
+                    eventId: .EventId,
+                    title: (.DivisionName // .EventName // "Event"),
+                    startTime: .StartTime,
+                    endTime: .EndTime,
+                    courts: (if .Courts then [(.Courts[]?.CourtName // .Courts[]? // empty)] else [] end),
+                    playerName: (
+                      if .FirstName then
+                        ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end))
+                      elif .MemberName then
+                        ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]))
+                      else "" end
+                    ),
+                    checkedIn: (
+                      ($checkedMap["id:" + (.OrganizationMemberId | tostring)] // false) or
+                      ($checkedMap["name:" + (((.FirstName // "") + " " + (.LastName // "")) | ascii_downcase)] // false)
+                    )
+                  }
+                ]
+              )
             }' > data/schedule.json
 
-          rm -f data/reservations.json data/events.json
+          rm -f data/reservations.json data/events.json data/checkins.json
 
       - name: Commit and Push Updated Data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
-          git diff --staged --quiet || git commit -m "Auto-update CourtReserve schedule (NY Time) [skip ci]"
-          git push origin main
+          if git diff --staged --quiet; then
+            echo "No schedule changes detected."
+          else
+            git commit -m "Auto-update CourtReserve schedule (NY Time) [skip ci]"
+            git pull --rebase
+            git push origin main
+          fi
