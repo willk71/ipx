@@ -1,0 +1,152 @@
+main {
+  flex: 1;
+  display: grid;
+  gap: 1.6vh 1.6vw;
+  margin-top: 1.8vh;
+  overflow: hidden;
+  min-height: 0;
+}
+
+main.count-1 { grid-template-columns: 1fr 1fr; }
+main.count-2 { grid-template-columns: 1fr 1fr; }
+main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+
+.roster-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 10px solid var(--yellow);
+  border-radius: 18px;
+  padding: 1.8vh 1.8vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vh;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.roster-card.single-session {
+  grid-column: 1 / 2;
+}
+
+.roster-card.is-now {
+  border-color: var(--card-border-active);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1vh;
+  flex-shrink: 0;
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35vh;
+  min-width: 0;
+}
+
+.line-title {
+  font-size: var(--title-font-size, clamp(2.0rem, 2.5vw, 3.15rem));
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.line-courts {
+  font-size: var(--courts-font-size, clamp(1.55rem, 2.0vw, 2.4rem));
+  font-weight: 600;
+  color: var(--yellow);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.card-meta {
+  text-align: right;
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.count-badge {
+  font-size: clamp(0.85rem, 1.0vw, 1.15rem);
+  color: #ffffff;
+  background: rgba(255, 214, 10, 0.2);
+  border: 1px solid rgba(255, 214, 10, 0.4);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.player-list {
+  column-count: var(--roster-cols, 2);
+  column-gap: var(--roster-col-gap, 1.8vw);
+  column-fill: auto;
+  flex: 1;
+  overflow: hidden;
+}
+
+.player-item {
+  font-size: var(--roster-font-size, clamp(0.95rem, 1.1vw, 1.3rem));
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: var(--roster-row-gap, 0.7vh);
+  break-inside: avoid;
+  page-break-inside: avoid;
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Checked-in status: Apple glowing green */
+.player-item.is-checked-in {
+  color: var(--text-main);
+  opacity: 1;
+}
+.player-item.is-checked-in .status-dot {
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green-glow);
+}
+
+/* Pending status */
+.player-item.is-pending {
+  color: var(--text-muted);
+  opacity: 0.65;
+}
+.player-item.is-pending .status-dot {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.player-empty {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-top: 0.5vh;
+}
