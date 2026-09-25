@@ -328,12 +328,18 @@
 
         const sessions = [];
         Object.values(eventMap).forEach(ev => {
+          let resolvedQueue = ev.queueText;
+          // Fallback when Court 7 is assigned and no other queue text is configured
+          if (!resolvedQueue && ev.courts.has('7')) {
+            resolvedQueue = 'queue at Court 7 paddle rack';
+          }
+
           sessions.push({
             title: ev.title,
             courtsLabel: formatCourtsLabel(ev.courts, 'index'),
             startTime: ev.startTime,
             endTime: ev.endTime,
-            queueText: ev.queueText
+            queueText: resolvedQueue
           });
         });
 
