@@ -4,9 +4,299 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Welcome to IPX! &ndash; Live Rosters</title>
-  <link rel="stylesheet" href="css/common.css?v=1.0.4" />
-  <link rel="stylesheet" href="css/rosters.css?v=1.0.4" />
+  <title>Welcome to IPX! &ndash; Live Session Rosters</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.10);
+      --card-border-active: rgba(255, 214, 10, 0.55);
+
+      --yellow: #ffd60a;
+      --text-main: #ffffff;
+      --text-sub: #ebebf5;
+      --text-muted: #8e8e93;
+
+      --accent-green: #34c759;
+      --accent-green-glow: rgba(52, 199, 89, 0.65);
+
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-stack) !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 2.2vh 3vw 1.5vh 3vw;
+      position: relative;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1.2vh;
+      flex-shrink: 0;
+      gap: 2vw;
+    }
+
+    .header-left {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-left h1 {
+      font-size: clamp(2rem, 3vw, 3.6rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .header-separator {
+      margin: 0 0.55em;
+      color: var(--text-muted);
+      font-weight: 300;
+      opacity: 0.7;
+    }
+
+    .header-window {
+      color: var(--yellow);
+      font-weight: 600;
+      margin-left: 0.4em;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: baseline;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .clock {
+      font-size: clamp(2.4rem, 3.5vw, 4rem);
+      font-weight: 300;
+      color: var(--yellow);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      gap: 1.6vh 1.6vw;
+      margin-top: 1.8vh;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    main.count-1 { grid-template-columns: 1fr 1fr; }
+    main.count-2 { grid-template-columns: 1fr 1fr; }
+    main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+    main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+
+    .roster-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 10px solid var(--yellow);
+      border-radius: 18px;
+      padding: 1.8vh 1.8vw;
+      display: flex;
+      flex-direction: column;
+      gap: 1vh;
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .roster-card.single-session {
+      grid-column: 1 / 2;
+    }
+
+    .roster-card.is-now {
+      border-color: var(--card-border-active);
+      box-shadow: 0 0 35px rgba(255, 214, 10, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.8vh;
+      flex-shrink: 0;
+    }
+
+    .header-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2vh;
+      min-width: 0;
+    }
+
+    .line-title {
+      font-size: var(--title-font-size, clamp(1.35rem, 1.7vw, 2.1rem));
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--text-main);
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .line-courts {
+      font-size: var(--courts-font-size, clamp(1.05rem, 1.35vw, 1.6rem));
+      font-weight: 500;
+      color: var(--yellow);
+      letter-spacing: -0.01em;
+    }
+
+    .card-meta {
+      text-align: right;
+      flex-shrink: 0;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .count-badge {
+      font-size: clamp(0.75rem, 0.85vw, 0.95rem);
+      color: #ffffff;
+      background: rgba(255, 214, 10, 0.2);
+      border: 1px solid rgba(255, 214, 10, 0.4);
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .player-list {
+      column-count: var(--roster-cols, 2);
+      column-gap: var(--roster-col-gap, 1.8vw);
+      column-fill: auto;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .player-item {
+      font-size: var(--roster-font-size, clamp(0.95rem, 1.1vw, 1.3rem));
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: var(--roster-row-gap, 0.7vh);
+      break-inside: avoid;
+      page-break-inside: avoid;
+      display: flex;
+      align-items: center;
+      gap: 0.55em;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 0.55em;
+      height: 0.55em;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Checked-in: Bright text + Apple glowing green dot */
+    .player-item.is-checked-in {
+      color: var(--text-main);
+      opacity: 1;
+    }
+    .player-item.is-checked-in .status-dot {
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green-glow);
+    }
+
+    /* Pending / Not checked-in: Faded text + subtle outline dot */
+    .player-item.is-pending {
+      color: var(--text-muted);
+      opacity: 0.65;
+    }
+    .player-item.is-pending .status-dot {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .player-empty {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding-top: 0.5vh;
+    }
+
+    footer {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      padding-top: 0.8vh;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.35);
+      font-variant-numeric: tabular-nums;
+    }
+
+    footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .no-sessions {
+      grid-column: 1 / -1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      text-align: center;
+      padding: 6vh;
+    }
+
+    .no-sessions h2 {
+      font-size: clamp(1.8rem, 2.8vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--text-sub);
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -14,6 +304,9 @@
       <h1 id="header-title">
         <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Rosters</span>
       </h1>
+    </div>
+    <div class="header-right">
+      <div class="clock" id="live-clock">--:-- --</div>
     </div>
   </header>
 
@@ -24,34 +317,49 @@
   </main>
 
   <footer>
-    <div class="footer-left">
-      <div class="footer-meta-pills">
-        <span id="theme-pill">Theme: --</span>
-        <span>&bull;</span>
-        <span id="target-mode-pill">Target: --</span>
-        <span>&bull;</span>
-        <span id="data-refresh-time">Data Sync: --</span>
-        <span>&bull;</span>
-        <span id="page-refresh-time">Display Updated: --</span>
-      </div>
-    </div>
-    
-    <div class="footer-right">
-      <div class="footer-countdown-container" id="countdown-box">
-        <span class="countdown-label">Current Sessions Ends/Next Sessions Starts:</span>
-        <span class="countdown-clock" id="transition-countdown">--:--</span>
-      </div>
-      <div class="footer-clock" id="live-clock">--:-- --</div>
-    </div>
+    <span id="target-mode-pill">Target: --</span>
+    <span>&bull;</span>
+    <span id="data-refresh-time">Data Sync: --</span>
+    <span>&bull;</span>
+    <span id="page-refresh-time">Display Updated: --</span>
   </footer>
 
   <script>
-    // --- Embedded Shared Helpers ---
-    function toSentenceCase(str) {
-      if (!str) return '';
-      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }).trim();
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasExplicitAhead = urlParams.has('ahead');
+    const isNamed60 = window.location.pathname.includes('60');
+    const defaultAhead = isNamed60 ? '60' : '15';
+    const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
+    
+    const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function formatTime(isoString) {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function formatTimeWindow(startIso, endIso) {
+      if (!startIso || !endIso) return '';
+      const t1 = formatTime(startIso);
+      const t2 = formatTime(endIso);
+      const parts1 = t1.split(' ');
+      const parts2 = t2.split(' ');
+      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
+        return `${parts1[0]} \u2013 ${t2}`;
+      }
+      return `${t1} \u2013 ${t2}`;
     }
 
     function cleanCourtName(rawName) {
@@ -63,190 +371,24 @@
         .trim();
     }
 
-    function extractSortedCourts(courtsRaw) {
-      if (!courtsRaw) return [];
-      const list = Array.isArray(courtsRaw) ? courtsRaw : [courtsRaw];
-      return list
-        .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
-        .filter(Boolean)
-        .sort((a, b) => (parseInt(a, 10) || a) - (parseInt(b, 10) || b));
-    }
-
-    function formatCourtsLabel(courts, mode = 'rosters') {
-      const arr = Array.isArray(courts) ? courts : Array.from(courts || []);
-      if (mode === 'index') {
-        return arr.length > 0 ? `on ${arr.join(' ')}` : 'on TBD';
-      }
-      if (arr.length === 0) return 'Court TBD';
-      const prefix = arr.length === 1 ? 'Court' : 'Courts';
-      return `${prefix} ${arr.join(', ')}`;
+    function toSentenceCase(str) {
+      if (!str) return '';
+      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }).trim();
     }
 
     function cleanTitle(rawTitle) {
       if (!rawTitle) return '';
       let firstSegment = String(rawTitle).split('|')[0].trim();
-
-      firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
-      firstSegment = firstSegment.replace(/[()]/g, '');
       firstSegment = firstSegment
         .replace(/\bSessions?\b/gi, '')
         .replace(/\bOpen\s*Play\b/gi, '')
         .replace(/\bPrime\s*Time\b/gi, '');
 
-      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
-
-      let formatted = toSentenceCase(firstSegment);
-      return formatted.replace(/\bP4p\b/gi, 'P4P');
-    }
-
-    function formatTime(isoString, isEndTime = false) {
-      if (!isoString) return '';
-      const d = new Date(isoString);
-      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
-        return '1:00 AM';
-      }
-      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-    }
-
-    function formatTimeWindow(startIso, endIso) {
-      if (!startIso || !endIso) return '';
-      const t1 = formatTime(startIso, false);
-      const t2 = formatTime(endIso, true);
-      const parts1 = t1.split(' ');
-      const parts2 = t2.split(' ');
-      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
-        return `${parts1[0]} \u2013 ${t2}`;
-      }
-      return `${t1} \u2013 ${t2}`;
-    }
-
-    function cleanPlayerName(rawName) {
-      if (!rawName) return '';
-      return String(rawName).trim();
-    }
-
-    // --- State and URL Controls ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasExplicitAhead = urlParams.has('ahead');
-    const isNamed60 = window.location.pathname.includes('60');
-    const defaultAhead = isNamed60 ? '60' : '15';
-    const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
-    const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
-
-    const cycleParam = urlParams.get('cycle');
-    const isCycling = cycleParam !== null && cycleParam !== 'false';
-    const cycleSeconds = (isCycling && !isNaN(parseInt(cycleParam, 10))) 
-      ? Math.max(1, parseInt(cycleParam, 10)) 
-      : 10;
-    let cycleIndex = 0;
-
-    let nextTransitionTargetEpoch = null;
-
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
-      updateCountdown();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    function updateCountdown() {
-      const countdownBox = document.getElementById('countdown-box');
-      const countdownVal = document.getElementById('transition-countdown');
-      
-      if (!nextTransitionTargetEpoch) {
-        countdownBox.classList.remove('is-active');
-        return;
-      }
-
-      const diffMs = nextTransitionTargetEpoch - Date.now();
-
-      if (diffMs > 0 && diffMs <= 15 * 60 * 1000) {
-        const totalSecs = Math.floor(diffMs / 1000);
-        const m = Math.floor(totalSecs / 60);
-        const s = totalSecs % 60;
-        countdownVal.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        countdownBox.classList.add('is-active');
-      } else {
-        countdownBox.classList.remove('is-active');
-      }
-    }
-
-    const themeDisplayNames = {
-      'theme-tiffany': 'Tiffany',
-      'theme-usopen': 'US Open',
-      'theme-apple': 'Apple',
-      'theme-rolex': 'Rolex',
-      'theme-porsche': 'Porsche',
-      'theme-rolandgarros': 'Roland-Garros',
-      'theme-ausopen': 'Australian Open',
-      'theme-vice': 'Miami Vice',
-      'theme-gulfracing': 'Gulf Racing',
-      'theme-masters': 'Masters',
-      'theme-wimbledon': 'Wimbledon',
-      'theme-monaco': 'Monaco GP',
-      'theme-cyberpunk': 'Tokyo Cyberpunk',
-      'theme-ferrari': 'Ferrari Corsa',
-      'theme-glacier': 'Nordic Glacier',
-      'theme-desertclay': 'Desert Clay',
-      'theme-astonmartin': 'Aston Martin AMR',
-      'theme-solarflare': 'Solar Flare',
-      'theme-stealth': 'Stealth Titanium',
-      'theme-lakers': 'Showtime',
-      'theme-yankees': 'NY Yankees',
-      'theme-mets': 'NY Mets',
-      'theme-knicks': 'NY Knicks',
-      'theme-nets': 'Brooklyn Nets',
-      'theme-liberty': 'NY Liberty',
-      'theme-giants': 'NY Giants',
-      'theme-jets': 'NY Jets',
-      'theme-rangers': 'NY Rangers',
-      'theme-islanders': 'NY Islanders',
-      'theme-nycfc': 'NYCFC'
-    };
-
-    function applyDynamicTheme(targetTime) {
-      const allThemes = Object.keys(themeDisplayNames);
-      let themeToApply = 'theme-apple';
-
-      if (isCycling) {
-        themeToApply = allThemes[cycleIndex % allThemes.length];
-      } else {
-        const urlTheme = (urlParams.get('theme') || '').toLowerCase().trim();
-        if (urlTheme && allThemes.includes(`theme-${urlTheme}`)) {
-          themeToApply = `theme-${urlTheme}`;
-        } else {
-          const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
-
-          if (totalMinutes >= 420 && totalMinutes < 660) {
-            themeToApply = 'theme-tiffany';
-          } else if (totalMinutes >= 660 && totalMinutes < 1035) {
-            themeToApply = 'theme-usopen';
-          } else if (totalMinutes >= 1035 && totalMinutes < 1155) {
-            themeToApply = 'theme-apple';
-          } else if (totalMinutes >= 1155 && totalMinutes < 1275) {
-            themeToApply = 'theme-rolex';
-          } else {
-            themeToApply = 'theme-porsche';
-          }
-        }
-      }
-
-      document.body.classList.remove(...allThemes);
-      document.body.classList.add(themeToApply);
-
-      const displayName = themeDisplayNames[themeToApply] || 'Default';
-      const themePill = document.getElementById('theme-pill');
-      if (themePill) {
-        themePill.textContent = isCycling 
-          ? `Theme: ${displayName} (${(cycleIndex % allThemes.length) + 1}/${allThemes.length})` 
-          : `Theme: ${displayName}`;
-      }
+      return toSentenceCase(firstSegment);
     }
 
     async function refreshDisplay() {
@@ -266,8 +408,6 @@
         const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
         const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
-        applyDynamicTheme(targetTime);
-
         document.getElementById('target-mode-pill').textContent = isPreview 
           ? `Target: ${targetTimeString}` 
           : 'Target: Live';
@@ -275,55 +415,24 @@
         const isRunningAtTarget = (startIso, endIso) => {
           if (!startIso || !endIso) return false;
           const s = new Date(startIso);
-          let e = new Date(endIso);
-
-          if (e.getHours() === 23 && e.getMinutes() === 59) {
-            e = new Date(e.getTime() + 61 * 60 * 1000);
-          }
-
+          const e = new Date(endIso);
           return s <= targetTime && e > targetTime;
         };
 
         const events = Array.isArray(data) ? data : (data.events || []);
-
-        let closestFutureEpoch = null;
-        events.forEach(e => {
-          const s = new Date(e.startTime || e.StartTime).getTime();
-          let endDt = new Date(e.endTime || e.EndTime);
-          if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
-            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
-          }
-          const endEpoch = endDt.getTime();
-
-          [s, endEpoch].forEach(epoch => {
-            if (epoch > now.getTime()) {
-              if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
-                closestFutureEpoch = epoch;
-              }
-            }
-          });
-        });
-        nextTransitionTargetEpoch = closestFutureEpoch;
-        updateCountdown();
+        const sessions = [];
 
         const eventMap = {};
-
         events.forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
           const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
-          const courtNumbers = extractSortedCourts(e.courts || e.Courts);
-
-          const rawPlayers = e.players || e.Players || e.roster || [];
-          const normalizedPlayers = rawPlayers.map(p => {
-            if (typeof p === 'string') {
-              return { name: cleanPlayerName(p), checkedIn: false };
-            }
-            return {
-              name: cleanPlayerName(p.name || p.PlayerName || `${p.firstName || ''} ${p.lastName || ''}`),
-              checkedIn: Boolean(p.checkedIn || p.CheckedIn || p.isCheckedIn)
-            };
-          }).filter(p => p.name.length > 0);
+          let courtsRaw = e.courts || e.Courts || [];
+          if (!Array.isArray(courtsRaw)) courtsRaw = [courtsRaw];
+          const courtNumbers = courtsRaw
+            .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
+            .filter(Boolean)
+            .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
 
           if (!eventMap[key]) {
             eventMap[key] = {
@@ -331,30 +440,52 @@
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
               courts: new Set(courtNumbers),
-              players: normalizedPlayers,
-              maxCapacity: e.maxCapacity || e.MaxCapacity || 0
+              players: new Map()
             };
           } else {
             courtNumbers.forEach(c => eventMap[key].courts.add(c));
           }
+
+          let pName = e.playerName;
+          if (!pName) {
+            const f = e.FirstName || e.MemberFirstName || e.UserFirstName || '';
+            const l = e.LastName || e.MemberLastName || e.UserLastName || '';
+            if (f) {
+              pName = `${f} ${l ? l.charAt(0) : ''}`.trim();
+            } else if (e.MemberName) {
+              pName = e.MemberName;
+            }
+          }
+
+          if (pName) {
+            const formattedName = toSentenceCase(pName);
+            const isChecked = e.checkedIn === true || e.IsCheckedIn === true;
+            const currentStatus = eventMap[key].players.get(formattedName);
+            eventMap[key].players.set(formattedName, currentStatus || isChecked);
+          }
         });
 
-        const rosters = [];
         Object.values(eventMap).forEach(ev => {
-          rosters.push({
+          const arr = Array.from(ev.courts);
+          const courtsLabel = arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD';
+          
+          const sortedPlayers = Array.from(ev.players.entries())
+            .map(([name, checkedIn]) => ({ name, checkedIn }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+          sessions.push({
             title: ev.title,
-            courtsLabel: formatCourtsLabel(ev.courts, 'rosters'),
+            courtsLabel: courtsLabel,
             startTime: ev.startTime,
             endTime: ev.endTime,
-            players: ev.players,
-            maxCapacity: ev.maxCapacity
+            players: sortedPlayers
           });
         });
 
         let bestWindowTag = '';
-        if (rosters.length > 0) {
+        if (sessions.length > 0) {
           const windowCounts = {};
-          rosters.forEach(item => {
+          sessions.forEach(item => {
             const w = formatTimeWindow(item.startTime, item.endTime);
             windowCounts[w] = (windowCounts[w] || 0) + 1;
           });
@@ -372,17 +503,17 @@
         const container = document.getElementById('roster-container');
         container.innerHTML = '';
 
-        if (rosters.length === 0) {
+        if (sessions.length === 0) {
           container.className = '';
           container.innerHTML = `
             <div class="no-sessions">
-              <h2>No Active Rosters</h2>
+              <h2>No Sessions Found</h2>
             </div>
           `;
           return;
         }
 
-        rosters.sort((a, b) => {
+        sessions.sort((a, b) => {
           const keyA = (a.title || '').trim().substring(0, 3);
           const keyB = (b.title || '').trim().substring(0, 3);
           const numA = parseFloat(keyA);
@@ -398,42 +529,128 @@
           return new Date(a.startTime) - new Date(b.startTime);
         });
 
-        const totalRosters = Math.min(rosters.length, 6);
-        container.className = `count-${totalRosters}`;
+        const totalSessions = Math.min(sessions.length, 6);
+        const isSingle = sessions.length === 1;
+        container.className = `count-${totalSessions}`;
 
-        rosters.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'roster-card';
+        const totalReportPlayers = sessions.reduce((sum, s) => sum + s.players.length, 0);
 
-          const countLabel = item.maxCapacity > 0 
-            ? `${item.players.length} / ${item.maxCapacity}` 
-            : `${item.players.length}`;
+        let uniformCols = 2;
+        let uniformFontSize = 'clamp(1rem, 1.25vw, 1.45rem)';
+        let uniformRowGap = '0.7vh';
+        let uniformColGap = '1.8vw';
+        let uniformTitleSize = 'clamp(1.5rem, 1.9vw, 2.3rem)';
+        let uniformCourtsSize = 'clamp(1.15rem, 1.45vw, 1.7rem)';
 
-          let playersHtml = '';
-          if (item.players.length > 0) {
-            playersHtml = item.players.map(p => `
-              <div class="player-item">
-                <span class="status-indicator ${p.checkedIn ? 'checked-in' : ''}"></span>
-                <span class="player-name">${p.name}</span>
-              </div>
-            `).join('');
+        if (isSingle) {
+          if (totalReportPlayers > 44) {
+            uniformCols = 3;
+            uniformFontSize = 'clamp(0.95rem, 1.05vw, 1.2rem)';
+            uniformRowGap = '0.5vh';
+            uniformColGap = '1.4vw';
+          } else if (totalReportPlayers > 22) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.05rem, 1.15vw, 1.3rem)';
+            uniformRowGap = '0.65vh';
           } else {
-            playersHtml = `<div class="empty-roster-msg">No players registered yet</div>`;
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.2rem, 1.4vw, 1.6rem)';
+            uniformRowGap = '0.9vh';
           }
+        } else if (totalSessions === 2) {
+          if (totalReportPlayers > 60) {
+            uniformCols = 3;
+            uniformFontSize = 'clamp(0.9rem, 1.0vw, 1.15rem)';
+            uniformRowGap = '0.45vh';
+            uniformColGap = '1.2vw';
+          } else if (totalReportPlayers > 30) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.0rem, 1.1vw, 1.25rem)';
+            uniformRowGap = '0.6vh';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.15rem, 1.3vw, 1.5rem)';
+            uniformRowGap = '0.8vh';
+          }
+        } else if (totalSessions === 3) {
+          uniformTitleSize = 'clamp(1.3rem, 1.5vw, 1.8rem)';
+          uniformCourtsSize = 'clamp(1.0rem, 1.25vw, 1.45rem)';
+          if (totalReportPlayers > 65) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.85rem, 0.95vw, 1.15rem)';
+            uniformRowGap = '0.4vh';
+            uniformColGap = '1.0vw';
+          } else if (totalReportPlayers > 30) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.95rem, 1.08vw, 1.25rem)';
+            uniformRowGap = '0.55vh';
+            uniformColGap = '1.2vw';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(1.08rem, 1.22vw, 1.4rem)';
+            uniformRowGap = '0.7vh';
+            uniformColGap = '1.4vw';
+          }
+        } else {
+          uniformTitleSize = 'clamp(1.15rem, 1.35vw, 1.6rem)';
+          uniformCourtsSize = 'clamp(0.95rem, 1.1vw, 1.35rem)';
+          if (totalReportPlayers > 70) {
+            uniformCols = 3;
+            uniformFontSize = 'clamp(0.76rem, 0.85vw, 1.0rem)';
+            uniformRowGap = '0.3vh';
+            uniformColGap = '0.7vw';
+          } else if (totalReportPlayers > 40) {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.82rem, 0.92vw, 1.1rem)';
+            uniformRowGap = '0.4vh';
+            uniformColGap = '1.0vw';
+          } else {
+            uniformCols = 2;
+            uniformFontSize = 'clamp(0.95rem, 1.05vw, 1.25rem)';
+            uniformRowGap = '0.55vh';
+            uniformColGap = '1.2vw';
+          }
+        }
+
+        sessions.forEach(item => {
+          const s = new Date(item.startTime);
+          const e = new Date(item.endTime);
+          const isNow = now >= s && now <= e;
+          const count = item.players.length;
+
+          const card = document.createElement('div');
+          card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''}`;
+          card.style.setProperty('--title-font-size', uniformTitleSize);
+          card.style.setProperty('--courts-font-size', uniformCourtsSize);
+
+          const listHtml = count > 0 
+            ? item.players.map(p => `
+                <div class="player-item ${p.checkedIn ? 'is-checked-in' : 'is-pending'}">
+                  <span class="status-dot"></span>
+                  <span class="player-name">${p.name}</span>
+                </div>
+              `).join('')
+            : `<div class="player-empty">No registered players</div>`;
 
           card.innerHTML = `
-            <div class="roster-header">
-              <div class="roster-title-block">
-                <div class="roster-title">${item.title}</div>
-                <div class="roster-courts">${item.courtsLabel}</div>
+            <div class="card-header">
+              <div class="header-titles">
+                <div class="line-title">${item.title}</div>
+                <div class="line-courts">${item.courtsLabel}</div>
               </div>
-              <div class="count-badge">${countLabel}</div>
+              <div class="card-meta">
+                <div class="count-badge">${count} ${count === 1 ? 'Player' : 'Players'}</div>
+              </div>
             </div>
-            <div class="player-grid">
-              ${playersHtml}
+            <div class="player-list" style="
+              --roster-cols: ${uniformCols};
+              --roster-font-size: ${uniformFontSize};
+              --roster-row-gap: ${uniformRowGap};
+              --roster-col-gap: ${uniformColGap};
+            ">
+              ${listHtml}
             </div>
           `;
-
           container.appendChild(card);
         });
 
@@ -444,15 +661,6 @@
 
     refreshDisplay();
     setInterval(refreshDisplay, 30000);
-
-    if (isCycling) {
-      setInterval(() => {
-        cycleIndex++;
-        const now = new Date();
-        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
-        applyDynamicTheme(targetTime);
-      }, cycleSeconds * 1000);
-    }
   </script>
 </body>
 </html>
