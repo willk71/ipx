@@ -7,7 +7,6 @@
   <title>Welcome to IPX! &ndash; Live Rosters</title>
   <link rel="stylesheet" href="css/common.css?v=1.0.4" />
   <link rel="stylesheet" href="css/rosters.css?v=1.0.4" />
-  <script src="js/common.js?v=1.0.4"></script>
 </head>
 <body>
   <header>
@@ -47,6 +46,87 @@
   </footer>
 
   <script>
+    // --- Embedded Shared Helpers ---
+    function toSentenceCase(str) {
+      if (!str) return '';
+      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }).trim();
+    }
+
+    function cleanCourtName(rawName) {
+      if (!rawName) return '';
+      return String(rawName)
+        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+        .replace(/^Court\s*/i, '')
+        .trim();
+    }
+
+    function extractSortedCourts(courtsRaw) {
+      if (!courtsRaw) return [];
+      const list = Array.isArray(courtsRaw) ? courtsRaw : [courtsRaw];
+      return list
+        .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
+        .filter(Boolean)
+        .sort((a, b) => (parseInt(a, 10) || a) - (parseInt(b, 10) || b));
+    }
+
+    function formatCourtsLabel(courts, mode = 'rosters') {
+      const arr = Array.isArray(courts) ? courts : Array.from(courts || []);
+      if (mode === 'index') {
+        return arr.length > 0 ? `on ${arr.join(' ')}` : 'on TBD';
+      }
+      if (arr.length === 0) return 'Court TBD';
+      const prefix = arr.length === 1 ? 'Court' : 'Courts';
+      return `${prefix} ${arr.join(', ')}`;
+    }
+
+    function cleanTitle(rawTitle) {
+      if (!rawTitle) return '';
+      let firstSegment = String(rawTitle).split('|')[0].trim();
+
+      firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
+      firstSegment = firstSegment.replace(/[()]/g, '');
+      firstSegment = firstSegment
+        .replace(/\bSessions?\b/gi, '')
+        .replace(/\bOpen\s*Play\b/gi, '')
+        .replace(/\bPrime\s*Time\b/gi, '');
+
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+
+      let formatted = toSentenceCase(firstSegment);
+      return formatted.replace(/\bP4p\b/gi, 'P4P');
+    }
+
+    function formatTime(isoString, isEndTime = false) {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
+        return '1:00 AM';
+      }
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function formatTimeWindow(startIso, endIso) {
+      if (!startIso || !endIso) return '';
+      const t1 = formatTime(startIso, false);
+      const t2 = formatTime(endIso, true);
+      const parts1 = t1.split(' ');
+      const parts2 = t2.split(' ');
+      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
+        return `${parts1[0]} \u2013 ${t2}`;
+      }
+      return `${t1} \u2013 ${t2}`;
+    }
+
+    function cleanPlayerName(rawName) {
+      if (!rawName) return '';
+      return String(rawName).trim();
+    }
+
+    // --- State and URL Controls ---
     const urlParams = new URLSearchParams(window.location.search);
     const hasExplicitAhead = urlParams.has('ahead');
     const isNamed60 = window.location.pathname.includes('60');
@@ -54,7 +134,6 @@
     const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
     const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
 
-    // Theme Cycler (?cycle=10 or ?cycle=true)
     const cycleParam = urlParams.get('cycle');
     const isCycling = cycleParam !== null && cycleParam !== 'false';
     const cycleSeconds = (isCycling && !isNaN(parseInt(cycleParam, 10))) 
@@ -170,11 +249,6 @@
       }
     }
 
-    function cleanPlayerName(rawName) {
-      if (!rawName) return '';
-      return String(rawName).trim();
-    }
-
     async function refreshDisplay() {
       try {
         const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
@@ -238,7 +312,6 @@
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
           const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
-          // Normalized and sorted via js/common.js
           const courtNumbers = extractSortedCourts(e.courts || e.Courts);
 
           const rawPlayers = e.players || e.Players || e.roster || [];
