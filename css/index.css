@@ -37,7 +37,7 @@ main.count-5, main.count-6 {
   border: 1px solid var(--card-border);
   border-left: 14px solid var(--yellow);
   border-radius: 22px;
-  padding: 3vh 3vw;
+  padding: 2.5vh 3vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,22 +59,24 @@ main.count-3 .session-card {
   gap: 0.8vh;
 }
 
+/* --- Session Title: Shrunk 20% + Enabled Word Wrap --- */
 .session-title {
-  font-size: clamp(3.0rem, 4.5vw, 6.0rem);
+  font-size: clamp(2.4rem, 3.6vw, 4.8rem); /* 20% down from 3.0rem - 6.0rem */
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--text-main);
   line-height: 1.15;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-main.count-1 .session-title { font-size: clamp(4.5rem, 7.5vw, 9.0rem); }
-main.count-2 .session-title { font-size: clamp(3.6rem, 5.4vw, 6.9rem); }
-main.count-3 .session-title { font-size: clamp(2.8rem, 4.0vw, 5.2rem); }
-main.count-4 .session-title { font-size: clamp(2.4rem, 3.3vw, 4.2rem); }
+main.count-1 .session-title { font-size: clamp(3.6rem, 6.0vw, 7.2rem); }
+main.count-2 .session-title { font-size: clamp(2.88rem, 4.32vw, 5.52rem); }
+main.count-3 .session-title { font-size: clamp(2.24rem, 3.2vw, 4.16rem); }
+main.count-4 .session-title { font-size: clamp(1.92rem, 2.64vw, 3.36rem); }
 
+/* --- Court Assignments Line --- */
 .session-courts {
   font-size: clamp(2.7rem, 3.9vw, 5.1rem);
   font-weight: 600;
@@ -90,3 +92,25 @@ main.count-1 .session-courts { font-size: clamp(4.2rem, 6.75vw, 7.8rem); }
 main.count-2 .session-courts { font-size: clamp(3.3rem, 5.1vw, 6.6rem); }
 main.count-3 .session-courts { font-size: clamp(2.6rem, 3.8vw, 4.8rem); }
 main.count-4 .session-courts { font-size: clamp(2.1rem, 2.7vw, 3.6rem); }
+
+/* --- Paddle Queue Text: Increased 100% (2x) --- */
+.paddle-queue,
+.session-queue {
+  font-size: clamp(2.2rem, 2.8vw, 3.8rem); /* doubled from standard subtext */
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-sub);
+  line-height: 1.2;
+  margin-top: 0.5vh;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+main.count-1 .paddle-queue,
+main.count-1 .session-queue { font-size: clamp(3.0rem, 4.0vw, 5.2rem); }
+
+main.count-2 .paddle-queue,
+main.count-2 .session-queue { font-size: clamp(2.6rem, 3.4vw, 4.6rem); }
+
+main.count-3 .paddle-queue,
+main.count-3 .session-queue { font-size: clamp(2.0rem, 2.6vw, 3.4rem); }
