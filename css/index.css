@@ -1,0 +1,92 @@
+main {
+  flex: 1;
+  display: grid;
+  gap: 2vh 2vw;
+  margin-top: 2vh;
+  overflow: hidden;
+  min-height: 0;
+}
+
+main.count-1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+main.count-2 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+main.count-3 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+main.count-4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+main.count-5, main.count-6 {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.session-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 14px solid var(--yellow);
+  border-radius: 22px;
+  padding: 3vh 3vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2vh;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.session-card.is-now {
+  border-color: var(--card-border-active);
+}
+
+main.count-2 .session-card,
+main.count-3 .session-card {
+  padding: 2.2vh 3.5vw;
+  gap: 0.8vh;
+}
+
+.session-title {
+  font-size: clamp(3.0rem, 4.5vw, 6.0rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+main.count-1 .session-title { font-size: clamp(4.5rem, 7.5vw, 9.0rem); }
+main.count-2 .session-title { font-size: clamp(3.6rem, 5.4vw, 6.9rem); }
+main.count-3 .session-title { font-size: clamp(2.8rem, 4.0vw, 5.2rem); }
+main.count-4 .session-title { font-size: clamp(2.4rem, 3.3vw, 4.2rem); }
+
+.session-courts {
+  font-size: clamp(2.7rem, 3.9vw, 5.1rem);
+  font-weight: 600;
+  color: var(--yellow);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+main.count-1 .session-courts { font-size: clamp(4.2rem, 6.75vw, 7.8rem); }
+main.count-2 .session-courts { font-size: clamp(3.3rem, 5.1vw, 6.6rem); }
+main.count-3 .session-courts { font-size: clamp(2.6rem, 3.8vw, 4.8rem); }
+main.count-4 .session-courts { font-size: clamp(2.1rem, 2.7vw, 3.6rem); }
