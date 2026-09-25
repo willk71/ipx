@@ -5,298 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Welcome to IPX! &ndash; Live Session Rosters</title>
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%);
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.10);
-      --card-border-active: rgba(255, 214, 10, 0.55);
-
-      --yellow: #ffd60a;
-      --text-main: #ffffff;
-      --text-sub: #ebebf5;
-      --text-muted: #8e8e93;
-
-      --accent-green: #34c759;
-      --accent-green-glow: rgba(52, 199, 89, 0.65);
-
-      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-stack) !important;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      padding: 2.2vh 3vw 1.5vh 3vw;
-      position: relative;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 1.2vh;
-      flex-shrink: 0;
-      gap: 2vw;
-    }
-
-    .header-left {
-      min-width: 0;
-      flex: 1;
-      display: flex;
-      align-items: baseline;
-    }
-
-    .header-left h1 {
-      font-size: clamp(2rem, 3vw, 3.6rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--text-main);
-      line-height: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: baseline;
-    }
-
-    .header-separator {
-      margin: 0 0.55em;
-      color: var(--text-muted);
-      font-weight: 300;
-      opacity: 0.7;
-    }
-
-    .header-window {
-      color: var(--yellow);
-      font-weight: 600;
-      margin-left: 0.4em;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: baseline;
-      flex-shrink: 0;
-      text-align: right;
-    }
-
-    .clock {
-      font-size: clamp(2.4rem, 3.5vw, 4rem);
-      font-weight: 300;
-      color: var(--yellow);
-      letter-spacing: -0.03em;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    main {
-      flex: 1;
-      display: grid;
-      gap: 1.6vh 1.6vw;
-      margin-top: 1.8vh;
-      overflow: hidden;
-      min-height: 0;
-    }
-
-    main.count-1 { grid-template-columns: 1fr 1fr; }
-    main.count-2 { grid-template-columns: 1fr 1fr; }
-    main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
-    main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
-
-    .roster-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-left: 10px solid var(--yellow);
-      border-radius: 18px;
-      padding: 1.8vh 1.8vw;
-      display: flex;
-      flex-direction: column;
-      gap: 1vh;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .roster-card.single-session {
-      grid-column: 1 / 2;
-    }
-
-    .roster-card.is-now {
-      border-color: var(--card-border-active);
-      box-shadow: 0 0 35px rgba(255, 214, 10, 0.15);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 0.8vh;
-      flex-shrink: 0;
-    }
-
-    .header-titles {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2vh;
-      min-width: 0;
-    }
-
-    .line-title {
-      font-size: var(--title-font-size, clamp(1.35rem, 1.7vw, 2.1rem));
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      color: var(--text-main);
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .line-courts {
-      font-size: var(--courts-font-size, clamp(1.05rem, 1.35vw, 1.6rem));
-      font-weight: 500;
-      color: var(--yellow);
-      letter-spacing: -0.01em;
-    }
-
-    .card-meta {
-      text-align: right;
-      flex-shrink: 0;
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .count-badge {
-      font-size: clamp(0.75rem, 0.85vw, 0.95rem);
-      color: #ffffff;
-      background: rgba(255, 214, 10, 0.2);
-      border: 1px solid rgba(255, 214, 10, 0.4);
-      padding: 0.22rem 0.6rem;
-      border-radius: 999px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .player-list {
-      column-count: var(--roster-cols, 2);
-      column-gap: var(--roster-col-gap, 1.8vw);
-      column-fill: auto;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .player-item {
-      font-size: var(--roster-font-size, clamp(0.95rem, 1.1vw, 1.3rem));
-      font-weight: 500;
-      letter-spacing: -0.015em;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: var(--roster-row-gap, 0.7vh);
-      break-inside: avoid;
-      page-break-inside: avoid;
-      display: flex;
-      align-items: center;
-      gap: 0.55em;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 0.55em;
-      height: 0.55em;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* Checked-in: Bright text + Apple glowing green dot */
-    .player-item.is-checked-in {
-      color: var(--text-main);
-      opacity: 1;
-    }
-    .player-item.is-checked-in .status-dot {
-      background: var(--accent-green);
-      box-shadow: 0 0 8px var(--accent-green-glow);
-    }
-
-    /* Pending / Not checked-in: Faded text + subtle outline dot */
-    .player-item.is-pending {
-      color: var(--text-muted);
-      opacity: 0.65;
-    }
-    .player-item.is-pending .status-dot {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-    }
-
-    .player-empty {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      font-style: italic;
-      padding-top: 0.5vh;
-    }
-
-    footer {
-      flex-shrink: 0;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1.2rem;
-      padding-top: 0.8vh;
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      color: rgba(255, 255, 255, 0.35);
-      font-variant-numeric: tabular-nums;
-    }
-
-    footer span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .no-sessions {
-      grid-column: 1 / -1;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1px dashed rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      text-align: center;
-      padding: 6vh;
-    }
-
-    .no-sessions h2 {
-      font-size: clamp(1.8rem, 2.8vw, 3rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--text-sub);
-    }
-  </style>
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/rosters.css" />
 </head>
 <body>
   <header>
@@ -304,9 +14,6 @@
       <h1 id="header-title">
         <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Rosters</span>
       </h1>
-    </div>
-    <div class="header-right">
-      <div class="clock" id="live-clock">--:-- --</div>
     </div>
   </header>
 
@@ -317,11 +24,25 @@
   </main>
 
   <footer>
-    <span id="target-mode-pill">Target: --</span>
-    <span>&bull;</span>
-    <span id="data-refresh-time">Data Sync: --</span>
-    <span>&bull;</span>
-    <span id="page-refresh-time">Display Updated: --</span>
+    <div class="footer-left">
+      <div class="footer-meta-pills">
+        <span id="theme-pill">Theme: --</span>
+        <span>&bull;</span>
+        <span id="target-mode-pill">Target: --</span>
+        <span>&bull;</span>
+        <span id="data-refresh-time">Data Sync: --</span>
+        <span>&bull;</span>
+        <span id="page-refresh-time">Display Updated: --</span>
+      </div>
+    </div>
+
+    <div class="footer-right">
+      <div class="footer-countdown-container" id="countdown-box">
+        <span class="countdown-label">Current Sessions Ends/Next Sessions Starts:</span>
+        <span class="countdown-clock" id="transition-countdown">--:--</span>
+      </div>
+      <div class="footer-clock" id="live-clock">--:-- --</div>
+    </div>
   </footer>
 
   <script>
@@ -333,6 +54,8 @@
     
     const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
 
+    let nextTransitionTargetEpoch = null;
+
     function updateClock() {
       const now = new Date();
       document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
@@ -340,20 +63,127 @@
         minute: '2-digit',
         hour12: true
       });
+      updateCountdown();
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    function formatTime(isoString) {
+    function updateCountdown() {
+      const countdownBox = document.getElementById('countdown-box');
+      const countdownVal = document.getElementById('transition-countdown');
+      
+      if (!nextTransitionTargetEpoch) {
+        countdownBox.classList.remove('is-active');
+        return;
+      }
+
+      const diffMs = nextTransitionTargetEpoch - Date.now();
+
+      // Only show if transition is within 15 minutes, otherwise hide completely
+      if (diffMs > 0 && diffMs <= 15 * 60 * 1000) {
+        const totalSecs = Math.floor(diffMs / 1000);
+        const m = Math.floor(totalSecs / 60);
+        const s = totalSecs % 60;
+        countdownVal.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        countdownBox.classList.add('is-active');
+      } else {
+        countdownBox.classList.remove('is-active');
+      }
+    }
+
+    const themeDisplayNames = {
+      'theme-tiffany': 'Tiffany',
+      'theme-usopen': 'US Open',
+      'theme-apple': 'Apple',
+      'theme-rolex': 'Rolex',
+      'theme-porsche': 'Porsche',
+      'theme-rolandgarros': 'Roland-Garros',
+      'theme-ausopen': 'Australian Open',
+      'theme-vice': 'Miami Vice',
+      'theme-gulfracing': 'Gulf Racing',
+      'theme-masters': 'Masters',
+      'theme-wimbledon': 'Wimbledon',
+      'theme-monaco': 'Monaco GP',
+      'theme-cyberpunk': 'Tokyo Cyberpunk',
+      'theme-ferrari': 'Ferrari Corsa',
+      'theme-glacier': 'Nordic Glacier',
+      'theme-desertclay': 'Desert Clay',
+      'theme-astonmartin': 'Aston Martin AMR',
+      'theme-solarflare': 'Solar Flare',
+      'theme-stealth': 'Stealth Titanium',
+      'theme-lakers': 'Showtime',
+      // NYC Metro Teams (no Buffalo)
+      'theme-yankees': 'NY Yankees',
+      'theme-mets': 'NY Mets',
+      'theme-knicks': 'NY Knicks',
+      'theme-nets': 'Brooklyn Nets',
+      'theme-liberty': 'NY Liberty',
+      'theme-giants': 'NY Giants',
+      'theme-jets': 'NY Jets',
+      'theme-rangers': 'NY Rangers',
+      'theme-islanders': 'NY Islanders',
+      'theme-nycfc': 'NYCFC'
+    };
+
+    function applyDynamicTheme(targetTime) {
+      const urlTheme = (urlParams.get('theme') || '').toLowerCase().trim();
+      const allThemes = Object.keys(themeDisplayNames);
+      
+      let themeToApply = 'theme-apple';
+
+      if (urlTheme && allThemes.includes(`theme-${urlTheme}`)) {
+        themeToApply = `theme-${urlTheme}`;
+      } else {
+        const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
+
+        // 7:00 AM (420) to 10:59 AM (659)
+        if (totalMinutes >= 420 && totalMinutes < 660) {
+          themeToApply = 'theme-tiffany';
+        }
+        // 11:00 AM (660) to 5:14 PM (1034)
+        else if (totalMinutes >= 660 && totalMinutes < 1035) {
+          themeToApply = 'theme-usopen';
+        }
+        // 5:15 PM (1035) to 7:14 PM (1154)
+        else if (totalMinutes >= 1035 && totalMinutes < 1155) {
+          themeToApply = 'theme-apple';
+        }
+        // 7:15 PM (1155) to 9:14 PM (1274)
+        else if (totalMinutes >= 1155 && totalMinutes < 1275) {
+          themeToApply = 'theme-rolex';
+        }
+        // 9:15 PM (1275) through late night
+        else {
+          themeToApply = 'theme-porsche';
+        }
+      }
+
+      document.body.classList.remove(...allThemes);
+      document.body.classList.add(themeToApply);
+
+      const displayName = themeDisplayNames[themeToApply] || 'Default';
+      const themePill = document.getElementById('theme-pill');
+      if (themePill) {
+        themePill.textContent = `Theme: ${displayName}`;
+      }
+    }
+
+    function formatTime(isoString, isEndTime = false) {
       if (!isoString) return '';
       const d = new Date(isoString);
+
+      // Late-night CourtReserve truncations (23:59 -> 1:00 AM)
+      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
+        return '1:00 AM';
+      }
+
       return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
     }
 
     function formatTimeWindow(startIso, endIso) {
       if (!startIso || !endIso) return '';
-      const t1 = formatTime(startIso);
-      const t2 = formatTime(endIso);
+      const t1 = formatTime(startIso, false);
+      const t2 = formatTime(endIso, true);
       const parts1 = t1.split(' ');
       const parts2 = t2.split(' ');
       if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
@@ -408,6 +238,8 @@
         const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
         const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
+        applyDynamicTheme(targetTime);
+
         document.getElementById('target-mode-pill').textContent = isPreview 
           ? `Target: ${targetTimeString}` 
           : 'Target: Live';
@@ -415,13 +247,40 @@
         const isRunningAtTarget = (startIso, endIso) => {
           if (!startIso || !endIso) return false;
           const s = new Date(startIso);
-          const e = new Date(endIso);
+          let e = new Date(endIso);
+
+          // Extend 23:59 session lookahead window through 1:00 AM
+          if (e.getHours() === 23 && e.getMinutes() === 59) {
+            e = new Date(e.getTime() + 61 * 60 * 1000);
+          }
+
           return s <= targetTime && e > targetTime;
         };
 
         const events = Array.isArray(data) ? data : (data.events || []);
-        const sessions = [];
 
+        // Detect upcoming transition epoch (session start or end)
+        let closestFutureEpoch = null;
+        events.forEach(e => {
+          const s = new Date(e.startTime || e.StartTime).getTime();
+          let endDt = new Date(e.endTime || e.EndTime);
+          if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
+            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
+          }
+          const endEpoch = endDt.getTime();
+
+          [s, endEpoch].forEach(epoch => {
+            if (epoch > now.getTime()) {
+              if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
+                closestFutureEpoch = epoch;
+              }
+            }
+          });
+        });
+        nextTransitionTargetEpoch = closestFutureEpoch;
+        updateCountdown();
+
+        const sessions = [];
         const eventMap = {};
         events.forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
@@ -539,10 +398,13 @@
         let uniformFontSize = 'clamp(1rem, 1.25vw, 1.45rem)';
         let uniformRowGap = '0.7vh';
         let uniformColGap = '1.8vw';
-        let uniformTitleSize = 'clamp(1.5rem, 1.9vw, 2.3rem)';
-        let uniformCourtsSize = 'clamp(1.15rem, 1.45vw, 1.7rem)';
+
+        let uniformTitleSize = 'clamp(2.25rem, 2.85vw, 3.45rem)';
+        let uniformCourtsSize = 'clamp(1.72rem, 2.18vw, 2.55rem)';
 
         if (isSingle) {
+          uniformTitleSize = 'clamp(2.4rem, 3.0vw, 3.6rem)';
+          uniformCourtsSize = 'clamp(1.85rem, 2.3vw, 2.7rem)';
           if (totalReportPlayers > 44) {
             uniformCols = 3;
             uniformFontSize = 'clamp(0.95rem, 1.05vw, 1.2rem)';
@@ -558,6 +420,8 @@
             uniformRowGap = '0.9vh';
           }
         } else if (totalSessions === 2) {
+          uniformTitleSize = 'clamp(2.25rem, 2.85vw, 3.45rem)';
+          uniformCourtsSize = 'clamp(1.72rem, 2.18vw, 2.55rem)';
           if (totalReportPlayers > 60) {
             uniformCols = 3;
             uniformFontSize = 'clamp(0.9rem, 1.0vw, 1.15rem)';
@@ -573,8 +437,8 @@
             uniformRowGap = '0.8vh';
           }
         } else if (totalSessions === 3) {
-          uniformTitleSize = 'clamp(1.3rem, 1.5vw, 1.8rem)';
-          uniformCourtsSize = 'clamp(1.0rem, 1.25vw, 1.45rem)';
+          uniformTitleSize = 'clamp(1.95rem, 2.25vw, 2.7rem)';
+          uniformCourtsSize = 'clamp(1.5rem, 1.88vw, 2.18rem)';
           if (totalReportPlayers > 65) {
             uniformCols = 2;
             uniformFontSize = 'clamp(0.85rem, 0.95vw, 1.15rem)';
@@ -592,8 +456,8 @@
             uniformColGap = '1.4vw';
           }
         } else {
-          uniformTitleSize = 'clamp(1.15rem, 1.35vw, 1.6rem)';
-          uniformCourtsSize = 'clamp(0.95rem, 1.1vw, 1.35rem)';
+          uniformTitleSize = 'clamp(1.72rem, 2.0vw, 2.4rem)';
+          uniformCourtsSize = 'clamp(1.42rem, 1.65vw, 2.0rem)';
           if (totalReportPlayers > 70) {
             uniformCols = 3;
             uniformFontSize = 'clamp(0.76rem, 0.85vw, 1.0rem)';
@@ -613,8 +477,12 @@
         }
 
         sessions.forEach(item => {
-          const s = new Date(item.startTime);
-          const e = new Date(item.endTime);
+          let s = new Date(item.startTime);
+          let e = new Date(item.endTime);
+          if (e.getHours() === 23 && e.getMinutes() === 59) {
+            e = new Date(e.getTime() + 61 * 60 * 1000);
+          }
+
           const isNow = now >= s && now <= e;
           const count = item.players.length;
 
