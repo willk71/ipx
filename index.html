@@ -82,6 +82,34 @@
       return `${prefix} ${arr.join(', ')}`;
     }
 
+    function resolveQueueLocation(courtsSet, customText) {
+      if (customText) return customText;
+      if (!courtsSet || courtsSet.size === 0) return '';
+
+      const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
+      if (nums.length === 0) return '';
+
+      // Priority 1: Direct Court 7 assignment rule
+      if (courtsSet.has('7') || nums.some(n => n >= 7 && n <= 9)) {
+        return 'queue at Court 7 paddle rack';
+      }
+      // Priority 2: Courts 1 - 3
+      if (nums.some(n => n >= 1 && n <= 3)) {
+        return 'queue at Court 1 paddle rack';
+      }
+      // Priority 3: Courts 4 - 6
+      if (nums.some(n => n >= 4 && n <= 6)) {
+        return 'queue at Court 4 paddle rack';
+      }
+      // Priority 4: Courts 10+
+      if (nums.some(n => n >= 10)) {
+        return 'queue at Court 10 paddle rack';
+      }
+
+      const minCourt = Math.min(...nums);
+      return `queue at Court ${minCourt} paddle rack`;
+    }
+
     function cleanTitle(rawTitle) {
       if (!rawTitle) return '';
       let firstSegment = String(rawTitle).split('|')[0].trim();
@@ -328,11 +356,7 @@
 
         const sessions = [];
         Object.values(eventMap).forEach(ev => {
-          let resolvedQueue = ev.queueText;
-          // Fallback when Court 7 is assigned and no other queue text is configured
-          if (!resolvedQueue && ev.courts.has('7')) {
-            resolvedQueue = 'queue at Court 7 paddle rack';
-          }
+          const resolvedQueue = resolveQueueLocation(ev.courts, ev.queueText);
 
           sessions.push({
             title: ev.title,
