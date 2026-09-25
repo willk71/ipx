@@ -34,7 +34,7 @@ function cleanTitle(rawTitle) {
   firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
 
   let formatted = toSentenceCase(firstSegment);
-  // Ensure P4P retains its uppercase acronym styling
+  // Preserve uppercase P4P styling
   return formatted.replace(/\bP4p\b/gi, 'P4P');
 }
 
