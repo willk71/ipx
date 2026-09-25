@@ -5,41 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Welcome to IPX! &ndash; Court Assignments</title>
-  <link rel="stylesheet" href="css/common.css" />
-  <link rel="stylesheet" href="css/index.css" />
-  <style>
-    /* Enforce 2-column layout for 5-6 events to avoid text cutoff */
-    #session-container.count-5,
-    #session-container.count-6 {
-      display: grid !important;
-      grid-template-columns: repeat(2, 1fr) !important;
-      gap: 1.5rem !important;
-    }
-
-    .session-queue {
-      margin-top: 10px;
-      font-size: 1.15rem;
-      letter-spacing: 0.02em;
-      opacity: 0.95;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .session-queue .queue-label {
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      font-weight: 700;
-      opacity: 0.8;
-      letter-spacing: 0.05em;
-    }
-
-    .session-queue .queue-value {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-  </style>
+  <link rel="stylesheet" href="css/common.css?v=1.0.4" />
+  <link rel="stylesheet" href="css/index.css?v=1.0.4" />
 </head>
 <body>
   <header>
@@ -79,6 +46,67 @@
   </footer>
 
   <script>
+    // --- Core Helper Functions ---
+    function toSentenceCase(str) {
+      if (!str) return '';
+      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }).trim();
+    }
+
+    function cleanCourtName(rawName) {
+      if (!rawName) return '';
+      return String(rawName)
+        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+        .replace(/^Court\s*/i, '')
+        .trim();
+    }
+
+    function cleanTitle(rawTitle) {
+      if (!rawTitle) return '';
+      let firstSegment = String(rawTitle).split('|')[0].trim();
+
+      // Shorten Pickleball for Parkinson's to P4P
+      firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
+
+      firstSegment = firstSegment
+        .replace(/\bSessions?\b/gi, '')
+        .replace(/\bOpen\s*Play\b/gi, '')
+        .replace(/\bPrime\s*Time\b/gi, '');
+
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
+      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+
+      let formatted = toSentenceCase(firstSegment);
+      return formatted.replace(/\bP4p\b/gi, 'P4P');
+    }
+
+    function formatTime(isoString, isEndTime = false) {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+
+      // Late-night CourtReserve truncations (23:59 -> 1:00 AM)
+      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
+        return '1:00 AM';
+      }
+
+      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    function formatTimeWindow(startIso, endIso) {
+      if (!startIso || !endIso) return '';
+      const t1 = formatTime(startIso, false);
+      const t2 = formatTime(endIso, true);
+      const parts1 = t1.split(' ');
+      const parts2 = t2.split(' ');
+      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
+        return `${parts1[0]} \u2013 ${t2}`;
+      }
+      return `${t1} \u2013 ${t2}`;
+    }
+
+    // --- State and URL Controls ---
     const urlParams = new URLSearchParams(window.location.search);
     const hasExplicitAhead = urlParams.has('ahead');
     const isNamed60 = window.location.pathname.includes('60');
@@ -86,7 +114,7 @@
     const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
     const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
 
-    // --- Theme Cycle Testing Controls ---
+    // Theme Cycler (?cycle=10 or ?cycle=true)
     const cycleParam = urlParams.get('cycle');
     const isCycling = cycleParam !== null && cycleParam !== 'false';
     const cycleSeconds = (isCycling && !isNaN(parseInt(cycleParam, 10))) 
@@ -119,7 +147,7 @@
 
       const diffMs = nextTransitionTargetEpoch - Date.now();
 
-      // Only show if transition is within 15 minutes, otherwise hide completely
+      // Show countdown only within 15 minutes of transition
       if (diffMs > 0 && diffMs <= 15 * 60 * 1000) {
         const totalSecs = Math.floor(diffMs / 1000);
         const m = Math.floor(totalSecs / 60);
@@ -152,7 +180,6 @@
       'theme-solarflare': 'Solar Flare',
       'theme-stealth': 'Stealth Titanium',
       'theme-lakers': 'Showtime',
-      // NYC Metro Teams
       'theme-yankees': 'NY Yankees',
       'theme-mets': 'NY Mets',
       'theme-knicks': 'NY Knicks',
@@ -178,24 +205,15 @@
         } else {
           const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
 
-          // 7:00 AM (420) to 10:59 AM (659)
           if (totalMinutes >= 420 && totalMinutes < 660) {
             themeToApply = 'theme-tiffany';
-          }
-          // 11:00 AM (660) to 5:14 PM (1034)
-          else if (totalMinutes >= 660 && totalMinutes < 1035) {
+          } else if (totalMinutes >= 660 && totalMinutes < 1035) {
             themeToApply = 'theme-usopen';
-          }
-          // 5:15 PM (1035) to 7:14 PM (1154)
-          else if (totalMinutes >= 1035 && totalMinutes < 1155) {
+          } else if (totalMinutes >= 1035 && totalMinutes < 1155) {
             themeToApply = 'theme-apple';
-          }
-          // 7:15 PM (1155) to 9:14 PM (1274)
-          else if (totalMinutes >= 1155 && totalMinutes < 1275) {
+          } else if (totalMinutes >= 1155 && totalMinutes < 1275) {
             themeToApply = 'theme-rolex';
-          }
-          // 9:15 PM (1275) through late night
-          else {
+          } else {
             themeToApply = 'theme-porsche';
           }
         }
@@ -211,132 +229,6 @@
           ? `Theme: ${displayName} (${(cycleIndex % allThemes.length) + 1}/${allThemes.length})` 
           : `Theme: ${displayName}`;
       }
-    }
-
-    function formatTime(isoString, isEndTime = false) {
-      if (!isoString) return '';
-      const d = new Date(isoString);
-
-      // Late-night CourtReserve truncations (23:59 -> 1:00 AM)
-      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
-        return '1:00 AM';
-      }
-
-      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-    }
-
-    function formatTimeWindow(startIso, endIso) {
-      if (!startIso || !endIso) return '';
-      const t1 = formatTime(startIso, false);
-      const t2 = formatTime(endIso, true);
-      const parts1 = t1.split(' ');
-      const parts2 = t2.split(' ');
-      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
-        return `${parts1[0]} \u2013 ${t2}`;
-      }
-      return `${t1} \u2013 ${t2}`;
-    }
-
-    function cleanCourtName(rawName) {
-      if (!rawName) return '';
-      return String(rawName)
-        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
-        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
-        .replace(/^Court\s*/i, '')
-        .trim();
-    }
-
-    function toSentenceCase(str) {
-      if (!str) return '';
-      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }).trim();
-    }
-
-    function cleanTitle(rawTitle) {
-      if (!rawTitle) return '';
-      let firstSegment = String(rawTitle).split('|')[0].trim();
-      firstSegment = firstSegment
-        .replace(/\bSessions?\b/gi, '')
-        .replace(/\bOpen\s*Play\b/gi, '')
-        .replace(/\bPrime\s*Time\b/gi, '');
-
-      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
-      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
-      return toSentenceCase(firstSegment);
-    }
-
-    function getQueueLocation(courts, title = '') {
-      if (!courts || courts.length === 0) return 'TBD';
-
-      const nums = courts
-        .map(c => parseInt(c, 10))
-        .filter(n => !isNaN(n))
-        .sort((a, b) => a - b);
-
-      const t = title.toLowerCase();
-
-      // 1. Explicit Rule: Any group on Courts 1 and 2 stacks at Court 1 Paddle Rack
-      if (nums.includes(1) && nums.includes(2)) {
-        return 'Court 1 Paddle Rack';
-      }
-
-      // 2. Explicit Rule: Any group including courts 7 and 8 stacks at Court 7
-      if (nums.includes(7) && nums.includes(8)) {
-        return 'Court 7 Paddle Rack';
-      }
-
-      // 3. Explicit Rule: Any group that includes 11 and 12 but not 7 stacks at Court 10 Right
-      if (nums.includes(11) && nums.includes(12) && !nums.includes(7)) {
-        return 'Court 10 Paddle Rack - Right';
-      }
-
-      // 4. Far-side Back Row Constraint (Courts 3, 6, 9, 11)
-      const BACK_COURTS = new Set([3, 6, 9, 11]);
-      const isAllBack = nums.every(n => BACK_COURTS.has(n));
-      const has6And9 = nums.includes(6) && nums.includes(9);
-
-      if (isAllBack && !has6And9) {
-        if (nums.some(n => [3, 6].includes(n))) {
-          return 'Court 6 High Table';
-        }
-        if (nums.some(n => [9, 11].includes(n))) {
-          return 'Court 11 High Table';
-        }
-      }
-
-      // 5. Social / Open Play override
-      if (t.includes('all level')) {
-        return 'Court 4 Table';
-      }
-
-      // 6. Remaining Bank 10, 11, 12 configurations
-      if (nums.some(n => [10, 11, 12].includes(n))) {
-        if (nums.includes(12) && !nums.includes(10)) {
-          return 'Court 12 Table';
-        }
-        if (t.includes('gated')) {
-          return 'Court 10 Paddle Rack - Left';
-        }
-        return 'Court 10 Paddle Rack - Right';
-      }
-
-      // 7. Remaining Bank 7, 8, 9 configurations (e.g., just Court 7 or 7+9)
-      if (nums.some(n => [7, 8, 9].includes(n))) {
-        return 'Court 7 Paddle Rack';
-      }
-
-      // 8. Bank 4, 5, 6 (Courts 5 & 6 route to Court 4)
-      if (nums.some(n => [4, 5, 6].includes(n))) {
-        return 'Court 4 Table';
-      }
-
-      // 9. Bank 1, 2, 3 fallback
-      if (nums.some(n => [1, 2, 3].includes(n))) {
-        return 'Court 1 Paddle Rack';
-      }
-
-      return 'Court 1 Paddle Rack';
     }
 
     async function refreshDisplay() {
@@ -367,7 +259,6 @@
           const s = new Date(startIso);
           let e = new Date(endIso);
 
-          // Extend late-night sessions ending at 23:59 through 1:00 AM
           if (e.getHours() === 23 && e.getMinutes() === 59) {
             e = new Date(e.getTime() + 61 * 60 * 1000);
           }
@@ -377,12 +268,8 @@
 
         const events = Array.isArray(data) ? data : (data.events || []);
 
-        // Detect upcoming transition epoch (session start or end)
         let closestFutureEpoch = null;
         events.forEach(e => {
-          const rawName = `${e.title || ''} ${e.DivisionName || ''} ${e.EventName || ''}`;
-          if (/\b(road|king)\b/i.test(rawName)) return; // Exclude Road and King transitions
-
           const s = new Date(e.startTime || e.StartTime).getTime();
           let endDt = new Date(e.endTime || e.EndTime);
           if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
@@ -404,10 +291,6 @@
         const eventMap = {};
 
         events.forEach(e => {
-          // Filter out Road and King events
-          const rawName = `${e.title || ''} ${e.DivisionName || ''} ${e.EventName || ''}`;
-          if (/\b(road|king)\b/i.test(rawName)) return;
-
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
           const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
@@ -418,15 +301,21 @@
             .filter(Boolean)
             .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
 
+          const queueInfo = e.paddleQueue || e.PaddleQueue || e.queueText || '';
+
           if (!eventMap[key]) {
             eventMap[key] = {
               title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
-              courts: new Set(courtNumbers)
+              courts: new Set(courtNumbers),
+              queueText: queueInfo
             };
           } else {
             courtNumbers.forEach(c => eventMap[key].courts.add(c));
+            if (queueInfo && !eventMap[key].queueText) {
+              eventMap[key].queueText = queueInfo;
+            }
           }
         });
 
@@ -434,14 +323,13 @@
         Object.values(eventMap).forEach(ev => {
           const arr = Array.from(ev.courts);
           const courtsLabel = arr.length > 0 ? `on ${arr.join(' ')}` : 'on TBD';
-          const queueLocation = getQueueLocation(arr, ev.title);
 
           sessions.push({
             title: ev.title,
             courtsLabel: courtsLabel,
-            queueLocation: queueLocation,
             startTime: ev.startTime,
-            endTime: ev.endTime
+            endTime: ev.endTime,
+            queueText: ev.queueText
           });
         });
 
@@ -509,10 +397,7 @@
           card.innerHTML = `
             <div class="session-title">${item.title}</div>
             <div class="session-courts">${item.courtsLabel}</div>
-            <div class="session-queue">
-              <span class="queue-label">Paddle Queue:</span>
-              <span class="queue-value">${item.queueLocation}</span>
-            </div>
+            ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
           `;
 
           container.appendChild(card);
@@ -526,7 +411,6 @@
     refreshDisplay();
     setInterval(refreshDisplay, 30000);
 
-    // Theme Cycler interval (activates via ?cycle=10 or ?cycle=true)
     if (isCycling) {
       setInterval(() => {
         cycleIndex++;
