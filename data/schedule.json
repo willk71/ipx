@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-25T22:54:50Z",
+  "lastUpdated": "2026-09-25T23:10:45Z",
   "date": "2026-09-25",
   "reservations": [
     {
@@ -73,12 +73,6 @@
       "holderLabel": "",
       "startTime": "2026-09-25T15:00:00",
       "endTime": "2026-09-25T16:00:00"
-    },
-    {
-      "court": "Court 11",
-      "holderLabel": "",
-      "startTime": "2026-09-25T13:00:00",
-      "endTime": "2026-09-25T15:00:00"
     },
     {
       "court": "Court 9",
@@ -201,6 +195,20 @@
       "checkedIn": false
     },
     {
+      "eventId": 2112160,
+      "title": "3.5-4.0 Open Play | Saturday | 9am-11am",
+      "startTime": "2026-09-26T09:00:00",
+      "endTime": "2026-09-26T11:00:00",
+      "courts": [
+        "Court 3",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Edin C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2112143,
       "title": "3.5-4.0 Gated Open Play | Saturday | 11am-1pm",
       "startTime": "2026-09-26T11:00:00",
@@ -243,19 +251,6 @@
       ],
       "playerName": "Peter F",
       "checkedIn": false
-    },
-    {
-      "eventId": 2112157,
-      "title": "3.25+ Open Play | Saturday",
-      "startTime": "2026-09-26T09:00:00",
-      "endTime": "2026-09-26T11:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Wilson L",
-      "checkedIn": true
     },
     {
       "eventId": 2112136,
@@ -334,20 +329,6 @@
         "Court 1 (Livestreaming)",
         "Court 2"
       ],
-      "playerName": "Edin C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2112160,
-      "title": "3.5-4.0 Open Play | Saturday | 9am-11am",
-      "startTime": "2026-09-26T09:00:00",
-      "endTime": "2026-09-26T11:00:00",
-      "courts": [
-        "Court 3",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
       "playerName": "Kevin T",
       "checkedIn": false
     },
@@ -402,6 +383,20 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Raina W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2112160,
+      "title": "3.5-4.0 Open Play | Saturday | 9am-11am",
+      "startTime": "2026-09-26T09:00:00",
+      "endTime": "2026-09-26T11:00:00",
+      "courts": [
+        "Court 3",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Derek M",
       "checkedIn": false
     },
     {
@@ -1317,7 +1312,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Kyle P",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2119000,
@@ -1564,7 +1559,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Mingyi L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118960,
@@ -3044,7 +3039,7 @@
         "Court 11"
       ],
       "playerName": "Mingyi L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2244588,
