@@ -1,424 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Welcome to IPX! &ndash; Court Assignments</title>
-  <link rel="stylesheet" href="css/common.css?v=1.0.4" />
-  <link rel="stylesheet" href="css/index.css?v=1.0.4" />
-</head>
-<body>
-  <header>
-    <div class="header-left">
-      <h1 id="header-title">
-        <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Sessions</span>
-      </h1>
-    </div>
-  </header>
+/**
+ * Shared utility helpers for IPX Displays (index.html & rosters.html)
+ */
 
-  <main id="session-container">
-    <div class="no-sessions">
-      <h2>Loading Sessions...</h2>
-    </div>
-  </main>
+function toSentenceCase(str) {
+  if (!str) return '';
+  return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  }).trim();
+}
 
-  <footer>
-    <div class="footer-left">
-      <div class="footer-meta-pills">
-        <span id="theme-pill">Theme: --</span>
-        <span>&bull;</span>
-        <span id="target-mode-pill">Target: --</span>
-        <span>&bull;</span>
-        <span id="data-refresh-time">Data Sync: --</span>
-        <span>&bull;</span>
-        <span id="page-refresh-time">Display Updated: --</span>
-      </div>
-    </div>
-    
-    <div class="footer-right">
-      <div class="footer-countdown-container" id="countdown-box">
-        <span class="countdown-label">Current Sessions Ends/Next Sessions Starts:</span>
-        <span class="countdown-clock" id="transition-countdown">--:--</span>
-      </div>
-      <div class="footer-clock" id="live-clock">--:-- --</div>
-    </div>
-  </footer>
+function cleanCourtName(rawName) {
+  if (!rawName) return '';
+  return String(rawName)
+    .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+    .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+    .replace(/^Court\s*/i, '')
+    .trim();
+}
 
-  <script>
-    // --- Core Helper Functions ---
-    function toSentenceCase(str) {
-      if (!str) return '';
-      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }).trim();
-    }
+/**
+ * Normalizes raw court entries from schedule.json into a sorted array of court identifiers.
+ * e.g., ["Court 3 (Streaming)", "Court 1"] -> ["1", "3"]
+ */
+function extractSortedCourts(courtsRaw) {
+  if (!courtsRaw) return [];
+  const list = Array.isArray(courtsRaw) ? courtsRaw : [courtsRaw];
+  return list
+    .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
+    .filter(Boolean)
+    .sort((a, b) => (parseInt(a, 10) || a) - (parseInt(b, 10) || b));
+}
 
-    function cleanCourtName(rawName) {
-      if (!rawName) return '';
-      return String(rawName)
-        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
-        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
-        .replace(/^Court\s*/i, '')
-        .trim();
-    }
+/**
+ * Formats court arrays or sets into the appropriate display label.
+ * @param {string[]|Set<string>} courts - The court numbers.
+ * @param {'index'|'rosters'} mode - Target display format.
+ *   - 'index': "on 1 2 3" or "on TBD"
+ *   - 'rosters': "Courts 1, 2, 3" (or "Court 1") or "Court TBD"
+ */
+function formatCourtsLabel(courts, mode = 'index') {
+  const arr = Array.isArray(courts) ? courts : Array.from(courts || []);
 
-    function cleanTitle(rawTitle) {
-      if (!rawTitle) return '';
-      let firstSegment = String(rawTitle).split('|')[0].trim();
+  if (mode === 'index') {
+    return arr.length > 0 ? `on ${arr.join(' ')}` : 'on TBD';
+  }
 
-      // Shorten Pickleball for Parkinson's to P4P
-      firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
+  // mode === 'rosters'
+  if (arr.length === 0) return 'Court TBD';
+  const prefix = arr.length === 1 ? 'Court' : 'Courts';
+  return `${prefix} ${arr.join(', ')}`;
+}
 
-      firstSegment = firstSegment
-        .replace(/\bSessions?\b/gi, '')
-        .replace(/\bOpen\s*Play\b/gi, '')
-        .replace(/\bPrime\s*Time\b/gi, '');
+function cleanTitle(rawTitle) {
+  if (!rawTitle) return '';
+  let firstSegment = String(rawTitle).split('|')[0].trim();
 
-      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
-      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+  // Shorten Pickleball for Parkinson's to P4P
+  firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
 
-      let formatted = toSentenceCase(firstSegment);
-      return formatted.replace(/\bP4p\b/gi, 'P4P');
-    }
+  // Strip parentheses
+  firstSegment = firstSegment.replace(/[()]/g, '');
 
-    function formatTime(isoString, isEndTime = false) {
-      if (!isoString) return '';
-      const d = new Date(isoString);
+  firstSegment = firstSegment
+    .replace(/\bSessions?\b/gi, '')
+    .replace(/\bOpen\s*Play\b/gi, '')
+    .replace(/\bPrime\s*Time\b/gi, '');
 
-      // Late-night CourtReserve truncations (23:59 -> 1:00 AM)
-      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
-        return '1:00 AM';
-      }
+  // Clean trailing punctuation and collapse leftover multiple spaces
+  firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+  firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
 
-      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-    }
+  let formatted = toSentenceCase(firstSegment);
+  // Preserve uppercase P4P acronym
+  return formatted.replace(/\bP4p\b/gi, 'P4P');
+}
 
-    function formatTimeWindow(startIso, endIso) {
-      if (!startIso || !endIso) return '';
-      const t1 = formatTime(startIso, false);
-      const t2 = formatTime(endIso, true);
-      const parts1 = t1.split(' ');
-      const parts2 = t2.split(' ');
-      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
-        return `${parts1[0]} \u2013 ${t2}`;
-      }
-      return `${t1} \u2013 ${t2}`;
-    }
+function formatTime(isoString, isEndTime = false) {
+  if (!isoString) return '';
+  const d = new Date(isoString);
 
-    // --- State and URL Controls ---
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasExplicitAhead = urlParams.has('ahead');
-    const isNamed60 = window.location.pathname.includes('60');
-    const defaultAhead = isNamed60 ? '60' : '15';
-    const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
-    const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
+  // Late-night CourtReserve truncations (23:59 -> 1:00 AM)
+  if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
+    return '1:00 AM';
+  }
 
-    // Theme Cycler (?cycle=10 or ?cycle=true)
-    const cycleParam = urlParams.get('cycle');
-    const isCycling = cycleParam !== null && cycleParam !== 'false';
-    const cycleSeconds = (isCycling && !isNaN(parseInt(cycleParam, 10))) 
-      ? Math.max(1, parseInt(cycleParam, 10)) 
-      : 10;
-    let cycleIndex = 0;
+  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+}
 
-    let nextTransitionTargetEpoch = null;
-
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
-      updateCountdown();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    function updateCountdown() {
-      const countdownBox = document.getElementById('countdown-box');
-      const countdownVal = document.getElementById('transition-countdown');
-      
-      if (!nextTransitionTargetEpoch) {
-        countdownBox.classList.remove('is-active');
-        return;
-      }
-
-      const diffMs = nextTransitionTargetEpoch - Date.now();
-
-      // Show countdown only within 15 minutes of transition
-      if (diffMs > 0 && diffMs <= 15 * 60 * 1000) {
-        const totalSecs = Math.floor(diffMs / 1000);
-        const m = Math.floor(totalSecs / 60);
-        const s = totalSecs % 60;
-        countdownVal.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        countdownBox.classList.add('is-active');
-      } else {
-        countdownBox.classList.remove('is-active');
-      }
-    }
-
-    const themeDisplayNames = {
-      'theme-tiffany': 'Tiffany',
-      'theme-usopen': 'US Open',
-      'theme-apple': 'Apple',
-      'theme-rolex': 'Rolex',
-      'theme-porsche': 'Porsche',
-      'theme-rolandgarros': 'Roland-Garros',
-      'theme-ausopen': 'Australian Open',
-      'theme-vice': 'Miami Vice',
-      'theme-gulfracing': 'Gulf Racing',
-      'theme-masters': 'Masters',
-      'theme-wimbledon': 'Wimbledon',
-      'theme-monaco': 'Monaco GP',
-      'theme-cyberpunk': 'Tokyo Cyberpunk',
-      'theme-ferrari': 'Ferrari Corsa',
-      'theme-glacier': 'Nordic Glacier',
-      'theme-desertclay': 'Desert Clay',
-      'theme-astonmartin': 'Aston Martin AMR',
-      'theme-solarflare': 'Solar Flare',
-      'theme-stealth': 'Stealth Titanium',
-      'theme-lakers': 'Showtime',
-      'theme-yankees': 'NY Yankees',
-      'theme-mets': 'NY Mets',
-      'theme-knicks': 'NY Knicks',
-      'theme-nets': 'Brooklyn Nets',
-      'theme-liberty': 'NY Liberty',
-      'theme-giants': 'NY Giants',
-      'theme-jets': 'NY Jets',
-      'theme-rangers': 'NY Rangers',
-      'theme-islanders': 'NY Islanders',
-      'theme-nycfc': 'NYCFC'
-    };
-
-    function applyDynamicTheme(targetTime) {
-      const allThemes = Object.keys(themeDisplayNames);
-      let themeToApply = 'theme-apple';
-
-      if (isCycling) {
-        themeToApply = allThemes[cycleIndex % allThemes.length];
-      } else {
-        const urlTheme = (urlParams.get('theme') || '').toLowerCase().trim();
-        if (urlTheme && allThemes.includes(`theme-${urlTheme}`)) {
-          themeToApply = `theme-${urlTheme}`;
-        } else {
-          const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
-
-          if (totalMinutes >= 420 && totalMinutes < 660) {
-            themeToApply = 'theme-tiffany';
-          } else if (totalMinutes >= 660 && totalMinutes < 1035) {
-            themeToApply = 'theme-usopen';
-          } else if (totalMinutes >= 1035 && totalMinutes < 1155) {
-            themeToApply = 'theme-apple';
-          } else if (totalMinutes >= 1155 && totalMinutes < 1275) {
-            themeToApply = 'theme-rolex';
-          } else {
-            themeToApply = 'theme-porsche';
-          }
-        }
-      }
-
-      document.body.classList.remove(...allThemes);
-      document.body.classList.add(themeToApply);
-
-      const displayName = themeDisplayNames[themeToApply] || 'Default';
-      const themePill = document.getElementById('theme-pill');
-      if (themePill) {
-        themePill.textContent = isCycling 
-          ? `Theme: ${displayName} (${(cycleIndex % allThemes.length) + 1}/${allThemes.length})` 
-          : `Theme: ${displayName}`;
-      }
-    }
-
-    async function refreshDisplay() {
-      try {
-        const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
-        if (!res.ok) throw new Error("Schedule file not found");
-        const data = await res.json();
-
-        const now = new Date();
-        document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        
-        if (data.lastUpdated) {
-          const syncDate = new Date(data.lastUpdated);
-          document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
-        }
-
-        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
-        const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-
-        applyDynamicTheme(targetTime);
-
-        document.getElementById('target-mode-pill').textContent = isPreview 
-          ? `Target: ${targetTimeString}` 
-          : 'Target: Live';
-
-        const isRunningAtTarget = (startIso, endIso) => {
-          if (!startIso || !endIso) return false;
-          const s = new Date(startIso);
-          let e = new Date(endIso);
-
-          if (e.getHours() === 23 && e.getMinutes() === 59) {
-            e = new Date(e.getTime() + 61 * 60 * 1000);
-          }
-
-          return s <= targetTime && e > targetTime;
-        };
-
-        const events = Array.isArray(data) ? data : (data.events || []);
-
-        let closestFutureEpoch = null;
-        events.forEach(e => {
-          const s = new Date(e.startTime || e.StartTime).getTime();
-          let endDt = new Date(e.endTime || e.EndTime);
-          if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
-            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
-          }
-          const endEpoch = endDt.getTime();
-
-          [s, endEpoch].forEach(epoch => {
-            if (epoch > now.getTime()) {
-              if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
-                closestFutureEpoch = epoch;
-              }
-            }
-          });
-        });
-        nextTransitionTargetEpoch = closestFutureEpoch;
-        updateCountdown();
-
-        const eventMap = {};
-
-        events.forEach(e => {
-          if (!isRunningAtTarget(e.startTime, e.endTime)) return;
-          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
-
-          let courtsRaw = e.courts || e.Courts || [];
-          if (!Array.isArray(courtsRaw)) courtsRaw = [courtsRaw];
-          const courtNumbers = courtsRaw
-            .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
-            .filter(Boolean)
-            .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
-
-          const queueInfo = e.paddleQueue || e.PaddleQueue || e.queueText || '';
-
-          if (!eventMap[key]) {
-            eventMap[key] = {
-              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
-              startTime: e.startTime || e.StartTime,
-              endTime: e.endTime || e.EndTime,
-              courts: new Set(courtNumbers),
-              queueText: queueInfo
-            };
-          } else {
-            courtNumbers.forEach(c => eventMap[key].courts.add(c));
-            if (queueInfo && !eventMap[key].queueText) {
-              eventMap[key].queueText = queueInfo;
-            }
-          }
-        });
-
-        const sessions = [];
-        Object.values(eventMap).forEach(ev => {
-          const arr = Array.from(ev.courts);
-          const courtsLabel = arr.length > 0 ? `on ${arr.join(' ')}` : 'on TBD';
-
-          sessions.push({
-            title: ev.title,
-            courtsLabel: courtsLabel,
-            startTime: ev.startTime,
-            endTime: ev.endTime,
-            queueText: ev.queueText
-          });
-        });
-
-        let bestWindowTag = '';
-        if (sessions.length > 0) {
-          const windowCounts = {};
-          sessions.forEach(item => {
-            const w = formatTimeWindow(item.startTime, item.endTime);
-            windowCounts[w] = (windowCounts[w] || 0) + 1;
-          });
-          const bestWindow = Object.keys(windowCounts).reduce((a, b) => windowCounts[a] >= windowCounts[b] ? a : b);
-          bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
-        }
-
-        const subtitleText = isPreview 
-          ? `Sessions (${targetTimeString} Preview)` 
-          : 'Sessions';
-
-        const titleEl = document.getElementById('header-title');
-        titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
-
-        const container = document.getElementById('session-container');
-        container.innerHTML = '';
-
-        if (sessions.length === 0) {
-          container.className = '';
-          container.innerHTML = `
-            <div class="no-sessions">
-              <h2>No Active Sessions</h2>
-            </div>
-          `;
-          return;
-        }
-
-        sessions.sort((a, b) => {
-          const keyA = (a.title || '').trim().substring(0, 3);
-          const keyB = (b.title || '').trim().substring(0, 3);
-          const numA = parseFloat(keyA);
-          const numB = parseFloat(keyB);
-
-          if (!isNaN(numA) && !isNaN(numB)) {
-            if (numA !== numB) return numA - numB;
-          } else {
-            const strComp = keyA.localeCompare(keyB, undefined, { numeric: true, sensitivity: 'base' });
-            if (strComp !== 0) return strComp;
-          }
-
-          return new Date(a.startTime) - new Date(b.startTime);
-        });
-
-        const totalSessions = Math.min(sessions.length, 6);
-        container.className = `count-${totalSessions}`;
-
-        sessions.forEach(item => {
-          let s = new Date(item.startTime);
-          let e = new Date(item.endTime);
-          if (e.getHours() === 23 && e.getMinutes() === 59) {
-            e = new Date(e.getTime() + 61 * 60 * 1000);
-          }
-
-          const isNow = now >= s && now <= e;
-          const card = document.createElement('div');
-          card.className = `session-card ${isNow ? 'is-now' : ''}`;
-
-          card.innerHTML = `
-            <div class="session-title">${item.title}</div>
-            <div class="session-courts">${item.courtsLabel}</div>
-            ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
-          `;
-
-          container.appendChild(card);
-        });
-
-      } catch (err) {
-        console.error("Error updating sessions display:", err);
-      }
-    }
-
-    refreshDisplay();
-    setInterval(refreshDisplay, 30000);
-
-    if (isCycling) {
-      setInterval(() => {
-        cycleIndex++;
-        const now = new Date();
-        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
-        applyDynamicTheme(targetTime);
-      }, cycleSeconds * 1000);
-    }
-  </script>
-</body>
-</html>
+function formatTimeWindow(startIso, endIso) {
+  if (!startIso || !endIso) return '';
+  const t1 = formatTime(startIso, false);
+  const t2 = formatTime(endIso, true);
+  const parts1 = t1.split(' ');
+  const parts2 = t2.split(' ');
+  if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
+    return `${parts1[0]} \u2013 ${t2}`;
+  }
+  return `${t1} \u2013 ${t2}`;
+}
