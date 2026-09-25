@@ -115,12 +115,15 @@
       min-height: 0;
     }
 
-    /* Grid Layout Counts */
+    /* --- STRICT 2-COLUMN MAXIMUM GRID --- */
     main.count-1 { grid-template-columns: 1fr; }
     main.count-2 { grid-template-columns: 1fr 1fr; }
-    main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+    main.count-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    main.count-3 .session-card:first-child { grid-column: 1 / -1; }
     main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    main.count-5 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+    main.count-5 .session-card:last-child { grid-column: 1 / -1; }
+    main.count-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
 
     /* Card Styling */
     .session-card {
@@ -128,11 +131,11 @@
       border: 1px solid var(--card-border);
       border-left: 10px solid var(--theme-accent);
       border-radius: 18px;
-      padding: 2.5vh 2.2vw;
+      padding: 2.2vh 2.2vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1vh;
+      gap: 0.8vh;
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -145,11 +148,11 @@
       box-shadow: 0 0 35px rgba(255, 214, 10, 0.15);
     }
 
-    /* --- Strict Card Typography Scale --- */
+    /* --- Typography Hierarchy --- */
     .session-title {
-      font-size: clamp(2rem, 3.2vw, 4.4rem) !important;
+      font-size: clamp(1.8rem, 2.7vw, 3.8rem) !important;
       font-weight: 800 !important;
-      line-height: 1.1 !important;
+      line-height: 1.15 !important;
       color: var(--text-main) !important;
       letter-spacing: -0.01em !important;
       white-space: nowrap !important;
@@ -158,7 +161,7 @@
     }
 
     .session-courts {
-      font-size: clamp(1.6rem, 2.4vw, 3.2rem) !important;
+      font-size: clamp(1.5rem, 2.2vw, 3.0rem) !important;
       font-weight: 700 !important;
       line-height: 1.15 !important;
       color: var(--theme-accent) !important;
@@ -169,12 +172,12 @@
     }
 
     .paddle-queue {
-      font-size: clamp(1.1rem, 1.45vw, 1.85rem) !important;
+      font-size: clamp(1.05rem, 1.35vw, 1.75rem) !important;
       font-weight: 400 !important;
       line-height: 1.25 !important;
       color: var(--text-sub) !important;
-      opacity: 0.8 !important;
-      margin-top: 0.4vh !important;
+      opacity: 0.85 !important;
+      margin-top: 0.3vh !important;
       white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
@@ -322,7 +325,7 @@
         return 'queue at Court 1 paddle rack';
       }
       if (nums.some(n => n >= 4 && n <= 6)) {
-        return 'queue at Court 4 paddle rack';
+        return 'queue at Court 4 table';
       }
       if (nums.some(n => n >= 10)) {
         return 'queue at Court 10 paddle rack';
@@ -533,6 +536,10 @@
 
         let closestFutureEpoch = null;
         events.forEach(e => {
+          // Skip "Road" events when calculating transition countdown
+          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
+          if (/\bRoad\b/i.test(rawName)) return;
+
           const s = new Date(e.startTime || e.StartTime).getTime();
           let endDt = new Date(e.endTime || e.EndTime);
           if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
@@ -555,8 +562,12 @@
 
         events.forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
-          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
+          // Exclude Road events
+          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
+          if (/\bRoad\b/i.test(rawName)) return;
+
+          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
           const courtNumbers = extractSortedCourts(e.courts || e.Courts);
           const queueInfo = e.paddleQueue || e.PaddleQueue || e.queueText || '';
 
