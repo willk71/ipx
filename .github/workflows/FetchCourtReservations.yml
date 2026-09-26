@@ -77,50 +77,50 @@ jobs:
             CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
             curl -sL "$CAL_URL" -o data/hosts.ics
 
-            python3 -c "
-            import datetime, json, os, pytz, re
-            from icalendar import Calendar
+            python3 << 'EOF'
+import datetime, json, os, pytz, re
+from icalendar import Calendar
 
-            tz = pytz.timezone('America/New_York')
-            now_ny = datetime.datetime.now(tz)
-            today_ny = now_ny.date()
+tz = pytz.timezone('America/New_York')
+now_ny = datetime.datetime.now(tz)
+today_ny = now_ny.date()
 
-            hosts = []
-            if os.path.exists('data/hosts.ics'):
-                with open('data/hosts.ics', 'rb') as f:
-                    cal = Calendar.from_ical(f.read())
-                    for component in cal.walk('vevent'):
-                        dtstart_prop = component.get('dtstart')
-                        dtend_prop = component.get('dtend')
-                        if not dtstart_prop:
-                            continue
+hosts = []
+if os.path.exists('data/hosts.ics'):
+    with open('data/hosts.ics', 'rb') as f:
+        cal = Calendar.from_ical(f.read())
+        for component in cal.walk('vevent'):
+            dtstart_prop = component.get('dtstart')
+            dtend_prop = component.get('dtend')
+            if not dtstart_prop:
+                continue
 
-                        dtstart = dtstart_prop.dt
-                        dtend = dtend_prop.dt if dtend_prop else dtstart
-                        summary = str(component.get('summary', '')).strip()
+            dtstart = dtstart_prop.dt
+            dtend = dtend_prop.dt if dtend_prop else dtstart
+            summary = str(component.get('summary', '')).strip()
 
-                        if isinstance(dtstart, datetime.datetime):
-                            if dtstart.tzinfo is None:
-                                dtstart = pytz.utc.localize(dtstart)
-                            dtstart = dtstart.astimezone(tz)
-                            if isinstance(dtend, datetime.datetime):
-                                if dtend.tzinfo is None:
-                                    dtend = pytz.utc.localize(dtend)
-                                dtend = dtend.astimezone(tz)
+            if isinstance(dtstart, datetime.datetime):
+                if dtstart.tzinfo is None:
+                    dtstart = pytz.utc.localize(dtstart)
+                dtstart = dtstart.astimezone(tz)
+                if isinstance(dtend, datetime.datetime):
+                    if dtend.tzinfo is None:
+                        dtend = pytz.utc.localize(dtend)
+                    dtend = dtend.astimezone(tz)
 
-                            if dtstart.date() == today_ny:
-                                clean_title = summary.replace('Court Hosts:', '').replace('Court Host:', '').replace('Hosts:', '').replace('Host:', '').strip()
-                                names = [n.strip() for n in re.split(r'[,/&]|\band\b', clean_title) if n.strip()]
-                                for name in names:
-                                    hosts.append({
-                                        'start': dtstart.strftime('%H:%M'),
-                                        'end': dtend.strftime('%H:%M'),
-                                        'host': name
-                                    })
+                if dtstart.date() == today_ny:
+                    clean_title = summary.replace('Court Hosts:', '').replace('Court Host:', '').replace('Hosts:', '').replace('Host:', '').strip()
+                    names = [n.strip() for n in re.split(r'[,/&]|\band\b', clean_title) if n.strip()]
+                    for name in names:
+                        hosts.append({
+                            'start': dtstart.strftime('%H:%M'),
+                            'end': dtend.strftime('%H:%M'),
+                            'host': name
+                        })
 
-            with open('data/hosts.json', 'w') as out:
-                json.dump(hosts, out)
-            "
+with open('data/hosts.json', 'w') as out:
+    json.dump(hosts, out)
+EOF
 
             [ ! -f data/hosts.json ] && echo "[]" > data/hosts.json
 
