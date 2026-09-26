@@ -237,16 +237,16 @@ body.page-rosters main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-templa
   text-overflow: ellipsis !important;
 }
 
-/* Court Host Bar */
+/* Court Host Bar - 30% Larger */
 .court-host-bar {
   display: flex !important;
   align-items: center;
   justify-content: center;
-  gap: 1.2vw;
+  gap: 1.5vw;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--card-border-active);
-  border-radius: 12px;
-  padding: 0.8vh 1.8vw;
+  border-radius: 14px;
+  padding: 1.1vh 2.2vw;
   margin: 0.8vh 0;
   flex-shrink: 0;
   backdrop-filter: blur(20px);
@@ -254,7 +254,7 @@ body.page-rosters main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-templa
 }
 
 .host-badge-label {
-  font-size: clamp(1.05rem, 1.3vw, 1.6rem);
+  font-size: clamp(1.35rem, 1.7vw, 2.1rem);
   font-weight: 800;
   color: var(--theme-accent);
   text-transform: uppercase;
@@ -262,7 +262,7 @@ body.page-rosters main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-templa
 }
 
 .host-names {
-  font-size: clamp(1.25rem, 1.6vw, 2.1rem);
+  font-size: clamp(1.6rem, 2.1vw, 2.75rem);
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.01em;
