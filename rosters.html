@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Welcome to IPX! &ndash; Live Session Rosters</title>
-  <link rel="stylesheet" href="css/common.css?v=2.0.0" />
+  <title>Rosters</title>
+  <link rel="stylesheet" href="css/common.css?v=2.2.0" />
 </head>
 <body class="page-rosters">
   <header>
@@ -26,16 +26,19 @@
   </main>
 
   <footer class="rosters-footer">
-    <span id="theme-pill">Theme: --</span>
-    <span>&bull;</span>
-    <span id="target-mode-pill">Target: --</span>
-    <span>&bull;</span>
-    <span id="data-refresh-time">Data Sync: --</span>
-    <span>&bull;</span>
-    <span id="page-refresh-time">Display Updated: --</span>
+    <div class="footer-meta-grid">
+      <span id="theme-pill">Theme: --</span>
+      <span id="data-refresh-time">Data Sync: --</span>
+      <span id="target-mode-pill">Target: --</span>
+      <span id="page-refresh-time">Display: --</span>
+    </div>
+    <div class="footer-countdown-container" id="countdown-box">
+      <span class="countdown-label">Next session starts:</span>
+      <span class="countdown-clock" id="transition-countdown">--:--</span>
+    </div>
   </footer>
 
-  <script src="js/common.js?v=2.0.0"></script>
+  <script src="js/common.js?v=2.2.0"></script>
   <script>
     async function refreshDisplay() {
       try {
@@ -71,9 +74,33 @@
         };
 
         const events = Array.isArray(data) ? data : (data.events || []);
-        const sessions = [];
 
+        let closestFutureEpoch = null;
+        events.forEach(e => {
+          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
+          if (/\bRoad\b/i.test(rawName)) return;
+
+          const s = new Date(e.startTime || e.StartTime).getTime();
+          let endDt = new Date(e.endTime || e.EndTime);
+          if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
+            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
+          }
+          const endEpoch = endDt.getTime();
+
+          [s, endEpoch].forEach(epoch => {
+            if (epoch > now.getTime()) {
+              if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
+                closestFutureEpoch = epoch;
+              }
+            }
+          });
+        });
+        nextTransitionTargetEpoch = closestFutureEpoch;
+        updateCountdown();
+
+        const sessions = [];
         const eventMap = {};
+
         events.forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
 
