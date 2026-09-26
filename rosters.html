@@ -5,330 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Welcome to IPX! &ndash; Live Session Rosters</title>
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%);
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.10);
-      --card-border-active: rgba(255, 214, 10, 0.55);
-
-      --theme-accent: #ffd60a;
-      --text-main: #ffffff;
-      --text-sub: #ebebf5;
-      --text-muted: #8e8e93;
-
-      --accent-green: #34c759;
-      --accent-green-glow: rgba(52, 199, 89, 0.65);
-
-      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    }
-
-    /* --- 30 IPX THEMES PALETTE --- */
-    body.theme-tiffany      { --bg-gradient: radial-gradient(circle at 50% 0%, #003b36 0%, #001f1c 65%, #000000 100%); --theme-accent: #81d8d0; --card-border-active: rgba(129, 216, 208, 0.6); }
-    body.theme-usopen       { --bg-gradient: radial-gradient(circle at 50% 0%, #0b2247 0%, #061329 65%, #000000 100%); --theme-accent: #c6e000; --card-border-active: rgba(198, 224, 0, 0.6); }
-    body.theme-apple        { --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c1e 0%, #121214 65%, #000000 100%); --theme-accent: #ffd60a; --card-border-active: rgba(255, 214, 10, 0.6); }
-    body.theme-rolex        { --bg-gradient: radial-gradient(circle at 50% 0%, #002e1b 0%, #00170d 65%, #000000 100%); --theme-accent: #d4af37; --card-border-active: rgba(212, 175, 55, 0.6); }
-    body.theme-porsche      { --bg-gradient: radial-gradient(circle at 50% 0%, #3a0007 0%, #1a0003 65%, #000000 100%); --theme-accent: #d5001c; --card-border-active: rgba(213, 0, 28, 0.6); }
-    body.theme-rolandgarros { --bg-gradient: radial-gradient(circle at 50% 0%, #3d1b11 0%, #1f0b05 65%, #000000 100%); --theme-accent: #cb5a2b; --card-border-active: rgba(203, 90, 43, 0.6); }
-    body.theme-ausopen      { --bg-gradient: radial-gradient(circle at 50% 0%, #003366 0%, #001833 65%, #000000 100%); --theme-accent: #0091df; --card-border-active: rgba(0, 145, 223, 0.6); }
-    body.theme-vice         { --bg-gradient: radial-gradient(circle at 50% 0%, #2a0845 0%, #110022 65%, #000000 100%); --theme-accent: #ff007f; --card-border-active: rgba(255, 0, 127, 0.6); }
-    body.theme-gulfracing   { --bg-gradient: radial-gradient(circle at 50% 0%, #1c2e3d 0%, #0b151e 65%, #000000 100%); --theme-accent: #ff7300; --card-border-active: rgba(255, 115, 0, 0.6); }
-    body.theme-masters      { --bg-gradient: radial-gradient(circle at 50% 0%, #003322 0%, #001a11 65%, #000000 100%); --theme-accent: #006747; --card-border-active: rgba(0, 103, 71, 0.6); }
-    body.theme-wimbledon    { --bg-gradient: radial-gradient(circle at 50% 0%, #122b18 0%, #07140a 65%, #000000 100%); --theme-accent: #582c83; --card-border-active: rgba(88, 44, 131, 0.6); }
-    body.theme-monaco       { --bg-gradient: radial-gradient(circle at 50% 0%, #301928 0%, #170912 65%, #000000 100%); --theme-accent: #e6b800; --card-border-active: rgba(230, 184, 0, 0.6); }
-    body.theme-cyberpunk    { --bg-gradient: radial-gradient(circle at 50% 0%, #051e2e 0%, #000a12 65%, #000000 100%); --theme-accent: #00ffcc; --card-border-active: rgba(0, 255, 204, 0.6); }
-    body.theme-ferrari      { --bg-gradient: radial-gradient(circle at 50% 0%, #400000 0%, #1a0000 65%, #000000 100%); --theme-accent: #ff2800; --card-border-active: rgba(255, 40, 0, 0.6); }
-    body.theme-glacier      { --bg-gradient: radial-gradient(circle at 50% 0%, #102636 0%, #06111a 65%, #000000 100%); --theme-accent: #76c7c0; --card-border-active: rgba(118, 199, 192, 0.6); }
-    body.theme-desertclay   { --bg-gradient: radial-gradient(circle at 50% 0%, #381a10 0%, #190a05 65%, #000000 100%); --theme-accent: #e07a5f; --card-border-active: rgba(224, 122, 95, 0.6); }
-    body.theme-astonmartin  { --bg-gradient: radial-gradient(circle at 50% 0%, #002824 0%, #001210 65%, #000000 100%); --theme-accent: #cedc00; --card-border-active: rgba(206, 220, 0, 0.6); }
-    body.theme-solarflare   { --bg-gradient: radial-gradient(circle at 50% 0%, #381800 0%, #190800 65%, #000000 100%); --theme-accent: #ff8c00; --card-border-active: rgba(255, 140, 0, 0.6); }
-    body.theme-stealth      { --bg-gradient: radial-gradient(circle at 50% 0%, #202024 0%, #101012 65%, #000000 100%); --theme-accent: #90a4ae; --card-border-active: rgba(144, 164, 174, 0.6); }
-    body.theme-lakers       { --bg-gradient: radial-gradient(circle at 50% 0%, #2d1038 0%, #15001c 65%, #000000 100%); --theme-accent: #fdb927; --card-border-active: rgba(253, 185, 39, 0.6); }
-    body.theme-yankees      { --bg-gradient: radial-gradient(circle at 50% 0%, #0a1728 0%, #030810 65%, #000000 100%); --theme-accent: #c4ced4; --card-border-active: rgba(196, 206, 212, 0.6); }
-    body.theme-mets         { --bg-gradient: radial-gradient(circle at 50% 0%, #002047 0%, #000e20 65%, #000000 100%); --theme-accent: #ff5910; --card-border-active: rgba(255, 89, 16, 0.6); }
-    body.theme-knicks       { --bg-gradient: radial-gradient(circle at 50% 0%, #001f42 0%, #000c1c 65%, #000000 100%); --theme-accent: #f58426; --card-border-active: rgba(245, 132, 38, 0.6); }
-    body.theme-nets         { --bg-gradient: radial-gradient(circle at 50% 0%, #1f1f1f 0%, #0d0d0d 65%, #000000 100%); --theme-accent: #ffffff; --card-border-active: rgba(255, 255, 255, 0.6); }
-    body.theme-liberty      { --bg-gradient: radial-gradient(circle at 50% 0%, #002826 0%, #001211 65%, #000000 100%); --theme-accent: #6eceb2; --card-border-active: rgba(110, 206, 178, 0.6); }
-    body.theme-giants       { --bg-gradient: radial-gradient(circle at 50% 0%, #081d3d 0%, #020b17 65%, #000000 100%); --theme-accent: #ca122d; --card-border-active: rgba(202, 18, 45, 0.6); }
-    body.theme-jets         { --bg-gradient: radial-gradient(circle at 50% 0%, #092a18 0%, #031209 65%, #000000 100%); --theme-accent: #ffffff; --card-border-active: rgba(255, 255, 255, 0.6); }
-    body.theme-rangers      { --bg-gradient: radial-gradient(circle at 50% 0%, #00264d 0%, #001021 65%, #000000 100%); --theme-accent: #c8102e; --card-border-active: rgba(200, 16, 46, 0.6); }
-    body.theme-islanders    { --bg-gradient: radial-gradient(circle at 50% 0%, #002d59 0%, #001429 65%, #000000 100%); --theme-accent: #f47d30; --card-border-active: rgba(244, 125, 48, 0.6); }
-    body.theme-nycfc        { --bg-gradient: radial-gradient(circle at 50% 0%, #0a1c30 0%, #040c14 65%, #000000 100%); --theme-accent: #6cace4; --card-border-active: rgba(108, 172, 228, 0.6); }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-stack) !important;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      padding: 2.2vh 3vw 1.5vh 3vw;
-      position: relative;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 1.2vh;
-      flex-shrink: 0;
-      gap: 2vw;
-    }
-
-    .header-left {
-      min-width: 0;
-      flex: 1;
-      display: flex;
-      align-items: baseline;
-    }
-
-    .header-left h1 {
-      font-size: clamp(2rem, 3vw, 3.6rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--text-main);
-      line-height: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: baseline;
-    }
-
-    .header-separator {
-      margin: 0 0.55em;
-      color: var(--text-muted);
-      font-weight: 300;
-      opacity: 0.7;
-    }
-
-    .header-window {
-      color: var(--theme-accent);
-      font-weight: 600;
-      margin-left: 0.4em;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: baseline;
-      flex-shrink: 0;
-      text-align: right;
-    }
-
-    .clock {
-      font-size: clamp(2.4rem, 3.5vw, 4rem);
-      font-weight: 300;
-      color: var(--theme-accent);
-      letter-spacing: -0.03em;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    main {
-      flex: 1;
-      display: grid;
-      gap: 1.6vh 1.6vw;
-      margin-top: 1.8vh;
-      overflow: hidden;
-      min-height: 0;
-    }
-
-    main.count-1 { grid-template-columns: 1fr 1fr; }
-    main.count-2 { grid-template-columns: 1fr 1fr; }
-    main.count-3 { grid-template-columns: 1fr 1fr 1fr; }
-    main.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    main.count-5, main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
-
-    .roster-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-left: 10px solid var(--theme-accent);
-      border-radius: 18px;
-      padding: 1.8vh 1.8vw;
-      display: flex;
-      flex-direction: column;
-      gap: 1vh;
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .roster-card.single-session {
-      grid-column: 1 / 2;
-    }
-
-    .roster-card.is-now {
-      border-color: var(--card-border-active);
-      box-shadow: 0 0 35px rgba(255, 214, 10, 0.15);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 0.8vh;
-      flex-shrink: 0;
-    }
-
-    .header-titles {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2vh;
-      min-width: 0;
-    }
-
-    .line-title {
-      font-size: var(--title-font-size, clamp(1.35rem, 1.7vw, 2.1rem));
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      color: var(--text-main);
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .line-courts {
-      font-size: var(--courts-font-size, clamp(1.05rem, 1.35vw, 1.6rem));
-      font-weight: 500;
-      color: var(--theme-accent);
-      letter-spacing: -0.01em;
-    }
-
-    .card-meta {
-      text-align: right;
-      flex-shrink: 0;
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .count-badge {
-      font-size: clamp(0.75rem, 0.85vw, 0.95rem);
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--theme-accent);
-      padding: 0.22rem 0.6rem;
-      border-radius: 999px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .player-list {
-      column-count: var(--roster-cols, 2);
-      column-gap: var(--roster-col-gap, 1.8vw);
-      column-fill: auto;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .player-item {
-      font-size: var(--roster-font-size, clamp(0.95rem, 1.1vw, 1.3rem));
-      font-weight: 500;
-      letter-spacing: -0.015em;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: var(--roster-row-gap, 0.7vh);
-      break-inside: avoid;
-      page-break-inside: avoid;
-      display: flex;
-      align-items: center;
-      gap: 0.55em;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 0.55em;
-      height: 0.55em;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .player-item.is-checked-in {
-      color: var(--text-main);
-      opacity: 1;
-    }
-    .player-item.is-checked-in .status-dot {
-      background: var(--accent-green);
-      box-shadow: 0 0 8px var(--accent-green-glow);
-    }
-
-    .player-item.is-pending {
-      color: var(--text-muted);
-      opacity: 0.65;
-    }
-    .player-item.is-pending .status-dot {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-    }
-
-    .player-empty {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      font-style: italic;
-      padding-top: 0.5vh;
-    }
-
-    footer {
-      flex-shrink: 0;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1.2rem;
-      padding-top: 0.8vh;
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      color: rgba(255, 255, 255, 0.35);
-      font-variant-numeric: tabular-nums;
-    }
-
-    footer span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .no-sessions {
-      grid-column: 1 / -1;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border: 1px dashed rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      text-align: center;
-      padding: 6vh;
-    }
-
-    .no-sessions h2 {
-      font-size: clamp(1.8rem, 2.8vw, 3rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--text-sub);
-    }
-  </style>
+  <link rel="stylesheet" href="css/common.css?v=2.0.0" />
 </head>
-<body>
+<body class="page-rosters">
   <header>
     <div class="header-left">
       <h1 id="header-title">
@@ -346,7 +25,7 @@
     </div>
   </main>
 
-  <footer>
+  <footer class="rosters-footer">
     <span id="theme-pill">Theme: --</span>
     <span>&bull;</span>
     <span id="target-mode-pill">Target: --</span>
@@ -356,159 +35,8 @@
     <span id="page-refresh-time">Display Updated: --</span>
   </footer>
 
+  <script src="js/common.js?v=2.0.0"></script>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasExplicitAhead = urlParams.has('ahead');
-    const isNamed60 = window.location.pathname.includes('60');
-    const defaultAhead = isNamed60 ? '60' : '15';
-    const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
-    const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
-
-    // --- Theme Cycler Controls ---
-    const cycleParam = urlParams.get('cycle');
-    const isCycling = cycleParam !== null && cycleParam !== 'false';
-    const cycleSeconds = (isCycling && !isNaN(parseInt(cycleParam, 10))) 
-      ? Math.max(1, parseInt(cycleParam, 10)) 
-      : 10;
-    let cycleIndex = 0;
-
-    const themeDisplayNames = {
-      'theme-tiffany': 'Tiffany',
-      'theme-usopen': 'US Open',
-      'theme-apple': 'Apple',
-      'theme-rolex': 'Rolex',
-      'theme-porsche': 'Porsche',
-      'theme-rolandgarros': 'Roland-Garros',
-      'theme-ausopen': 'Australian Open',
-      'theme-vice': 'Miami Vice',
-      'theme-gulfracing': 'Gulf Racing',
-      'theme-masters': 'Masters',
-      'theme-wimbledon': 'Wimbledon',
-      'theme-monaco': 'Monaco GP',
-      'theme-cyberpunk': 'Tokyo Cyberpunk',
-      'theme-ferrari': 'Ferrari Corsa',
-      'theme-glacier': 'Nordic Glacier',
-      'theme-desertclay': 'Desert Clay',
-      'theme-astonmartin': 'Aston Martin AMR',
-      'theme-solarflare': 'Solar Flare',
-      'theme-stealth': 'Stealth Titanium',
-      'theme-lakers': 'Showtime',
-      'theme-yankees': 'NY Yankees',
-      'theme-mets': 'NY Mets',
-      'theme-knicks': 'NY Knicks',
-      'theme-nets': 'Brooklyn Nets',
-      'theme-liberty': 'NY Liberty',
-      'theme-giants': 'NY Giants',
-      'theme-jets': 'NY Jets',
-      'theme-rangers': 'NY Rangers',
-      'theme-islanders': 'NY Islanders',
-      'theme-nycfc': 'NYCFC'
-    };
-
-    function applyDynamicTheme(targetTime) {
-      const allThemes = Object.keys(themeDisplayNames);
-      let themeToApply = 'theme-apple';
-
-      if (isCycling) {
-        themeToApply = allThemes[cycleIndex % allThemes.length];
-      } else {
-        const urlTheme = (urlParams.get('theme') || '').toLowerCase().trim();
-        if (urlTheme && allThemes.includes(`theme-${urlTheme}`)) {
-          themeToApply = `theme-${urlTheme}`;
-        } else {
-          // Time window assignments
-          const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
-          if (totalMinutes >= 420 && totalMinutes < 660) {
-            themeToApply = 'theme-tiffany';
-          } else if (totalMinutes >= 660 && totalMinutes < 1035) {
-            themeToApply = 'theme-usopen';
-          } else if (totalMinutes >= 1035 && totalMinutes < 1155) {
-            themeToApply = 'theme-apple';
-          } else if (totalMinutes >= 1155 && totalMinutes < 1275) {
-            themeToApply = 'theme-rolex';
-          } else {
-            themeToApply = 'theme-porsche';
-          }
-        }
-      }
-
-      document.body.classList.remove(...allThemes);
-      document.body.classList.add(themeToApply);
-
-      const displayName = themeDisplayNames[themeToApply] || 'Default';
-      const themePill = document.getElementById('theme-pill');
-      if (themePill) {
-        themePill.textContent = isCycling 
-          ? `Theme: ${displayName} (${(cycleIndex % allThemes.length) + 1}/${allThemes.length})` 
-          : `Theme: ${displayName}`;
-      }
-    }
-
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('live-clock').textContent = now.toLocaleTimeString([], {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    function formatTime(isoString, isEndTime = false) {
-      if (!isoString) return '';
-      const d = new Date(isoString);
-      if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
-        return '1:00 AM';
-      }
-      return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-    }
-
-    function formatTimeWindow(startIso, endIso) {
-      if (!startIso || !endIso) return '';
-      const t1 = formatTime(startIso, false);
-      const t2 = formatTime(endIso, true);
-      const parts1 = t1.split(' ');
-      const parts2 = t2.split(' ');
-      if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
-        return `${parts1[0]} \u2013 ${t2}`;
-      }
-      return `${t1} \u2013 ${t2}`;
-    }
-
-    function cleanCourtName(rawName) {
-      if (!rawName) return '';
-      return String(rawName)
-        .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
-        .replace(/\s*\(\s*Streaming\s*\)/gi, '')
-        .replace(/^Court\s*/i, '')
-        .trim();
-    }
-
-    function toSentenceCase(str) {
-      if (!str) return '';
-      return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      }).trim();
-    }
-
-    function cleanTitle(rawTitle) {
-      if (!rawTitle) return '';
-      let firstSegment = String(rawTitle).split('|')[0].trim();
-      firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
-      firstSegment = firstSegment.replace(/[()]/g, '');
-      firstSegment = firstSegment
-        .replace(/\bSessions?\b/gi, '')
-        .replace(/\bOpen\s*Play\b/gi, '')
-        .replace(/\bPrime\s*Time\b/gi, '');
-
-      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
-      firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
-
-      let formatted = toSentenceCase(firstSegment);
-      return formatted.replace(/\bP4p\b/gi, 'P4P');
-    }
-
     async function refreshDisplay() {
       try {
         const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
@@ -548,14 +76,13 @@
         const eventMap = {};
         events.forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
-          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
 
-          let courtsRaw = e.courts || e.Courts || [];
-          if (!Array.isArray(courtsRaw)) courtsRaw = [courtsRaw];
-          const courtNumbers = courtsRaw
-            .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
-            .filter(Boolean)
-            .sort((a, b) => (parseInt(a) || a) - (parseInt(b) || b));
+          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
+          if (/\bRoad\b/i.test(rawName)) return;
+
+          const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
+          const courtNumbers = extractSortedCourts(e.courts || e.Courts);
+          const queueInfo = e.paddleQueue || e.PaddleQueue || e.queueText || '';
 
           if (!eventMap[key]) {
             eventMap[key] = {
@@ -563,10 +90,14 @@
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
               courts: new Set(courtNumbers),
+              queueText: queueInfo,
               players: new Map()
             };
           } else {
             courtNumbers.forEach(c => eventMap[key].courts.add(c));
+            if (queueInfo && !eventMap[key].queueText) {
+              eventMap[key].queueText = queueInfo;
+            }
           }
 
           let pName = e.playerName;
@@ -589,9 +120,7 @@
         });
 
         Object.values(eventMap).forEach(ev => {
-          const arr = Array.from(ev.courts);
-          const courtsLabel = arr.length > 0 ? `on ${arr.join(', ')}` : 'on TBD';
-          
+          const courtsLabel = formatCourtsLabel(ev.courts, 'rosters');
           const sortedPlayers = Array.from(ev.players.entries())
             .map(([name, checkedIn]) => ({ name, checkedIn }))
             .sort((a, b) => a.name.localeCompare(b.name));
@@ -788,15 +317,6 @@
 
     refreshDisplay();
     setInterval(refreshDisplay, 30000);
-
-    if (isCycling) {
-      setInterval(() => {
-        cycleIndex++;
-        const now = new Date();
-        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
-        applyDynamicTheme(targetTime);
-      }, cycleSeconds * 1000);
-    }
   </script>
 </body>
 </html>
