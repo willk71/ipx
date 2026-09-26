@@ -6,23 +6,16 @@ on:
     - cron: '*/15 * * * *'
 
     # Weekend Daytime Peak: 8:45 AM - 10:00 PM EDT (12:45 UTC - 02:00 UTC)
-    # Sat/Sun morning through afternoon
     - cron: '45-55/5 12 * * 6,0'
     - cron: '*/5 13-23 * * 6,0'
-    # Sat/Sun evening transitioning across UTC midnight (Sun/Mon UTC)
     - cron: '*/5 0-1 * * 0,1'
     - cron: '0 2 * * 0,1'
 
     # Weekday Evening Bursts:
-    # Burst 1: 5:20 PM - 6:30 PM EDT (21:20 - 22:30 UTC)
     - cron: '20-55/5 21 * * 1-5'
     - cron: '0-30/5 22 * * 1-5'
-
-    # Burst 2: 7:20 PM - 8:30 PM EDT (23:20 - 00:30 UTC)
     - cron: '20-55/5 23 * * 1-5'
     - cron: '0-30/5 0 * * 2-6'
-
-    # Burst 3: 9:20 PM - 10:30 PM EDT (01:20 - 02:30 UTC)
     - cron: '20-55/5 1 * * 2-6'
     - cron: '0-30/5 2 * * 2-6'
 
@@ -53,6 +46,53 @@ jobs:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
         run: |
+          # Write the Python parser script to disk once
+          cat << 'PY_SCRIPT' > /tmp/parse_hosts.py
+          import datetime, json, os, pytz, re
+          from icalendar import Calendar
+
+          tz = pytz.timezone('America/New_York')
+          now_ny = datetime.datetime.now(tz)
+          today_ny = now_ny.date()
+
+          hosts = []
+          if os.path.exists('data/hosts.ics'):
+              with open('data/hosts.ics', 'rb') as f:
+                  cal = Calendar.from_ical(f.read())
+                  for component in cal.walk('vevent'):
+                      dtstart_prop = component.get('dtstart')
+                      dtend_prop = component.get('dtend')
+                      if not dtstart_prop:
+                          continue
+
+                      dtstart = dtstart_prop.dt
+                      dtend = dtend_prop.dt if dtend_prop else dtstart
+                      summary = str(component.get('summary', '')).strip()
+
+                      if isinstance(dtstart, datetime.datetime):
+                          if dtstart.tzinfo is None:
+                              dtstart = pytz.utc.localize(dtstart)
+                          dtstart = dtstart.astimezone(tz)
+                          if isinstance(dtend, datetime.datetime):
+                              if dtend.tzinfo is None:
+                                  dtend = pytz.utc.localize(dtend)
+                              dtend = dtend.astimezone(tz)
+
+                          if dtstart.date() == today_ny:
+                              clean_title = summary.replace('Court Hosts:', '').replace('Court Host:', '').replace('Hosts:', '').replace('Host:', '').strip()
+                              names = [n.strip() for n in re.split(r'[,/&]|\band\b', clean_title) if n.strip()]
+                              for name in names:
+                                  hosts.append({
+                                      'start': dtstart.strftime('%H:%M'),
+                                      'end': dtend.strftime('%H:%M'),
+                                      'host': name
+                                  })
+
+          with open('data/hosts.json', 'w') as out:
+              json.dump(hosts, out)
+          PY_SCRIPT
+
+          # Reusable sync function
           sync_pass() {
             local pass_num="$1"
             echo "=== Starting Sync Pass $pass_num ==="
@@ -77,51 +117,7 @@ jobs:
             CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
             curl -sL "$CAL_URL" -o data/hosts.ics
 
-            python3 << 'EOF'
-import datetime, json, os, pytz, re
-from icalendar import Calendar
-
-tz = pytz.timezone('America/New_York')
-now_ny = datetime.datetime.now(tz)
-today_ny = now_ny.date()
-
-hosts = []
-if os.path.exists('data/hosts.ics'):
-    with open('data/hosts.ics', 'rb') as f:
-        cal = Calendar.from_ical(f.read())
-        for component in cal.walk('vevent'):
-            dtstart_prop = component.get('dtstart')
-            dtend_prop = component.get('dtend')
-            if not dtstart_prop:
-                continue
-
-            dtstart = dtstart_prop.dt
-            dtend = dtend_prop.dt if dtend_prop else dtstart
-            summary = str(component.get('summary', '')).strip()
-
-            if isinstance(dtstart, datetime.datetime):
-                if dtstart.tzinfo is None:
-                    dtstart = pytz.utc.localize(dtstart)
-                dtstart = dtstart.astimezone(tz)
-                if isinstance(dtend, datetime.datetime):
-                    if dtend.tzinfo is None:
-                        dtend = pytz.utc.localize(dtend)
-                    dtend = dtend.astimezone(tz)
-
-                if dtstart.date() == today_ny:
-                    clean_title = summary.replace('Court Hosts:', '').replace('Court Host:', '').replace('Hosts:', '').replace('Host:', '').strip()
-                    names = [n.strip() for n in re.split(r'[,/&]|\band\b', clean_title) if n.strip()]
-                    for name in names:
-                        hosts.append({
-                            'start': dtstart.strftime('%H:%M'),
-                            'end': dtend.strftime('%H:%M'),
-                            'host': name
-                        })
-
-with open('data/hosts.json', 'w') as out:
-    json.dump(hosts, out)
-EOF
-
+            python3 /tmp/parse_hosts.py
             [ ! -f data/hosts.json ] && echo "[]" > data/hosts.json
 
             # 3. Process into schedule.json
@@ -196,9 +192,9 @@ EOF
           # --- Pass 1 (Immediate) ---
           sync_pass 1
 
-          # --- Pause for 2.7 minutes (160 seconds) ---
+          # --- Pause for 160 seconds ---
           echo "Pausing for 160 seconds before Pass 2..."
           sleep 160
 
-          # --- Pass 2 (~2.8 to 3 minutes into the 5-minute block) ---
+          # --- Pass 2 (~2.7 minutes later) ---
           sync_pass 2
