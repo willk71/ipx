@@ -118,8 +118,9 @@ header {
   text-align: right;
 }
 
+/* Base Top Clock (Used in Rosters header) */
 .clock {
-  font-size: clamp(2.4rem, 3.5vw, 4rem);
+  font-size: clamp(2.8rem, 4.2vw, 4.8rem);
   font-weight: 300;
   color: var(--theme-accent);
   letter-spacing: -0.03em;
@@ -129,12 +130,12 @@ header {
 }
 
 main {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   gap: 1.6vh 1.6vw;
-  margin-top: 1.8vh;
+  margin-top: 1.4vh;
   overflow: hidden;
-  min-height: 0;
 }
 
 /* --- INDEX 2-COL MAX GRID --- */
@@ -223,6 +224,37 @@ body.page-rosters main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-templa
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+}
+
+/* Court Host Bar */
+.court-host-bar {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2vw;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-border-active);
+  border-radius: 12px;
+  padding: 0.8vh 1.8vw;
+  margin: 0.8vh 0;
+  flex-shrink: 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.host-badge-label {
+  font-size: clamp(1.05rem, 1.3vw, 1.6rem);
+  font-weight: 800;
+  color: var(--theme-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.host-names {
+  font-size: clamp(1.25rem, 1.6vw, 2.1rem);
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
 }
 
 /* Rosters Typography and Badges */
@@ -372,38 +404,61 @@ footer {
 }
 
 footer.rosters-footer {
-  justify-content: flex-end;
-  gap: 1.2rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+/* Invisible 2-Row Metadata Grid */
+.footer-meta-grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  gap: 0.2vh 1.4vw;
+  font-size: clamp(0.65rem, 0.75vw, 0.82rem);
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.38);
+  border: none;
+  background: transparent;
+}
+
+.footer-meta-grid span {
+  white-space: nowrap;
 }
 
 .footer-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2vw;
 }
 
+/* Countdown Label and Clock (Scaled to match footer clock) */
 .footer-countdown-container {
   display: none;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--theme-accent);
-  font-weight: 600;
+  gap: 0.65vw;
 }
 
 .footer-countdown-container.is-active {
   display: inline-flex;
 }
 
-.footer-clock {
-  font-size: clamp(1.8rem, 2.4vw, 3rem);
-  font-weight: 300;
+.countdown-label {
+  font-size: clamp(1rem, 1.3vw, 1.6rem);
+  font-weight: 700;
   color: var(--theme-accent);
-  letter-spacing: -0.03em;
-  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* 20% Bigger Live Clock & Matched Countdown Value */
+.footer-clock,
+.countdown-clock {
+  font-size: clamp(2.2rem, 3.2vw, 3.6rem) !important;
+  font-weight: 300 !important;
+  color: var(--theme-accent) !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1 !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
 }
