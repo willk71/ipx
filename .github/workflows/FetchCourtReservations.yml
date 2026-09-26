@@ -2,20 +2,29 @@ name: Sync CourtReserve Schedule
 
 on:
   schedule:
-    # 15-minute baseline around the clock
+    # 24/7 15-minute baseline around the clock
     - cron: '*/15 * * * *'
 
+    # Weekend Daytime Peak: 8:45 AM - 10:00 PM EDT (12:45 UTC - 02:00 UTC)
+    # Sat/Sun morning through afternoon
+    - cron: '45-55/5 12 * * 6,0'
+    - cron: '*/5 13-23 * * 6,0'
+    # Sat/Sun evening transitioning across UTC midnight (Sun/Mon UTC)
+    - cron: '*/5 0-1 * * 0,1'
+    - cron: '0 2 * * 0,1'
+
+    # Weekday Evening Bursts:
     # Burst 1: 5:20 PM - 6:30 PM EDT (21:20 - 22:30 UTC)
-    - cron: '20-55/5 21 * * *'
-    - cron: '0-30/5 22 * * *'
+    - cron: '20-55/5 21 * * 1-5'
+    - cron: '0-30/5 22 * * 1-5'
 
     # Burst 2: 7:20 PM - 8:30 PM EDT (23:20 - 00:30 UTC)
-    - cron: '20-55/5 23 * * *'
-    - cron: '0-30/5 0 * * *'
+    - cron: '20-55/5 23 * * 1-5'
+    - cron: '0-30/5 0 * * 2-6'
 
     # Burst 3: 9:20 PM - 10:30 PM EDT (01:20 - 02:30 UTC)
-    - cron: '20-55/5 1 * * *'
-    - cron: '0-30/5 2 * * *'
+    - cron: '20-55/5 1 * * 2-6'
+    - cron: '0-30/5 2 * * 2-6'
 
   workflow_dispatch:
 
@@ -30,157 +39,166 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch Reservations, Events, and Check-Ins
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --quiet icalendar pytz
+
+      - name: Configure Git Author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run 2-Pass 3-Minute Sync Loop
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
         run: |
-          mkdir -p data
+          sync_pass() {
+            local pass_num="$1"
+            echo "=== Starting Sync Pass $pass_num ==="
 
-          TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
-          echo "Current NY Date: $TODAY_NY"
+            mkdir -p data
+            TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
+            FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
+            TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
+            AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
 
-          # 36-hour window (-12h to +24h)
-          FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
-          TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
+            # 1. Fetch CourtReserve APIs
+            RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
+            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
 
-          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
+            EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
+            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
 
-          # 1. Fetch Reservations
-          RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
-          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
+            CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
+            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
 
-          # 2. Fetch Events & Registrations
-          EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
-          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
+            # 2. Fetch and Parse Google Calendar Hosts
+            CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
+            curl -sL "$CAL_URL" -o data/hosts.ics
 
-          # 3. Fetch Check-In Attendance Report
-          CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
-          curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
+            python3 -c "
+            import datetime, json, os, pytz, re
+            from icalendar import Calendar
 
-      - name: Fetch and Parse Host Google Calendar
-        run: |
-          python3 -m pip install --quiet icalendar pytz
+            tz = pytz.timezone('America/New_York')
+            now_ny = datetime.datetime.now(tz)
+            today_ny = now_ny.date()
 
-          CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
-          curl -sL "$CAL_URL" -o data/hosts.ics
+            hosts = []
+            if os.path.exists('data/hosts.ics'):
+                with open('data/hosts.ics', 'rb') as f:
+                    cal = Calendar.from_ical(f.read())
+                    for component in cal.walk('vevent'):
+                        dtstart_prop = component.get('dtstart')
+                        dtend_prop = component.get('dtend')
+                        if not dtstart_prop:
+                            continue
 
-          python3 -c "
-          import datetime, json, os, pytz, re
-          from icalendar import Calendar
+                        dtstart = dtstart_prop.dt
+                        dtend = dtend_prop.dt if dtend_prop else dtstart
+                        summary = str(component.get('summary', '')).strip()
 
-          tz = pytz.timezone('America/New_York')
-          now_ny = datetime.datetime.now(tz)
-          today_ny = now_ny.date()
+                        if isinstance(dtstart, datetime.datetime):
+                            if dtstart.tzinfo is None:
+                                dtstart = pytz.utc.localize(dtstart)
+                            dtstart = dtstart.astimezone(tz)
+                            if isinstance(dtend, datetime.datetime):
+                                if dtend.tzinfo is None:
+                                    dtend = pytz.utc.localize(dtend)
+                                dtend = dtend.astimezone(tz)
 
-          hosts = []
+                            if dtstart.date() == today_ny:
+                                clean_title = summary.replace('Court Hosts:', '').replace('Court Host:', '').replace('Hosts:', '').replace('Host:', '').strip()
+                                names = [n.strip() for n in re.split(r'[,/&]|\band\b', clean_title) if n.strip()]
+                                for name in names:
+                                    hosts.append({
+                                        'start': dtstart.strftime('%H:%M'),
+                                        'end': dtend.strftime('%H:%M'),
+                                        'host': name
+                                    })
 
-          if os.path.exists('data/hosts.ics'):
-              with open('data/hosts.ics', 'rb') as f:
-                  cal = Calendar.from_ical(f.read())
-                  for component in cal.walk('vevent'):
-                      dtstart_prop = component.get('dtstart')
-                      dtend_prop = component.get('dtend')
-                      if not dtstart_prop:
-                          continue
+            with open('data/hosts.json', 'w') as out:
+                json.dump(hosts, out)
+            "
 
-                      dtstart = dtstart_prop.dt
-                      dtend = dtend_prop.dt if dtend_prop else dtstart
-                      summary = str(component.get('summary', '')).strip()
+            [ ! -f data/hosts.json ] && echo "[]" > data/hosts.json
 
-                      if isinstance(dtstart, datetime.datetime):
-                          if dtstart.tzinfo is None:
-                              dtstart = pytz.utc.localize(dtstart)
-                          dtstart = dtstart.astimezone(tz)
-                          if isinstance(dtend, datetime.datetime):
-                              if dtend.tzinfo is None:
-                                  dtend = pytz.utc.localize(dtend)
-                              dtend = dtend.astimezone(tz)
-
-                          if dtstart.date() == today_ny:
-                              clean_title = summary.replace('Court Hosts:', '').replace('Court Host:', '').replace('Hosts:', '').replace('Host:', '').strip()
-                              names = [n.strip() for n in re.split(r'[,/&]|\band\b', clean_title) if n.strip()]
-                              for name in names:
-                                  hosts.append({
-                                      'start': dtstart.strftime('%H:%M'),
-                                      'end': dtend.strftime('%H:%M'),
-                                      'host': name
-                                  })
-
-          with open('data/hosts.json', 'w') as out:
-              json.dump(hosts, out)
-          "
-
-      - name: Process Schedule JSON
-        run: |
-          TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
-          [ ! -f data/hosts.json ] && echo "[]" > data/hosts.json
-
-          jq -n \
-            --slurpfile res data/reservations.json \
-            --slurpfile ev data/events.json \
-            --slurpfile chk data/checkins.json \
-            --slurpfile hosts data/hosts.json \
-            '{
-              lastUpdated: (now | todate),
-              date: "'"$TODAY_NY"'",
-              courtHosts: ($hosts[0] // []),
-              reservations: [
-                ($res[0].Data // $res[0] // [])[] | {
-                  court: (.Courts // .CourtName // ""),
-                  holderLabel: (
-                    if .FirstName then
-                      ("(" + (.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end) + ")")
-                    elif .MemberName then
-                      ("(" + (.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]) + ")")
-                    else "" end
-                  ),
-                  startTime: .StartTime,
-                  endTime: .EndTime
-                }
-              ],
-              events: (
-                (($chk[0].Data // $chk[0] // []) | reduce .[] as $item ({};
-                  if ($item.CheckInStatusName == "Checked-in" or ($item.CheckinDateTime != null and $item.CheckinDateTime != "")) then
-                    (if $item.OrganizationMemberId then .["id:" + ($item.OrganizationMemberId | tostring)] = true else . end) |
-                    (if $item.MemberFirstName and $item.MemberLastName then .["name:" + (($item.MemberFirstName + " " + $item.MemberLastName) | ascii_downcase)] = true else . end)
-                  else . end
-                )) as $checkedMap |
-
-                [
-                  ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) | {
-                    eventId: .EventId,
-                    title: (.DivisionName // .EventName // "Event"),
-                    startTime: .StartTime,
-                    endTime: .EndTime,
-                    courts: (if .Courts then [(.Courts[]?.CourtName // .Courts[]? // empty)] else [] end),
-                    playerName: (
+            # 3. Process into schedule.json
+            jq -n \
+              --slurpfile res data/reservations.json \
+              --slurpfile ev data/events.json \
+              --slurpfile chk data/checkins.json \
+              --slurpfile hosts data/hosts.json \
+              '{
+                lastUpdated: (now | todate),
+                date: "'"$TODAY_NY"'",
+                courtHosts: ($hosts[0] // []),
+                reservations: [
+                  ($res[0].Data // $res[0] // [])[] | {
+                    court: (.Courts // .CourtName // ""),
+                    holderLabel: (
                       if .FirstName then
-                        ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end))
+                        ("(" + (.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end) + ")")
                       elif .MemberName then
-                        ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]))
+                        ("(" + (.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]) + ")")
                       else "" end
                     ),
-                    checkedIn: (
-                      ($checkedMap["id:" + (.OrganizationMemberId | tostring)] // false) or
-                      ($checkedMap["name:" + (((.FirstName // "") + " " + (.LastName // "")) | ascii_downcase)] // false)
-                    )
+                    startTime: .StartTime,
+                    endTime: .EndTime
                   }
-                ]
-              )
-            }' > data/schedule.json
+                ],
+                events: (
+                  (($chk[0].Data // $chk[0] // []) | reduce .[] as $item ({};
+                    if ($item.CheckInStatusName == "Checked-in" or ($item.CheckinDateTime != null and $item.CheckinDateTime != "")) then
+                      (if $item.OrganizationMemberId then .["id:" + ($item.OrganizationMemberId | tostring)] = true else . end) |
+                      (if $item.MemberFirstName and $item.MemberLastName then .["name:" + (($item.MemberFirstName + " " + $item.MemberLastName) | ascii_downcase)] = true else . end)
+                    else . end
+                  )) as $checkedMap |
 
-          rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
+                  [
+                    ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) | {
+                      eventId: .EventId,
+                      title: (.DivisionName // .EventName // "Event"),
+                      startTime: .StartTime,
+                      endTime: .EndTime,
+                      courts: (if .Courts then [(.Courts[]?.CourtName // .Courts[]? // empty)] else [] end),
+                      playerName: (
+                        if .FirstName then
+                          ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end))
+                        elif .MemberName then
+                          ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]))
+                        else "" end
+                      ),
+                      checkedIn: (
+                        ($checkedMap["id:" + (.OrganizationMemberId | tostring)] // false) or
+                        ($checkedMap["name:" + (((.FirstName // "") + " " + (.LastName // "")) | ascii_downcase)] // false)
+                      )
+                    }
+                  ]
+                )
+              }' > data/schedule.json
 
-      - name: Commit and Push Updated Data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --staged --quiet; then
-            echo "No schedule changes detected."
-          else
-            git commit -m "Auto-update CourtReserve schedule and hosts (NY Time) [skip ci]"
-            git pull --rebase
-            git push origin main
-          fi
+            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
+
+            # 4. Commit and Push
+            git add data/schedule.json
+            if git diff --staged --quiet; then
+              echo "Pass $pass_num: No schedule changes detected."
+            else
+              git commit -m "Auto-update CourtReserve schedule (Pass $pass_num) [skip ci]"
+              git pull --rebase
+              git push origin main
+              echo "Pass $pass_num: Changes committed and pushed."
+            fi
+          }
+
+          # --- Pass 1 (Immediate) ---
+          sync_pass 1
+
+          # --- Pause for 2.7 minutes (160 seconds) ---
+          echo "Pausing for 160 seconds before Pass 2..."
+          sleep 160
+
+          # --- Pass 2 (~2.8 to 3 minutes into the 5-minute block) ---
+          sync_pass 2
