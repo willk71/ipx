@@ -161,19 +161,42 @@ function formatCourtsLabel(courts, mode = 'index') {
 
 function cleanTitle(rawTitle) {
   if (!rawTitle) return '';
-  let firstSegment = String(rawTitle).split('|')[0].trim();
+  const fullStr = String(rawTitle).trim();
 
-  firstSegment = firstSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
-  firstSegment = firstSegment.replace(/[()]/g, '');
-  firstSegment = firstSegment
+  // 1. Explicit Skill Level Matching across full title string
+  if (/intermediate\s*[-–—]\s*advanced/i.test(fullStr)) {
+    return 'Intermediate – Advanced';
+  }
+  if (/adv(?:anced)?\s*beginner\s*[-–—]\s*intermediate/i.test(fullStr)) {
+    return 'Adv Beginner – Intermediate';
+  }
+  if (/beginner\s*[-–—]\s*adv(?:anced)?\s*beginner/i.test(fullStr)) {
+    return 'Beginner – Adv Beginner';
+  }
+
+  // 2. Segment fallback: find first segment that is not a season, day, or generic term
+  const segments = fullStr.split('|').map(s => s.trim()).filter(Boolean);
+  let mainSegment = segments[0] || '';
+
+  const isExcluded = /^(summer|winter|spring|fall|autumn|monday|tuesday|wednesday|thursday|friday|saturday|sunday|open\s*play)$/i;
+  for (const seg of segments) {
+    if (!isExcluded.test(seg)) {
+      mainSegment = seg;
+      break;
+    }
+  }
+
+  mainSegment = mainSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
+  mainSegment = mainSegment.replace(/[()]/g, '');
+  mainSegment = mainSegment
     .replace(/\bSessions?\b/gi, '')
     .replace(/\bOpen\s*Play\b/gi, '')
     .replace(/\bPrime\s*Time\b/gi, '');
 
-  firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
-  firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+  mainSegment = mainSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+  mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
 
-  let formatted = toSentenceCase(firstSegment);
+  let formatted = toSentenceCase(mainSegment);
   return formatted.replace(/\bP4p\b/gi, 'P4P');
 }
 
@@ -186,7 +209,7 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // Priority 1: 1, 2, 4, * groupings route to Court 1 Paddle Rack
+      // Priority 1: 1, 2, 4 groupings route to Court 1 Paddle Rack
       if (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('4')) {
         location = 'Court 1 Paddle Rack';
       }
