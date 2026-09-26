@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-26T21:08:04Z",
+  "lastUpdated": "2026-09-26T21:21:21Z",
   "date": "2026-09-26",
   "courtHosts": [
     {
@@ -8,9 +8,9 @@
       "host": "Will K"
     },
     {
-      "start": "09:00",
-      "end": "13:30",
-      "host": "Will K"
+      "start": "17:00",
+      "end": "22:00",
+      "host": "Lillian H"
     },
     {
       "start": "17:30",
@@ -18,14 +18,14 @@
       "host": "Wendy X"
     },
     {
-      "start": "17:00",
-      "end": "22:00",
+      "start": "09:00",
+      "end": "13:00",
       "host": "Lillian H"
     },
     {
       "start": "09:00",
-      "end": "13:00",
-      "host": "Lillian H"
+      "end": "13:30",
+      "host": "Will K"
     }
   ],
   "reservations": [
@@ -160,6 +160,12 @@
       "holderLabel": "",
       "startTime": "2026-09-27T13:00:00",
       "endTime": "2026-09-27T15:00:00"
+    },
+    {
+      "court": "Court 9",
+      "holderLabel": "",
+      "startTime": "2026-09-27T11:00:00",
+      "endTime": "2026-09-27T13:00:00"
     }
   ],
   "events": [
@@ -1705,18 +1711,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2118404,
-      "title": "3.5-4.0 Open Play | Sunday | 9am-11am",
-      "startTime": "2026-09-27T09:00:00",
-      "endTime": "2026-09-27T11:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Nikki M",
-      "checkedIn": false
-    },
-    {
       "eventId": 2182246,
       "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
       "startTime": "2026-09-26T21:00:00",
@@ -1817,6 +1811,20 @@
       ],
       "playerName": "Kristen C",
       "checkedIn": true
+    },
+    {
+      "eventId": 2182246,
+      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
+      "startTime": "2026-09-26T21:00:00",
+      "endTime": "2026-09-26T23:59:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jack L",
+      "checkedIn": false
     },
     {
       "eventId": 2289886,
@@ -4011,6 +4019,21 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Jasper L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2290654,
+      "title": "Social Open Play | Intermediate - Advanced | Sunday",
+      "startTime": "2026-09-27T18:00:00",
+      "endTime": "2026-09-27T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Victoria Y",
       "checkedIn": false
     }
   ]
