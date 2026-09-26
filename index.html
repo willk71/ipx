@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Welcome to IPX! &ndash; Court Assignments</title>
-  <link rel="stylesheet" href="css/common.css?v=2.0.0" />
+  <title>Sessions</title>
+  <link rel="stylesheet" href="css/common.css?v=2.2.0" />
 </head>
 <body class="page-index">
   <header>
@@ -22,51 +22,118 @@
     </div>
   </main>
 
+  <div id="court-host-container" style="display: none;"></div>
+
   <footer>
-    <div class="footer-left">
+    <div class="footer-meta-grid">
       <span id="theme-pill">Theme: --</span>
-      <span>&bull;</span>
-      <span id="target-mode-pill">Target: --</span>
-      <span>&bull;</span>
       <span id="data-refresh-time">Data Sync: --</span>
-      <span>&bull;</span>
-      <span id="page-refresh-time">Display Updated: --</span>
+      <span id="target-mode-pill">Target: --</span>
+      <span id="page-refresh-time">Display: --</span>
     </div>
     
     <div class="footer-right">
       <div class="footer-countdown-container" id="countdown-box">
-        <span class="countdown-label">Current Sessions Ends/Next Sessions Starts:</span>
+        <span class="countdown-label">Next session starts:</span>
         <span class="countdown-clock" id="transition-countdown">--:--</span>
       </div>
       <div class="footer-clock" id="live-clock">--:-- --</div>
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.0.0"></script>
+  <script src="js/common.js?v=2.2.0"></script>
   <script>
     async function refreshDisplay() {
+      let data = {};
+      const now = new Date();
+
       try {
         const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
         if (!res.ok) throw new Error("Schedule file not found");
-        const data = await res.json();
+        data = await res.json();
+      } catch (err) {
+        console.error("Error loading schedule data:", err);
+        return;
+      }
 
-        const now = new Date();
-        document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        
-        if (data.lastUpdated) {
-          const syncDate = new Date(data.lastUpdated);
-          document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+      document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
+      
+      if (data.lastUpdated) {
+        const syncDate = new Date(data.lastUpdated);
+        document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+      }
+
+      const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
+      const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+
+      applyDynamicTheme(targetTime);
+
+      document.getElementById('target-mode-pill').textContent = isPreview 
+        ? `Target: ${targetTimeString}` 
+        : 'Target: Live';
+
+      // 1. Court Host Processing
+      try {
+        const hostContainer = document.getElementById('court-host-container');
+        const hostsList = Array.isArray(data.courtHosts) ? data.courtHosts : [];
+        const activeHostSet = new Set();
+
+        const nyTimeStr = targetTime.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false });
+        const [nyH, nyM] = nyTimeStr.split(':').map(Number);
+        const currentMinutes = (nyH || 0) * 60 + (nyM || 0);
+
+        const parseMinutes = (val) => {
+          if (!val) return 0;
+          const parts = String(val).trim().split(':').map(Number);
+          return (parts[0] || 0) * 60 + (parts[1] || 0);
+        };
+
+        hostsList.forEach(h => {
+          if (!h || !h.host) return;
+
+          if (!h.start || !h.end) {
+            activeHostSet.add(h.host.trim());
+            return;
+          }
+
+          const sMin = parseMinutes(h.start);
+          let eMin = parseMinutes(h.end);
+          if (eMin === 0) eMin = 24 * 60;
+
+          if (currentMinutes >= sMin && currentMinutes < eMin) {
+            activeHostSet.add(h.host.trim());
+          }
+        });
+
+        const activeHosts = Array.from(activeHostSet);
+
+        if (activeHosts.length > 0 && hostContainer) {
+          let formattedNames = '';
+          if (activeHosts.length === 1) {
+            formattedNames = activeHosts[0];
+          } else if (activeHosts.length === 2) {
+            formattedNames = activeHosts.join(' & ');
+          } else {
+            formattedNames = `${activeHosts.slice(0, -1).join(', ')} & ${activeHosts[activeHosts.length - 1]}`;
+          }
+
+          hostContainer.className = 'court-host-bar';
+          hostContainer.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
+          hostContainer.innerHTML = `
+            <span class="host-badge-label">Court Host${activeHosts.length > 1 ? 's' : ''}:</span>
+            <span class="host-names">${formattedNames}</span>
+          `;
+        } else if (hostContainer) {
+          hostContainer.className = '';
+          hostContainer.style.display = 'none';
+          hostContainer.innerHTML = '';
         }
+      } catch (err) {
+        console.error("Error displaying hosts:", err);
+      }
 
-        const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
-        const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
-
-        applyDynamicTheme(targetTime);
-
-        document.getElementById('target-mode-pill').textContent = isPreview 
-          ? `Target: ${targetTimeString}` 
-          : 'Target: Live';
-
+      // 2. Sessions Processing
+      try {
         const isRunningAtTarget = (startIso, endIso) => {
           if (!startIso || !endIso) return false;
           const s = new Date(startIso);
@@ -210,9 +277,8 @@
 
           container.appendChild(card);
         });
-
       } catch (err) {
-        console.error("Error updating sessions display:", err);
+        console.error("Error updating sessions:", err);
       }
     }
 
