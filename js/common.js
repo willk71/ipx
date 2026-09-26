@@ -188,37 +188,41 @@ function resolveQueueLocation(courtsSet, customText) {
     if (nums.length > 0) {
       // Priority 1: 1, 2, 4, * groupings route to Court 1 Paddle Rack
       if (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('4')) {
-        location = 'queue at Court 1 Paddle Rack';
+        location = 'Court 1 Paddle Rack';
       }
       // Priority 2: Exact single court assignment for 1, 3, 6, 7, 9, 10, 11, 12 -> "Court X Table"
       else if (nums.length === 1 && [1, 3, 6, 7, 9, 10, 11, 12].includes(nums[0])) {
-        location = `queue at Court ${nums[0]} Table`;
+        location = `Court ${nums[0]} Table`;
       }
       // Priority 3: Groups containing Court 4 & 5 or falling in Courts 4 - 6
       else if ((courtsSet.has('4') && courtsSet.has('5')) || nums.some(n => n >= 4 && n <= 6)) {
-        location = 'queue at Court 4 Table';
+        location = 'Court 4 Table';
       }
       // Priority 4: Groups containing Court 7 / Courts 7 - 9
       else if (courtsSet.has('7') || nums.some(n => n >= 7 && n <= 9)) {
-        location = 'queue at Court 7 paddle rack';
+        location = 'Court 7 Paddle Rack';
       }
       // Priority 5: Courts 1 - 3
       else if (nums.some(n => n >= 1 && n <= 3)) {
-        location = 'queue at Court 1 paddle rack';
+        location = 'Court 1 Paddle Rack';
       }
       // Priority 6: Courts 10+
       else if (nums.some(n => n >= 10)) {
-        location = 'queue at Court 10 paddle rack';
+        location = 'Court 10 Paddle Rack';
       } else {
         const minCourt = Math.min(...nums);
-        location = `queue at Court ${minCourt} paddle rack`;
+        location = `Court ${minCourt} Paddle Rack`;
       }
     }
   }
 
   if (!location) return '';
 
-  const cleanLoc = location.replace(/^📍\s*[-–—]?\s*/i, '').trim();
+  const cleanLoc = location
+    .replace(/^📍\s*[-–—]?\s*/i, '')
+    .replace(/^queue\s+at\s+/i, '')
+    .trim();
+
   return `📍- ${cleanLoc}`;
 }
 
