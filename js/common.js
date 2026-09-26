@@ -212,7 +212,7 @@ function resolveQueueLocation(courtsSet, customText) {
       // Rule: For sessions containing 4, 5, 7, 8, 10 with 6 or more total courts -> Two queues
       const hasCoreCluster = [4, 5, 7, 8, 10].every(c => courtsSet.has(String(c)));
       if (hasCoreCluster && courtsSet.size >= 6) {
-        return '📍 - Court 4 Table & Court 7 Paddle Rack';
+        return '📍 - Court 7 Paddle Rack';
       }
 
       // Priority 1: 1, 2, 4 groupings route to Court 1 Paddle Rack
