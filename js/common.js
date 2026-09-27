@@ -212,7 +212,7 @@ function resolveQueueLocation(courtsSet, customText) {
       // Rule: For sessions containing 4, 5, 7, 8, 10 with 6 or more total courts -> Two queues
       const hasCoreCluster = [4, 5, 7, 8, 10].every(c => courtsSet.has(String(c)));
       if (hasCoreCluster && courtsSet.size >= 6) {
-        return '📍 - Court 7 Paddle Rack';
+        return '📍 - Court 4 Table & Court 7 Paddle Rack';
       }
 
       // Priority 1: 1, 2, 4 groupings route to Court 1 Paddle Rack
@@ -253,6 +253,35 @@ function resolveQueueLocation(courtsSet, customText) {
     .trim();
 
   return `📍 - ${cleanLoc}`;
+}
+
+// Applies Replacement Overrides from Google Calendar
+function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
+  if (!Array.isArray(overridesList) || overridesList.length === 0) return;
+
+  const parseMinutes = (val) => {
+    if (!val) return 0;
+    const parts = String(val).trim().split(':').map(Number);
+    return (parts[0] || 0) * 60 + (parts[1] || 0);
+  };
+
+  const activeOverrides = overridesList.filter(ov => {
+    const sMin = parseMinutes(ov.start);
+    let eMin = parseMinutes(ov.end);
+    if (eMin === 0) eMin = 24 * 60;
+    return currentMinutes >= sMin && currentMinutes < eMin;
+  });
+
+  activeOverrides.forEach(ov => {
+    if (Array.isArray(ov.courts) && ov.courts.length > 0) {
+      Object.values(eventMap).forEach(ev => {
+        // Match by filter phrase if present, otherwise override active running session
+        if (!ov.match || new RegExp(ov.match.trim(), 'i').test(ev.title)) {
+          ev.courts = new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)));
+        }
+      });
+    }
+  });
 }
 
 function formatTime(isoString, isEndTime = false) {
