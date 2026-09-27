@@ -1,7 +1,7 @@
-name: Sync to roster-dev
+name: Sync to rosters-dev
 
 on:
-  workflow_dispatch: # Only triggers manually via the GitHub Actions tab
+  workflow_dispatch:
 
 jobs:
   repo-sync:
@@ -10,11 +10,10 @@ jobs:
       - name: Checkout ipx repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches full history so branches push cleanly
+          fetch-depth: 0
 
-      - name: Push to roster-dev
+      - name: Push to rosters-dev
         env:
-          DEST_REPO: "github.com/${{ github.repository_owner }}/roster-dev.git"
           SYNC_TOKEN: ${{ secrets.PAT_ROSTER_DEV }}
         run: |
-          git push https://${SYNC_TOKEN}@${DEST_REPO} main:main --force
+          git push https://x-access-token:${SYNC_TOKEN}@github.com/willk71/rosters-dev.git main:main --force
