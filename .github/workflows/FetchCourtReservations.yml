@@ -12,15 +12,10 @@ on:
     - cron: '0 2 * * 0,1'
 
     # Weekday Evening Bursts:
-    # Burst 1: 5:20 PM - 6:30 PM EDT (21:20 - 22:30 UTC)
     - cron: '20-55/5 21 * * 1-5'
     - cron: '0-30/5 22 * * 1-5'
-
-    # Burst 2: 7:20 PM - 8:30 PM EDT (23:20 - 00:30 UTC)
     - cron: '20-55/5 23 * * 1-5'
     - cron: '0-30/5 0 * * 2-6'
-
-    # Burst 3: 9:20 PM - 10:30 PM EDT (01:20 - 02:30 UTC)
     - cron: '20-55/5 1 * * 2-6'
     - cron: '0-30/5 2 * * 2-6'
 
@@ -62,6 +57,22 @@ jobs:
 
           hosts = []
           overrides = []
+          ad_hoc = []
+
+          def parse_courts(raw_str):
+              clean_nums = re.sub(r'^(?:override\s*:?|\+?\s*courts?|on)\s*', '', raw_str, flags=re.I)
+              courts = []
+              for chunk in clean_nums.split(','):
+                  chunk = chunk.strip()
+                  if '-' in chunk:
+                      r_parts = chunk.split('-')
+                      if len(r_parts) == 2 and r_parts[0].strip().isdigit() and r_parts[1].strip().isdigit():
+                          for n in range(int(r_parts[0]), int(r_parts[1]) + 1):
+                              courts.append(str(n))
+                  else:
+                      digits = re.findall(r'\d+', chunk)
+                      courts.extend(digits)
+              return list(dict.fromkeys(courts))
 
           if os.path.exists('data/hosts.ics'):
               with open('data/hosts.ics', 'rb') as f:
@@ -86,8 +97,21 @@ jobs:
                               dtend = dtend.astimezone(tz)
 
                           if dtstart.date() == today_ny:
-                              # --- 1. OVERRIDES (Matches "Courts ...", "Override: ...", or "+Courts ...") ---
-                              if re.search(r'(\bcourts?\b|\boverride\b)', summary, re.I) and ('|' in summary or re.search(r'\d', summary)):
+                              # --- 1. COURT HOSTS (Requires explicit "host" or "court host" prefix) ---
+                              if re.match(r'^(?:court\s+hosts?:?|hosts?:?)\b', summary, re.I):
+                                  clean_title = re.sub(r'^(?:court\s+hosts?:?|hosts?:?)\s*', '', summary, flags=re.I).strip()
+                                  names = [n.strip() for n in re.split(r'[,/&]|\b(?<!\w)and(?!\w)\b', clean_title) if n.strip()]
+                                  for name in names:
+                                      if not re.search(r'(\bcourts?\b|\bintermediate\b|\badvanced\b|\bbeginner\b|\bopen\s*play\b)', name, re.I):
+                                          hosts.append({
+                                              'start': dtstart.strftime('%H:%M'),
+                                              'end': dtend.strftime('%H:%M'),
+                                              'host': name
+                                          })
+                                  continue
+
+                              # --- 2. COURT REPLACEMENT OVERRIDES (Starts with Courts / Override) ---
+                              if re.match(r'^(?:override\s*:?|\+?\s*courts?)\b', summary, re.I):
                                   match_filter = ""
                                   court_str = summary
                                   if '|' in summary:
@@ -95,45 +119,43 @@ jobs:
                                       court_str = parts[0].strip()
                                       match_filter = parts[1].strip()
 
-                                  # Extract court numbers or ranges like "1-4, 6"
-                                  clean_nums = re.sub(r'^(?:override\s*:?|\+?\s*courts?)\s*', '', court_str, flags=re.I)
-                                  courts = []
-                                  for chunk in clean_nums.split(','):
-                                      chunk = chunk.strip()
-                                      if '-' in chunk:
-                                          r_parts = chunk.split('-')
-                                          if len(r_parts) == 2 and r_parts[0].strip().isdigit() and r_parts[1].strip().isdigit():
-                                              for n in range(int(r_parts[0]), int(r_parts[1]) + 1):
-                                                  courts.append(str(n))
-                                      else:
-                                          digits = re.findall(r'\d+', chunk)
-                                          courts.extend(digits)
-
+                                  courts = parse_courts(court_str)
                                   if courts:
                                       overrides.append({
                                           'start': dtstart.strftime('%H:%M'),
                                           'end': dtend.strftime('%H:%M'),
-                                          'courts': list(dict.fromkeys(courts)),
+                                          'courts': courts,
                                           'match': match_filter
                                       })
-                                  continue # Never allow this event into the host section
+                                  continue
 
-                              # --- 2. COURT HOSTS (Requires explicit host indicators) ---
-                              is_host_event = bool(re.search(r'\b(court\s+hosts?|hosts?)\b', summary, re.I))
-                              if is_host_event and not re.search(r'(\bcourts?\s*\d|\boverride\b|\|)', summary, re.I):
-                                  clean_title = re.sub(r'^(court\s+hosts?:?|hosts?:?)\s*', '', summary, flags=re.I).strip()
-                                  names = [n.strip() for n in re.split(r'[,/&]|\b(?<!\w)and(?!\w)\b', clean_title) if n.strip()]
-                                  for name in names:
-                                      # Discard any noise that looks like a court or division
-                                      if not re.search(r'(\bcourts?\b|\bintermediate\b|\badvanced\b|\bbeginner\b|\bopen\s*play\b)', name, re.I):
-                                          hosts.append({
-                                              'start': dtstart.strftime('%H:%M'),
-                                              'end': dtend.strftime('%H:%M'),
-                                              'host': name
-                                          })
+                              # --- 3. AD-HOC SESSIONS (e.g. "Session: Challenge Court | Court 3" or "Challenge Court on 3") ---
+                              clean_ad_hoc = re.sub(r'^session\s*:?\s*', '', summary, flags=re.I).strip()
+                              session_title = clean_ad_hoc
+                              session_courts = []
+
+                              if '|' in clean_ad_hoc:
+                                  parts = clean_ad_hoc.split('|', 1)
+                                  session_title = parts[0].strip()
+                                  session_courts = parse_courts(parts[1].strip())
+                              elif re.search(r'\b(?:on|courts?)\s+\d', clean_ad_hoc, re.I):
+                                  match_on = re.split(r'\b(?:on|courts?)\b', clean_ad_hoc, flags=re.I)
+                                  if len(match_on) >= 2:
+                                      session_title = match_on[0].strip()
+                                      session_courts = parse_courts(match_on[1].strip())
+
+                              if session_title and session_courts:
+                                  ad_hoc.append({
+                                      'title': session_title,
+                                      'start': dtstart.strftime('%H:%M'),
+                                      'end': dtend.strftime('%H:%M'),
+                                      'startTimeIso': dtstart.isoformat(),
+                                      'endTimeIso': dtend.isoformat(),
+                                      'courts': session_courts
+                                  })
 
           with open('data/hosts.json', 'w') as out:
-              json.dump({'hosts': hosts, 'overrides': overrides}, out)
+              json.dump({'hosts': hosts, 'overrides': overrides, 'adHoc': ad_hoc}, out)
           PY_SCRIPT
 
           # Reusable sync function
@@ -162,7 +184,7 @@ jobs:
             curl -sL "$CAL_URL" -o data/hosts.ics
 
             python3 /tmp/parse_hosts.py
-            [ ! -f data/hosts.json ] && echo '{"hosts":[],"overrides":[]}' > data/hosts.json
+            [ ! -f data/hosts.json ] && echo '{"hosts":[],"overrides":[],"adHoc":[]}' > data/hosts.json
 
             # 3. Process into schedule.json
             jq -n \
@@ -175,6 +197,7 @@ jobs:
                 date: "'"$TODAY_NY"'",
                 courtHosts: ($extra[0].hosts // []),
                 courtOverrides: ($extra[0].overrides // []),
+                adHocSessions: ($extra[0].adHoc // []),
                 reservations: [
                   ($res[0].Data // $res[0] // [])[] | {
                     court: (.Courts // .CourtName // ""),
