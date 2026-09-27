@@ -1,21 +1,16 @@
 {
-  "lastUpdated": "2026-09-27T01:23:06Z",
+  "lastUpdated": "2026-09-27T01:23:59Z",
   "date": "2026-09-26",
   "courtHosts": [
+    {
+      "start": "17:30",
+      "end": "21:30",
+      "host": "Wendy X"
+    },
     {
       "start": "17:00",
       "end": "22:00",
       "host": "Lillian H"
-    },
-    {
-      "start": "17:00",
-      "end": "22:00",
-      "host": "Winnie Z"
-    },
-    {
-      "start": "17:00",
-      "end": "21:00",
-      "host": "Stephanie L"
     },
     {
       "start": "20:00",
@@ -23,9 +18,14 @@
       "host": "Ray"
     },
     {
-      "start": "17:30",
-      "end": "21:30",
-      "host": "Wendy X"
+      "start": "17:00",
+      "end": "21:00",
+      "host": "Stephanie L"
+    },
+    {
+      "start": "17:00",
+      "end": "22:00",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [
@@ -4849,6 +4849,21 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Riddhi P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2148670,
+      "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
+      "startTime": "2026-09-27T20:00:00",
+      "endTime": "2026-09-27T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Arpan A",
       "checkedIn": false
     }
   ]
