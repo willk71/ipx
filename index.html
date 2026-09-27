@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Sessions</title>
-  <link rel="stylesheet" href="css/common.css?v=2.2.4" />
+  <link rel="stylesheet" href="css/common.css?v=2.2.5" />
 </head>
 <body class="page-index">
   <header>
@@ -41,7 +41,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.2.4"></script>
+  <script src="js/common.js?v=2.2.5"></script>
   <script>
     async function refreshDisplay() {
       let data = {};
@@ -76,17 +76,17 @@
       const [nyH, nyM] = nyTimeStr.split(':').map(Number);
       const currentMinutes = (nyH || 0) * 60 + (nyM || 0);
 
-      // 1. Court Host Processing
+      const parseMinutes = (val) => {
+        if (!val) return 0;
+        const parts = String(val).trim().split(':').map(Number);
+        return (parts[0] || 0) * 60 + (parts[1] || 0);
+      };
+
+      // 1. Court Host Processing (Requires explicit Host: prefix)
       try {
         const hostContainer = document.getElementById('court-host-container');
         const hostsList = Array.isArray(data.courtHosts) ? data.courtHosts : [];
         const activeHostSet = new Set();
-
-        const parseMinutes = (val) => {
-          if (!val) return 0;
-          const parts = String(val).trim().split(':').map(Number);
-          return (parts[0] || 0) * 60 + (parts[1] || 0);
-        };
 
         hostsList.forEach(h => {
           if (!h || !h.host) return;
@@ -132,7 +132,7 @@
         console.error("Error displaying hosts:", err);
       }
 
-      // 2. Sessions Processing with Overrides
+      // 2. Sessions Processing (CourtReserve + Ad-Hoc + Overrides)
       try {
         const isRunningAtTarget = (startIso, endIso) => {
           if (!startIso || !endIso) return false;
@@ -145,14 +145,19 @@
         };
 
         const events = Array.isArray(data) ? data : (data.events || []);
+        const adHocSessions = Array.isArray(data.adHocSessions) ? data.adHocSessions : [];
 
         let closestFutureEpoch = null;
-        events.forEach(e => {
-          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
+        [...events, ...adHocSessions].forEach(e => {
+          const rawName = (e.title || e.DivisionName || e.EventName || '');
           if (/\bRoad\b/i.test(rawName)) return;
 
-          const s = new Date(e.startTime || e.StartTime).getTime();
-          let endDt = new Date(e.endTime || e.EndTime);
+          const sTime = e.startTime || e.startTimeIso || e.StartTime;
+          const eTime = e.endTime || e.endTimeIso || e.EndTime;
+          if (!sTime || !eTime) return;
+
+          const s = new Date(sTime).getTime();
+          let endDt = new Date(eTime);
           if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
             endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
           }
@@ -196,7 +201,7 @@
           }
         });
 
-        // Apply Google Calendar Court Replacements
+        // Apply Google Calendar Court Replacements (e.g. Courts 1, 2, 4, 5, 6, 8 | Advanced)
         applyCourtOverrides(eventMap, data.courtOverrides || [], currentMinutes);
 
         const sessions = [];
@@ -209,6 +214,24 @@
             endTime: ev.endTime,
             queueText: resolvedQueue
           });
+        });
+
+        // Inject Ad-Hoc Sessions (e.g. "Challenge Court on 3")
+        adHocSessions.forEach((ah, idx) => {
+          const sMin = parseMinutes(ah.start);
+          let eMin = parseMinutes(ah.end);
+          if (eMin === 0) eMin = 24 * 60;
+
+          if (currentMinutes >= sMin && currentMinutes < eMin) {
+            const cSet = new Set(ah.courts.map(String));
+            sessions.push({
+              title: cleanTitle(ah.title),
+              courtsLabel: formatCourtsLabel(cSet, 'index'),
+              startTime: ah.startTimeIso || new Date().toISOString(),
+              endTime: ah.endTimeIso || new Date().toISOString(),
+              queueText: resolveQueueLocation(cSet, '')
+            });
+          }
         });
 
         let bestWindowTag = '';
