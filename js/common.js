@@ -209,10 +209,14 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // Rule: For sessions containing 4, 5, 7, 8, 10 with 6 or more total courts -> Two queues
-      const hasCoreCluster = [4, 5, 7, 8, 10].every(c => courtsSet.has(String(c)));
-      if (hasCoreCluster && courtsSet.size >= 6) {
-        return '📍 - Court 4 Table & Court 7 Paddle Rack';
+      // 1. Both Court 4 and Court 7 are present:
+      if (courtsSet.has('4') && courtsSet.has('7')) {
+        // If Court 10, 11, or 12 is included -> Court 7 Paddle Rack
+        if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
+          return '📍 - Court 7 Paddle Rack';
+        }
+        // Otherwise -> Court 4 Table
+        return '📍 - Court 4 Table';
       }
 
       // Priority 1: 1, 2, 4 groupings route to Court 1 Paddle Rack
