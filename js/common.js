@@ -79,7 +79,7 @@ function updateCountdown() {
     const totalSecs = Math.floor(diffMs / 1000);
     const m = Math.floor(totalSecs / 60);
     const s = totalSecs % 60;
-    countdownVal.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    countdownVal.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
     countdownBox.classList.add('is-active');
   } else {
     countdownBox.classList.remove('is-active');
@@ -94,8 +94,8 @@ function applyDynamicTheme(targetTime) {
     themeToApply = allThemes[cycleIndex % allThemes.length];
   } else {
     const urlTheme = (urlParams.get('theme') || '').toLowerCase().trim();
-    if (urlTheme && allThemes.includes(`theme-${urlTheme}`)) {
-      themeToApply = `theme-${urlTheme}`;
+    if (urlTheme && allThemes.includes('theme-' + urlTheme)) {
+      themeToApply = 'theme-' + urlTheme;
     } else {
       const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
       if (totalMinutes >= 420 && totalMinutes < 660) {
@@ -119,8 +119,8 @@ function applyDynamicTheme(targetTime) {
   const themePill = document.getElementById('theme-pill');
   if (themePill) {
     themePill.textContent = isCycling
-      ? `Theme: ${displayName} (${(cycleIndex % allThemes.length) + 1}/${allThemes.length})`
-      : `Theme: ${displayName}`;
+      ? 'Theme: ' + displayName + ' (' + ((cycleIndex % allThemes.length) + 1) + '/' + allThemes.length + ')'
+      : 'Theme: ' + displayName;
   }
 }
 
@@ -149,32 +149,33 @@ function extractSortedCourts(courtsRaw) {
     .sort((a, b) => (parseInt(a, 10) || a) - (parseInt(b, 10) || b));
 }
 
-function formatCourtsLabel(courts, mode = 'index') {
+function formatCourtsLabel(courts, mode) {
+  mode = mode || 'index';
   const arr = Array.isArray(courts) ? courts : Array.from(courts || []);
   if (mode === 'index') {
-    return arr.length > 0 ? `on ${arr.join(' ')}` : 'on TBD';
+    return arr.length > 0 ? 'on ' + arr.join(' ') : 'on TBD';
   }
   if (arr.length === 0) return 'Court TBD';
   const prefix = arr.length === 1 ? 'Court' : 'Courts';
-  return `${prefix} ${arr.join(', ')}`;
+  return prefix + ' ' + arr.join(', ');
 }
 
 function cleanTitle(rawTitle) {
   if (!rawTitle) return '';
   const fullStr = String(rawTitle).trim();
 
-  // 1. Explicit Skill Level Matching across full title string
-  if (/intermediate\s*[-–—]\s*advanced/i.test(fullStr)) {
+  // 1. Explicit Skill Level Matching
+  if (/intermediate[\s\-–—]+advanced/i.test(fullStr)) {
     return 'Intermediate – Advanced';
   }
-  if (/adv(?:anced)?\s*beginner\s*[-–—]\s*intermediate/i.test(fullStr)) {
+  if (/adv(?:anced)?[\s_]*beginner[\s\-–—]+intermediate/i.test(fullStr)) {
     return 'Adv Beginner – Intermediate';
   }
-  if (/beginner\s*[-–—]\s*adv(?:anced)?\s*beginner/i.test(fullStr)) {
+  if (/beginner[\s\-–—]+adv(?:anced)?[\s_]*beginner/i.test(fullStr)) {
     return 'Beginner – Adv Beginner';
   }
 
-  // 2. Segment fallback: find first segment that is not a season, day, or generic term
+  // 2. Segment fallback
   const segments = fullStr.split('|').map(s => s.trim()).filter(Boolean);
   let mainSegment = segments[0] || '';
 
@@ -193,8 +194,8 @@ function cleanTitle(rawTitle) {
     .replace(/\bOpen\s*Play\b/gi, '')
     .replace(/\bPrime\s*Time\b/gi, '');
 
-  mainSegment = mainSegment.replace(/[-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
-  mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
+  mainSegment = mainSegment.replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+  mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)/g, '$1 – $2');
 
   let formatted = toSentenceCase(mainSegment);
   return formatted.replace(/\bP4p\b/gi, 'P4P');
@@ -209,29 +210,27 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // 1. Both Court 4 and Court 7 are present:
+      // Rule: Courts 4 & 7 present
       if (courtsSet.has('4') && courtsSet.has('7')) {
-        // If Court 10, 11, or 12 is included -> Court 7 Paddle Rack
         if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
           return '📍 - Court 7 Paddle Rack';
         }
-        // Otherwise -> Court 4 Table
         return '📍 - Court 4 Table';
       }
 
-      // Priority 1: 1, 2, 4 groupings route to Court 1 Paddle Rack
+      // Priority 1: 1, 2, 4 groupings
       if (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('4')) {
         location = 'Court 1 Paddle Rack';
       }
-      // Priority 2: Exact single court assignment for 1, 3, 6, 7, 9, 10, 11, 12 -> "Court X Table"
+      // Priority 2: Exact single court assignment
       else if (nums.length === 1 && [1, 3, 6, 7, 9, 10, 11, 12].includes(nums[0])) {
-        location = `Court ${nums[0]} Table`;
+        location = 'Court ' + nums[0] + ' Table';
       }
-      // Priority 3: Groups containing Court 4 & 5 or falling in Courts 4 - 6
+      // Priority 3: Groups containing 4 & 5 or between 4 - 6
       else if ((courtsSet.has('4') && courtsSet.has('5')) || nums.some(n => n >= 4 && n <= 6)) {
         location = 'Court 4 Table';
       }
-      // Priority 4: Groups containing Court 7 / Courts 7 - 9
+      // Priority 4: Groups containing 7 or between 7 - 9
       else if (courtsSet.has('7') || nums.some(n => n >= 7 && n <= 9)) {
         location = 'Court 7 Paddle Rack';
       }
@@ -244,7 +243,7 @@ function resolveQueueLocation(courtsSet, customText) {
         location = 'Court 10 Paddle Rack';
       } else {
         const minCourt = Math.min(...nums);
-        location = `Court ${minCourt} Paddle Rack`;
+        location = 'Court ' + minCourt + ' Paddle Rack';
       }
     }
   }
@@ -256,10 +255,9 @@ function resolveQueueLocation(courtsSet, customText) {
     .replace(/^queue\s+at\s+/i, '')
     .trim();
 
-  return `📍 - ${cleanLoc}`;
+  return '📍 - ' + cleanLoc;
 }
 
-// Applies Replacement Overrides from Google Calendar
 function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   if (!Array.isArray(overridesList) || overridesList.length === 0) return;
 
@@ -279,7 +277,6 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   activeOverrides.forEach(ov => {
     if (Array.isArray(ov.courts) && ov.courts.length > 0) {
       Object.values(eventMap).forEach(ev => {
-        // Match by filter phrase if present, otherwise override active running session
         if (!ov.match || new RegExp(ov.match.trim(), 'i').test(ev.title)) {
           ev.courts = new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)));
         }
@@ -288,7 +285,7 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   });
 }
 
-function formatTime(isoString, isEndTime = false) {
+function formatTime(isoString, isEndTime) {
   if (!isoString) return '';
   const d = new Date(isoString);
   if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
@@ -304,9 +301,9 @@ function formatTimeWindow(startIso, endIso) {
   const parts1 = t1.split(' ');
   const parts2 = t2.split(' ');
   if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
-    return `${parts1[0]} \u2013 ${t2}`;
+    return parts1[0] + ' – ' + t2;
   }
-  return `${t1} \u2013 ${t2}`;
+  return t1 + ' – ' + t2;
 }
 
 if (isCycling) {
