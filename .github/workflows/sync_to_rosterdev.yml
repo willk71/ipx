@@ -11,9 +11,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false # Disables github-actions[bot] credential caching
 
       - name: Push to rosters-dev
         env:
           SYNC_TOKEN: ${{ secrets.PAT_ROSTER_DEV }}
         run: |
-          git push https://x-access-token:${SYNC_TOKEN}@github.com/willk71/rosters-dev.git main:main --force
+          git push https://${SYNC_TOKEN}@github.com/willk71/rosters-dev.git main:main --force
