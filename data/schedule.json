@@ -1,7 +1,13 @@
 {
-  "lastUpdated": "2026-09-27T19:57:43Z",
+  "lastUpdated": "2026-09-27T20:05:40Z",
   "date": "2026-09-27",
-  "courtHosts": [],
+  "courtHosts": [
+    {
+      "start": "15:00",
+      "end": "18:00",
+      "host": "Timmy M"
+    }
+  ],
   "courtOverrides": [],
   "adHocSessions": [],
   "reservations": [
@@ -28,12 +34,6 @@
       "holderLabel": "",
       "startTime": "2026-09-27T12:00:00",
       "endTime": "2026-09-27T13:00:00"
-    },
-    {
-      "court": "Court 6",
-      "holderLabel": "",
-      "startTime": "2026-09-27T10:00:00",
-      "endTime": "2026-09-27T12:00:00"
     },
     {
       "court": "Court 3",
@@ -94,12 +94,6 @@
       "holderLabel": "",
       "startTime": "2026-09-27T18:00:00",
       "endTime": "2026-09-27T19:00:00"
-    },
-    {
-      "court": "Court 13",
-      "holderLabel": "",
-      "startTime": "2026-09-27T11:00:00",
-      "endTime": "2026-09-27T12:00:00"
     },
     {
       "court": "Court 11",
@@ -2286,6 +2280,21 @@
       "checkedIn": false
     },
     {
+      "eventId": 2290654,
+      "title": "Social Open Play | Intermediate - Advanced | Sunday",
+      "startTime": "2026-09-27T18:00:00",
+      "endTime": "2026-09-27T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Michael L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2225510,
       "title": "Social Open Play | Advanced Beginner - Intermediate | Sunday | 1pm-3pm",
       "startTime": "2026-09-27T13:00:00",
@@ -2357,6 +2366,21 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Pastor T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2290654,
+      "title": "Social Open Play | Intermediate - Advanced | Sunday",
+      "startTime": "2026-09-27T18:00:00",
+      "endTime": "2026-09-27T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Jonathan y",
       "checkedIn": false
     },
     {
