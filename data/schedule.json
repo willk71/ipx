@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-27T01:47:39Z",
+  "lastUpdated": "2026-09-27T01:48:31Z",
   "date": "2026-09-26",
   "courtHosts": [
     {
@@ -13,6 +13,11 @@
       "host": "Wendy X"
     },
     {
+      "start": "17:00",
+      "end": "22:00",
+      "host": "Winnie Z"
+    },
+    {
       "start": "20:00",
       "end": "23:00",
       "host": "Ray"
@@ -21,14 +26,18 @@
       "start": "17:00",
       "end": "21:00",
       "host": "Stephanie L"
-    },
-    {
-      "start": "17:00",
-      "end": "22:00",
-      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [
+    {
+      "start": "17:30",
+      "end": "21:00",
+      "courts": [
+        "3",
+        "6"
+      ],
+      "match": "Beginner"
+    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -41,15 +50,6 @@
         "8"
       ],
       "match": "Advanced"
-    },
-    {
-      "start": "17:30",
-      "end": "21:00",
-      "courts": [
-        "3",
-        "6"
-      ],
-      "match": "Beginner"
     }
   ],
   "adHocSessions": [
