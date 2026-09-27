@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-27T19:03:13Z",
+  "lastUpdated": "2026-09-27T19:04:44Z",
   "date": "2026-09-27",
   "courtHosts": [],
   "courtOverrides": [],
@@ -112,6 +112,12 @@
       "holderLabel": "",
       "startTime": "2026-09-27T14:00:00",
       "endTime": "2026-09-27T15:00:00"
+    },
+    {
+      "court": "Court 9",
+      "holderLabel": "",
+      "startTime": "2026-09-27T18:00:00",
+      "endTime": "2026-09-27T19:00:00"
     }
   ],
   "events": [
@@ -710,7 +716,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Arushi S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2148647,
@@ -1109,6 +1115,22 @@
       "checkedIn": false
     },
     {
+      "eventId": 2148670,
+      "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
+      "startTime": "2026-09-27T20:00:00",
+      "endTime": "2026-09-27T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Catherine C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2148647,
       "title": "SUMMER | Social Open Play | Intermediate - Advanced",
       "startTime": "2026-09-27T15:00:00",
@@ -1206,7 +1228,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Jasmine S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2162308,
@@ -1441,20 +1463,6 @@
         "Court 8"
       ],
       "playerName": "Raymond C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Christina N",
       "checkedIn": false
     },
     {
@@ -2173,7 +2181,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Jasmine S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2162309,
@@ -2483,6 +2491,20 @@
       ],
       "playerName": "Shengmin J",
       "checkedIn": true
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Christina N",
+      "checkedIn": false
     },
     {
       "eventId": 2225541,
@@ -3303,7 +3325,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Aarushi B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118424,
