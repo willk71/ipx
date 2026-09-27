@@ -1,7 +1,22 @@
 {
-  "lastUpdated": "2026-09-27T02:27:23Z",
+  "lastUpdated": "2026-09-27T02:38:53Z",
   "date": "2026-09-26",
   "courtHosts": [
+    {
+      "start": "20:00",
+      "end": "23:00",
+      "host": "Ray"
+    },
+    {
+      "start": "17:00",
+      "end": "22:00",
+      "host": "Lillian H"
+    },
+    {
+      "start": "17:00",
+      "end": "22:00",
+      "host": "Winnie Z"
+    },
     {
       "start": "17:00",
       "end": "21:00",
@@ -11,33 +26,9 @@
       "start": "17:30",
       "end": "21:30",
       "host": "Wendy X"
-    },
-    {
-      "start": "20:00",
-      "end": "23:00",
-      "host": "Ray"
-    },
-    {
-      "start": "17:00",
-      "end": "22:00",
-      "host": "Winnie Z"
-    },
-    {
-      "start": "17:00",
-      "end": "22:00",
-      "host": "Lillian H"
     }
   ],
   "courtOverrides": [
-    {
-      "start": "17:30",
-      "end": "21:00",
-      "courts": [
-        "3",
-        "6"
-      ],
-      "match": "Beginner"
-    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -50,6 +41,15 @@
         "8"
       ],
       "match": "Advanced"
+    },
+    {
+      "start": "17:30",
+      "end": "21:00",
+      "courts": [
+        "3",
+        "6"
+      ],
+      "match": "Beginner"
     }
   ],
   "adHocSessions": [
@@ -1345,6 +1345,20 @@
       "checkedIn": true
     },
     {
+      "eventId": 2118420,
+      "title": "3.5-4.0 Open Play | Sunday | 11am-1pm",
+      "startTime": "2026-09-27T11:00:00",
+      "endTime": "2026-09-27T13:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Chris L",
+      "checkedIn": true
+    },
+    {
       "eventId": 2182246,
       "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
       "startTime": "2026-09-26T21:00:00",
@@ -1945,20 +1959,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2148643,
-      "title": "SUMMER | Social Open Play | Advanced Beginner - Intermediate",
-      "startTime": "2026-09-27T15:00:00",
-      "endTime": "2026-09-27T18:00:00",
-      "courts": [
-        "Court 3",
-        "Court 1 (Livestreaming)",
-        "Court 2",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Bea I",
-      "checkedIn": false
-    },
-    {
       "eventId": 2276441,
       "title": "SUMMER | Open Play | Advanced Beginner - Intermediate | Saturday",
       "startTime": "2026-09-26T21:00:00",
@@ -1990,7 +1990,7 @@
     },
     {
       "eventId": 2220593,
-      "title": "Morning Mixer | Rotating Partner | Monday |  7am-9am",
+      "title": "Morning Mixer",
       "startTime": "2026-09-28T07:00:00",
       "endTime": "2026-09-28T09:00:00",
       "courts": [
@@ -2003,7 +2003,7 @@
     },
     {
       "eventId": 2221619,
-      "title": "Morning Mixer | Rotating Partner | Monday | 9am-11am",
+      "title": "Morning Mixer",
       "startTime": "2026-09-28T09:00:00",
       "endTime": "2026-09-28T11:00:00",
       "courts": [
@@ -2122,21 +2122,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2290654,
-      "title": "Social Open Play | Intermediate - Advanced | Sunday",
-      "startTime": "2026-09-27T18:00:00",
-      "endTime": "2026-09-27T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Jeffrey L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2148670,
       "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
       "startTime": "2026-09-27T20:00:00",
@@ -2147,6 +2132,21 @@
         "Court 8",
         "Court 11",
         "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jeffrey L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2290654,
+      "title": "Social Open Play | Intermediate - Advanced | Sunday",
+      "startTime": "2026-09-27T18:00:00",
+      "endTime": "2026-09-27T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Jeffrey L",
       "checkedIn": false
@@ -2219,6 +2219,19 @@
       ],
       "playerName": "Alvin D",
       "checkedIn": true
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Scott L",
+      "checkedIn": false
     },
     {
       "eventId": 2162309,
@@ -2564,20 +2577,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2162308,
-      "title": "3.25-3.75 Open Play | Monday",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 4 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Kenny T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2225510,
       "title": "Social Open Play | Advanced Beginner - Intermediate | Sunday | 1pm-3pm",
       "startTime": "2026-09-27T13:00:00",
@@ -2587,6 +2586,20 @@
         "Court 4 (Livestreaming)",
         "Court 2",
         "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Kenny T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162308,
+      "title": "3.25-3.75 Open Play | Monday",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 4 (Livestreaming)",
+        "Court 8"
       ],
       "playerName": "Kenny T",
       "checkedIn": false
@@ -2810,7 +2823,7 @@
     },
     {
       "eventId": 2220593,
-      "title": "Morning Mixer | Rotating Partner | Monday |  7am-9am",
+      "title": "Morning Mixer",
       "startTime": "2026-09-28T07:00:00",
       "endTime": "2026-09-28T09:00:00",
       "courts": [
@@ -3102,7 +3115,7 @@
     },
     {
       "eventId": 2220593,
-      "title": "Morning Mixer | Rotating Partner | Monday |  7am-9am",
+      "title": "Morning Mixer",
       "startTime": "2026-09-28T07:00:00",
       "endTime": "2026-09-28T09:00:00",
       "courts": [
@@ -3180,6 +3193,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "KD P",
+      "checkedIn": false
+    },
+    {
       "eventId": 2225510,
       "title": "Social Open Play | Advanced Beginner - Intermediate | Sunday | 1pm-3pm",
       "startTime": "2026-09-27T13:00:00",
@@ -3189,19 +3215,6 @@
         "Court 4 (Livestreaming)",
         "Court 2",
         "Court 1 (Livestreaming)"
-      ],
-      "playerName": "KD P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 5"
       ],
       "playerName": "KD P",
       "checkedIn": false
@@ -3314,6 +3327,20 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Harrison L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2148643,
+      "title": "SUMMER | Social Open Play | Advanced Beginner - Intermediate",
+      "startTime": "2026-09-27T15:00:00",
+      "endTime": "2026-09-27T18:00:00",
+      "courts": [
+        "Court 3",
+        "Court 1 (Livestreaming)",
+        "Court 2",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Bea I",
       "checkedIn": false
     },
     {
