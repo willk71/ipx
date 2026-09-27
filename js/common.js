@@ -210,7 +210,15 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // Rule: Courts 4 & 7 present
+      // 1. Specific groupings for Courts 8 & 9 and Courts 10 & 12
+      if (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) {
+        return '📍 - Court 10 Table - Left';
+      }
+      if (courtsSet.has('10') && courtsSet.has('12') && courtsSet.size === 2) {
+        return '📍 - Court 10 Table - Right';
+      }
+
+      // 2. Both Court 4 and Court 7 are present:
       if (courtsSet.has('4') && courtsSet.has('7')) {
         if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
           return '📍 - Court 7 Paddle Rack';
