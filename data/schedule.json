@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-28T21:37:37Z",
+  "lastUpdated": "2026-09-28T21:38:29Z",
   "date": "2026-09-28",
   "courtHosts": [
     {
@@ -8,14 +8,14 @@
       "host": "Nelson C"
     },
     {
-      "start": "15:00",
-      "end": "19:30",
-      "host": "Will K"
-    },
-    {
       "start": "19:00",
       "end": "23:30",
       "host": "Neil L"
+    },
+    {
+      "start": "15:00",
+      "end": "19:30",
+      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -44,6 +44,12 @@
       "holderLabel": "",
       "startTime": "2026-09-28T13:00:00",
       "endTime": "2026-09-28T14:00:00"
+    },
+    {
+      "court": "Court 3",
+      "holderLabel": "",
+      "startTime": "2026-09-28T22:00:00",
+      "endTime": "2026-09-28T23:00:00"
     }
   ],
   "events": [
@@ -704,7 +710,7 @@
         "Court 8"
       ],
       "playerName": "Karl H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2160553,
@@ -2344,7 +2350,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Adam S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257689,
@@ -2520,7 +2526,7 @@
         "Court 8"
       ],
       "playerName": "Karl H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281677,
