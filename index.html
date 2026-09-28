@@ -5,7 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Sessions</title>
-  <link rel="stylesheet" href="css/common.css?v=2.2.6" />
+  <link rel="stylesheet" href="css/common.css?v=2.2.7" />
+  <style>
+    /* Styling for the Private Court reservations banner */
+    .private-court-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 8px 16px;
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+    .private-chip {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body class="page-index">
   <header>
@@ -25,6 +48,8 @@
     </div>
   </main>
 
+  <!-- Privates strip: at the bottom, above Court Hosts -->
+  <div id="private-reservations-container" style="display: none;"></div>
   <div id="court-host-container" style="display: none;"></div>
 
   <footer>
@@ -43,8 +68,17 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.2.6"></script>
+  <script src="js/common.js?v=2.2.7"></script>
   <script>
+    function formatNameLastInitial(rawName) {
+      if (!rawName) return '';
+      const parts = rawName.trim().split(/\s+/);
+      if (parts.length === 1) return toSentenceCase(parts[0]);
+      const first = toSentenceCase(parts[0]);
+      const lastInit = parts[parts.length - 1].charAt(0).toUpperCase();
+      return `${first} ${lastInit}.`;
+    }
+
     async function refreshDisplay() {
       let data = {};
       const now = new Date();
@@ -88,98 +122,50 @@
         return /\b(road|assessment|skill)s?\b/i.test(title || '');
       };
 
-      // 1. Court Host Processing
-      try {
-        const hostContainer = document.getElementById('court-host-container');
-        const hostsList = Array.isArray(data.courtHosts) ? data.courtHosts : [];
-        const activeHostSet = new Set();
-
-        hostsList.forEach(h => {
-          if (!h || !h.host) return;
-
-          if (!h.start || !h.end) {
-            activeHostSet.add(h.host.trim());
-            return;
-          }
-
-          const sMin = parseMinutes(h.start);
-          let eMin = parseMinutes(h.end);
-          if (eMin === 0) eMin = 24 * 60;
-
-          if (currentMinutes >= sMin && currentMinutes < eMin) {
-            activeHostSet.add(h.host.trim());
-          }
-        });
-
-        const activeHosts = Array.from(activeHostSet);
-
-        if (activeHosts.length > 0 && hostContainer) {
-          let formattedNames = '';
-          if (activeHosts.length === 1) {
-            formattedNames = activeHosts[0];
-          } else if (activeHosts.length === 2) {
-            formattedNames = activeHosts.join(' & ');
-          } else {
-            formattedNames = `${activeHosts.slice(0, -1).join(', ')} & ${activeHosts[activeHosts.length - 1]}`;
-          }
-
-          hostContainer.className = 'court-host-bar';
-          hostContainer.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
-          hostContainer.innerHTML = `
-            <span class="host-badge-label">Court Host${activeHosts.length > 1 ? 's' : ''}:</span>
-            <span class="host-names">${formattedNames}</span>
-          `;
-        } else if (hostContainer) {
-          hostContainer.className = '';
-          hostContainer.style.display = 'none';
-          hostContainer.innerHTML = '';
+      const isRunningAtTarget = (startIso, endIso) => {
+        if (!startIso || !endIso) return false;
+        const s = new Date(startIso);
+        let e = new Date(endIso);
+        if (e.getHours() === 23 && e.getMinutes() === 59) {
+          e = new Date(e.getTime() + 61 * 60 * 1000);
         }
-      } catch (err) {
-        console.error("Error displaying hosts:", err);
-      }
+        return s <= targetTime && e > targetTime;
+      };
 
-      // 2. Sessions Processing (CourtReserve + Ad-Hoc + Overrides)
-      try {
-        const isRunningAtTarget = (startIso, endIso) => {
-          if (!startIso || !endIso) return false;
-          const s = new Date(startIso);
-          let e = new Date(endIso);
-          if (e.getHours() === 23 && e.getMinutes() === 59) {
-            e = new Date(e.getTime() + 61 * 60 * 1000);
-          }
-          return s <= targetTime && e > targetTime;
-        };
+      const events = Array.isArray(data) ? data : (data.events || []);
+      const reservations = Array.isArray(data.reservations) ? data.reservations : [];
+      const adHocSessions = Array.isArray(data.adHocSessions) ? data.adHocSessions : [];
 
-        const events = Array.isArray(data) ? data : (data.events || []);
-        const adHocSessions = Array.isArray(data.adHocSessions) ? data.adHocSessions : [];
+      // 1. Countdown Target Epoch (Privates are strictly excluded)
+      let closestFutureEpoch = null;
+      [...events, ...adHocSessions].forEach(e => {
+        const rawName = (e.title || e.DivisionName || e.EventName || '');
+        if (isExcludedSession(rawName)) return;
 
-        let closestFutureEpoch = null;
-        [...events, ...adHocSessions].forEach(e => {
-          const rawName = (e.title || e.DivisionName || e.EventName || '');
-          if (isExcludedSession(rawName)) return;
+        const sTime = e.startTime || e.startTimeIso || e.StartTime;
+        const eTime = e.endTime || e.endTimeIso || e.EndTime;
+        if (!sTime || !eTime) return;
 
-          const sTime = e.startTime || e.startTimeIso || e.StartTime;
-          const eTime = e.endTime || e.endTimeIso || e.EndTime;
-          if (!sTime || !eTime) return;
+        const s = new Date(sTime).getTime();
+        let endDt = new Date(eTime);
+        if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
+          endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
+        }
+        const endEpoch = endDt.getTime();
 
-          const s = new Date(sTime).getTime();
-          let endDt = new Date(eTime);
-          if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
-            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
-          }
-          const endEpoch = endDt.getTime();
-
-          [s, endEpoch].forEach(epoch => {
-            if (epoch > now.getTime()) {
-              if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
-                closestFutureEpoch = epoch;
-              }
+        [s, endEpoch].forEach(epoch => {
+          if (epoch > now.getTime()) {
+            if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
+              closestFutureEpoch = epoch;
             }
-          });
+          }
         });
-        nextTransitionTargetEpoch = closestFutureEpoch;
-        updateCountdown();
+      });
+      nextTransitionTargetEpoch = closestFutureEpoch;
+      updateCountdown();
 
+      // 2. Main Sessions Grid Processing
+      try {
         const eventMap = {};
         events.forEach(e => {
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
@@ -207,7 +193,6 @@
           }
         });
 
-        // Apply Google Calendar Court Replacements
         applyCourtOverrides(eventMap, data.courtOverrides || [], currentMinutes);
 
         const sessions = [];
@@ -222,7 +207,6 @@
           });
         });
 
-        // Inject Ad-Hoc Sessions
         adHocSessions.forEach((ah) => {
           const rawName = ah.title || '';
           if (isExcludedSession(rawName)) return;
@@ -271,49 +255,129 @@
               <h2>No Active Sessions</h2>
             </div>
           `;
-          return;
+        } else {
+          sessions.sort((a, b) => {
+            const keyA = (a.title || '').trim().substring(0, 3);
+            const keyB = (b.title || '').trim().substring(0, 3);
+            const numA = parseFloat(keyA);
+            const numB = parseFloat(keyB);
+
+            if (!isNaN(numA) && !isNaN(numB)) {
+              if (numA !== numB) return numA - numB;
+            } else {
+              const strComp = keyA.localeCompare(keyB, undefined, { numeric: true, sensitivity: 'base' });
+              if (strComp !== 0) return strComp;
+            }
+
+            return new Date(a.startTime) - new Date(b.startTime);
+          });
+
+          const totalSessions = Math.min(sessions.length, 6);
+          container.className = `count-${totalSessions}`;
+
+          sessions.forEach(item => {
+            let s = new Date(item.startTime);
+            let e = new Date(item.endTime);
+            if (e.getHours() === 23 && e.getMinutes() === 59) {
+              e = new Date(e.getTime() + 61 * 60 * 1000);
+            }
+
+            const isNow = now >= s && now <= e;
+            const card = document.createElement('div');
+            card.className = `session-card ${isNow ? 'is-now' : ''}`;
+
+            card.innerHTML = `
+              <div class="session-title">${item.title}</div>
+              <div class="session-courts">${item.courtsLabel}</div>
+              ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
+            `;
+
+            container.appendChild(card);
+          });
         }
-
-        sessions.sort((a, b) => {
-          const keyA = (a.title || '').trim().substring(0, 3);
-          const keyB = (b.title || '').trim().substring(0, 3);
-          const numA = parseFloat(keyA);
-          const numB = parseFloat(keyB);
-
-          if (!isNaN(numA) && !isNaN(numB)) {
-            if (numA !== numB) return numA - numB;
-          } else {
-            const strComp = keyA.localeCompare(keyB, undefined, { numeric: true, sensitivity: 'base' });
-            if (strComp !== 0) return strComp;
-          }
-
-          return new Date(a.startTime) - new Date(b.startTime);
-        });
-
-        const totalSessions = Math.min(sessions.length, 6);
-        container.className = `count-${totalSessions}`;
-
-        sessions.forEach(item => {
-          let s = new Date(item.startTime);
-          let e = new Date(item.endTime);
-          if (e.getHours() === 23 && e.getMinutes() === 59) {
-            e = new Date(e.getTime() + 61 * 60 * 1000);
-          }
-
-          const isNow = now >= s && now <= e;
-          const card = document.createElement('div');
-          card.className = `session-card ${isNow ? 'is-now' : ''}`;
-
-          card.innerHTML = `
-            <div class="session-title">${item.title}</div>
-            <div class="session-courts">${item.courtsLabel}</div>
-            ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
-          `;
-
-          container.appendChild(card);
-        });
       } catch (err) {
         console.error("Error updating sessions:", err);
+      }
+
+      // 3. Private Reservations Bar (Directly Above Court Hosts)
+      try {
+        const privContainer = document.getElementById('private-reservations-container');
+        const activePrivates = [];
+
+        reservations.forEach(r => {
+          const sTime = r.startTime || r.StartTime;
+          const eTime = r.endTime || r.EndTime;
+          if (!isRunningAtTarget(sTime, eTime)) return;
+
+          const courtNumbers = extractSortedCourts(r.courts || r.Courts || r.CourtName || r.court);
+          const rawMember = r.memberName || r.MemberName || r.title || r.reservedBy || 'Reserved';
+          const memberLabel = formatNameLastInitial(rawMember);
+
+          const courtLabel = courtNumbers.length > 0 ? courtNumbers.join(', ') : 'TBD';
+          activePrivates.push(`Private Court ${courtLabel} (${memberLabel})`);
+        });
+
+        if (activePrivates.length > 0 && privContainer) {
+          privContainer.className = 'private-court-bar';
+          privContainer.style.display = 'flex';
+          privContainer.innerHTML = activePrivates.map(text => `<span class="private-chip">${text}</span>`).join('');
+        } else if (privContainer) {
+          privContainer.className = '';
+          privContainer.style.display = 'none';
+          privContainer.innerHTML = '';
+        }
+      } catch (err) {
+        console.error("Error displaying private reservations:", err);
+      }
+
+      // 4. Court Hosts Bar
+      try {
+        const hostContainer = document.getElementById('court-host-container');
+        const hostsList = Array.isArray(data.courtHosts) ? data.courtHosts : [];
+        const activeHostSet = new Set();
+
+        hostsList.forEach(h => {
+          if (!h || !h.host) return;
+
+          if (!h.start || !h.end) {
+            activeHostSet.add(h.host.trim());
+            return;
+          }
+
+          const sMin = parseMinutes(h.start);
+          let eMin = parseMinutes(h.end);
+          if (eMin === 0) eMin = 24 * 60;
+
+          if (currentMinutes >= sMin && currentMinutes < eMin) {
+            activeHostSet.add(h.host.trim());
+          }
+        });
+
+        const activeHosts = Array.from(activeHostSet);
+
+        if (activeHosts.length > 0 && hostContainer) {
+          let formattedNames = '';
+          if (activeHosts.length === 1) {
+            formattedNames = activeHosts[0];
+          } else if (activeHosts.length === 2) {
+            formattedNames = activeHosts.join(' & ');
+          } else {
+            formattedNames = `${activeHosts.slice(0, -1).join(', ')} & ${activeHosts[activeHosts.length - 1]}`;
+          }
+
+          hostContainer.className = 'court-host-bar';
+          hostContainer.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
+          hostContainer.innerHTML = `
+            <span class="host-badge-label">Court Host${activeHosts.length > 1 ? 's' : ''}:</span>
+            <span class="host-names">${formattedNames}</span>
+          `;
+        } else if (hostContainer) {
+          hostContainer.className = '';
+          hostContainer.style.display = 'none';
+          hostContainer.innerHTML = '';
+        }
+      } catch (err) {
+        console.error("Error displaying hosts:", err);
       }
     }
 
