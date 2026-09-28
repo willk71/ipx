@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-09-28T18:50:21Z",
+  "lastUpdated": "2026-09-28T19:06:51Z",
   "date": "2026-09-28",
   "courtHosts": [
+    {
+      "start": "15:00",
+      "end": "19:30",
+      "host": "Will K"
+    },
     {
       "start": "19:00",
       "end": "23:30",
@@ -11,11 +16,6 @@
       "start": "18:15",
       "end": "20:45",
       "host": "Nelson C"
-    },
-    {
-      "start": "15:00",
-      "end": "19:30",
-      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -364,7 +364,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Alaric Q",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2160553,
@@ -903,19 +903,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2221619,
-      "title": "Morning Mixer",
-      "startTime": "2026-09-28T09:00:00",
-      "endTime": "2026-09-28T11:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
       "eventId": 2220793,
       "title": "Rise and Grind Drill/Play",
       "startTime": "2026-09-29T07:00:00",
@@ -1451,6 +1438,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Christina N",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Frank L",
       "checkedIn": false
     },
     {
@@ -2298,7 +2298,7 @@
         "Court 11"
       ],
       "playerName": "Alaric Q",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257689,
@@ -3036,7 +3036,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Lyn K",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257709,
