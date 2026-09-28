@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-28T00:00:59Z",
+  "lastUpdated": "2026-09-28T00:01:53Z",
   "date": "2026-09-27",
   "courtHosts": [
     {
@@ -623,6 +623,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2160550,
+      "title": "Intermediate - Advanced Open Play",
+      "startTime": "2026-09-28T11:00:00",
+      "endTime": "2026-09-28T14:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Gage F",
+      "checkedIn": true
+    },
+    {
       "eventId": 2148647,
       "title": "SUMMER | Social Open Play | Intermediate - Advanced",
       "startTime": "2026-09-27T15:00:00",
@@ -632,19 +645,6 @@
         "Court 8",
         "Court 7 (Livestreaming)",
         "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Gage F",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2160550,
-      "title": "Intermediate - Advanced Open Play",
-      "startTime": "2026-09-28T11:00:00",
-      "endTime": "2026-09-28T14:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)"
       ],
       "playerName": "Gage F",
       "checkedIn": true
@@ -805,19 +805,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2160553,
-      "title": "Intermediate - Advanced Open Play",
-      "startTime": "2026-09-28T14:00:00",
-      "endTime": "2026-09-28T17:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Alaric Q",
-      "checkedIn": false
-    },
-    {
       "eventId": 2148670,
       "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
       "startTime": "2026-09-27T20:00:00",
@@ -874,7 +861,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Derek M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2160096,
@@ -947,6 +934,22 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "George H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2148670,
+      "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
+      "startTime": "2026-09-27T20:00:00",
+      "endTime": "2026-09-27T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jeffrey L",
       "checkedIn": false
     },
     {
@@ -1210,19 +1213,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Jessica L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2162309,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-09-28T19:30:00",
@@ -1379,6 +1369,19 @@
         "Court 8"
       ],
       "playerName": "may w",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2160553,
+      "title": "Intermediate - Advanced Open Play",
+      "startTime": "2026-09-28T14:00:00",
+      "endTime": "2026-09-28T17:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Alaric Q",
       "checkedIn": false
     },
     {
@@ -2069,19 +2072,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257689,
-      "title": "3.5-4.0 Gated Open Play | Tuesday | 6pm-8pm",
-      "startTime": "2026-09-29T18:00:00",
-      "endTime": "2026-09-29T20:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 11"
-      ],
-      "playerName": "Kevin T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281677,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-09-28T17:30:00",
@@ -2090,6 +2080,19 @@
         "Court 8",
         "Court 9",
         "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Kevin T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257689,
+      "title": "3.5-4.0 Gated Open Play | Tuesday | 6pm-8pm",
+      "startTime": "2026-09-29T18:00:00",
+      "endTime": "2026-09-29T20:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 11"
       ],
       "playerName": "Kevin T",
       "checkedIn": false
@@ -2339,6 +2342,19 @@
       ],
       "playerName": "Chris L",
       "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jessica L",
+      "checkedIn": false
     },
     {
       "eventId": 2257655,
