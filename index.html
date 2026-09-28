@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Sessions</title>
-  <link rel="stylesheet" href="css/common.css?v=2.2.5" />
+  <link rel="stylesheet" href="css/common.css?v=2.2.6" />
 </head>
 <body class="page-index">
   <header>
@@ -13,6 +13,9 @@
       <h1 id="header-title">
         <span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span id="board-title-text">Sessions</span>
       </h1>
+    </div>
+    <div class="header-right">
+      <div class="clock" id="live-clock">--:-- --</div>
     </div>
   </header>
 
@@ -37,11 +40,10 @@
         <span class="countdown-label">Next session starts:</span>
         <span class="countdown-clock" id="transition-countdown">--:--</span>
       </div>
-      <div class="footer-clock" id="live-clock">--:-- --</div>
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.2.5"></script>
+  <script src="js/common.js?v=2.2.6"></script>
   <script>
     async function refreshDisplay() {
       let data = {};
@@ -82,7 +84,11 @@
         return (parts[0] || 0) * 60 + (parts[1] || 0);
       };
 
-      // 1. Court Host Processing (Requires explicit Host: prefix)
+      const isExcludedSession = (title) => {
+        return /\b(road|assessment|skill)s?\b/i.test(title || '');
+      };
+
+      // 1. Court Host Processing
       try {
         const hostContainer = document.getElementById('court-host-container');
         const hostsList = Array.isArray(data.courtHosts) ? data.courtHosts : [];
@@ -150,7 +156,7 @@
         let closestFutureEpoch = null;
         [...events, ...adHocSessions].forEach(e => {
           const rawName = (e.title || e.DivisionName || e.EventName || '');
-          if (/\bRoad\b/i.test(rawName)) return;
+          if (isExcludedSession(rawName)) return;
 
           const sTime = e.startTime || e.startTimeIso || e.StartTime;
           const eTime = e.endTime || e.endTimeIso || e.EndTime;
@@ -179,7 +185,7 @@
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
 
           const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
-          if (/\bRoad\b/i.test(rawName)) return;
+          if (isExcludedSession(rawName)) return;
 
           const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
           const courtNumbers = extractSortedCourts(e.courts || e.Courts);
@@ -201,7 +207,7 @@
           }
         });
 
-        // Apply Google Calendar Court Replacements (e.g. Courts 1, 2, 4, 5, 6, 8 | Advanced)
+        // Apply Google Calendar Court Replacements
         applyCourtOverrides(eventMap, data.courtOverrides || [], currentMinutes);
 
         const sessions = [];
@@ -216,8 +222,11 @@
           });
         });
 
-        // Inject Ad-Hoc Sessions (e.g. "Challenge Court on 3")
-        adHocSessions.forEach((ah, idx) => {
+        // Inject Ad-Hoc Sessions
+        adHocSessions.forEach((ah) => {
+          const rawName = ah.title || '';
+          if (isExcludedSession(rawName)) return;
+
           const sMin = parseMinutes(ah.start);
           let eMin = parseMinutes(ah.end);
           if (eMin === 0) eMin = 24 * 60;
