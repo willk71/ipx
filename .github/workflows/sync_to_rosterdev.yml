@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false # Disables github-actions[bot] credential caching
+          persist-credentials: false
 
       - name: Push to rosters-dev
         env:
