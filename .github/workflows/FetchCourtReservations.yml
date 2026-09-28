@@ -202,10 +202,19 @@ jobs:
                   ($res[0].Data // $res[0] // [])[] | {
                     court: (.Courts // .CourtName // ""),
                     holderLabel: (
-                      if .FirstName then
-                        ("(" + (.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) else "" end) + ")")
+                      if (.MemberFirstName and .MemberLastName) then
+                        ((.MemberFirstName | split(" ")[0]) + " " + (.MemberLastName[0:1]) + ".")
+                      elif .FirstName then
+                        ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) + "." else "" end))
                       elif .MemberName then
-                        ("(" + (.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]) + ")")
+                        ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]) + ".")
+                      elif .ReservedBy then
+                        ((.ReservedBy | split(" ")[0]) + " " + ((.ReservedBy | split(" ")[1] // "")[0:1]) + ".")
+                      elif (.Member and .Member.FirstName) then
+                        ((.Member.FirstName | split(" ")[0]) + " " + ((.Member.LastName // "")[0:1]) + ".")
+                      elif (.Players and (.Players | length > 0)) then
+                        ((.Players[0].FirstName // .Players[0].MemberFirstName // "Reserved") | split(" ")[0]) + 
+                        (if (.Players[0].LastName // .Players[0].MemberLastName) then " " + ((.Players[0].LastName // .Players[0].MemberLastName)[0:1]) + "." else "" end)
                       else "" end
                     ),
                     startTime: .StartTime,
