@@ -226,8 +226,9 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 4 Table';
       }
 
-      // Priority 1: 1, 2, 4 groupings
-      if (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('4')) {
+      // 3. Priority groupings for 1, 2, 4 and 1, 2, 5
+      if ((courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('4')) ||
+          (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('5'))) {
         location = 'Court 1 Paddle Rack';
       }
       // Priority 2: Exact single court assignment
