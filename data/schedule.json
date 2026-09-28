@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-09-28T19:55:13Z",
+  "lastUpdated": "2026-09-28T20:04:56Z",
   "date": "2026-09-28",
   "courtHosts": [
-    {
-      "start": "15:00",
-      "end": "19:30",
-      "host": "Will K"
-    },
     {
       "start": "18:15",
       "end": "20:45",
@@ -16,6 +11,11 @@
       "start": "19:00",
       "end": "23:30",
       "host": "Neil L"
+    },
+    {
+      "start": "15:00",
+      "end": "19:30",
+      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -28,14 +28,8 @@
       "endTime": "2026-09-28T20:00:00"
     },
     {
-      "court": "Court 13",
-      "holderLabel": "Briar L.",
-      "startTime": "2026-09-28T10:00:00",
-      "endTime": "2026-09-28T12:00:00"
-    },
-    {
       "court": "Court 6",
-      "holderLabel": "Rainier A.",
+      "holderLabel": "Rob J.",
       "startTime": "2026-09-29T19:00:00",
       "endTime": "2026-09-29T20:00:00"
     },
@@ -790,6 +784,85 @@
       ],
       "playerName": "Luke C",
       "checkedIn": true
+    },
+    {
+      "eventId": 2220809,
+      "title": "Morning Brew Drill & Social",
+      "startTime": "2026-09-29T09:00:00",
+      "endTime": "2026-09-29T11:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Toshi T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2291506,
+      "title": "IPX Club Rating Assessments",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Darren-Thinh H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257709,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
+      "playerName": "Hitomi M",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 9",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Patty T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 9",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Louis W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 9",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Kathy C",
+      "checkedIn": false
     },
     {
       "eventId": 2162308,
@@ -2210,6 +2283,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281680,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Andy H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257689,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -2217,6 +2302,18 @@
       "courts": [
         "Court 10 (Livestreaming)",
         "Court 11"
+      ],
+      "playerName": "MD K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281668,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
       "playerName": "MD K",
       "checkedIn": false
@@ -2751,6 +2848,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2291506,
+      "title": "IPX Club Rating Assessments",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Chirag J",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -3214,85 +3322,6 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Franklyn Z",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2220809,
-      "title": "Morning Brew Drill & Social",
-      "startTime": "2026-09-29T09:00:00",
-      "endTime": "2026-09-29T11:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Toshi T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2291506,
-      "title": "IPX Club Rating Assessments",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Darren-Thinh H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257709,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-09-29T20:00:00",
-      "endTime": "2026-09-29T22:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 5"
-      ],
-      "playerName": "Hitomi M",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 9",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Patty T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 9",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Louis W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 9",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Kathy C",
       "checkedIn": false
     }
   ]
