@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-09-29T02:10:02Z",
+  "lastUpdated": "2026-09-29T02:10:55Z",
   "date": "2026-09-28",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:30",
-      "host": "Neil L"
-    },
     {
       "start": "18:15",
       "end": "20:45",
       "host": "Nelson C"
+    },
+    {
+      "start": "19:00",
+      "end": "23:30",
+      "host": "Neil L"
     },
     {
       "start": "15:00",
@@ -1938,6 +1938,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257718,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Charlie V",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257702,
       "title": "3.25+ Open Play",
       "startTime": "2026-09-29T20:00:00",
@@ -2061,18 +2073,6 @@
       ],
       "playerName": "Michael C",
       "checkedIn": true
-    },
-    {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-09-30T19:30:00",
-      "endTime": "2026-09-30T21:30:00",
-      "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Anna D",
-      "checkedIn": false
     },
     {
       "eventId": 2257689,
@@ -3422,6 +3422,18 @@
         "Court 1 (Livestreaming)",
         "Court 2"
       ],
+      "playerName": "Anna D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-09-30T19:30:00",
+      "endTime": "2026-09-30T21:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
       "playerName": "GHULAM M",
       "checkedIn": true
     },
@@ -3803,23 +3815,23 @@
       "checkedIn": true
     },
     {
-      "eventId": 2291666,
-      "title": "IPX Club Rating Assessments",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "Chirag J",
-      "checkedIn": true
-    },
-    {
       "eventId": 2291506,
       "title": "IPX Club Rating Assessments",
       "startTime": "2026-09-28T17:30:00",
       "endTime": "2026-09-28T19:30:00",
       "courts": [
         "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Chirag J",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2291666,
+      "title": "IPX Club Rating Assessments",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 13"
       ],
       "playerName": "Chirag J",
       "checkedIn": true
