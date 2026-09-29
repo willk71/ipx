@@ -1,16 +1,11 @@
 {
-  "lastUpdated": "2026-09-29T22:16:31Z",
+  "lastUpdated": "2026-09-29T22:25:27Z",
   "date": "2026-09-29",
   "courtHosts": [
     {
       "start": "18:30",
       "end": "00:00",
       "host": "Neil L"
-    },
-    {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
     },
     {
       "start": "17:30",
@@ -21,6 +16,11 @@
       "start": "18:00",
       "end": "20:30",
       "host": "Kelsey C"
+    },
+    {
+      "start": "15:00",
+      "end": "20:00",
+      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -465,7 +465,7 @@
         "Court 5"
       ],
       "playerName": "Emma V",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281284,
@@ -501,7 +501,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Emily S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257655,
@@ -777,7 +777,7 @@
         "Court 5"
       ],
       "playerName": "Toni T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257680,
@@ -788,7 +788,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Toni T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257709,
@@ -893,7 +893,7 @@
         "Court 8"
       ],
       "playerName": "Emma V",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2160558,
@@ -1779,7 +1779,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Emily S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2294093,
@@ -1790,7 +1790,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Emily S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257645,
@@ -2002,7 +2002,7 @@
         "Court 8"
       ],
       "playerName": "Chok L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2197161,
@@ -2258,6 +2258,19 @@
       "courts": [
         "Court 8",
         "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Eric T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-09-30T20:00:00",
+      "endTime": "2026-09-30T22:00:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
       ],
       "playerName": "Eric T",
       "checkedIn": true
@@ -2807,7 +2820,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Quang T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281270,
@@ -2819,7 +2832,7 @@
         "Court 2"
       ],
       "playerName": "Quang T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2197161,
@@ -2831,7 +2844,7 @@
         "Court 3"
       ],
       "playerName": "Quang T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257645,
@@ -2843,7 +2856,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Quang T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257718,
@@ -2856,6 +2869,18 @@
       ],
       "playerName": "Juan S",
       "checkedIn": true
+    },
+    {
+      "eventId": 2197161,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-09-30T21:30:00",
+      "endTime": "2026-09-30T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 3"
+      ],
+      "playerName": "Chris C",
+      "checkedIn": false
     },
     {
       "eventId": 2257718,
@@ -3041,7 +3066,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Sunny S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118692,
