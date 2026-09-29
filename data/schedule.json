@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-09-29T21:33:27Z",
+  "lastUpdated": "2026-09-29T21:34:19Z",
   "date": "2026-09-29",
   "courtHosts": [
     {
-      "start": "18:00",
-      "end": "20:30",
-      "host": "Kelsey C"
+      "start": "18:30",
+      "end": "00:00",
+      "host": "Neil L"
     },
     {
       "start": "15:00",
@@ -13,14 +13,14 @@
       "host": "Will K"
     },
     {
+      "start": "18:00",
+      "end": "20:30",
+      "host": "Kelsey C"
+    },
+    {
       "start": "17:30",
       "end": "21:00",
       "host": "Nelson C"
-    },
-    {
-      "start": "18:30",
-      "end": "00:00",
-      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -1090,7 +1090,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Michael C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257702,
@@ -1926,7 +1926,7 @@
         "Court 5"
       ],
       "playerName": "Michael C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281270,
@@ -1938,7 +1938,7 @@
         "Court 2"
       ],
       "playerName": "Michael C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281699,
@@ -1950,7 +1950,7 @@
         "Court 2"
       ],
       "playerName": "Michael C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281699,
@@ -2856,6 +2856,18 @@
       "checkedIn": true
     },
     {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Lily K",
+      "checkedIn": true
+    },
+    {
       "eventId": 2281704,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-09-30T20:00:00",
@@ -3036,6 +3048,21 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Tylah G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118697,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-09-30T22:00:00",
+      "endTime": "2026-09-30T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Forrest T",
       "checkedIn": false
     },
     {
