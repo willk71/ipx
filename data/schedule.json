@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-09-29T01:11:59Z",
+  "lastUpdated": "2026-09-29T01:24:35Z",
   "date": "2026-09-28",
   "courtHosts": [
+    {
+      "start": "18:15",
+      "end": "20:45",
+      "host": "Nelson C"
+    },
     {
       "start": "19:00",
       "end": "23:30",
@@ -11,11 +16,6 @@
       "start": "15:00",
       "end": "19:30",
       "host": "Will K"
-    },
-    {
-      "start": "18:15",
-      "end": "20:45",
-      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -1959,6 +1959,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Peter C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257645,
       "title": "4.0+ Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -2455,20 +2467,6 @@
       "courts": [
         "Court 5",
         "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Janet N",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 9",
-        "Court 7 (Livestreaming)"
       ],
       "playerName": "Janet N",
       "checkedIn": true
@@ -3802,6 +3800,20 @@
       "checkedIn": true
     },
     {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 9",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Janet N",
+      "checkedIn": true
+    },
+    {
       "eventId": 2291675,
       "title": "IPX Rating Assessment - 3.5-4.0 Open Play",
       "startTime": "2026-09-29T20:00:00",
@@ -4213,6 +4225,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2109596,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-09-28T21:30:00",
+      "endTime": "2026-09-28T23:59:00",
+      "courts": [
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "David R",
+      "checkedIn": false
+    },
+    {
       "eventId": 2118692,
       "title": "3.25+ Open Play",
       "startTime": "2026-09-30T21:30:00",
@@ -4276,17 +4301,6 @@
         "Court 6"
       ],
       "playerName": "Kenneth H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2159647,
-      "title": "All Levels Open Play",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 6"
-      ],
-      "playerName": "Heerin S",
       "checkedIn": false
     },
     {
@@ -4395,19 +4409,15 @@
       "checkedIn": false
     },
     {
-      "eventId": 2160553,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-09-28T14:00:00",
-      "endTime": "2026-09-28T17:30:00",
+      "eventId": 2159647,
+      "title": "All Levels Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
       "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 11",
-        "Court 12 (Livestreaming)"
+        "Court 6"
       ],
-      "playerName": "Lyn K",
-      "checkedIn": true
+      "playerName": "Heerin S",
+      "checkedIn": false
     },
     {
       "eventId": 2257709,
@@ -4512,19 +4522,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-09-30T20:00:00",
-      "endTime": "2026-09-30T22:00:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Kylie C",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-09-29T20:00:00",
@@ -4535,6 +4532,21 @@
         "Court 5"
       ],
       "playerName": "Hitomi M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2160553,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-09-28T14:00:00",
+      "endTime": "2026-09-28T17:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Lyn K",
       "checkedIn": true
     },
     {
@@ -4563,20 +4575,6 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Louis W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 9",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Kathy C",
       "checkedIn": false
     },
     {
@@ -4622,6 +4620,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Hyeonjae P",
+      "checkedIn": false
+    },
+    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-09-30T19:30:00",
@@ -4646,6 +4656,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-09-30T20:00:00",
+      "endTime": "2026-09-30T22:00:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Kylie C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2291506,
       "title": "IPX Club Rating Assessments",
       "startTime": "2026-09-28T17:30:00",
@@ -4654,6 +4677,20 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Darren-Thinh H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 9",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Kathy C",
       "checkedIn": false
     }
   ]
