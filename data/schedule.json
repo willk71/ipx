@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-09-29T02:54:39Z",
+  "lastUpdated": "2026-09-29T03:06:06Z",
   "date": "2026-09-28",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:30",
-      "host": "Neil L"
-    },
     {
       "start": "18:15",
       "end": "20:45",
@@ -16,6 +11,11 @@
       "start": "15:00",
       "end": "19:30",
       "host": "Will K"
+    },
+    {
+      "start": "19:00",
+      "end": "23:30",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -3356,6 +3356,17 @@
       "checkedIn": true
     },
     {
+      "eventId": 2294093,
+      "title": "Drilling w/ Coach Wally Green (3.5+)",
+      "startTime": "2026-09-30T17:30:00",
+      "endTime": "2026-09-30T19:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Emily S",
+      "checkedIn": true
+    },
+    {
       "eventId": 2281704,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-09-30T20:00:00",
@@ -3783,6 +3794,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2294093,
+      "title": "Drilling w/ Coach Wally Green (3.5+)",
+      "startTime": "2026-09-30T17:30:00",
+      "endTime": "2026-09-30T19:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Peter L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-09-30T19:30:00",
@@ -3853,23 +3875,23 @@
       "checkedIn": true
     },
     {
-      "eventId": 2291506,
-      "title": "IPX Club Rating Assessments",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Chirag J",
-      "checkedIn": true
-    },
-    {
       "eventId": 2291666,
       "title": "IPX Club Rating Assessments",
       "startTime": "2026-09-28T19:30:00",
       "endTime": "2026-09-28T21:30:00",
       "courts": [
         "Court 13"
+      ],
+      "playerName": "Chirag J",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2291506,
+      "title": "IPX Club Rating Assessments",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)"
       ],
       "playerName": "Chirag J",
       "checkedIn": true
