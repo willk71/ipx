@@ -1,26 +1,26 @@
 {
-  "lastUpdated": "2026-09-29T22:53:52Z",
+  "lastUpdated": "2026-09-29T23:05:18Z",
   "date": "2026-09-29",
   "courtHosts": [
-    {
-      "start": "18:30",
-      "end": "00:00",
-      "host": "Neil L"
-    },
     {
       "start": "18:00",
       "end": "20:30",
       "host": "Kelsey C"
     },
     {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
+      "start": "18:30",
+      "end": "00:00",
+      "host": "Neil L"
     },
     {
       "start": "17:30",
       "end": "21:00",
       "host": "Nelson C"
+    },
+    {
+      "start": "15:00",
+      "end": "20:00",
+      "host": "Will K"
     }
   ],
   "courtOverrides": [
@@ -113,6 +113,12 @@
       "holderLabel": "Matthew S.",
       "startTime": "2026-09-30T08:00:00",
       "endTime": "2026-09-30T09:00:00"
+    },
+    {
+      "court": "Court 9",
+      "holderLabel": "harrison F.",
+      "startTime": "2026-09-30T21:00:00",
+      "endTime": "2026-09-30T22:00:00"
     }
   ],
   "events": [
@@ -300,7 +306,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Ian M",
@@ -324,7 +330,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "GHULAM M",
@@ -401,7 +407,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Arthur L",
@@ -451,7 +457,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Wright L",
@@ -552,7 +558,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "John N",
       "checkedIn": true
@@ -564,7 +570,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Kevin T",
       "checkedIn": true
@@ -588,7 +594,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Anna D",
       "checkedIn": true
@@ -600,7 +606,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Rohan K",
       "checkedIn": true
@@ -754,7 +760,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Christina N",
       "checkedIn": true
@@ -956,7 +962,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Marc W",
       "checkedIn": true
@@ -1006,7 +1012,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Charlie V",
       "checkedIn": true
@@ -1085,7 +1091,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Michael C",
@@ -1169,7 +1175,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Elliott Z",
       "checkedIn": true
@@ -1354,7 +1360,7 @@
         "Court 8"
       ],
       "playerName": "Patrick C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118697,
@@ -1383,7 +1389,7 @@
         "Court 8"
       ],
       "playerName": "Karl G",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257702,
@@ -1589,7 +1595,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Jon C",
@@ -1629,7 +1635,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Juan S",
       "checkedIn": true
@@ -1641,10 +1647,10 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Mingyi L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257702,
@@ -1718,7 +1724,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Andrew K",
       "checkedIn": true
@@ -1826,7 +1832,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Benjamin P",
@@ -2099,7 +2105,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Jimmy J",
@@ -2114,7 +2120,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Wyatt W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2270006,
@@ -2313,7 +2319,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Patrick C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2292602,
@@ -2349,7 +2355,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Karl G",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257645,
@@ -2357,7 +2363,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Dylan L",
@@ -2416,7 +2422,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Peter F",
@@ -2453,7 +2459,7 @@
       "endTime": "2026-09-29T20:00:00",
       "courts": [
         "Court 10 (Livestreaming)",
-        "Court 9"
+        "Court 11"
       ],
       "playerName": "Alaric Q",
       "checkedIn": true
@@ -2523,7 +2529,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Martin R",
@@ -2942,7 +2948,7 @@
       "startTime": "2026-09-29T18:00:00",
       "endTime": "2026-09-29T20:00:00",
       "courts": [
-        "Court 11",
+        "Court 9",
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Quang T",
@@ -2982,7 +2988,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Mingyi L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281699,
@@ -2994,7 +3000,7 @@
         "Court 2"
       ],
       "playerName": "Mingyi L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2220829,
