@@ -1,17 +1,7 @@
 {
-  "lastUpdated": "2026-09-29T22:07:28Z",
+  "lastUpdated": "2026-09-29T22:08:20Z",
   "date": "2026-09-29",
   "courtHosts": [
-    {
-      "start": "18:30",
-      "end": "00:00",
-      "host": "Neil L"
-    },
-    {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
-    },
     {
       "start": "18:00",
       "end": "20:30",
@@ -21,6 +11,16 @@
       "start": "17:30",
       "end": "21:00",
       "host": "Nelson C"
+    },
+    {
+      "start": "15:00",
+      "end": "20:00",
+      "host": "Will K"
+    },
+    {
+      "start": "18:30",
+      "end": "00:00",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -1144,7 +1144,7 @@
         "Court 9"
       ],
       "playerName": "Elliott Z",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257655,
