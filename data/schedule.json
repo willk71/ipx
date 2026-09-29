@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-29T21:52:58Z",
+  "lastUpdated": "2026-09-29T21:53:51Z",
   "date": "2026-09-29",
   "courtHosts": [
     {
@@ -13,14 +13,14 @@
       "host": "Nelson C"
     },
     {
-      "start": "18:00",
-      "end": "20:30",
-      "host": "Kelsey C"
-    },
-    {
       "start": "18:30",
       "end": "00:00",
       "host": "Neil L"
+    },
+    {
+      "start": "18:00",
+      "end": "20:30",
+      "host": "Kelsey C"
     }
   ],
   "courtOverrides": [],
@@ -1812,7 +1812,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Benjamin P",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257709,
@@ -3227,21 +3227,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2118697,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-09-30T22:00:00",
-      "endTime": "2026-09-30T23:59:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 12 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Louise J",
-      "checkedIn": false
-    },
-    {
       "eventId": 2270006,
       "title": "Women's 3.25+ Strategic Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -3289,6 +3274,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2118692,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-09-30T21:30:00",
+      "endTime": "2026-09-30T23:59:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Jo O",
+      "checkedIn": false
+    },
+    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-09-30T19:30:00",
@@ -3323,6 +3320,21 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Kylie C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118697,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-09-30T22:00:00",
+      "endTime": "2026-09-30T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Louise J",
       "checkedIn": false
     },
     {
