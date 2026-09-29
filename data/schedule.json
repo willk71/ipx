@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-09-29T23:56:47Z",
+  "lastUpdated": "2026-09-29T23:57:40Z",
   "date": "2026-09-29",
   "courtHosts": [
     {
-      "start": "18:00",
+      "start": "15:00",
       "end": "20:00",
-      "host": "Kelsey C"
+      "host": "Will K"
     },
     {
       "start": "18:30",
@@ -13,14 +13,14 @@
       "host": "Neil L"
     },
     {
+      "start": "18:00",
+      "end": "20:00",
+      "host": "Kelsey C"
+    },
+    {
       "start": "17:30",
       "end": "21:00",
       "host": "Nelson C"
-    },
-    {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -1711,7 +1711,7 @@
         "Court 3"
       ],
       "playerName": "David R",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257718,
@@ -2530,6 +2530,17 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Peter L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257714,
+      "title": "All Levels Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 3"
+      ],
+      "playerName": "Victor C",
       "checkedIn": false
     },
     {
