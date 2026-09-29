@@ -1,7 +1,17 @@
 {
-  "lastUpdated": "2026-09-29T22:52:07Z",
+  "lastUpdated": "2026-09-29T22:52:59Z",
   "date": "2026-09-29",
   "courtHosts": [
+    {
+      "start": "18:00",
+      "end": "20:30",
+      "host": "Kelsey C"
+    },
+    {
+      "start": "17:30",
+      "end": "21:00",
+      "host": "Nelson C"
+    },
     {
       "start": "18:30",
       "end": "00:00",
@@ -11,28 +21,9 @@
       "start": "15:00",
       "end": "20:00",
       "host": "Will K"
-    },
-    {
-      "start": "17:30",
-      "end": "21:00",
-      "host": "Nelson C"
-    },
-    {
-      "start": "18:00",
-      "end": "20:30",
-      "host": "Kelsey C"
     }
   ],
   "courtOverrides": [
-    {
-      "start": "19:15",
-      "end": "20:15",
-      "courts": [
-        "9",
-        "12"
-      ],
-      "match": "4.0+"
-    },
     {
       "start": "18:00",
       "end": "19:15",
@@ -50,6 +41,15 @@
         "11"
       ],
       "match": "3.5-4.0 Gated"
+    },
+    {
+      "start": "19:15",
+      "end": "20:15",
+      "courts": [
+        "9",
+        "12"
+      ],
+      "match": "4.0+"
     }
   ],
   "adHocSessions": [],
@@ -1259,7 +1259,7 @@
         "Court 5"
       ],
       "playerName": "Steve C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257655,
@@ -1273,7 +1273,7 @@
         "Court 8"
       ],
       "playerName": "Steve C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2160558,
