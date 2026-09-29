@@ -210,11 +210,17 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // 1. Specific groupings for Courts 8 & 9 and Courts 10 & 12
-      if (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) {
+      // 1. Specific 2-court groupings for Court 10 Tables
+      if (
+        (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) ||
+        (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2)
+      ) {
         return '📍 - Court 10 Table - Left';
       }
-      if (courtsSet.has('10') && courtsSet.has('12') && courtsSet.size === 2) {
+      if (
+        (courtsSet.has('10') && courtsSet.has('12') && courtsSet.size === 2) ||
+        (courtsSet.has('11') && courtsSet.has('12') && courtsSet.size === 2)
+      ) {
         return '📍 - Court 10 Table - Right';
       }
 
