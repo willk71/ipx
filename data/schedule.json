@@ -1,17 +1,7 @@
 {
-  "lastUpdated": "2026-09-29T22:38:50Z",
+  "lastUpdated": "2026-09-29T22:39:43Z",
   "date": "2026-09-29",
   "courtHosts": [
-    {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
-    },
-    {
-      "start": "18:30",
-      "end": "00:00",
-      "host": "Neil L"
-    },
     {
       "start": "17:30",
       "end": "21:00",
@@ -21,23 +11,33 @@
       "start": "18:00",
       "end": "20:30",
       "host": "Kelsey C"
+    },
+    {
+      "start": "15:00",
+      "end": "20:00",
+      "host": "Will K"
+    },
+    {
+      "start": "18:30",
+      "end": "00:00",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [
-    {
-      "start": "18:00",
-      "end": "19:00",
-      "courts": [
-        "6",
-        "12"
-      ],
-      "match": "4.0"
-    },
     {
       "start": "19:00",
       "end": "20:00",
       "courts": [
         "9",
+        "12"
+      ],
+      "match": "4.0"
+    },
+    {
+      "start": "18:00",
+      "end": "19:00",
+      "courts": [
+        "6",
         "12"
       ],
       "match": "4.0"
@@ -2538,6 +2538,19 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Peter L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220829,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-09-30T09:00:00",
+      "endTime": "2026-09-30T11:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Guillermo E",
       "checkedIn": false
     },
     {
