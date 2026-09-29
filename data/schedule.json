@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-09-29T22:48:28Z",
+  "lastUpdated": "2026-09-29T22:51:12Z",
   "date": "2026-09-29",
   "courtHosts": [
     {
-      "start": "17:30",
-      "end": "21:00",
-      "host": "Nelson C"
+      "start": "15:00",
+      "end": "20:00",
+      "host": "Will K"
     },
     {
       "start": "18:00",
@@ -13,17 +13,26 @@
       "host": "Kelsey C"
     },
     {
+      "start": "17:30",
+      "end": "21:00",
+      "host": "Nelson C"
+    },
+    {
       "start": "18:30",
       "end": "00:00",
       "host": "Neil L"
-    },
-    {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
     }
   ],
   "courtOverrides": [
+    {
+      "start": "18:00",
+      "end": "20:15",
+      "courts": [
+        "10",
+        "11"
+      ],
+      "match": "3.5-4.0 Gated"
+    },
     {
       "start": "18:00",
       "end": "19:15",
@@ -41,15 +50,6 @@
         "12"
       ],
       "match": "4.0"
-    },
-    {
-      "start": "18:00",
-      "end": "20:15",
-      "courts": [
-        "10",
-        "11"
-      ],
-      "match": "3.5-4.0 Gated"
     }
   ],
   "adHocSessions": [],
@@ -2677,6 +2677,19 @@
         "Court 11"
       ],
       "playerName": "Gucci A",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220829,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-09-30T09:00:00",
+      "endTime": "2026-09-30T11:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Melody E",
       "checkedIn": false
     },
     {
