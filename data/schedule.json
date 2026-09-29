@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-29T00:33:04Z",
+  "lastUpdated": "2026-09-29T00:33:56Z",
   "date": "2026-09-28",
   "courtHosts": [
     {
@@ -8,14 +8,14 @@
       "host": "Nelson C"
     },
     {
-      "start": "19:00",
-      "end": "23:30",
-      "host": "Neil L"
-    },
-    {
       "start": "15:00",
       "end": "19:30",
       "host": "Will K"
+    },
+    {
+      "start": "19:00",
+      "end": "23:30",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -235,6 +235,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2159449,
+      "title": "Lunch Break Open Play (AdvBeg-Int)",
+      "startTime": "2026-09-30T11:00:00",
+      "endTime": "2026-09-30T13:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Timothy A",
+      "checkedIn": false
+    },
+    {
       "eventId": 2160096,
       "title": "Skill Clinic: 3.0–3.5 Dinking & Transitions with Coach Martin",
       "startTime": "2026-09-28T17:00:00",
@@ -288,21 +301,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Kevin T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2160553,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-09-28T14:00:00",
-      "endTime": "2026-09-28T17:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Catherine X",
       "checkedIn": true
     },
     {
@@ -458,19 +456,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2162308,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-09-28T19:30:00",
-      "endTime": "2026-09-28T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 8"
-      ],
-      "playerName": "Minhdiep V",
-      "checkedIn": true
-    },
-    {
       "eventId": 2160553,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-09-28T14:00:00",
@@ -541,6 +526,21 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Justin L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2160553,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-09-28T14:00:00",
+      "endTime": "2026-09-28T17:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Catherine X",
       "checkedIn": true
     },
     {
@@ -927,6 +927,19 @@
         "Court 8"
       ],
       "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162308,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-09-28T19:30:00",
+      "endTime": "2026-09-28T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 8"
+      ],
+      "playerName": "Minhdiep V",
       "checkedIn": true
     },
     {
@@ -1564,18 +1577,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-09-30T19:30:00",
-      "endTime": "2026-09-30T21:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Johnny h",
-      "checkedIn": true
-    },
-    {
       "eventId": 2197161,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-09-30T21:30:00",
@@ -1855,18 +1856,6 @@
       "courts": [
         "Court 2",
         "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Emily S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-09-28T17:30:00",
-      "endTime": "2026-09-28T19:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
       ],
       "playerName": "Emily S",
       "checkedIn": true
@@ -3153,6 +3142,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-09-30T19:30:00",
+      "endTime": "2026-09-30T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Johnny h",
+      "checkedIn": true
+    },
+    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -3422,6 +3423,18 @@
       "endTime": "2026-09-30T22:00:00",
       "courts": [
         "Court 11",
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Emily S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281680,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-09-28T17:30:00",
+      "endTime": "2026-09-28T19:30:00",
+      "courts": [
         "Court 12 (Livestreaming)",
         "Court 10 (Livestreaming)"
       ],
