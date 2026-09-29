@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-09-29T16:48:15Z",
+  "lastUpdated": "2026-09-29T16:49:07Z",
   "date": "2026-09-29",
   "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "20:30",
-      "host": "Kelsey C"
-    },
     {
       "start": "15:00",
       "end": "20:00",
@@ -21,6 +16,11 @@
       "start": "18:30",
       "end": "00:00",
       "host": "Neil L"
+    },
+    {
+      "start": "18:00",
+      "end": "20:30",
+      "host": "Kelsey C"
     }
   ],
   "courtOverrides": [],
@@ -544,19 +544,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-09-30T07:00:00",
-      "endTime": "2026-09-30T09:00:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "kevin j",
-      "checkedIn": false
-    },
-    {
       "eventId": 2220809,
       "title": "Morning Brew Drill & Social",
       "startTime": "2026-09-29T09:00:00",
@@ -582,19 +569,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2220809,
-      "title": "Morning Brew Drill & Social",
-      "startTime": "2026-09-29T09:00:00",
-      "endTime": "2026-09-29T11:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "MICHAEL L",
-      "checkedIn": true
-    },
-    {
       "eventId": 2220793,
       "title": "Rise and Grind Drill/Play",
       "startTime": "2026-09-29T07:00:00",
@@ -602,6 +576,19 @@
       "courts": [
         "Court 10 (Livestreaming)",
         "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "MICHAEL L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220809,
+      "title": "Morning Brew Drill & Social",
+      "startTime": "2026-09-29T09:00:00",
+      "endTime": "2026-09-29T11:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
         "Court 8"
       ],
       "playerName": "MICHAEL L",
@@ -631,6 +618,18 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Josh D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-09-30T19:30:00",
+      "endTime": "2026-09-30T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Jonathan A",
       "checkedIn": false
     },
     {
@@ -1271,6 +1270,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257709,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
+      "playerName": "Sandi H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -1399,18 +1411,6 @@
         "Court 8"
       ],
       "playerName": "Rohan V",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-09-30T19:30:00",
-      "endTime": "2026-09-30T21:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Jonathan A",
       "checkedIn": false
     },
     {
@@ -1561,18 +1561,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-09-30T19:30:00",
-      "endTime": "2026-09-30T21:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Johnny h",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-09-29T18:00:00",
@@ -1582,6 +1570,18 @@
         "Court 4 (Livestreaming)",
         "Court 3",
         "Court 8"
+      ],
+      "playerName": "Johnny h",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-09-30T19:30:00",
+      "endTime": "2026-09-30T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5"
       ],
       "playerName": "Johnny h",
       "checkedIn": false
@@ -2255,32 +2255,7 @@
         "Court 8",
         "Court 5"
       ],
-      "playerName": "Sandi H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257709,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-09-29T20:00:00",
-      "endTime": "2026-09-29T22:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 5"
-      ],
       "playerName": "Eric E",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281284,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-09-30T17:30:00",
-      "endTime": "2026-09-30T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Janet N",
       "checkedIn": false
     },
     {
@@ -2292,6 +2267,18 @@
         "Court 11",
         "Court 12 (Livestreaming)",
         "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Janet N",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281284,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-09-30T17:30:00",
+      "endTime": "2026-09-30T19:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
       ],
       "playerName": "Janet N",
       "checkedIn": false
