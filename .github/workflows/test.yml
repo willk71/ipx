@@ -1,0 +1,99 @@
+name: Test CourtReserve Custom Fields
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect-custom-fields:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Test Query & Scan for Custom Fields
+        env:
+          CR_USER: ${{ secrets.CR_USERNAME }}
+          CR_PASS: ${{ secrets.CR_PASSWORD }}
+        run: |
+          mkdir -p /tmp/cr_test
+          FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
+          TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
+          AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
+
+          EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeCustomFields=true"
+
+          echo "Querying CourtReserve Event Registrations API with includeCustomFields=true..."
+          HTTP_STATUS=$(curl -s -w "%{http_code}" -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o /tmp/cr_test/events_test.json)
+
+          echo "Response HTTP Status: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "API request failed with status $HTTP_STATUS."
+            head -n 20 /tmp/cr_test/events_test.json
+            rm -rf /tmp/cr_test
+            exit 1
+          fi
+
+          python3 - << 'EOF'
+          import json, os
+
+          filepath = '/tmp/cr_test/events_test.json'
+          if not os.path.exists(filepath):
+              print("File not found.")
+              exit(0)
+
+          with open(filepath, 'r') as f:
+              try:
+                  data = json.load(f)
+              except Exception as e:
+                  print(f"Error parsing JSON: {e}")
+                  exit(1)
+
+          items = data.get('Data', data) if isinstance(data, dict) else data
+          if not isinstance(items, list):
+              items = []
+
+          print(f"Total registration records fetched: {len(items)}")
+
+          if not items:
+              print("No registration records found in the current time window.")
+              exit(0)
+
+          # Inspect keys on the first record
+          first = items[0]
+          print("\n--- Available Top-Level Keys on Sample Record ---")
+          print(list(first.keys()))
+
+          # Scan for any custom field keys or rating mentions
+          found_custom_fields = False
+          found_dupr_matches = []
+
+          for idx, item in enumerate(items):
+              # Check for common custom field collection names
+              cf_data = item.get('CustomFields') or item.get('customFields') or item.get('MemberCustomFields')
+              if cf_data:
+                  found_custom_fields = True
+                  print(f"\n[Record #{idx}] Found CustomFields structure:")
+                  print(json.dumps(cf_data, indent=2))
+                  break
+
+              # Scan string values for any mention of DUPR or Rating
+              for k, v in item.items():
+                  if 'dupr' in k.lower() or 'rating' in k.lower():
+                      found_dupr_matches.append((k, v))
+
+          print("\n--- Diagnostic Results ---")
+          if found_custom_fields:
+              print("SUCCESS: 'CustomFields' array is returned by the API!")
+          else:
+              print("NOTICE: No 'CustomFields' array detected on records with includeCustomFields=true.")
+
+          if found_dupr_matches:
+              print(f"Found rating-specific keys in payload: {found_dupr_matches}")
+          else:
+              print("No direct 'dupr' or 'rating' top-level keys detected on records.")
+          EOF
+
+          # Clean up immediately
+          rm -rf /tmp/cr_test
+          echo -e "\nCleanup complete. No files committed."
