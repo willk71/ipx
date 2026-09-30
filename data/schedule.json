@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-09-30T23:52:07Z",
+  "lastUpdated": "2026-09-30T23:57:27Z",
   "date": "2026-09-30",
   "courtHosts": [
-    {
-      "start": "15:00",
-      "end": "21:30",
-      "host": "Will K"
-    },
     {
       "start": "19:00",
       "end": "23:00",
       "host": "Stephanie L"
+    },
+    {
+      "start": "15:00",
+      "end": "21:30",
+      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -329,7 +329,7 @@
         "Court 6"
       ],
       "playerName": "Victor C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281284,
@@ -1267,7 +1267,7 @@
         "Court 5"
       ],
       "playerName": "Eric T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118697,
@@ -1281,7 +1281,7 @@
         "Court 11"
       ],
       "playerName": "Eric T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118697,
@@ -2078,7 +2078,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Catherine R",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281704,
@@ -2327,7 +2327,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Eric T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2285765,
@@ -2339,7 +2339,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Eric T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2261184,
@@ -2510,7 +2510,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Victor C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2285771,
@@ -2843,6 +2843,18 @@
       "courts": [
         "Court 7 (Livestreaming)",
         "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Stephen L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2292602,
+      "title": "All Levels Open Play",
+      "startTime": "2026-09-30T20:00:00",
+      "endTime": "2026-09-30T22:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Stephen L",
       "checkedIn": false
