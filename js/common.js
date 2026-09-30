@@ -34,11 +34,32 @@ const themeDisplayNames = {
 };
 
 const urlParams = new URLSearchParams(window.location.search);
+const timeParam = urlParams.get('time');
+
+function parseExplicitTime(timeStr, baseDate) {
+  if (!timeStr) return null;
+  const str = timeStr.trim().toUpperCase();
+  const match = str.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+  if (!match) return null;
+
+  let hours = parseInt(match[1], 10);
+  const minutes = match[2] ? parseInt(match[2], 10) : 0;
+  const meridian = match[3];
+
+  if (meridian === 'PM' && hours < 12) hours += 12;
+  if (meridian === 'AM' && hours === 12) hours = 0;
+
+  const target = new Date(baseDate || new Date());
+  target.setHours(hours, minutes, 0, 0);
+  return target;
+}
+
+const explicitTargetDate = parseExplicitTime(timeParam, new Date());
 const hasExplicitAhead = urlParams.has('ahead');
 const isNamed60 = window.location.pathname.includes('60');
 const defaultAhead = isNamed60 ? '60' : '15';
 const lookaheadMinutes = parseInt(urlParams.get('ahead') || defaultAhead, 10);
-const isPreview = hasExplicitAhead && lookaheadMinutes !== 15;
+const isPreview = explicitTargetDate !== null || (hasExplicitAhead && lookaheadMinutes !== 15);
 
 const cycleParam = urlParams.get('cycle');
 const isCycling = cycleParam !== null && cycleParam !== 'false';
@@ -210,7 +231,10 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // 1. Specific 2-court groupings for Court 10 Tables
+      // 1. Explicit 2-court pair rules
+      if (courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 2) {
+        return '📍 - Court 6 Table/Rack';
+      }
       if (
         (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) ||
         (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2)
@@ -325,7 +349,8 @@ if (isCycling) {
   setInterval(() => {
     cycleIndex++;
     const now = new Date();
-    const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
+    const baseDate = explicitTargetDate ? new Date(explicitTargetDate) : now;
+    const targetTime = new Date(baseDate.getTime() + (urlParams.has('time') && !urlParams.has('ahead') ? 0 : lookaheadMinutes * 60 * 1000));
     applyDynamicTheme(targetTime);
   }, cycleSeconds * 1000);
 }
