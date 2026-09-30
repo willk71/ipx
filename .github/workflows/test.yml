@@ -10,7 +10,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Today's Registrant Ratings Scan
+      - name: Run Today's Registrant Ratings & Custom Fields Scan
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
@@ -52,46 +52,87 @@ jobs:
 
           print(f"\nTotal registration records found today: {len(items)}\n")
 
-          # 2. Print a sample raw rating structure to see exact keys
-          sample_printed = False
+          # 1. Check for first populated Ratings structure
+          found_ratings = False
           for item in items:
               ratings = item.get('Ratings')
-              if ratings and not sample_printed:
+              if ratings:
                   print("--- Sample Raw 'Ratings' Structure ---")
                   print(json.dumps(ratings, indent=2))
                   print("--------------------------------------\n")
-                  sample_printed = True
+                  found_ratings = True
                   break
 
-          # 3. Print safe summary of each registrant and their ratings
-          print(f"{'Player Name':<25} | {'Event / Division':<30} | {'Ratings'}")
-          print("-" * 80)
+          # 2. Check for first populated MemberUserDefinedFields
+          found_mudf = False
+          for item in items:
+              mudf = item.get('MemberUserDefinedFields')
+              if mudf:
+                  print("--- Sample Raw 'MemberUserDefinedFields' Structure ---")
+                  print(json.dumps(mudf, indent=2))
+                  print("----------------------------------------------------\n")
+                  found_mudf = True
+                  break
+
+          # 3. Check for first populated UserDefinedFields
+          found_udf = False
+          for item in items:
+              udf = item.get('UserDefinedFields')
+              if udf:
+                  print("--- Sample Raw 'UserDefinedFields' Structure ---")
+                  print(json.dumps(udf, indent=2))
+                  print("----------------------------------------------\n")
+                  found_udf = True
+                  break
+
+          if not (found_ratings or found_mudf or found_udf):
+              print("NOTICE: 'Ratings', 'MemberUserDefinedFields', and 'UserDefinedFields' are all empty across all fetched records.\n")
+
+          # 4. Summary table of registrants and whatever field data was found
+          print(f"{'Player Name':<25} | {'Event / Division':<30} | {'Field Details'}")
+          print("-" * 90)
 
           for item in items:
               first = item.get('FirstName') or ''
               last = item.get('LastName') or ''
               full_name = f"{first} {last}".strip() or "Unknown"
-
               event_name = item.get('DivisionName') or item.get('EventName') or 'Event'
-              ratings = item.get('Ratings') or []
 
-              # Format ratings into a compact string
-              rating_summaries = []
+              details = []
+
+              # Check Ratings
+              ratings = item.get('Ratings')
               if isinstance(ratings, list) and len(ratings) > 0:
                   for r in ratings:
                       if isinstance(r, dict):
-                          # Handles standard CourtReserve rating property naming variants
                           scale = r.get('RatingScaleName') or r.get('RatingType') or r.get('Scale') or ''
                           val = r.get('Rating') or r.get('RatingValue') or r.get('Value') or ''
                           sys_name = r.get('RatingSystemName') or r.get('System') or ''
-                          
                           label = f"{sys_name} {scale}".strip() or "Rating"
-                          rating_summaries.append(f"{label}: {val}")
+                          details.append(f"{label}: {val}")
                       else:
-                          rating_summaries.append(str(r))
-              
-              ratings_str = "; ".join(rating_summaries) if rating_summaries else "No Ratings Listed"
-              print(f"{full_name:<25} | {event_name[:28]:<30} | {ratings_str}")
+                          details.append(f"Rating: {r}")
+
+              # Check MemberUserDefinedFields
+              mudf = item.get('MemberUserDefinedFields')
+              if isinstance(mudf, list) and len(mudf) > 0:
+                  for f_obj in mudf:
+                      name = f_obj.get('Label') or f_obj.get('Name') or f_obj.get('CustomFieldName') or 'MemberField'
+                      val = f_obj.get('Value') or ''
+                      if val:
+                          details.append(f"{name}: {val}")
+
+              # Check UserDefinedFields
+              udf = item.get('UserDefinedFields')
+              if isinstance(udf, list) and len(udf) > 0:
+                  for f_obj in udf:
+                      name = f_obj.get('Label') or f_obj.get('Name') or f_obj.get('CustomFieldName') or 'EventField'
+                      val = f_obj.get('Value') or ''
+                      if val:
+                          details.append(f"{name}: {val}")
+
+              field_summary = "; ".join(details) if details else "None"
+              print(f"{full_name:<25} | {event_name[:28]:<30} | {field_summary}")
 
           EOF
 
