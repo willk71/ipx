@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-09-30T00:46:27Z",
+  "lastUpdated": "2026-09-30T00:47:21Z",
   "date": "2026-09-29",
   "courtHosts": [
-    {
-      "start": "18:30",
-      "end": "00:00",
-      "host": "Neil L"
-    },
     {
       "start": "15:00",
       "end": "20:00",
       "host": "Will K"
+    },
+    {
+      "start": "17:30",
+      "end": "21:00",
+      "host": "Nelson C"
     },
     {
       "start": "18:00",
@@ -18,9 +18,9 @@
       "host": "Kelsey C"
     },
     {
-      "start": "17:30",
-      "end": "21:00",
-      "host": "Nelson C"
+      "start": "18:30",
+      "end": "00:00",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -2402,6 +2402,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257709,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
+      "playerName": "Sandi H",
+      "checkedIn": true
+    },
+    {
       "eventId": 2285771,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-01T20:00:00",
@@ -3265,19 +3278,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2220829,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-09-30T09:00:00",
-      "endTime": "2026-09-30T11:00:00",
-      "courts": [
-        "Court 8",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Jeffrey L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2261184,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-01T18:00:00",
@@ -3695,19 +3695,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2257709,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-09-29T20:00:00",
-      "endTime": "2026-09-29T22:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 5"
-      ],
-      "playerName": "Sandi H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2281284,
       "title": "3.25+ Open Play",
       "startTime": "2026-09-30T17:30:00",
@@ -3805,6 +3792,17 @@
       "checkedIn": true
     },
     {
+      "eventId": 2294093,
+      "title": "Drilling w/ Coach Wally Green (3.5+)",
+      "startTime": "2026-09-30T17:30:00",
+      "endTime": "2026-09-30T19:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Jesse H",
+      "checkedIn": true
+    },
+    {
       "eventId": 2266510,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-01T20:00:00",
@@ -3813,17 +3811,6 @@
         "Court 4 (Livestreaming)",
         "Court 1 (Livestreaming)",
         "Court 2"
-      ],
-      "playerName": "Jesse H",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2294093,
-      "title": "Drilling w/ Coach Wally Green (3.5+)",
-      "startTime": "2026-09-30T17:30:00",
-      "endTime": "2026-09-30T19:30:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
       ],
       "playerName": "Jesse H",
       "checkedIn": true
