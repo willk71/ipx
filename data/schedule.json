@@ -1,26 +1,26 @@
 {
-  "lastUpdated": "2026-09-30T02:41:07Z",
+  "lastUpdated": "2026-09-30T02:41:59Z",
   "date": "2026-09-29",
   "courtHosts": [
-    {
-      "start": "15:00",
-      "end": "20:00",
-      "host": "Will K"
-    },
     {
       "start": "18:30",
       "end": "00:00",
       "host": "Neil L"
     },
     {
-      "start": "18:00",
-      "end": "20:00",
-      "host": "Kelsey C"
-    },
-    {
       "start": "17:30",
       "end": "21:00",
       "host": "Nelson C"
+    },
+    {
+      "start": "15:00",
+      "end": "20:00",
+      "host": "Will K"
+    },
+    {
+      "start": "18:00",
+      "end": "20:00",
+      "host": "Kelsey C"
     }
   ],
   "courtOverrides": [],
@@ -3486,18 +3486,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257702,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-09-29T20:00:00",
-      "endTime": "2026-09-29T22:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Maggie L",
-      "checkedIn": true
-    },
-    {
       "eventId": 2285771,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-01T20:00:00",
@@ -3506,6 +3494,18 @@
         "Court 5",
         "Court 3",
         "Court 6"
+      ],
+      "playerName": "Maggie L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-09-29T20:00:00",
+      "endTime": "2026-09-29T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
       "playerName": "Maggie L",
       "checkedIn": true
@@ -3717,6 +3717,18 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Sandi H",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2294634,
+      "title": "All Levels Open Play",
+      "startTime": "2026-10-01T20:00:00",
+      "endTime": "2026-10-01T22:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Eric E",
       "checkedIn": true
     },
     {
@@ -4829,6 +4841,18 @@
       ],
       "playerName": "Li Z",
       "checkedIn": false
+    },
+    {
+      "eventId": 2294634,
+      "title": "All Levels Open Play",
+      "startTime": "2026-10-01T20:00:00",
+      "endTime": "2026-10-01T22:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Krista S",
+      "checkedIn": true
     }
   ]
 }
