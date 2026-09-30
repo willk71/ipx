@@ -1,140 +1,131 @@
-name: Test CourtReserve Custom Fields
+name: Test Single Member Profile Endpoint
 
 on:
   workflow_dispatch:
+    inputs:
+      explicit_member_id:
+        description: 'Optional: Manually specify an OrganizationMemberId (leave blank to auto-detect)'
+        required: false
+        default: ''
 
 jobs:
-  inspect-custom-fields:
+  test-member:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Today's Registrant Ratings & Custom Fields Scan
+      - name: Test Member Endpoint Access
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
+          INPUT_MEMBER_ID: ${{ github.event.inputs.explicit_member_id }}
         run: |
           mkdir -p /tmp/cr_test
-
-          # 1. Full 24-hour window for today in America/New_York converted to UTC
-          TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
-          FROM_UTC=$(date -u -d "${TODAY_NY} 00:00:00 EDT" +%Y-%m-%dT%H:%M:%SZ)
-          TO_UTC=$(date -u -d "${TODAY_NY} 23:59:59 EDT" +%Y-%m-%dT%H:%M:%SZ)
           AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
 
-          EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeCustomFields=true"
+          # 1. Determine Member ID to test
+          MEMBER_ID="$INPUT_MEMBER_ID"
 
-          echo "Querying events for ${TODAY_NY} (UTC: ${FROM_UTC} to ${TO_UTC})..."
-          HTTP_STATUS=$(curl -s -w "%{http_code}" -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o /tmp/cr_test/events_test.json)
+          if [ -z "$MEMBER_ID" ]; then
+            echo "No explicit ID provided. Pulling an OrganizationMemberId from today's events..."
+            TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
+            FROM_UTC=$(date -u -d "${TODAY_NY} 00:00:00 EDT" +%Y-%m-%dT%H:%M:%SZ)
+            TO_UTC=$(date -u -d "${TODAY_NY} 23:59:59 EDT" +%Y-%m-%dT%H:%M:%SZ)
 
-          if [ "$HTTP_STATUS" != "200" ]; then
-            echo "API request failed with status $HTTP_STATUS."
-            head -n 20 /tmp/cr_test/events_test.json
+            EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true"
+            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o /tmp/cr_test/events.json
+
+            MEMBER_ID=$(python3 -c '
+          import json, os
+          try:
+              with open("/tmp/cr_test/events.json") as f:
+                  data = json.load(f)
+              items = data.get("Data", data) if isinstance(data, dict) else data
+              for item in items:
+                  m_id = item.get("OrganizationMemberId")
+                  if m_id:
+                      print(m_id)
+                      break
+          except Exception:
+              pass
+          ')
+          fi
+
+          if [ -z "$MEMBER_ID" ]; then
+            echo "ERROR: Could not find an OrganizationMemberId to test. Run with an explicit ID or verify today has active events."
             rm -rf /tmp/cr_test
             exit 1
           fi
 
-          python3 - << 'EOF'
+          echo "Testing with OrganizationMemberId: $MEMBER_ID"
+
+          # 2. Query CourtReserve Member Details API
+          # We test both common query styles (memberId and id)
+          MEMBER_URL="https://api.courtreserve.com/api/v1/members/details?memberId=${MEMBER_ID}"
+          echo "Calling: $MEMBER_URL"
+
+          HTTP_STATUS=$(curl -s -w "%{http_code}" \
+            -H "Authorization: $AUTH_HEADER" \
+            -H "Accept: application/json" \
+            "$MEMBER_URL" \
+            -o /tmp/cr_test/member.json)
+
+          echo "Response HTTP Status: $HTTP_STATUS"
+
+          # 3. Inspect Results Safely (Sanitizing PII)
+          python3 - << EOF
           import json, os
 
-          filepath = '/tmp/cr_test/events_test.json'
+          filepath = '/tmp/cr_test/member.json'
           if not os.path.exists(filepath):
-              print("File not found.")
+              print("No response file generated.")
+              exit(0)
+
+          status = "$HTTP_STATUS"
+          if status in ['401', '403']:
+              print(f"\n[RESULT]: HTTP {status} Access Denied. The API account does NOT have permission to view member profiles or member custom fields.")
+              exit(0)
+          elif status != '200':
+              print(f"\n[RESULT]: Endpoint returned unexpected status {status}.")
+              with open(filepath, 'r') as f:
+                  print(f.read()[:300])
               exit(0)
 
           with open(filepath, 'r') as f:
-              data = json.load(f)
+              try:
+                  data = json.load(f)
+              except Exception as e:
+                  print(f"Could not parse response as JSON: {e}")
+                  exit(0)
 
-          items = data.get('Data', data) if isinstance(data, dict) else data
-          if not isinstance(items, list):
-              items = []
+          member_obj = data.get('Data', data) if isinstance(data, dict) else data
+          print("\n[RESULT]: HTTP 200 OK! Member profile endpoint is accessible.\n")
 
-          print(f"\nTotal registration records found today: {len(items)}\n")
-
-          # 1. Check for first populated Ratings structure
-          found_ratings = False
-          for item in items:
-              ratings = item.get('Ratings')
-              if ratings:
-                  print("--- Sample Raw 'Ratings' Structure ---")
-                  print(json.dumps(ratings, indent=2))
-                  print("--------------------------------------\n")
-                  found_ratings = True
-                  break
-
-          # 2. Check for first populated MemberUserDefinedFields
-          found_mudf = False
-          for item in items:
-              mudf = item.get('MemberUserDefinedFields')
-              if mudf:
-                  print("--- Sample Raw 'MemberUserDefinedFields' Structure ---")
-                  print(json.dumps(mudf, indent=2))
-                  print("----------------------------------------------------\n")
-                  found_mudf = True
-                  break
-
-          # 3. Check for first populated UserDefinedFields
-          found_udf = False
-          for item in items:
-              udf = item.get('UserDefinedFields')
-              if udf:
-                  print("--- Sample Raw 'UserDefinedFields' Structure ---")
-                  print(json.dumps(udf, indent=2))
-                  print("----------------------------------------------\n")
-                  found_udf = True
-                  break
-
-          if not (found_ratings or found_mudf or found_udf):
-              print("NOTICE: 'Ratings', 'MemberUserDefinedFields', and 'UserDefinedFields' are all empty across all fetched records.\n")
-
-          # 4. Summary table of registrants and whatever field data was found
-          print(f"{'Player Name':<25} | {'Event / Division':<30} | {'Field Details'}")
-          print("-" * 90)
-
-          for item in items:
-              first = item.get('FirstName') or ''
-              last = item.get('LastName') or ''
-              full_name = f"{first} {last}".strip() or "Unknown"
-              event_name = item.get('DivisionName') or item.get('EventName') or 'Event'
-
-              details = []
+          # Print available top-level keys
+          if isinstance(member_obj, dict):
+              print("Available keys on Member object:")
+              print(list(member_obj.keys()))
+              print("-" * 50)
 
               # Check Ratings
-              ratings = item.get('Ratings')
-              if isinstance(ratings, list) and len(ratings) > 0:
-                  for r in ratings:
-                      if isinstance(r, dict):
-                          scale = r.get('RatingScaleName') or r.get('RatingType') or r.get('Scale') or ''
-                          val = r.get('Rating') or r.get('RatingValue') or r.get('Value') or ''
-                          sys_name = r.get('RatingSystemName') or r.get('System') or ''
-                          label = f"{sys_name} {scale}".strip() or "Rating"
-                          details.append(f"{label}: {val}")
-                      else:
-                          details.append(f"Rating: {r}")
+              if 'Ratings' in member_obj and member_obj['Ratings']:
+                  print("Found Ratings:")
+                  print(json.dumps(member_obj['Ratings'], indent=2))
 
-              # Check MemberUserDefinedFields
-              mudf = item.get('MemberUserDefinedFields')
-              if isinstance(mudf, list) and len(mudf) > 0:
-                  for f_obj in mudf:
-                      name = f_obj.get('Label') or f_obj.get('Name') or f_obj.get('CustomFieldName') or 'MemberField'
-                      val = f_obj.get('Value') or ''
-                      if val:
-                          details.append(f"{name}: {val}")
+              # Check CustomFields / MemberUserDefinedFields
+              for k in ['CustomFields', 'MemberUserDefinedFields', 'UserDefinedFields']:
+                  if k in member_obj and member_obj[k]:
+                      print(f"Found {k}:")
+                      print(json.dumps(member_obj[k], indent=2))
 
-              # Check UserDefinedFields
-              udf = item.get('UserDefinedFields')
-              if isinstance(udf, list) and len(udf) > 0:
-                  for f_obj in udf:
-                      name = f_obj.get('Label') or f_obj.get('Name') or f_obj.get('CustomFieldName') or 'EventField'
-                      val = f_obj.get('Value') or ''
-                      if val:
-                          details.append(f"{name}: {val}")
-
-              field_summary = "; ".join(details) if details else "None"
-              print(f"{full_name:<25} | {event_name[:28]:<30} | {field_summary}")
-
+              # Check for any rating-related keys
+              rating_keys = {k: v for k, v in member_obj.items() if 'dupr' in k.lower() or 'rating' in k.lower()}
+              if rating_keys:
+                  print(f"Found direct rating keys: {rating_keys}")
+          else:
+              print(f"Unexpected data format: {type(member_obj)}")
           EOF
 
-          # Clean up temporary JSON immediately
+          # 4. Immediate Cleanup
           rm -rf /tmp/cr_test
