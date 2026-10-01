@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-01T21:08:24Z",
+  "lastUpdated": "2026-10-01T21:09:16Z",
   "date": "2026-10-01",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "15:00",
       "end": "17:30",
       "host": "Will K"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -3678,18 +3678,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2118712,
-      "title": "Advanced Beginner Open Play",
-      "startTime": "2026-10-02T21:30:00",
-      "endTime": "2026-10-02T23:59:00",
-      "courts": [
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Jacky Z",
-      "checkedIn": false
-    },
-    {
       "eventId": 2261060,
       "title": "Advanced Beginner Open Play",
       "startTime": "2026-10-01T22:00:00",
@@ -3775,6 +3763,31 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Jay V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-01T22:00:00",
+      "endTime": "2026-10-01T23:59:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jay V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118712,
+      "title": "Advanced Beginner Open Play",
+      "startTime": "2026-10-02T21:30:00",
+      "endTime": "2026-10-02T23:59:00",
+      "courts": [
+        "Court 3",
+        "Court 2"
+      ],
+      "playerName": "Jacky Z",
       "checkedIn": false
     },
     {
