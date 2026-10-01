@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-01T16:07:38Z",
+  "lastUpdated": "2026-10-01T16:08:30Z",
   "date": "2026-10-01",
   "courtHosts": [
-    {
-      "start": "15:00",
-      "end": "17:30",
-      "host": "Will K"
-    },
     {
       "start": "19:00",
       "end": "23:00",
       "host": "Stephanie L"
+    },
+    {
+      "start": "15:00",
+      "end": "17:30",
+      "host": "Will K"
     }
   ],
   "courtOverrides": [],
@@ -3284,6 +3284,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-01T22:00:00",
+      "endTime": "2026-10-01T23:59:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Andrew H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2118694,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-02T21:30:00",
@@ -3320,19 +3333,6 @@
         "Court 5"
       ],
       "playerName": "Ken a",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118694,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-02T21:30:00",
-      "endTime": "2026-10-02T23:59:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "reino d",
       "checkedIn": false
     },
     {
@@ -3435,6 +3435,18 @@
         "Court 2",
         "Court 1 (Livestreaming)"
       ],
+      "playerName": "Zach B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2261060,
+      "title": "Advanced Beginner Open Play",
+      "startTime": "2026-10-01T22:00:00",
+      "endTime": "2026-10-01T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
       "playerName": "Isabelle X",
       "checkedIn": false
     },
@@ -3460,19 +3472,6 @@
         "Court 2"
       ],
       "playerName": "jia l",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118698,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-01T22:00:00",
-      "endTime": "2026-10-01T23:59:00",
-      "courts": [
-        "Court 8",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Andrew H",
       "checkedIn": false
     },
     {
@@ -3526,15 +3525,16 @@
       "checkedIn": false
     },
     {
-      "eventId": 2261060,
-      "title": "Advanced Beginner Open Play",
-      "startTime": "2026-10-01T22:00:00",
-      "endTime": "2026-10-01T23:59:00",
+      "eventId": 2118694,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-02T21:30:00",
+      "endTime": "2026-10-02T23:59:00",
       "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 5"
       ],
-      "playerName": "Zach B",
+      "playerName": "reino d",
       "checkedIn": false
     },
     {
