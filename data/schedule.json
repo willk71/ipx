@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-01T14:34:57Z",
+  "lastUpdated": "2026-10-01T14:54:44Z",
   "date": "2026-10-01",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "15:00",
       "end": "17:30",
       "host": "Will K"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -448,16 +448,15 @@
       "checkedIn": false
     },
     {
-      "eventId": 2199540,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-02T19:30:00",
-      "endTime": "2026-10-02T21:30:00",
+      "eventId": 2184284,
+      "title": "Coach Office Hours",
+      "startTime": "2026-10-02T09:00:00",
+      "endTime": "2026-10-02T11:00:00",
       "courts": [
-        "Court 11",
         "Court 12 (Livestreaming)",
         "Court 10 (Livestreaming)"
       ],
-      "playerName": "Elena G",
+      "playerName": "Brad S",
       "checkedIn": false
     },
     {
@@ -902,15 +901,16 @@
       "checkedIn": false
     },
     {
-      "eventId": 2184284,
-      "title": "Coach Office Hours",
-      "startTime": "2026-10-02T09:00:00",
-      "endTime": "2026-10-02T11:00:00",
+      "eventId": 2199540,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-02T19:30:00",
+      "endTime": "2026-10-02T21:30:00",
       "courts": [
+        "Court 11",
         "Court 12 (Livestreaming)",
         "Court 10 (Livestreaming)"
       ],
-      "playerName": "Brad S",
+      "playerName": "Elena G",
       "checkedIn": false
     },
     {
@@ -1402,20 +1402,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2266510,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-01T20:00:00",
-      "endTime": "2026-10-01T22:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "John C",
-      "checkedIn": false
-    },
-    {
       "eventId": 2161775,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-01T11:00:00",
@@ -1617,6 +1603,18 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Kristen C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2184284,
+      "title": "Coach Office Hours",
+      "startTime": "2026-10-02T09:00:00",
+      "endTime": "2026-10-02T11:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Terence D",
       "checkedIn": false
     },
     {
@@ -1961,6 +1959,32 @@
         "Court 2"
       ],
       "playerName": "Andrew H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220873,
+      "title": "Morning Espress-o Round Robin",
+      "startTime": "2026-10-02T07:00:00",
+      "endTime": "2026-10-02T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Richard L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220878,
+      "title": "Morning Espress-o Round Robin",
+      "startTime": "2026-10-02T09:00:00",
+      "endTime": "2026-10-02T11:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Richard L",
       "checkedIn": false
     },
     {
@@ -2669,6 +2693,20 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "James F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2266510,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-01T20:00:00",
+      "endTime": "2026-10-01T22:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 3",
+        "Court 2"
+      ],
+      "playerName": "John C",
       "checkedIn": false
     },
     {
