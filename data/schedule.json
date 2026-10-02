@@ -1,27 +1,7 @@
 {
-  "lastUpdated": "2026-10-02T19:29:59Z",
+  "lastUpdated": "2026-10-02T19:42:45Z",
   "date": "2026-10-02",
   "courtHosts": [
-    {
-      "start": "14:30",
-      "end": "18:00",
-      "host": "Lillian H"
-    },
-    {
-      "start": "15:00",
-      "end": "21:00",
-      "host": "Will K"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Winnie Z"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "17:30",
       "end": "21:45",
@@ -31,6 +11,26 @@
       "start": "17:30",
       "end": "21:45",
       "host": "Wendy X"
+    },
+    {
+      "start": "15:00",
+      "end": "21:00",
+      "host": "Will K"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
+    {
+      "start": "14:30",
+      "end": "18:00",
+      "host": "Lillian H"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -762,21 +762,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2118960,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-02T19:30:00",
-      "endTime": "2026-10-02T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 2",
-        "Court 3",
-        "Court 5"
-      ],
-      "playerName": "Matthew G",
-      "checkedIn": false
-    },
-    {
       "eventId": 2118712,
       "title": "Advanced Beginner Open Play",
       "startTime": "2026-10-02T21:30:00",
@@ -855,6 +840,21 @@
         "Court 5"
       ],
       "playerName": "Alex I",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118960,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-02T19:30:00",
+      "endTime": "2026-10-02T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 3",
+        "Court 5"
+      ],
+      "playerName": "Eric H",
       "checkedIn": false
     },
     {
@@ -959,23 +959,8 @@
         "Court 10 (Livestreaming)",
         "Court 12 (Livestreaming)"
       ],
-      "playerName": "Yang J",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2268293,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-02T15:30:00",
-      "endTime": "2026-10-02T17:30:00",
-      "courts": [
-        "Court 8",
-        "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
       "playerName": "Isaac M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2300200,
@@ -987,7 +972,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Isaac M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2268293,
@@ -1107,6 +1092,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2300200,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-02T17:30:00",
+      "endTime": "2026-10-02T19:30:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Martin H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2295055,
       "title": "Intermediate - Advanced Open Play | Saturday",
       "startTime": "2026-10-03T16:00:00",
@@ -1120,15 +1117,18 @@
       "checkedIn": false
     },
     {
-      "eventId": 2300200,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-02T17:30:00",
-      "endTime": "2026-10-02T19:30:00",
+      "eventId": 2268293,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-02T15:30:00",
+      "endTime": "2026-10-02T17:30:00",
       "courts": [
-        "Court 11",
-        "Court 10 (Livestreaming)"
+        "Court 8",
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
       ],
-      "playerName": "Martin H",
+      "playerName": "Eric H",
       "checkedIn": false
     },
     {
@@ -1746,21 +1746,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2218473,
-      "title": "Intermediate - Advanced Open Play | Saturday",
-      "startTime": "2026-10-03T21:00:00",
-      "endTime": "2026-10-03T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 11"
-      ],
-      "playerName": "Carolyn C",
-      "checkedIn": false
-    },
-    {
       "eventId": 2199540,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-02T19:30:00",
@@ -1863,18 +1848,6 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Rui H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2218483,
-      "title": "Advanced Beginner - Intermediate Open Play | Saturday",
-      "startTime": "2026-10-03T18:00:00",
-      "endTime": "2026-10-03T21:00:00",
-      "courts": [
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Julie H",
       "checkedIn": false
     },
     {
@@ -2151,19 +2124,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2162070,
-      "title": "Lunch Break Open Play (Int-Adv)",
-      "startTime": "2026-10-02T11:00:00",
-      "endTime": "2026-10-02T13:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 8"
-      ],
-      "playerName": "Pastor T",
-      "checkedIn": true
-    },
-    {
       "eventId": 2218473,
       "title": "Intermediate - Advanced Open Play | Saturday",
       "startTime": "2026-10-03T21:00:00",
@@ -2174,6 +2134,19 @@
         "Court 7 (Livestreaming)",
         "Court 8",
         "Court 11"
+      ],
+      "playerName": "Pastor T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162070,
+      "title": "Lunch Break Open Play (Int-Adv)",
+      "startTime": "2026-10-02T11:00:00",
+      "endTime": "2026-10-02T13:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 8"
       ],
       "playerName": "Pastor T",
       "checkedIn": true
@@ -2364,6 +2337,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2199540,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-02T19:30:00",
+      "endTime": "2026-10-02T21:30:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Julian B",
+      "checkedIn": false
+    },
+    {
       "eventId": 2218461,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-03T08:00:00",
@@ -2374,19 +2360,6 @@
         "Court 10 (Livestreaming)",
         "Court 11",
         "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Julian B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2199540,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-02T19:30:00",
-      "endTime": "2026-10-02T21:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
       ],
       "playerName": "Julian B",
       "checkedIn": false
@@ -2455,6 +2428,21 @@
       ],
       "playerName": "Hiroshi M",
       "checkedIn": true
+    },
+    {
+      "eventId": 2118960,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-02T19:30:00",
+      "endTime": "2026-10-02T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 3",
+        "Court 5"
+      ],
+      "playerName": "Matthew G",
+      "checkedIn": false
     },
     {
       "eventId": 2218468,
@@ -2736,6 +2724,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2218483,
+      "title": "Advanced Beginner - Intermediate Open Play | Saturday",
+      "startTime": "2026-10-03T18:00:00",
+      "endTime": "2026-10-03T21:00:00",
+      "courts": [
+        "Court 3",
+        "Court 2"
+      ],
+      "playerName": "Julie H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2295018,
       "title": "Advanced Beginner - Intermediate Open Play | Saturday",
       "startTime": "2026-10-03T16:00:00",
@@ -2892,6 +2892,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2292581,
+      "title": "All Levels Open Play",
+      "startTime": "2026-10-02T19:30:00",
+      "endTime": "2026-10-02T21:30:00",
+      "courts": [
+        "Court 8"
+      ],
+      "playerName": "Nelson C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2287631,
       "title": "All Levels Open Play",
       "startTime": "2026-10-02T17:30:00",
@@ -2899,17 +2910,6 @@
       "courts": [
         "Court 8",
         "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Nelson C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2292581,
-      "title": "All Levels Open Play",
-      "startTime": "2026-10-02T19:30:00",
-      "endTime": "2026-10-02T21:30:00",
-      "courts": [
-        "Court 8"
       ],
       "playerName": "Nelson C",
       "checkedIn": false
@@ -2935,6 +2935,18 @@
         "Court 8"
       ],
       "playerName": "Wendy X",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2299671,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-02T17:30:00",
+      "endTime": "2026-10-02T19:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Yi W",
       "checkedIn": false
     },
     {
@@ -3209,7 +3221,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Kris S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2295055,
@@ -3247,6 +3259,36 @@
         "Court 2"
       ],
       "playerName": "Kadeem H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2268293,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-02T15:30:00",
+      "endTime": "2026-10-02T17:30:00",
+      "courts": [
+        "Court 8",
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Yang J",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2218473,
+      "title": "Intermediate - Advanced Open Play | Saturday",
+      "startTime": "2026-10-03T21:00:00",
+      "endTime": "2026-10-03T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 11"
+      ],
+      "playerName": "Carolyn C",
       "checkedIn": false
     },
     {
@@ -3343,7 +3385,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Chris H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2268293,
