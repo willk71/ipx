@@ -13,7 +13,7 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin: 8px 16px;
       padding: 8px 14px;
       background: rgba(255, 255, 255, 0.08);
@@ -311,6 +311,7 @@
 
           const courtNumbers = extractSortedCourts(r.courts || r.Courts || r.CourtName || r.court);
           const courtLabel = courtNumbers.length > 0 ? courtNumbers.join(', ') : 'TBD';
+          const courtPrefix = courtNumbers.length > 1 ? 'Courts' : 'Court';
 
           const rawMember = (r.holderLabel || r.memberName || r.MemberName || r.title || r.reservedBy || '').trim();
 
@@ -318,16 +319,20 @@
             const memberLabel = /\b[A-Za-z]\.?$/.test(rawMember)
               ? rawMember
               : formatNameLastInitial(rawMember);
-            activePrivates.push(`Private Court ${courtLabel} (${memberLabel})`);
+            activePrivates.push(`${courtPrefix} ${courtLabel} (${memberLabel})`);
           } else {
-            activePrivates.push(`Private Court ${courtLabel}`);
+            activePrivates.push(`${courtPrefix} ${courtLabel}`);
           }
         });
 
         if (activePrivates.length > 0 && privContainer) {
+          const labelPrefix = activePrivates.length > 1 ? 'Private Courts:' : 'Private Court:';
           privContainer.className = 'private-court-bar';
           privContainer.style.display = 'flex';
-          privContainer.innerHTML = activePrivates.map(text => `<span class="private-chip">${text}</span>`).join('');
+          privContainer.innerHTML = `
+            <span class="host-badge-label">${labelPrefix}</span>
+            <span class="private-chip">${activePrivates.join(', ')}</span>
+          `;
         } else if (privContainer) {
           privContainer.className = '';
           privContainer.style.display = 'none';
