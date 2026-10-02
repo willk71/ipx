@@ -310,11 +310,18 @@
           if (!isRunningAtTarget(sTime, eTime)) return;
 
           const courtNumbers = extractSortedCourts(r.courts || r.Courts || r.CourtName || r.court);
-          const rawMember = r.memberName || r.MemberName || r.title || r.reservedBy || 'Reserved';
-          const memberLabel = formatNameLastInitial(rawMember);
-
           const courtLabel = courtNumbers.length > 0 ? courtNumbers.join(', ') : 'TBD';
-          activePrivates.push(`Private Court ${courtLabel} (${memberLabel})`);
+
+          const rawMember = (r.holderLabel || r.memberName || r.MemberName || r.title || r.reservedBy || '').trim();
+
+          if (rawMember && rawMember.toLowerCase() !== 'reserved') {
+            const memberLabel = /\b[A-Za-z]\.?$/.test(rawMember)
+              ? rawMember
+              : formatNameLastInitial(rawMember);
+            activePrivates.push(`Private Court ${courtLabel} (${memberLabel})`);
+          } else {
+            activePrivates.push(`Private Court ${courtLabel}`);
+          }
         });
 
         if (activePrivates.length > 0 && privContainer) {
