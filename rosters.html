@@ -46,16 +46,6 @@
 
   <script src="js/common.js?v=2.2.8"></script>
   <script>
-    function formatPlayerName(name) {
-      if (!name) return '';
-      // Clean tags like (GMFM), (VIS), (G), (P) or trailing unparenthesized codes
-      const clean = String(name)
-        .replace(/\s*\([A-Za-z0-9_-]+\)\s*$/i, '')
-        .replace(/\s+[A-Z]{3,4}\s*$/, '')
-        .trim();
-      return clean;
-    }
-
     async function refreshRosterDisplay() {
       let data = {};
       const now = new Date();
@@ -148,7 +138,8 @@
         const courtNumbers = extractSortedCourts(e.courts || e.Courts);
         const queueInfo = e.paddleQueue || e.PaddleQueue || e.queueText || '';
 
-        const playerList = Array.isArray(e.players) ? e.players : (Array.isArray(e.roster) ? e.roster : []);
+        // Original list retrieval
+        const playerList = e.roster || e.players || [];
 
         if (!eventMap[key]) {
           eventMap[key] = {
@@ -157,18 +148,20 @@
             endTime: e.endTime || e.EndTime,
             courts: new Set(courtNumbers),
             queueText: queueInfo,
-            players: [...playerList]
+            roster: Array.isArray(playerList) ? [...playerList] : []
           };
         } else {
           courtNumbers.forEach(c => eventMap[key].courts.add(c));
           if (queueInfo && !eventMap[key].queueText) {
             eventMap[key].queueText = queueInfo;
           }
-          playerList.forEach(p => {
-            if (!eventMap[key].players.some(existing => (existing.name || existing) === (p.name || p))) {
-              eventMap[key].players.push(p);
-            }
-          });
+          if (Array.isArray(playerList)) {
+            playerList.forEach(p => {
+              if (!eventMap[key].roster.includes(p)) {
+                eventMap[key].roster.push(p);
+              }
+            });
+          }
         }
       });
 
@@ -181,7 +174,7 @@
           startTime: ev.startTime,
           endTime: ev.endTime,
           queueText: resolveQueueLocation(ev.courts, ev.queueText),
-          players: ev.players || []
+          roster: ev.roster || []
         });
       });
 
@@ -214,15 +207,21 @@
           </div>
         `;
       } else {
-        // Sorting strategy:
-        // When exactly 4 sessions, sort by roster count descending so:
-        // [0] = largest (Left Column, Full-Height)
-        // [1] = second largest (Center Column, Full-Height)
-        // [2], [3] = smallest two (Right Column, Half-Height Stacked)
+        // When 4 sessions are active:
+        // Column 1 & 2 full-height (sorted by roster length descending)
         if (activeSessions.length === 4) {
-          activeSessions.sort((a, b) => (b.players || []).length - (a.players || []).length);
+          activeSessions.sort((a, b) => {
+            const countA = (a.roster || []).length;
+            const countB = (b.roster || []).length;
+            if (countB !== countA) return countB - countA;
+
+            const courtsA = (a.courtsLabel || '').match(/\d+/g)?.length || 0;
+            const courtsB = (b.courtsLabel || '').match(/\d+/g)?.length || 0;
+            if (courtsB !== courtsA) return courtsB - courtsA;
+
+            return (parseFloat(b.title) || 0) - (parseFloat(a.title) || 0);
+          });
         } else {
-          // Standard numeric/alphabetical sort for other counts
           activeSessions.sort((a, b) => {
             const keyA = (a.title || '').trim().substring(0, 3);
             const keyB = (b.title || '').trim().substring(0, 3);
@@ -254,10 +253,10 @@
           const card = document.createElement('div');
           card.className = `roster-card ${isNow ? 'is-now' : ''}`;
 
-          const playerItems = (item.players || []).map(p => {
-            const raw = typeof p === 'string' ? p : (p.name || `${p.FirstName || ''} ${p.LastName || ''}`);
-            const cleaned = formatPlayerName(raw);
-            return `<li>${cleaned}</li>`;
+          // Original clean roster map
+          const playerItems = (item.roster || []).map(p => {
+            const name = typeof p === 'string' ? p : (p.name || p.MemberName || `${p.FirstName || ''} ${p.LastName || ''}`.trim());
+            return `<li>${name}</li>`;
           }).join('');
 
           card.innerHTML = `
@@ -265,7 +264,7 @@
               <div class="roster-title">${item.title}</div>
               <div class="roster-courts">${item.courtsLabel}</div>
               ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
-              <div class="roster-count">${(item.players || []).length} Players</div>
+              <div class="roster-count">${(item.roster || []).length} Players</div>
             </div>
             <div class="roster-list-wrapper">
               <ul class="roster-list">
