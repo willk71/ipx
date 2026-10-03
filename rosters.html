@@ -66,12 +66,17 @@
         document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
       }
 
-      const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
+      const targetTime = (typeof isPreview !== 'undefined' && isPreview)
+        ? new Date(now.getTime() + (typeof lookaheadMinutes !== 'undefined' ? lookaheadMinutes : 0) * 60 * 1000)
+        : now;
+
       const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
-      applyDynamicTheme(targetTime);
+      if (typeof applyDynamicTheme === 'function') {
+        applyDynamicTheme(targetTime);
+      }
 
-      document.getElementById('target-mode-pill').textContent = isPreview 
+      document.getElementById('target-mode-pill').textContent = (typeof isPreview !== 'undefined' && isPreview)
         ? `Target: ${targetTimeString}` 
         : 'Target: Live';
 
@@ -122,44 +127,53 @@
         });
       });
       nextTransitionTargetEpoch = closestFutureEpoch;
-      updateCountdown();
+      if (typeof updateCountdown === 'function') {
+        updateCountdown();
+      }
 
       // 2. Rosters Extraction
       const activeSessions = [];
       const eventMap = {};
 
       events.forEach(e => {
-        if (!isRunningAtTarget(e.startTime, e.endTime)) return;
+        const sTime = e.startTime || e.startTimeIso || e.StartTime;
+        const eTime = e.endTime || e.endTimeIso || e.EndTime;
+        if (!isRunningAtTarget(sTime, eTime)) return;
 
         const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
         if (isExcludedSession(rawName)) return;
 
-        const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
-        const courtNumbers = extractSortedCourts(e.courts || e.Courts);
+        const rawTitle = cleanTitle(e.title || e.DivisionName || e.EventName || 'Event');
+        const key = `${e.eventId || e.EventId || e.id || rawTitle}_${sTime}`;
+        const courtNumbers = extractSortedCourts(e.courts || e.Courts || e.court);
 
-        const playerList = e.roster || e.players || [];
+        // Accept any attendee list structure from CourtReserve
+        const rawPlayers = e.roster || e.players || e.Players || e.members || e.Members || e.registrants || e.attendees || [];
+        const playerList = Array.isArray(rawPlayers) ? rawPlayers : [];
 
         if (!eventMap[key]) {
           eventMap[key] = {
-            title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
-            startTime: e.startTime || e.StartTime,
-            endTime: e.endTime || e.EndTime,
+            title: rawTitle,
+            startTime: sTime,
+            endTime: eTime,
             courts: new Set(courtNumbers),
-            roster: Array.isArray(playerList) ? [...playerList] : []
+            roster: [...playerList]
           };
         } else {
           courtNumbers.forEach(c => eventMap[key].courts.add(c));
-          if (Array.isArray(playerList)) {
-            playerList.forEach(p => {
-              if (!eventMap[key].roster.includes(p)) {
-                eventMap[key].roster.push(p);
-              }
-            });
-          }
+          playerList.forEach(p => {
+            const pStr = typeof p === 'string' ? p : JSON.stringify(p);
+            const exists = eventMap[key].roster.some(item => (typeof item === 'string' ? item : JSON.stringify(item)) === pStr);
+            if (!exists) {
+              eventMap[key].roster.push(p);
+            }
+          });
         }
       });
 
-      applyCourtOverrides(eventMap, data.courtOverrides || [], currentMinutes);
+      if (typeof applyCourtOverrides === 'function') {
+        applyCourtOverrides(eventMap, data.courtOverrides || [], currentMinutes);
+      }
 
       Object.values(eventMap).forEach(ev => {
         activeSessions.push({
@@ -182,7 +196,7 @@
         bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
       }
 
-      const subtitleText = isPreview 
+      const subtitleText = (typeof isPreview !== 'undefined' && isPreview)
         ? `Rosters (${targetTimeString} Preview)` 
         : 'Rosters';
 
@@ -201,7 +215,7 @@
         `;
       } else {
         // When 4 sessions are active:
-        // Column 1 & 2 full-height (sorted by roster length descending)
+        // Sort by roster count descending so the top 2 take columns 1 & 2 full-height
         if (activeSessions.length === 4) {
           activeSessions.sort((a, b) => {
             const countA = (a.roster || []).length;
@@ -210,9 +224,7 @@
 
             const courtsA = (a.courtsLabel || '').match(/\d+/g)?.length || 0;
             const courtsB = (b.courtsLabel || '').match(/\d+/g)?.length || 0;
-            if (courtsB !== courtsA) return courtsB - courtsA;
-
-            return (parseFloat(b.title) || 0) - (parseFloat(a.title) || 0);
+            return courtsB - courtsA;
           });
         } else {
           activeSessions.sort((a, b) => {
@@ -247,8 +259,19 @@
           card.className = `roster-card ${isNow ? 'is-now' : ''}`;
 
           const playerItems = (item.roster || []).map(p => {
-            const name = typeof p === 'string' ? p : (p.name || p.MemberName || `${p.FirstName || ''} ${p.LastName || ''}`.trim());
-            return `<li>${name}</li>`;
+            let name = '';
+            if (typeof p === 'string') {
+              name = p;
+            } else if (p && typeof p === 'object') {
+              name = p.name || p.MemberName || p.memberName || p.FullName || `${p.FirstName || ''} ${p.LastName || ''}`.trim();
+            }
+            // Strip tags like (P), (G), (VIS), GMFM
+            const cleaned = (name || '')
+              .replace(/\s*\([A-Za-z0-9_-]+\)\s*$/i, '')
+              .replace(/\s+[A-Z]{3,4}\s*$/, '')
+              .trim();
+
+            return `<li>${cleaned || 'Player'}</li>`;
           }).join('');
 
           card.innerHTML = `
