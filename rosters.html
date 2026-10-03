@@ -25,9 +25,6 @@
     </div>
   </main>
 
-  <div id="private-reservations-container" style="display: none;"></div>
-  <div id="court-host-container" style="display: none;"></div>
-
   <footer>
     <div class="footer-meta-grid">
       <span id="theme-pill">Theme: --</span>
@@ -99,7 +96,6 @@
       };
 
       const events = Array.isArray(data) ? data : (data.events || []);
-      const reservations = Array.isArray(data.reservations) ? data.reservations : [];
 
       // 1. Countdown Target Epoch
       let closestFutureEpoch = null;
@@ -147,7 +143,6 @@
         const key = `${e.eventId || e.EventId || e.id || rawTitle}_${sTime}`;
         const courtNumbers = extractSortedCourts(e.courts || e.Courts || e.court);
 
-        // Accept any attendee list structure from CourtReserve
         const rawPlayers = e.roster || e.players || e.Players || e.members || e.Members || e.registrants || e.attendees || [];
         const playerList = Array.isArray(rawPlayers) ? rawPlayers : [];
 
@@ -265,7 +260,6 @@
             } else if (p && typeof p === 'object') {
               name = p.name || p.MemberName || p.memberName || p.FullName || `${p.FirstName || ''} ${p.LastName || ''}`.trim();
             }
-            // Strip tags like (P), (G), (VIS), GMFM
             const cleaned = (name || '')
               .replace(/\s*\([A-Za-z0-9_-]+\)\s*$/i, '')
               .replace(/\s+[A-Z]{3,4}\s*$/, '')
@@ -289,109 +283,6 @@
 
           container.appendChild(card);
         });
-      }
-
-      // 3. Private Reservations Bar
-      try {
-        const privContainer = document.getElementById('private-reservations-container');
-        const activePrivates = [];
-
-        reservations.forEach(r => {
-          const sTime = r.startTime || r.StartTime;
-          const eTime = r.endTime || r.EndTime;
-          if (!isRunningAtTarget(sTime, eTime)) return;
-
-          const courtNumbers = extractSortedCourts(r.courts || r.Courts || r.CourtName || r.court);
-          const courtLabel = courtNumbers.length > 0 ? courtNumbers.join(', ') : 'TBD';
-          const courtPrefix = courtNumbers.length > 1 ? 'Courts' : 'Court';
-
-          const rawMember = (r.holderLabel || r.memberName || r.MemberName || r.title || r.reservedBy || '').trim();
-          const cleanMember = rawMember
-            .replace(/\s*\([A-Za-z0-9_-]+\)\s*$/i, '')
-            .replace(/\s+[A-Z]{3,4}\s*$/, '')
-            .trim();
-
-          if (cleanMember && cleanMember.toLowerCase() !== 'reserved') {
-            const memberLabel = /\b[A-Za-z]\.?$/.test(cleanMember)
-              ? cleanMember
-              : toSentenceCase(cleanMember);
-            activePrivates.push(`${courtPrefix} ${courtLabel} (${memberLabel})`);
-          } else {
-            activePrivates.push(`${courtPrefix} ${courtLabel}`);
-          }
-        });
-
-        if (activePrivates.length > 0 && privContainer) {
-          const labelPrefix = activePrivates.length > 1 ? 'Private Courts:' : 'Private Court:';
-          privContainer.className = 'private-court-bar';
-          privContainer.style.display = 'flex';
-          privContainer.innerHTML = `
-            <span class="host-badge-label">${labelPrefix}</span>
-            <span class="private-chip">${activePrivates.join(', ')}</span>
-          `;
-        } else if (privContainer) {
-          privContainer.className = '';
-          privContainer.style.display = 'none';
-          privContainer.innerHTML = '';
-        }
-      } catch (err) {
-        console.error("Error displaying private reservations:", err);
-      }
-
-      // 4. Court Hosts Bar
-      try {
-        const hostContainer = document.getElementById('court-host-container');
-        const hostsList = Array.isArray(data.courtHosts) ? data.courtHosts : [];
-        const activeHostSet = new Set();
-
-        hostsList.forEach(h => {
-          if (!h || !h.host) return;
-
-          if (!h.start || !h.end) {
-            activeHostSet.add(h.host.trim());
-            return;
-          }
-
-          const parseMinutes = (val) => {
-            if (!val) return 0;
-            const parts = String(val).trim().split(':').map(Number);
-            return (parts[0] || 0) * 60 + (parts[1] || 0);
-          };
-
-          const sMin = parseMinutes(h.start);
-          let eMin = parseMinutes(h.end);
-          if (eMin === 0) eMin = 24 * 60;
-
-          if (currentMinutes >= sMin && currentMinutes < eMin) {
-            activeHostSet.add(h.host.trim());
-          }
-        });
-
-        const activeHosts = Array.from(activeHostSet);
-
-        if (activeHosts.length > 0 && hostContainer) {
-          let formattedNames = '';
-          if (activeHosts.length === 1) {
-            formattedNames = activeHosts[0];
-          } else if (activeHosts.length === 2) {
-            formattedNames = activeHosts.join(' & ');
-          } else {
-            formattedNames = `${activeHosts.slice(0, -1).join(', ')} & ${activeHosts[activeHosts.length - 1]}`;
-          }
-
-          hostContainer.className = 'court-host-bar';
-          hostContainer.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
-          hostContainer.innerHTML = `
-            <span class="host-badge-label">Court Host${activeHosts.length > 1 ? 's' : ''}:</span>
-            <span class="host-names">${formattedNames}</span>
-          `;
-        } else if (hostContainer) {
-          hostContainer.className = '';
-          hostContainer.style.display = 'none';
-          hostContainer.innerHTML = '';
-        }
-      } catch (err) {
-        console.error("Error displaying hosts:", err);
       }
     }
 
