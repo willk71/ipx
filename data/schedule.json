@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-03T07:30:34Z",
+  "lastUpdated": "2026-10-03T07:31:26Z",
   "date": "2026-10-03",
   "courtHosts": [
     {
@@ -8,14 +8,14 @@
       "host": "Nelson C"
     },
     {
-      "start": "18:00",
-      "end": "22:30",
-      "host": "Winnie Z"
-    },
-    {
       "start": "09:00",
       "end": "13:30",
       "host": "Lillian H"
+    },
+    {
+      "start": "18:00",
+      "end": "22:30",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -1036,6 +1036,56 @@
         "Court 9"
       ],
       "playerName": "Ken L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2295055,
+      "title": "Intermediate - Advanced Open Play | Saturday",
+      "startTime": "2026-10-03T16:00:00",
+      "endTime": "2026-10-03T18:00:00",
+      "courts": [
+        "Court 9",
+        "Court 6",
+        "Court 11"
+      ],
+      "playerName": "Vincent L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2218487,
+      "title": "Advanced Beginner - Intermediate Open Play | Saturday",
+      "startTime": "2026-10-03T21:00:00",
+      "endTime": "2026-10-03T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Nirav P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2292590,
+      "title": "Intermediate - Advanced Open Play | Saturday",
+      "startTime": "2026-10-03T14:00:00",
+      "endTime": "2026-10-03T16:00:00",
+      "courts": [
+        "Court 11",
+        "Court 9"
+      ],
+      "playerName": "Hiroko O",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2218483,
+      "title": "Advanced Beginner - Intermediate Open Play | Saturday",
+      "startTime": "2026-10-03T18:00:00",
+      "endTime": "2026-10-03T21:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 3",
+        "Court 2"
+      ],
+      "playerName": "Kaman C",
       "checkedIn": false
     },
     {
@@ -3857,56 +3907,6 @@
         "Court 9"
       ],
       "playerName": "Aleksandrina P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2295055,
-      "title": "Intermediate - Advanced Open Play | Saturday",
-      "startTime": "2026-10-03T16:00:00",
-      "endTime": "2026-10-03T18:00:00",
-      "courts": [
-        "Court 9",
-        "Court 6",
-        "Court 11"
-      ],
-      "playerName": "Vincent L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2218487,
-      "title": "Advanced Beginner - Intermediate Open Play | Saturday",
-      "startTime": "2026-10-03T21:00:00",
-      "endTime": "2026-10-03T23:59:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Nirav P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2292590,
-      "title": "Intermediate - Advanced Open Play | Saturday",
-      "startTime": "2026-10-03T14:00:00",
-      "endTime": "2026-10-03T16:00:00",
-      "courts": [
-        "Court 11",
-        "Court 9"
-      ],
-      "playerName": "Hiroko O",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2218483,
-      "title": "Advanced Beginner - Intermediate Open Play | Saturday",
-      "startTime": "2026-10-03T18:00:00",
-      "endTime": "2026-10-03T21:00:00",
-      "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Kaman C",
       "checkedIn": false
     }
   ]
