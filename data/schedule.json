@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-03T08:48:36Z",
+  "lastUpdated": "2026-10-03T09:07:44Z",
   "date": "2026-10-03",
   "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "22:30",
-      "host": "Winnie Z"
-    },
     {
       "start": "09:00",
       "end": "13:30",
@@ -16,6 +11,11 @@
       "start": "09:00",
       "end": "13:30",
       "host": "Lillian H"
+    },
+    {
+      "start": "18:00",
+      "end": "22:30",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -52,10 +52,22 @@
       "endTime": "2026-10-03T15:00:00"
     },
     {
+      "court": "Court 3",
+      "holderLabel": "",
+      "startTime": "2026-10-04T13:00:00",
+      "endTime": "2026-10-04T15:00:00"
+    },
+    {
       "court": "Court 8",
       "holderLabel": "Naseem A.",
       "startTime": "2026-10-04T11:00:00",
       "endTime": "2026-10-04T13:00:00"
+    },
+    {
+      "court": "Court 6",
+      "holderLabel": "YenChen L.",
+      "startTime": "2026-10-04T13:00:00",
+      "endTime": "2026-10-04T15:00:00"
     },
     {
       "court": "Court 10 (Livestreaming)",
@@ -88,6 +100,12 @@
       "endTime": "2026-10-03T16:00:00"
     },
     {
+      "court": "Court 11",
+      "holderLabel": "Daniel T.",
+      "startTime": "2026-10-04T13:00:00",
+      "endTime": "2026-10-04T14:00:00"
+    },
+    {
       "court": "Court 4 (Livestreaming)",
       "holderLabel": "",
       "startTime": "2026-10-03T09:00:00",
@@ -110,6 +128,12 @@
       "holderLabel": "",
       "startTime": "2026-10-04T10:00:00",
       "endTime": "2026-10-04T11:00:00"
+    },
+    {
+      "court": "Court 2",
+      "holderLabel": "",
+      "startTime": "2026-10-04T13:00:00",
+      "endTime": "2026-10-04T14:00:00"
     }
   ],
   "events": [
