@@ -97,7 +97,6 @@
 
       const events = Array.isArray(data) ? data : (data.events || []);
 
-      // 1. Countdown Target Epoch
       let closestFutureEpoch = null;
       events.forEach(e => {
         const rawName = (e.title || e.DivisionName || e.EventName || '');
@@ -127,7 +126,6 @@
         updateCountdown();
       }
 
-      // 2. Rosters Extraction
       const activeSessions = [];
       const eventMap = {};
 
@@ -140,11 +138,10 @@
         if (isExcludedSession(rawName)) return;
 
         const rawTitle = cleanTitle(e.title || e.DivisionName || e.EventName || 'Event');
-        const key = `${e.eventId || e.EventId || e.id || rawTitle}_${sTime}`;
+        const key = `${e.eventId || e.EventId || rawTitle}_${sTime}`;
         const courtNumbers = extractSortedCourts(e.courts || e.Courts || e.court);
 
-        const rawPlayers = e.roster || e.players || e.Players || e.members || e.Members || e.registrants || e.attendees || [];
-        const playerList = Array.isArray(rawPlayers) ? rawPlayers : [];
+        const rawList = e.roster || e.players || e.members || e.registrants || [];
 
         if (!eventMap[key]) {
           eventMap[key] = {
@@ -152,17 +149,17 @@
             startTime: sTime,
             endTime: eTime,
             courts: new Set(courtNumbers),
-            roster: [...playerList]
+            roster: Array.isArray(rawList) ? [...rawList] : []
           };
         } else {
           courtNumbers.forEach(c => eventMap[key].courts.add(c));
-          playerList.forEach(p => {
-            const pStr = typeof p === 'string' ? p : JSON.stringify(p);
-            const exists = eventMap[key].roster.some(item => (typeof item === 'string' ? item : JSON.stringify(item)) === pStr);
-            if (!exists) {
-              eventMap[key].roster.push(p);
-            }
-          });
+          if (Array.isArray(rawList)) {
+            rawList.forEach(p => {
+              if (!eventMap[key].roster.includes(p)) {
+                eventMap[key].roster.push(p);
+              }
+            });
+          }
         }
       });
 
@@ -209,8 +206,6 @@
           </div>
         `;
       } else {
-        // When 4 sessions are active:
-        // Sort by roster count descending so the top 2 take columns 1 & 2 full-height
         if (activeSessions.length === 4) {
           activeSessions.sort((a, b) => {
             const countA = (a.roster || []).length;
@@ -254,25 +249,18 @@
           card.className = `roster-card ${isNow ? 'is-now' : ''}`;
 
           const playerItems = (item.roster || []).map(p => {
-            let name = '';
-            if (typeof p === 'string') {
-              name = p;
-            } else if (p && typeof p === 'object') {
-              name = p.name || p.MemberName || p.memberName || p.FullName || `${p.FirstName || ''} ${p.LastName || ''}`.trim();
-            }
-            const cleaned = (name || '')
-              .replace(/\s*\([A-Za-z0-9_-]+\)\s*$/i, '')
-              .replace(/\s+[A-Z]{3,4}\s*$/, '')
-              .trim();
-
-            return `<li>${cleaned || 'Player'}</li>`;
+            let name = typeof p === 'string' ? p : (p.name || p.MemberName || p.memberName || p.FullName || `${p.FirstName || ''} ${p.LastName || ''}`.trim());
+            name = name.replace(/\s*\([A-Za-z0-9_-]+\)\s*$/i, '').replace(/\s+[A-Z]{3,4}\s*$/, '').trim();
+            return `<li>${name}</li>`;
           }).join('');
 
           card.innerHTML = `
             <div class="roster-header">
-              <div class="roster-title">${item.title}</div>
+              <div class="roster-title">
+                ${item.title}
+                <span class="player-count-badge">${(item.roster || []).length}</span>
+              </div>
               <div class="roster-courts">${item.courtsLabel}</div>
-              <div class="roster-count">${(item.roster || []).length} Players</div>
             </div>
             <div class="roster-list-wrapper">
               <ul class="roster-list">
