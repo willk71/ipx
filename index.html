@@ -19,7 +19,7 @@
     </div>
   </header>
 
-  <!-- Dedicated Full-Line Court Host Bar -->
+  <!-- Court Host Bar -->
   <div id="court-host-bar" class="court-host-container" style="display: none;">
     <span class="host-label" id="host-label-text">Your Court Host:</span>
     <span class="host-names" id="host-names-text">--</span>
@@ -30,6 +30,12 @@
       <h2>Loading Schedule...</h2>
     </div>
   </main>
+
+  <!-- Private Courts Bar -->
+  <div id="private-courts-bar" class="private-courts-container" style="display: none;">
+    <span class="private-label">Private Courts:</span>
+    <span class="private-courts-list" id="private-courts-text">--</span>
+  </div>
 
   <footer class="main-footer">
     <div class="footer-meta-grid">
@@ -83,7 +89,7 @@
 
         const events = Array.isArray(data) ? data : (data.events || []);
 
-        // 1. Countdown Target Epoch
+        // 1. Transition Countdown Target
         let closestFutureEpoch = null;
         events.forEach(e => {
           const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
@@ -107,21 +113,38 @@
         nextTransitionTargetEpoch = closestFutureEpoch;
         updateCountdown();
 
-        // 2. Court Host Extraction & Bar Rendering
+        // 2. Court Hosts & Private Courts Extraction
         const activeHosts = [];
+        const privateCourtNumbers = new Set();
+
         events.forEach(e => {
-          if (!isRunningAtTarget(e.startTime, e.endTime)) return;
+          if (!isRunningAtTarget(e.startTime || e.StartTime, e.endTime || e.EndTime)) return;
           const rawTitle = (e.title || e.DivisionName || e.EventName || '');
-          if (/court\s*host/i.test(rawTitle)) {
-            const hostName = e.playerName || 
+          const rawCat = (e.category || e.CategoryName || '');
+
+          // Check for Court Host
+          if (/court\s*host/i.test(rawTitle) || /court\s*host/i.test(rawCat)) {
+            let hostName = e.playerName || 
               (e.FirstName ? `${e.FirstName} ${e.LastName ? e.LastName.charAt(0) : ''}`.trim() : '') ||
-              e.MemberName || cleanTitle(rawTitle).replace(/court\s*host\s*[-–—:]*\s*/i, '').trim();
-            if (hostName && !activeHosts.includes(hostName)) {
+              e.MemberName;
+
+            if (!hostName) {
+              hostName = cleanTitle(rawTitle).replace(/court\s*host\s*[-–—:]*\s*/i, '').trim();
+            }
+
+            if (hostName && !activeHosts.includes(toSentenceCase(hostName))) {
               activeHosts.push(toSentenceCase(hostName));
             }
           }
+
+          // Check for Private Courts / Rentals
+          if (/private/i.test(rawTitle) || /private/i.test(rawCat) || /rental/i.test(rawTitle) || /rental/i.test(rawCat)) {
+            const courts = extractSortedCourts(e.courts || e.Courts);
+            courts.forEach(c => privateCourtNumbers.add(c));
+          }
         });
 
+        // Render Court Host Bar
         const hostBar = document.getElementById('court-host-bar');
         const hostLabelText = document.getElementById('host-label-text');
         const hostNamesText = document.getElementById('host-names-text');
@@ -134,15 +157,32 @@
           hostBar.style.display = 'none';
         }
 
-        // 3. Sessions & Grid Mapping
+        // Render Private Courts Bar
+        const privateBar = document.getElementById('private-courts-bar');
+        const privateText = document.getElementById('private-courts-text');
+
+        if (privateCourtNumbers.size > 0) {
+          const sortedPrivates = Array.from(privateCourtNumbers).sort((a, b) => (parseInt(a, 10) || a) - (parseInt(b, 10) || b));
+          const prefix = sortedPrivates.length === 1 ? 'Court' : 'Courts';
+          privateText.textContent = `${prefix} ${sortedPrivates.join(', ')}`;
+          privateBar.style.display = 'flex';
+        } else {
+          privateBar.style.display = 'none';
+        }
+
+        // 3. Regular Session Aggregation
         const sessions = [];
         const eventMap = {};
 
         events.forEach(e => {
-          if (!isRunningAtTarget(e.startTime, e.endTime)) return;
+          if (!isRunningAtTarget(e.startTime || e.StartTime, e.endTime || e.EndTime)) return;
 
-          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
-          if (/\bRoad\b/i.test(rawName) || /court\s*host/i.test(rawName)) return;
+          const rawTitle = (e.title || e.DivisionName || e.EventName || '');
+          const rawCat = (e.category || e.CategoryName || '');
+
+          // Exclude Road sessions, Court Host entries, and standalone Private rentals from grid cards
+          if (/\bRoad\b/i.test(rawTitle) || /court\s*host/i.test(rawTitle) || /court\s*host/i.test(rawCat)) return;
+          if (/private/i.test(rawTitle) || /private/i.test(rawCat) || /rental/i.test(rawTitle) || /rental/i.test(rawCat)) return;
 
           const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
           const courtNumbers = extractSortedCourts(e.courts || e.Courts);
@@ -150,7 +190,7 @@
 
           if (!eventMap[key]) {
             eventMap[key] = {
-              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
+              title: cleanTitle(rawTitle || 'Event'),
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
               courts: new Set(courtNumbers),
