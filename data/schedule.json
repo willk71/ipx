@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-03T01:07:48Z",
+  "lastUpdated": "2026-10-03T01:08:41Z",
   "date": "2026-10-02",
   "courtHosts": [
-    {
-      "start": "15:00",
-      "end": "21:00",
-      "host": "Will K"
-    },
     {
       "start": "17:30",
       "end": "21:45",
@@ -20,17 +15,22 @@
     {
       "start": "19:00",
       "end": "23:00",
-      "host": "Winnie Z"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
       "host": "Stephanie L"
     },
     {
       "start": "17:30",
       "end": "21:45",
       "host": "Nelson C"
+    },
+    {
+      "start": "15:00",
+      "end": "21:00",
+      "host": "Will K"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -1445,6 +1445,21 @@
       "checkedIn": false
     },
     {
+      "eventId": 2182875,
+      "title": "Team King of the Court Ladder - Fixed Partner | Win a Daytime Pass!",
+      "startTime": "2026-10-04T18:00:00",
+      "endTime": "2026-10-04T20:00:00",
+      "courts": [
+        "Court 3",
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Francis A",
+      "checkedIn": false
+    },
+    {
       "eventId": 2148647,
       "title": "SUMMER | Social Open Play | Intermediate - Advanced",
       "startTime": "2026-10-04T15:00:00",
@@ -1486,21 +1501,6 @@
       ],
       "playerName": "Stephen J",
       "checkedIn": true
-    },
-    {
-      "eventId": 2182875,
-      "title": "Team King of the Court Ladder - Fixed Partner | Win a Daytime Pass!",
-      "startTime": "2026-10-04T18:00:00",
-      "endTime": "2026-10-04T20:00:00",
-      "courts": [
-        "Court 3",
-        "Court 5",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Evan C",
-      "checkedIn": false
     },
     {
       "eventId": 2182875,
@@ -1901,18 +1901,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "John C",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2299671,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-02T17:30:00",
-      "endTime": "2026-10-02T19:30:00",
-      "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Will K",
       "checkedIn": true
     },
     {
@@ -3048,6 +3036,21 @@
       "checkedIn": true
     },
     {
+      "eventId": 2182875,
+      "title": "Team King of the Court Ladder - Fixed Partner | Win a Daytime Pass!",
+      "startTime": "2026-10-04T18:00:00",
+      "endTime": "2026-10-04T20:00:00",
+      "courts": [
+        "Court 3",
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Evan C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2199540,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-02T19:30:00",
@@ -3603,6 +3606,18 @@
         "Court 8"
       ],
       "playerName": "Joven E",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2299671,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-02T17:30:00",
+      "endTime": "2026-10-02T19:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Will K",
       "checkedIn": true
     },
     {
