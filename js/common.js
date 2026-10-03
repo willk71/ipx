@@ -213,7 +213,7 @@ function cleanTitle(rawTitle) {
   mainSegment = mainSegment
     .replace(/\bSessions?\b/gi, '')
     .replace(/\bOpen\s*Play\b/gi, '')
-    .replace(/\bPrime\s*Time\b/gi, '');
+    .replace(/\bPrime\s*Time\b/gi);
 
   mainSegment = mainSegment.replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
   mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)/g, '$1 – $2');
@@ -231,6 +231,14 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
+      // Explicit Combinations: 2 3 6 and 9 11
+      if (courtsSet.has('2') && courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 3) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+      if (courtsSet.has('9') && courtsSet.has('11') && courtsSet.size === 2) {
+        return '📍 - Court 9 Paddle Rack';
+      }
+
       // 1. Explicit 2-court pair rules
       if (courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 2) {
         return '📍 - Court 6 Table/Rack';
