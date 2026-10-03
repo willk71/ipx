@@ -136,9 +136,7 @@
 
         const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
         const courtNumbers = extractSortedCourts(e.courts || e.Courts);
-        const queueInfo = e.paddleQueue || e.PaddleQueue || e.queueText || '';
 
-        // Original list retrieval
         const playerList = e.roster || e.players || [];
 
         if (!eventMap[key]) {
@@ -147,14 +145,10 @@
             startTime: e.startTime || e.StartTime,
             endTime: e.endTime || e.EndTime,
             courts: new Set(courtNumbers),
-            queueText: queueInfo,
             roster: Array.isArray(playerList) ? [...playerList] : []
           };
         } else {
           courtNumbers.forEach(c => eventMap[key].courts.add(c));
-          if (queueInfo && !eventMap[key].queueText) {
-            eventMap[key].queueText = queueInfo;
-          }
           if (Array.isArray(playerList)) {
             playerList.forEach(p => {
               if (!eventMap[key].roster.includes(p)) {
@@ -173,7 +167,6 @@
           courtsLabel: formatCourtsLabel(ev.courts, 'roster'),
           startTime: ev.startTime,
           endTime: ev.endTime,
-          queueText: resolveQueueLocation(ev.courts, ev.queueText),
           roster: ev.roster || []
         });
       });
@@ -253,7 +246,6 @@
           const card = document.createElement('div');
           card.className = `roster-card ${isNow ? 'is-now' : ''}`;
 
-          // Original clean roster map
           const playerItems = (item.roster || []).map(p => {
             const name = typeof p === 'string' ? p : (p.name || p.MemberName || `${p.FirstName || ''} ${p.LastName || ''}`.trim());
             return `<li>${name}</li>`;
@@ -263,7 +255,6 @@
             <div class="roster-header">
               <div class="roster-title">${item.title}</div>
               <div class="roster-courts">${item.courtsLabel}</div>
-              ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
               <div class="roster-count">${(item.roster || []).length} Players</div>
             </div>
             <div class="roster-list-wrapper">
