@@ -10,9 +10,6 @@ on:
 concurrency:
   group: sync-courtreserve
   cancel-in-progress: false
-concurrency:
-  group: sync-courtreserve
-  cancel-in-progress: false
 
 jobs:
   sync-schedule:
