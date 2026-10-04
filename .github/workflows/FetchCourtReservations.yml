@@ -2,22 +2,15 @@ name: Sync CourtReserve Schedule
 
 on:
   schedule:
-    # 24/7 15-minute baseline around the clock
-    - cron: '*/15 * * * *'
+    # Daytime / Evening Peak (7:00 AM - 11:55 PM EDT): Every 5 minutes
+    # 11:00 UTC - 23:55 UTC (7:00 AM - 7:55 PM EDT)
+    - cron: '*/5 11-23 * * *'
+    # 00:00 UTC - 03:55 UTC (8:00 PM - 11:55 PM EDT)
+    - cron: '*/5 0-3 * * *'
 
-    # Weekend Daytime Peak: 8:45 AM - 10:00 PM EDT (12:45 UTC - 02:00 UTC)
-    - cron: '45-55/5 12 * * 6,0'
-    - cron: '*/5 13-23 * * 6,0'
-    - cron: '*/5 0-1 * * 0,1'
-    - cron: '0 2 * * 0,1'
-
-    # Weekday Evening Bursts:
-    - cron: '20-55/5 21 * * 1-5'
-    - cron: '0-30/5 22 * * 1-5'
-    - cron: '20-55/5 23 * * 1-5'
-    - cron: '0-30/5 0 * * 2-6'
-    - cron: '20-55/5 1 * * 2-6'
-    - cron: '0-30/5 2 * * 2-6'
+    # Overnight Off-Peak (12:00 AM - 6:45 AM EDT): Every 15 minutes
+    # 04:00 UTC - 10:45 UTC (12:00 AM - 6:45 AM EDT)
+    - cron: '*/15 4-10 * * *'
 
   workflow_dispatch:
 
@@ -174,17 +167,17 @@ jobs:
 
             # 2. Fetch CourtReserve APIs
             RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
-            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
+            curl -s --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
 
             EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
-            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
+            curl -s --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
 
             CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
-            curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
+            curl -s --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
 
             # 3. Fetch and Parse Google Calendar Hosts & Overrides
             CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
-            curl -sL "$CAL_URL" -o data/hosts.ics
+            curl -sL --connect-timeout 10 --max-time 25 "$CAL_URL" -o data/hosts.ics
 
             python3 /tmp/parse_hosts.py
             [ ! -f data/hosts.json ] && echo '{"hosts":[],"overrides":[],"adHoc":[]}' > data/hosts.json
@@ -263,7 +256,7 @@ jobs:
               echo "Pass $pass_num: No schedule changes detected."
             else
               git commit -m "Auto-update CourtReserve schedule (Pass $pass_num) [skip ci]"
-              # If someone pushed in the middle, rebase and let our fresh schedule.json win cleanly
+              # If someone pushed in the middle, rebase and let fresh schedule.json win cleanly
               git pull --rebase -X theirs origin main || (git rebase --abort && git pull origin main)
               git push origin main
               echo "Pass $pass_num: Changes committed and pushed."
