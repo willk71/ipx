@@ -2,14 +2,14 @@ name: Sync CourtReserve Schedule
 
 on:
   schedule:
-    # Daytime / Evening Peak (7:00 AM - 11:59 PM EDT): Every 7 minutes
-    # 11:00 UTC - 23:59 UTC (7:00 AM - 7:59 PM EDT)
-    - cron: '*/7 11-23 * * *'
-    # 00:00 UTC - 03:59 UTC (8:00 PM - 11:59 PM EDT)
-    - cron: '*/7 0-3 * * *'
+    # Daytime / Evening Peak (7:00 AM - 11:50 PM EDT): Every 10 minutes
+    # 11:00 UTC - 23:50 UTC (7:00 AM - 7:50 PM EDT)
+    - cron: '*/10 11-23 * * *'
+    # 00:00 UTC - 03:50 UTC (8:00 PM - 11:50 PM EDT)
+    - cron: '*/10 0-3 * * *'
 
-    # Overnight Off-Peak (12:00 AM - 6:59 AM EDT): Every 15 minutes
-    # 04:00 UTC - 10:59 UTC (12:00 AM - 6:59 AM EDT)
+    # Overnight Off-Peak (12:00 AM - 6:45 AM EDT): Every 15 minutes
+    # 04:00 UTC - 10:45 UTC (12:00 AM - 6:45 AM EDT)
     - cron: '*/15 4-10 * * *'
 
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
         run: |
           python3 -m pip install --quiet --no-cache-dir icalendar pytz
 
-      - name: Run Cadence Sync Loop (4 Passes per 7m)
+      - name: Run Cadence Sync Loop (4 Passes per 10m)
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
@@ -265,23 +265,23 @@ jobs:
           # --- Pass 1: T+0s ---
           sync_pass 1
 
-          # --- Pause 70s ---
-          echo "Pausing 70s for next sync pass..."
-          sleep 70
+          # --- Pause 75s ---
+          echo "Pausing 75s for next sync pass..."
+          sleep 75
 
-          # --- Pass 2: T+80s ---
+          # --- Pass 2: T+85s ---
           sync_pass 2
 
-          # --- Pause 70s ---
-          echo "Pausing 70s for next sync pass..."
-          sleep 70
+          # --- Pause 75s ---
+          echo "Pausing 75s for next sync pass..."
+          sleep 75
 
-          # --- Pass 3: T+160s ---
+          # --- Pass 3: T+170s ---
           sync_pass 3
 
-          # --- Pause 70s ---
-          echo "Pausing 70s for next sync pass..."
-          sleep 70
+          # --- Pause 75s ---
+          echo "Pausing 75s for next sync pass..."
+          sleep 75
 
-          # --- Pass 4: T+240s ---
+          # --- Pass 4: T+255s ---
           sync_pass 4
