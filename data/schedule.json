@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-04T21:54:05Z",
+  "lastUpdated": "2026-10-04T22:02:28Z",
   "date": "2026-10-04",
   "courtHosts": [
-    {
-      "start": "14:45",
-      "end": "18:30",
-      "host": "Harsh P"
-    },
     {
       "start": "14:30",
       "end": "20:30",
       "host": "Neil L"
+    },
+    {
+      "start": "14:45",
+      "end": "18:30",
+      "host": "Harsh P"
     }
   ],
   "courtOverrides": [],
@@ -45,18 +45,6 @@
       "holderLabel": "",
       "startTime": "2026-10-04T14:00:00",
       "endTime": "2026-10-04T16:00:00"
-    },
-    {
-      "court": "Court 11",
-      "holderLabel": "Daniel T.",
-      "startTime": "2026-10-04T13:00:00",
-      "endTime": "2026-10-04T14:00:00"
-    },
-    {
-      "court": "Court 2",
-      "holderLabel": "",
-      "startTime": "2026-10-04T13:00:00",
-      "endTime": "2026-10-04T14:00:00"
     },
     {
       "court": "Court 12 (Livestreaming)",
@@ -1407,7 +1395,7 @@
         "Court 2"
       ],
       "playerName": "Jesse H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2182875,
@@ -1482,7 +1470,7 @@
         "Court 2"
       ],
       "playerName": "Francis A",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2196165,
@@ -1674,7 +1662,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Nilas J",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2182875,
@@ -1689,7 +1677,7 @@
         "Court 2"
       ],
       "playerName": "Nilas J",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2220593,
@@ -2155,6 +2143,18 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Trevor E",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-05T17:30:00",
+      "endTime": "2026-10-05T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "Nicholas B",
       "checkedIn": true
     },
     {
