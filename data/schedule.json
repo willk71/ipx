@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-10-04T18:22:29Z",
+  "lastUpdated": "2026-10-04T18:47:42Z",
   "date": "2026-10-04",
-  "courtHosts": [],
+  "courtHosts": [
+    {
+      "start": "14:45",
+      "end": "18:15",
+      "host": "Harsh P"
+    },
+    {
+      "start": "14:30",
+      "end": "20:30",
+      "host": "Neil L"
+    }
+  ],
   "courtOverrides": [],
   "adHocSessions": [],
   "reservations": [
@@ -636,18 +647,20 @@
       "checkedIn": true
     },
     {
-      "eventId": 2148647,
-      "title": "SUMMER | Social Open Play | Intermediate - Advanced",
-      "startTime": "2026-10-04T15:00:00",
-      "endTime": "2026-10-04T18:00:00",
+      "eventId": 2148670,
+      "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
+      "startTime": "2026-10-04T20:00:00",
+      "endTime": "2026-10-04T23:59:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5",
-        "Court 3",
-        "Court 9"
+        "Court 12 (Livestreaming)",
+        "Court 9",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
       ],
-      "playerName": "Maureen H",
-      "checkedIn": true
+      "playerName": "Waiho Z",
+      "checkedIn": false
     },
     {
       "eventId": 2118424,
@@ -791,7 +804,7 @@
         "Court 9"
       ],
       "playerName": "Kris S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2148647,
@@ -1001,6 +1014,22 @@
       "checkedIn": true
     },
     {
+      "eventId": 2148670,
+      "title": "SUMMER | Social Open Play | Intermediate - Advanced | Night",
+      "startTime": "2026-10-04T20:00:00",
+      "endTime": "2026-10-04T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 9",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Dickson F",
+      "checkedIn": false
+    },
+    {
       "eventId": 2196165,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-05T19:30:00",
@@ -1079,21 +1108,6 @@
       ],
       "playerName": "Anna D",
       "checkedIn": true
-    },
-    {
-      "eventId": 2182875,
-      "title": "Team King of the Court Ladder - Fixed Partner | Win a Daytime Pass!",
-      "startTime": "2026-10-04T18:00:00",
-      "endTime": "2026-10-04T20:00:00",
-      "courts": [
-        "Court 3",
-        "Court 5",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Jordi F",
-      "checkedIn": false
     },
     {
       "eventId": 2162308,
@@ -2653,7 +2667,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Tylah G",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2292592,
@@ -2978,7 +2992,7 @@
         "Court 9"
       ],
       "playerName": "Chris H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2148647,
