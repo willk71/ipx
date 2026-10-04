@@ -1,18 +1,11 @@
 name: Sync CourtReserve Schedule
 
 on:
-  schedule:
-    # Daytime / Evening Peak (7:00 AM - 11:50 PM EDT): Every 10 minutes
-    # 11:00 UTC - 23:50 UTC (7:00 AM - 7:50 PM EDT)
-    - cron: '*/10 11-23 * * *'
-    # 00:00 UTC - 03:50 UTC (8:00 PM - 11:50 PM EDT)
-    - cron: '*/10 0-3 * * *'
-
-    # Overnight Off-Peak (12:00 AM - 6:45 AM EDT): Every 15 minutes
-    # 04:00 UTC - 10:45 UTC (12:00 AM - 6:45 AM EDT)
-    - cron: '*/15 4-10 * * *'
-
   workflow_dispatch:
+  schedule:
+    - cron: "0,10,20,30,40,50 11-23 * * *"
+    - cron: "0,10,20,30,40,50 0-3 * * *"
+    - cron: "0,15,30,45 4-10 * * *"
 
 concurrency:
   group: sync-courtreserve
