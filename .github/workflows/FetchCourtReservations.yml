@@ -32,21 +32,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        run: |
-          python3 -m pip install --quiet icalendar pytz
-
       - name: Configure Git Author
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Calendar Dependency
+        run: |
+          python3 -m pip install --quiet --no-cache-dir icalendar pytz
 
       - name: Run 1-Minute Cadence Sync Loop (4 Passes per 5m)
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
         run: |
-          # Write the Python parser script to disk once
           cat << 'PY_SCRIPT' > /tmp/parse_hosts.py
           import datetime, json, os, pytz, re
           from icalendar import Calendar
@@ -97,7 +96,7 @@ jobs:
                               dtend = dtend.astimezone(tz)
 
                           if dtstart.date() == today_ny:
-                              # --- 1. COURT HOSTS (Requires explicit "host" or "court host" prefix) ---
+                              # 1. COURT HOSTS
                               if re.match(r'^(?:court\s+hosts?:?|hosts?:?)\b', summary, re.I):
                                   clean_title = re.sub(r'^(?:court\s+hosts?:?|hosts?:?)\s*', '', summary, flags=re.I).strip()
                                   names = [n.strip() for n in re.split(r'[,/&]|\b(?<!\w)and(?!\w)\b', clean_title) if n.strip()]
@@ -110,7 +109,7 @@ jobs:
                                           })
                                   continue
 
-                              # --- 2. COURT REPLACEMENT OVERRIDES (Starts with Courts / Override) ---
+                              # 2. COURT REPLACEMENT OVERRIDES
                               if re.match(r'^(?:override\s*:?|\+?\s*courts?)\b', summary, re.I):
                                   match_filter = ""
                                   court_str = summary
@@ -129,7 +128,7 @@ jobs:
                                       })
                                   continue
 
-                              # --- 3. AD-HOC SESSIONS (e.g. "Session: Challenge Court | Court 3" or "Challenge Court on 3") ---
+                              # 3. AD-HOC SESSIONS
                               clean_ad_hoc = re.sub(r'^session\s*:?\s*', '', summary, flags=re.I).strip()
                               session_title = clean_ad_hoc
                               session_courts = []
@@ -163,13 +162,17 @@ jobs:
             local pass_num="$1"
             echo "=== Starting Sync Pass $pass_num ==="
 
+            # 1. Always bring runner up to remote HEAD first to avoid branch conflicts
+            git fetch origin main --quiet
+            git reset --hard origin/main --quiet
+
             mkdir -p data
             TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
             FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
             TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
             AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
 
-            # 1. Fetch CourtReserve APIs
+            # 2. Fetch CourtReserve APIs
             RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
             curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
 
@@ -179,14 +182,14 @@ jobs:
             CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
             curl -s -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
 
-            # 2. Fetch and Parse Google Calendar Hosts & Overrides
+            # 3. Fetch and Parse Google Calendar Hosts & Overrides
             CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
             curl -sL "$CAL_URL" -o data/hosts.ics
 
             python3 /tmp/parse_hosts.py
             [ ! -f data/hosts.json ] && echo '{"hosts":[],"overrides":[],"adHoc":[]}' > data/hosts.json
 
-            # 3. Process into schedule.json
+            # 4. Process into schedule.json
             jq -n \
               --slurpfile res data/reservations.json \
               --slurpfile ev data/events.json \
@@ -254,13 +257,14 @@ jobs:
 
             rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
 
-            # 4. Commit and Push
+            # 5. Commit and Push Safely
             git add data/schedule.json
             if git diff --staged --quiet; then
               echo "Pass $pass_num: No schedule changes detected."
             else
               git commit -m "Auto-update CourtReserve schedule (Pass $pass_num) [skip ci]"
-              git pull --rebase
+              # If someone pushed in the middle, rebase and let our fresh schedule.json win cleanly
+              git pull --rebase -X theirs origin main || (git rebase --abort && git pull origin main)
               git push origin main
               echo "Pass $pass_num: Changes committed and pushed."
             fi
