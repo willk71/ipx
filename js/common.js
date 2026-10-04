@@ -231,15 +231,18 @@ function resolveQueueLocation(courtsSet, customText) {
     const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
-      // Explicit Combinations: 2 3 6 and 9 11
+      // Explicit 3-court groupings
       if (courtsSet.has('2') && courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 3) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+
+      // Explicit 2-court pair rules
+      if (courtsSet.has('6') && courtsSet.has('9') && courtsSet.size === 2) {
         return '📍 - Court 6 Paddle Rack';
       }
       if (courtsSet.has('9') && courtsSet.has('11') && courtsSet.size === 2) {
         return '📍 - Court 9 Paddle Rack';
       }
-
-      // 1. Explicit 2-court pair rules
       if (courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 2) {
         return '📍 - Court 6 Table/Rack';
       }
@@ -256,7 +259,7 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 10 Table - Right';
       }
 
-      // 2. Both Court 4 and Court 7 are present:
+      // Both Court 4 and Court 7 are present:
       if (courtsSet.has('4') && courtsSet.has('7')) {
         if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
           return '📍 - Court 7 Paddle Rack';
@@ -264,7 +267,7 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 4 Table';
       }
 
-      // 3. Priority groupings for 1, 2, 4 and 1, 2, 5
+      // Priority groupings for 1, 2, 4 and 1, 2, 5
       if ((courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('4')) ||
           (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('5'))) {
         location = 'Court 1 Paddle Rack';
