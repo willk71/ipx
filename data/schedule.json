@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-04T19:39:11Z",
+  "lastUpdated": "2026-10-04T19:50:17Z",
   "date": "2026-10-04",
   "courtHosts": [
-    {
-      "start": "14:30",
-      "end": "20:30",
-      "host": "Neil L"
-    },
     {
       "start": "14:45",
       "end": "18:30",
       "host": "Harsh P"
+    },
+    {
+      "start": "14:30",
+      "end": "20:30",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -1072,6 +1072,21 @@
       "checkedIn": false
     },
     {
+      "eventId": 2182875,
+      "title": "Team King of the Court Ladder - Fixed Partner | Win a Daytime Pass!",
+      "startTime": "2026-10-04T18:00:00",
+      "endTime": "2026-10-04T20:00:00",
+      "courts": [
+        "Court 3",
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Michael C",
+      "checkedIn": true
+    },
+    {
       "eventId": 2196165,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-05T19:30:00",
@@ -1723,17 +1738,6 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Harris B",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2201260,
-      "title": "3.5-4.0 Gated Open Play | Sunday | 11am-1pm",
-      "startTime": "2026-10-04T11:00:00",
-      "endTime": "2026-10-04T13:00:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Jon P",
       "checkedIn": true
     },
     {
@@ -2574,6 +2578,17 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Asteris D",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2201260,
+      "title": "3.5-4.0 Gated Open Play | Sunday | 11am-1pm",
+      "startTime": "2026-10-04T11:00:00",
+      "endTime": "2026-10-04T13:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Jon P",
       "checkedIn": true
     },
     {
