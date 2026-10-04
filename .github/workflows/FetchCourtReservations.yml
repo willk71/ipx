@@ -2,14 +2,14 @@ name: Sync CourtReserve Schedule
 
 on:
   schedule:
-    # Daytime / Evening Peak (7:00 AM - 11:55 PM EDT): Every 5 minutes
-    # 11:00 UTC - 23:55 UTC (7:00 AM - 7:55 PM EDT)
-    - cron: '*/5 11-23 * * *'
-    # 00:00 UTC - 03:55 UTC (8:00 PM - 11:55 PM EDT)
-    - cron: '*/5 0-3 * * *'
+    # Daytime / Evening Peak (7:00 AM - 11:59 PM EDT): Every 7 minutes
+    # 11:00 UTC - 23:59 UTC (7:00 AM - 7:59 PM EDT)
+    - cron: '*/7 11-23 * * *'
+    # 00:00 UTC - 03:59 UTC (8:00 PM - 11:59 PM EDT)
+    - cron: '*/7 0-3 * * *'
 
-    # Overnight Off-Peak (12:00 AM - 6:45 AM EDT): Every 15 minutes
-    # 04:00 UTC - 10:45 UTC (12:00 AM - 6:45 AM EDT)
+    # Overnight Off-Peak (12:00 AM - 6:59 AM EDT): Every 15 minutes
+    # 04:00 UTC - 10:59 UTC (12:00 AM - 6:59 AM EDT)
     - cron: '*/15 4-10 * * *'
 
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
         run: |
           python3 -m pip install --quiet --no-cache-dir icalendar pytz
 
-      - name: Run 1-Minute Cadence Sync Loop (4 Passes per 5m)
+      - name: Run Cadence Sync Loop (4 Passes per 7m)
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
@@ -256,7 +256,6 @@ jobs:
               echo "Pass $pass_num: No schedule changes detected."
             else
               git commit -m "Auto-update CourtReserve schedule (Pass $pass_num) [skip ci]"
-              # If someone pushed in the middle, rebase and let fresh schedule.json win cleanly
               git pull --rebase -X theirs origin main || (git rebase --abort && git pull origin main)
               git push origin main
               echo "Pass $pass_num: Changes committed and pushed."
@@ -266,23 +265,23 @@ jobs:
           # --- Pass 1: T+0s ---
           sync_pass 1
 
-          # --- Pause ~48s ---
-          echo "Pausing for next minute sync..."
-          sleep 48
+          # --- Pause 70s ---
+          echo "Pausing 70s for next sync pass..."
+          sleep 70
 
-          # --- Pass 2: T+60s ---
+          # --- Pass 2: T+80s ---
           sync_pass 2
 
-          # --- Pause ~48s ---
-          echo "Pausing for next minute sync..."
-          sleep 48
+          # --- Pause 70s ---
+          echo "Pausing 70s for next sync pass..."
+          sleep 70
 
-          # --- Pass 3: T+120s ---
+          # --- Pass 3: T+160s ---
           sync_pass 3
 
-          # --- Pause ~48s ---
-          echo "Pausing for next minute sync..."
-          sleep 48
+          # --- Pause 70s ---
+          echo "Pausing 70s for next sync pass..."
+          sleep 70
 
-          # --- Pass 4: T+180s ---
+          # --- Pass 4: T+240s ---
           sync_pass 4
