@@ -1,6 +1,8 @@
 name: Auto Sync CourtReserve
 
 on:
+  push:
+    branches: [ main ]
   schedule:
     - cron: '*/10 11-23 * * *'
     - cron: '*/10 0-3 * * *'
