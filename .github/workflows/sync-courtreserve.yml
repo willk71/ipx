@@ -2,9 +2,9 @@ name: Auto Sync CourtReserve
 
 on:
   schedule:
-    - cron: "*/10 11-23 * * *"
-    - cron: "*/10 0-3 * * *"
-    - cron: "*/15 4-10 * * *"
+    - cron: '*/10 11-23 * * *'
+    - cron: '*/10 0-3 * * *'
+    - cron: '*/15 4-10 * * *'
   workflow_dispatch:
 
 concurrency:
@@ -82,7 +82,6 @@ jobs:
                               dtend = dtend.astimezone(tz)
 
                           if dtstart.date() == today_ny:
-                              # 1. COURT HOSTS
                               if re.match(r'^(?:court\s+hosts?:?|hosts?:?)\b', summary, re.I):
                                   clean_title = re.sub(r'^(?:court\s+hosts?:?|hosts?:?)\s*', '', summary, flags=re.I).strip()
                                   names = [n.strip() for n in re.split(r'[,/&]|\b(?<!\w)and(?!\w)\b', clean_title) if n.strip()]
@@ -95,7 +94,6 @@ jobs:
                                           })
                                   continue
 
-                              # 2. COURT REPLACEMENT OVERRIDES
                               if re.match(r'^(?:override\s*:?|\+?\s*courts?)\b', summary, re.I):
                                   match_filter = ""
                                   court_str = summary
@@ -114,7 +112,6 @@ jobs:
                                       })
                                   continue
 
-                              # 3. AD-HOC SESSIONS
                               clean_ad_hoc = re.sub(r'^session\s*:?\s*', '', summary, flags=re.I).strip()
                               session_title = clean_ad_hoc
                               session_courts = []
@@ -143,12 +140,10 @@ jobs:
               json.dump({'hosts': hosts, 'overrides': overrides, 'adHoc': ad_hoc}, out)
           PY_SCRIPT
 
-          # Reusable sync function
           sync_pass() {
             local pass_num="$1"
             echo "=== Starting Sync Pass $pass_num ==="
 
-            # 1. Always bring runner up to remote HEAD first to avoid branch conflicts
             git fetch origin main --quiet
             git reset --hard origin/main --quiet
 
@@ -158,7 +153,6 @@ jobs:
             TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
             AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
 
-            # 2. Fetch CourtReserve APIs
             RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
             curl -s --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
 
@@ -168,14 +162,12 @@ jobs:
             CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
             curl -s --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$CHECKIN_URL" -o data/checkins.json
 
-            # 3. Fetch and Parse Google Calendar Hosts & Overrides
             CAL_URL="https://calendar.google.com/calendar/ical/67069501837f4d35e345182e4976e9e0020175f757df0990999d7f6080495146%40group.calendar.google.com/public/basic.ics"
             curl -sL --connect-timeout 10 --max-time 25 "$CAL_URL" -o data/hosts.ics
 
             python3 /tmp/parse_hosts.py
             [ ! -f data/hosts.json ] && echo '{"hosts":[],"overrides":[],"adHoc":[]}' > data/hosts.json
 
-            # 4. Process into schedule.json
             jq -n \
               --slurpfile res data/reservations.json \
               --slurpfile ev data/events.json \
@@ -243,7 +235,6 @@ jobs:
 
             rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
 
-            # 5. Commit and Push Safely
             git add data/schedule.json
             if git diff --staged --quiet; then
               echo "Pass $pass_num: No schedule changes detected."
@@ -255,26 +246,13 @@ jobs:
             fi
           }
 
-          # --- Pass 1: T+0s ---
           sync_pass 1
-
-          # --- Pause 75s ---
-          echo "Pausing 75s for next sync pass..."
+          echo "Pausing 75s..."
           sleep 75
-
-          # --- Pass 2: T+85s ---
           sync_pass 2
-
-          # --- Pause 75s ---
-          echo "Pausing 75s for next sync pass..."
+          echo "Pausing 75s..."
           sleep 75
-
-          # --- Pass 3: T+170s ---
           sync_pass 3
-
-          # --- Pause 75s ---
-          echo "Pausing 75s for next sync pass..."
+          echo "Pausing 75s..."
           sleep 75
-
-          # --- Pass 4: T+255s ---
           sync_pass 4
