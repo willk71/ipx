@@ -1,7 +1,17 @@
 {
-  "lastUpdated": "2026-10-05T23:15:16Z",
+  "lastUpdated": "2026-10-05T23:17:32Z",
   "date": "2026-10-05",
   "courtHosts": [
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
+    {
+      "start": "16:00",
+      "end": "19:45",
+      "host": "Wendy X"
+    },
     {
       "start": "09:00",
       "end": "17:00",
@@ -11,16 +21,6 @@
       "start": "16:00",
       "end": "19:45",
       "host": "Nelson C"
-    },
-    {
-      "start": "16:00",
-      "end": "19:45",
-      "host": "Wendy X"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -313,7 +313,7 @@
         "Court 9"
       ],
       "playerName": "Jayce O",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2162308,
@@ -839,7 +839,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Wright L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2196151,
@@ -2551,7 +2551,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Wright L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281677,
