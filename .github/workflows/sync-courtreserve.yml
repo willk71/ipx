@@ -1,8 +1,6 @@
 name: Auto Sync CourtReserve
 
 on:
-  push:
-    branches: [ main ]
   schedule:
     - cron: '*/10 11-23 * * *'
     - cron: '*/10 0-3 * * *'
@@ -29,7 +27,7 @@ jobs:
         run: |
           python3 -m pip install --quiet --no-cache-dir icalendar pytz
 
-      - name: Run Cadence Sync Loop (4 Passes per 10m)
+      - name: Run Cadence Sync Loop
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
@@ -207,13 +205,22 @@ jobs:
                 events: (
                   (($chk[0].Data // $chk[0] // []) | reduce .[] as $item ({};
                     if ($item.CheckInStatusName == "Checked-in" or ($item.CheckinDateTime != null and $item.CheckinDateTime != "")) then
-                      (if $item.OrganizationMemberId then .["id:" + ($item.OrganizationMemberId | tostring)] = true else . end) |
-                      (if $item.MemberFirstName and $item.MemberLastName then .["name:" + (($item.MemberFirstName + " " + $item.MemberLastName) | ascii_downcase)] = true else . end)
+                      (if ($item.OrganizationMemberId // "") != "" then .["id:" + ($item.OrganizationMemberId | tostring)] = true else . end) |
+                      (
+                        ((($item.MemberFirstName // $item.FirstName // "") + " " + ($item.MemberLastName // $item.LastName // ""))
+                        | gsub("\\s*\\([^)]*\\)"; "") | gsub("^\\s+|\\s+$"; "") | ascii_downcase) as $cleanName |
+                        if $cleanName != "" then .["name:" + $cleanName] = true else . end
+                      )
                     else . end
                   )) as $checkedMap |
 
                   [
-                    ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) | {
+                    ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) |
+                    (
+                      (((.FirstName // .MemberFirstName // "") + " " + (.LastName // .MemberLastName // ""))
+                      | gsub("\\s*\\([^)]*\\)"; "") | gsub("^\\s+|\\s+$"; "") | ascii_downcase)
+                    ) as $playerCleanName |
+                    {
                       eventId: .EventId,
                       title: (.DivisionName // .EventName // "Event"),
                       startTime: .StartTime,
@@ -227,8 +234,8 @@ jobs:
                         else "" end
                       ),
                       checkedIn: (
-                        ($checkedMap["id:" + (.OrganizationMemberId | tostring)] // false) or
-                        ($checkedMap["name:" + (((.FirstName // "") + " " + (.LastName // "")) | ascii_downcase)] // false)
+                        (if (.OrganizationMemberId // "") != "" then ($checkedMap["id:" + (.OrganizationMemberId | tostring)] // false) else false end) or
+                        ($checkedMap["name:" + $playerCleanName] // false)
                       )
                     }
                   ]
@@ -249,12 +256,12 @@ jobs:
           }
 
           sync_pass 1
-          echo "Pausing 75s..."
-          sleep 75
+          echo "Pausing 130s for next sync pass..."
+          sleep 130
           sync_pass 2
-          echo "Pausing 75s..."
-          sleep 75
+          echo "Pausing 130s for next sync pass..."
+          sleep 130
           sync_pass 3
-          echo "Pausing 75s..."
-          sleep 75
+          echo "Pausing 130s for next sync pass..."
+          sleep 130
           sync_pass 4
