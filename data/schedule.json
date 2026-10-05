@@ -1,26 +1,26 @@
 {
-  "lastUpdated": "2026-10-05T21:31:58Z",
+  "lastUpdated": "2026-10-05T21:34:14Z",
   "date": "2026-10-05",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "09:00",
       "end": "17:00",
       "host": "Lillian H"
     },
     {
-      "start": "16:00",
-      "end": "19:45",
-      "host": "Wendy X"
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
     },
     {
       "start": "16:00",
       "end": "19:45",
       "host": "Nelson C"
+    },
+    {
+      "start": "16:00",
+      "end": "19:45",
+      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -698,7 +698,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Adam S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2162309,
@@ -1303,7 +1303,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Adam S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257689,
@@ -2914,6 +2914,31 @@
       "checkedIn": true
     },
     {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-05T17:30:00",
+      "endTime": "2026-10-05T19:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "Spencer B",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281680,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T17:30:00",
+      "endTime": "2026-10-05T19:30:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jai S",
+      "checkedIn": false
+    },
+    {
       "eventId": 2303885,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-05T15:30:00",
@@ -2925,19 +2950,6 @@
       ],
       "playerName": "Jason S",
       "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Spencer B",
-      "checkedIn": false
     }
   ]
 }
