@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-05T22:06:32Z",
+  "lastUpdated": "2026-10-05T22:19:55Z",
   "date": "2026-10-05",
   "courtHosts": [
+    {
+      "start": "09:00",
+      "end": "17:00",
+      "host": "Lillian H"
+    },
     {
       "start": "19:00",
       "end": "23:00",
@@ -10,17 +15,12 @@
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Wendy X"
-    },
-    {
-      "start": "09:00",
-      "end": "17:00",
-      "host": "Lillian H"
+      "host": "Nelson C"
     },
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Nelson C"
+      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -2270,19 +2270,6 @@
       ],
       "playerName": "Mary S",
       "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Isaac M",
-      "checkedIn": false
     },
     {
       "eventId": 2294131,
