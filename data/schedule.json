@@ -1,7 +1,17 @@
 {
-  "lastUpdated": "2026-10-05T17:57:54Z",
+  "lastUpdated": "2026-10-05T18:00:12Z",
   "date": "2026-10-05",
   "courtHosts": [
+    {
+      "start": "16:00",
+      "end": "19:45",
+      "host": "Nelson C"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
     {
       "start": "09:00",
       "end": "17:00",
@@ -10,17 +20,7 @@
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Nelson C"
-    },
-    {
-      "start": "16:00",
-      "end": "19:45",
       "host": "Wendy X"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -203,7 +203,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Mary S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2294131,
@@ -976,128 +976,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Tori Y",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2160550,
-      "title": "Lunch Break Open Play (Int-Adv)",
-      "startTime": "2026-10-05T11:00:00",
-      "endTime": "2026-10-05T13:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Spencer B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2109596,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Jack B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2167909,
-      "title": "Intro to Pickleball with Coach Sze",
-      "startTime": "2026-10-06T19:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "Briana D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Candace J",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Florence C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257680,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Rickie B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257718,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-06T20:00:00",
-      "endTime": "2026-10-06T22:00:00",
-      "courts": [
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Silvio G",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Jeff S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Jason W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2270006,
-      "title": "Women's 3.25+ Strategic Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Florence G",
       "checkedIn": false
     },
     {
@@ -1943,6 +1821,128 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Michael C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2160550,
+      "title": "Lunch Break Open Play (Int-Adv)",
+      "startTime": "2026-10-05T11:00:00",
+      "endTime": "2026-10-05T13:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Spencer B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2109596,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "Jack B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2167909,
+      "title": "Intro to Pickleball with Coach Sze",
+      "startTime": "2026-10-06T19:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 13"
+      ],
+      "playerName": "Briana D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Candace J",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Florence C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257680,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Rickie B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257718,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Silvio G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jeff S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Jason W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2270006,
+      "title": "Women's 3.25+ Strategic Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Florence G",
       "checkedIn": false
     },
     {
