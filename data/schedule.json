@@ -1,11 +1,16 @@
 {
-  "lastUpdated": "2026-10-05T15:57:43Z",
+  "lastUpdated": "2026-10-05T16:13:23Z",
   "date": "2026-10-05",
   "courtHosts": [
     {
       "start": "09:00",
       "end": "17:00",
       "host": "Lillian H"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
     },
     {
       "start": "16:00",
@@ -16,11 +21,6 @@
       "start": "16:00",
       "end": "19:45",
       "host": "Nelson C"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -2157,13 +2157,14 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257702,
-      "title": "3.25+ Open Play",
+      "eventId": 2257709,
+      "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
       "endTime": "2026-10-06T22:00:00",
       "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
+        "Court 5",
+        "Court 3",
+        "Court 4 (Livestreaming)"
       ],
       "playerName": "Stephen J",
       "checkedIn": false
@@ -2203,6 +2204,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Kiley P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257709,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 5",
+        "Court 3",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Noel L",
       "checkedIn": false
     },
     {
