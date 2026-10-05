@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-05T02:46:12Z",
+  "lastUpdated": "2026-10-05T02:53:01Z",
   "date": "2026-10-04",
   "courtHosts": [
-    {
-      "start": "14:45",
-      "end": "18:30",
-      "host": "Harsh P"
-    },
     {
       "start": "14:30",
       "end": "20:30",
       "host": "Neil L"
+    },
+    {
+      "start": "14:45",
+      "end": "18:30",
+      "host": "Harsh P"
     }
   ],
   "courtOverrides": [],
@@ -1593,19 +1593,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2221619,
-      "title": "Morning Mixer",
-      "startTime": "2026-10-05T09:00:00",
-      "endTime": "2026-10-05T11:00:00",
-      "courts": [
-        "Court 8",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Nilas J",
-      "checkedIn": true
-    },
-    {
       "eventId": 2182875,
       "title": "Team King of the Court Ladder - Fixed Partner | Win a Daytime Pass!",
       "startTime": "2026-10-04T18:00:00",
@@ -1616,6 +1603,19 @@
         "Court 4 (Livestreaming)",
         "Court 1 (Livestreaming)",
         "Court 2"
+      ],
+      "playerName": "Nilas J",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2221619,
+      "title": "Morning Mixer",
+      "startTime": "2026-10-05T09:00:00",
+      "endTime": "2026-10-05T11:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
       ],
       "playerName": "Nilas J",
       "checkedIn": true
@@ -1649,17 +1649,16 @@
       "checkedIn": true
     },
     {
-      "eventId": 2257655,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
       "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 4 (Livestreaming)"
+        "Court 11",
+        "Court 12 (Livestreaming)"
       ],
-      "playerName": "Anthony K",
-      "checkedIn": false
+      "playerName": "Toni T",
+      "checkedIn": true
     },
     {
       "eventId": 2220593,
@@ -1863,19 +1862,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2257689,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Kevin T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281668,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-05T17:30:00",
@@ -1884,6 +1870,19 @@
         "Court 5",
         "Court 2",
         "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Kevin T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257689,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 8"
       ],
       "playerName": "Kevin T",
       "checkedIn": false
@@ -2573,6 +2572,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281677,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-05T17:30:00",
+      "endTime": "2026-10-05T19:30:00",
+      "courts": [
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "Toni T",
+      "checkedIn": true
+    },
+    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2593,6 +2604,19 @@
       "courts": [
         "Court 11",
         "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Anthony K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257655,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 5",
+        "Court 3",
+        "Court 4 (Livestreaming)"
       ],
       "playerName": "Anthony K",
       "checkedIn": false
