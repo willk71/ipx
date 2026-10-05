@@ -1,17 +1,7 @@
 {
-  "lastUpdated": "2026-10-05T22:24:26Z",
+  "lastUpdated": "2026-10-05T22:26:49Z",
   "date": "2026-10-05",
   "courtHosts": [
-    {
-      "start": "16:00",
-      "end": "19:45",
-      "host": "Wendy X"
-    },
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "09:00",
       "end": "17:00",
@@ -21,6 +11,16 @@
       "start": "16:00",
       "end": "19:45",
       "host": "Nelson C"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
+    {
+      "start": "16:00",
+      "end": "19:45",
+      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -627,19 +627,6 @@
         "Court 5",
         "Court 1 (Livestreaming)"
       ],
-      "playerName": "Yi W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
       "playerName": "Wyatt W",
       "checkedIn": false
     },
@@ -832,6 +819,18 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Wright L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Toni T",
       "checkedIn": false
     },
     {
@@ -1148,6 +1147,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Alvin D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257689,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Darren H",
       "checkedIn": false
     },
     {
@@ -1583,18 +1595,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Toni T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -1901,19 +1901,6 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Jordi F",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257689,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Darren H",
       "checkedIn": false
     },
     {
