@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-10-05T22:42:17Z",
+  "lastUpdated": "2026-10-05T22:50:50Z",
   "date": "2026-10-05",
   "courtHosts": [
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Wendy X"
+      "host": "Nelson C"
     },
     {
       "start": "19:00",
@@ -15,7 +15,7 @@
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Nelson C"
+      "host": "Wendy X"
     },
     {
       "start": "09:00",
@@ -73,6 +73,12 @@
       "holderLabel": "Sophie E.",
       "startTime": "2026-10-05T18:00:00",
       "endTime": "2026-10-05T19:00:00"
+    },
+    {
+      "court": "Court 9",
+      "holderLabel": "Yocheved G.",
+      "startTime": "2026-10-06T22:00:00",
+      "endTime": "2026-10-06T23:00:00"
     }
   ],
   "events": [
@@ -512,7 +518,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Will P",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2162309,
@@ -537,7 +543,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Timmy M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2162309,
@@ -1800,7 +1806,7 @@
         "Court 9"
       ],
       "playerName": "Kunal S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257709,
@@ -1901,7 +1907,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Timmy M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257655,
@@ -2821,17 +2827,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2167909,
-      "title": "Intro to Pickleball with Coach Sze",
-      "startTime": "2026-10-06T19:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "Briana D",
-      "checkedIn": false
-    },
-    {
       "eventId": 2162309,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-05T19:30:00",
@@ -2868,6 +2863,28 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Sefa G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2159647,
+      "title": "Advanced Beginner+ Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Alex Y",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2167909,
+      "title": "Intro to Pickleball with Coach Sze",
+      "startTime": "2026-10-06T19:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 13"
+      ],
+      "playerName": "Briana D",
       "checkedIn": false
     },
     {
@@ -2955,18 +2972,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Jai S",
-      "checkedIn": true
-    },
-    {
       "eventId": 2303885,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-05T15:30:00",
@@ -2990,6 +2995,18 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Jason S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281680,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T17:30:00",
+      "endTime": "2026-10-05T19:30:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jai S",
       "checkedIn": true
     }
   ]
