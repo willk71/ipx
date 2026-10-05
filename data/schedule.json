@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-05T02:55:16Z",
+  "lastUpdated": "2026-10-05T02:57:31Z",
   "date": "2026-10-04",
   "courtHosts": [
-    {
-      "start": "14:30",
-      "end": "20:30",
-      "host": "Neil L"
-    },
     {
       "start": "14:45",
       "end": "18:30",
       "host": "Harsh P"
+    },
+    {
+      "start": "14:30",
+      "end": "20:30",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -2413,6 +2413,29 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257680,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Patrick T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Patrick T",
+      "checkedIn": true
+    },
+    {
       "eventId": 2292592,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-04T18:00:00",
@@ -3026,6 +3049,18 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Rickie B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jeff S",
       "checkedIn": false
     }
   ]
