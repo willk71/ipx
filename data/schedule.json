@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-05T15:33:33Z",
+  "lastUpdated": "2026-10-05T15:35:48Z",
   "date": "2026-10-05",
   "courtHosts": [
+    {
+      "start": "16:00",
+      "end": "19:45",
+      "host": "Nelson C"
+    },
     {
       "start": "19:00",
       "end": "23:00",
       "host": "Stephanie L"
-    },
-    {
-      "start": "09:00",
-      "end": "17:00",
-      "host": "Lillian H"
     },
     {
       "start": "16:00",
@@ -18,9 +18,9 @@
       "host": "Wendy X"
     },
     {
-      "start": "16:00",
-      "end": "19:45",
-      "host": "Nelson C"
+      "start": "09:00",
+      "end": "17:00",
+      "host": "Lillian H"
     }
   ],
   "courtOverrides": [],
@@ -211,7 +211,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Julian B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2220593,
@@ -1380,7 +1380,7 @@
         "Court 11"
       ],
       "playerName": "Julian B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257655,
