@@ -1,11 +1,16 @@
 {
-  "lastUpdated": "2026-10-05T21:44:49Z",
+  "lastUpdated": "2026-10-05T21:47:07Z",
   "date": "2026-10-05",
   "courtHosts": [
     {
       "start": "09:00",
       "end": "17:00",
       "host": "Lillian H"
+    },
+    {
+      "start": "16:00",
+      "end": "19:45",
+      "host": "Nelson C"
     },
     {
       "start": "19:00",
@@ -16,11 +21,6 @@
       "start": "16:00",
       "end": "19:45",
       "host": "Wendy X"
-    },
-    {
-      "start": "16:00",
-      "end": "19:45",
-      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -67,6 +67,12 @@
       "holderLabel": "Wissam A.",
       "startTime": "2026-10-05T22:00:00",
       "endTime": "2026-10-05T23:00:00"
+    },
+    {
+      "court": "Court 13",
+      "holderLabel": "Sophie E.",
+      "startTime": "2026-10-05T18:00:00",
+      "endTime": "2026-10-05T19:00:00"
     }
   ],
   "events": [
@@ -494,7 +500,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Andrew K",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2196165,
@@ -926,19 +932,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Zayd A",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257655,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Minhdiep V",
       "checkedIn": false
     },
     {
@@ -1473,6 +1466,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Jack H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257680,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -1685,7 +1690,7 @@
         "Court 2"
       ],
       "playerName": "Andrew K",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2281677,
@@ -1735,6 +1740,18 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Zayd A",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Minhdiep V",
       "checkedIn": false
     },
     {
@@ -2304,18 +2321,6 @@
       ],
       "playerName": "Julian B",
       "checkedIn": true
-    },
-    {
-      "eventId": 2257702,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-06T20:00:00",
-      "endTime": "2026-10-06T22:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Jack H",
-      "checkedIn": false
     },
     {
       "eventId": 2281677,
