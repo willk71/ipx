@@ -1,16 +1,11 @@
 {
-  "lastUpdated": "2026-10-05T15:53:13Z",
+  "lastUpdated": "2026-10-05T15:55:28Z",
   "date": "2026-10-05",
   "courtHosts": [
     {
       "start": "16:00",
       "end": "19:45",
       "host": "Wendy X"
-    },
-    {
-      "start": "09:00",
-      "end": "17:00",
-      "host": "Lillian H"
     },
     {
       "start": "19:00",
@@ -21,6 +16,11 @@
       "start": "16:00",
       "end": "19:45",
       "host": "Nelson C"
+    },
+    {
+      "start": "09:00",
+      "end": "17:00",
+      "host": "Lillian H"
     }
   ],
   "courtOverrides": [],
@@ -2154,6 +2154,18 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Ken L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Stephen J",
       "checkedIn": false
     },
     {
