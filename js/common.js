@@ -100,4 +100,272 @@ function updateCountdown() {
     const totalSecs = Math.floor(diffMs / 1000);
     const m = Math.floor(totalSecs / 60);
     const s = totalSecs % 60;
-    countdownVal.textContent = String(m).padStart
+    countdownVal.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    countdownBox.classList.add('is-active');
+  } else {
+    countdownBox.classList.remove('is-active');
+  }
+}
+
+function applyDynamicTheme(targetTime) {
+  const allThemes = Object.keys(themeDisplayNames);
+  let themeToApply = 'theme-apple';
+
+  if (isCycling) {
+    themeToApply = allThemes[cycleIndex % allThemes.length];
+  } else {
+    const urlTheme = (urlParams.get('theme') || '').toLowerCase().trim();
+    if (urlTheme && allThemes.includes('theme-' + urlTheme)) {
+      themeToApply = 'theme-' + urlTheme;
+    } else {
+      const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
+      if (totalMinutes >= 420 && totalMinutes < 660) {
+        themeToApply = 'theme-tiffany';
+      } else if (totalMinutes >= 660 && totalMinutes < 1035) {
+        themeToApply = 'theme-usopen';
+      } else if (totalMinutes >= 1035 && totalMinutes < 1155) {
+        themeToApply = 'theme-apple';
+      } else if (totalMinutes >= 1155 && totalMinutes < 1275) {
+        themeToApply = 'theme-rolex';
+      } else {
+        themeToApply = 'theme-porsche';
+      }
+    }
+  }
+
+  document.body.classList.remove(...allThemes);
+  document.body.classList.add(themeToApply);
+
+  const displayName = themeDisplayNames[themeToApply] || 'Default';
+  const themePill = document.getElementById('theme-pill');
+  if (themePill) {
+    themePill.textContent = isCycling
+      ? 'Theme: ' + displayName + ' (' + ((cycleIndex % allThemes.length) + 1) + '/' + allThemes.length + ')'
+      : 'Theme: ' + displayName;
+  }
+}
+
+function toSentenceCase(str) {
+  if (!str) return '';
+  return String(str).replace(/([^\W_]+[^\s-]*) */g, (txt) => {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  }).trim();
+}
+
+function cleanCourtName(rawName) {
+  if (!rawName) return '';
+  return String(rawName)
+    .replace(/\s*\(\s*Livestreaming\s*\)/gi, '')
+    .replace(/\s*\(\s*Streaming\s*\)/gi, '')
+    .replace(/^Court\s*/i, '')
+    .trim();
+}
+
+function extractSortedCourts(courtsRaw) {
+  if (!courtsRaw) return [];
+  const list = Array.isArray(courtsRaw) ? courtsRaw : [courtsRaw];
+  return list
+    .map(c => cleanCourtName(c && c.CourtName ? c.CourtName : c))
+    .filter(Boolean)
+    .sort((a, b) => (parseInt(a, 10) || a) - (parseInt(b, 10) || b));
+}
+
+function formatCourtsLabel(courts, mode) {
+  mode = mode || 'index';
+  const arr = Array.isArray(courts) ? courts : Array.from(courts || []);
+  if (mode === 'index') {
+    return arr.length > 0 ? 'on ' + arr.join(' ') : 'on TBD';
+  }
+  if (arr.length === 0) return 'Court TBD';
+  const prefix = arr.length === 1 ? 'Court' : 'Courts';
+  return prefix + ' ' + arr.join(', ');
+}
+
+function cleanTitle(rawTitle) {
+  if (!rawTitle) return '';
+  const fullStr = String(rawTitle).trim();
+
+  // 1. Explicit Skill Level Matching
+  if (/intermediate[\s\-–—]+advanced/i.test(fullStr)) {
+    return 'Intermediate – Advanced';
+  }
+  if (/adv(?:anced)?[\s_]*beginner[\s\-–—]+intermediate/i.test(fullStr)) {
+    return 'Adv Beginner – Intermediate';
+  }
+  if (/beginner[\s\-–—]+adv(?:anced)?[\s_]*beginner/i.test(fullStr)) {
+    return 'Beginner – Adv Beginner';
+  }
+
+  // 2. Segment fallback
+  const segments = fullStr.split('|').map(s => s.trim()).filter(Boolean);
+  let mainSegment = segments[0] || '';
+
+  const isExcluded = /^(summer|winter|spring|fall|autumn|monday|tuesday|wednesday|thursday|friday|saturday|sunday|open\s*play)$/i;
+  for (const seg of segments) {
+    if (!isExcluded.test(seg)) {
+      mainSegment = seg;
+      break;
+    }
+  }
+
+  mainSegment = mainSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
+  mainSegment = mainSegment.replace(/[()]/g, '');
+  mainSegment = mainSegment
+    .replace(/\bSessions?\b/gi, '')
+    .replace(/\bOpen\s*Play\b/gi, '')
+    .replace(/\bPrime\s*Time\b/gi);
+
+  mainSegment = mainSegment.replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+  mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)/g, '$1 – $2');
+
+  let formatted = toSentenceCase(mainSegment);
+  return formatted.replace(/\bP4p\b/gi, 'P4P');
+}
+
+function resolveQueueLocation(courtsSet, customText) {
+  let location = '';
+
+  if (customText) {
+    location = customText;
+  } else if (courtsSet && courtsSet.size > 0) {
+    const nums = Array.from(courtsSet).map(n => parseInt(n, 10)).filter(n => !isNaN(n));
+
+    if (nums.length > 0) {
+      // Courts 2, 3, 5, 6 queue at Court 6 Paddle Rack
+      const court6Group = [2, 3, 5, 6];
+      if (nums.every(n => court6Group.includes(n))) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+
+      // Explicit 2-court pair rules
+      if (courtsSet.has('6') && courtsSet.has('9') && courtsSet.size === 2) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+      if (courtsSet.has('9') && courtsSet.has('11') && courtsSet.size === 2) {
+        return '📍 - Court 9 Paddle Rack';
+      }
+      if (courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 2) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+      if (
+        (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) ||
+        (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2)
+      ) {
+        return '📍 - Court 10 Table - Left';
+      }
+      if (
+        (courtsSet.has('10') && courtsSet.has('12') && courtsSet.size === 2) ||
+        (courtsSet.has('11') && courtsSet.has('12') && courtsSet.size === 2)
+      ) {
+        return '📍 - Court 10 Table - Right';
+      }
+
+      // Both Court 4 and Court 7 are present:
+      if (courtsSet.has('4') && courtsSet.has('7')) {
+        if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
+          return '📍 - Court 7 Paddle Rack';
+        }
+        return '📍 - Court 4 Table';
+      }
+
+      // Priority groupings for 1 and 4
+      if (courtsSet.has('1') && courtsSet.has('4')) {
+        location = 'Court 1 Paddle Rack';
+      }
+      // Exact single court assignment
+      else if (nums.length === 1) {
+        if ([2, 3, 5, 6].includes(nums[0])) {
+          location = 'Court 6 Paddle Rack';
+        } else if ([1, 4, 7, 9, 10, 11, 12].includes(nums[0])) {
+          location = 'Court ' + nums[0] + ' Table';
+        }
+      }
+      // Groups containing 4
+      else if (courtsSet.has('4')) {
+        location = 'Court 4 Table';
+      }
+      // Groups containing 7 or between 7 - 9
+      else if (courtsSet.has('7') || nums.some(n => n >= 7 && n <= 9)) {
+        location = 'Court 7 Paddle Rack';
+      }
+      // Court 1 fallback
+      else if (courtsSet.has('1')) {
+        location = 'Court 1 Paddle Rack';
+      }
+      // Priority 6: Courts 10+
+      else if (nums.some(n => n >= 10)) {
+        location = 'Court 10 Paddle Rack';
+      } else {
+        const minCourt = Math.min(...nums);
+        location = [2, 3, 5, 6].includes(minCourt) ? 'Court 6 Paddle Rack' : 'Court ' + minCourt + ' Paddle Rack';
+      }
+    }
+  }
+
+  if (!location) return '';
+
+  const cleanLoc = location
+    .replace(/^📍\s*[-–—]?\s*/i, '')
+    .replace(/^queue\s+at\s+/i, '')
+    .trim();
+
+  return '📍 - ' + cleanLoc;
+}
+
+function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
+  if (!Array.isArray(overridesList) || overridesList.length === 0) return;
+
+  const parseMinutes = (val) => {
+    if (!val) return 0;
+    const parts = String(val).trim().split(':').map(Number);
+    return (parts[0] || 0) * 60 + (parts[1] || 0);
+  };
+
+  const activeOverrides = overridesList.filter(ov => {
+    const sMin = parseMinutes(ov.start);
+    let eMin = parseMinutes(ov.end);
+    if (eMin === 0) eMin = 24 * 60;
+    return currentMinutes >= sMin && currentMinutes < eMin;
+  });
+
+  activeOverrides.forEach(ov => {
+    if (Array.isArray(ov.courts) && ov.courts.length > 0) {
+      Object.values(eventMap).forEach(ev => {
+        if (!ov.match || new RegExp(ov.match.trim(), 'i').test(ev.title)) {
+          ev.courts = new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)));
+        }
+      });
+    }
+  });
+}
+
+function formatTime(isoString, isEndTime) {
+  if (!isoString) return '';
+  const d = new Date(isoString);
+  if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
+    return '1:00 AM';
+  }
+  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+function formatTimeWindow(startIso, endIso) {
+  if (!startIso || !endIso) return '';
+  const t1 = formatTime(startIso, false);
+  const t2 = formatTime(endIso, true);
+  const parts1 = t1.split(' ');
+  const parts2 = t2.split(' ');
+  if (parts1.length === 2 && parts2.length === 2 && parts1[1] === parts2[1]) {
+    return parts1[0] + ' – ' + t2;
+  }
+  return t1 + ' – ' + t2;
+}
+
+if (isCycling) {
+  setInterval(() => {
+    cycleIndex++;
+    const now = new Date();
+    const baseDate = explicitTargetDate ? new Date(explicitTargetDate) : now;
+    const targetTime = new Date(baseDate.getTime() + (urlParams.has('time') && !urlParams.has('ahead') ? 0 : lookaheadMinutes * 60 * 1000));
+    applyDynamicTheme(targetTime);
+  }, cycleSeconds * 1000);
+}
