@@ -26,7 +26,7 @@ body.theme-ausopen      { --bg-gradient: radial-gradient(circle at 50% 0%, #0033
 body.theme-vice         { --bg-gradient: radial-gradient(circle at 50% 0%, #2a0845 0%, #110022 65%, #000000 100%); --theme-accent: #ff007f; --card-border-active: rgba(255, 0, 127, 0.6); }
 body.theme-gulfracing   { --bg-gradient: radial-gradient(circle at 50% 0%, #1c2e3d 0%, #0b151e 65%, #000000 100%); --theme-accent: #ff7300; --card-border-active: rgba(255, 115, 0, 0.6); }
 body.theme-masters      { --bg-gradient: radial-gradient(circle at 50% 0%, #003322 0%, #001a11 65%, #000000 100%); --theme-accent: #006747; --card-border-active: rgba(0, 103, 71, 0.6); }
-body.theme-wimbledon    { --bg-gradient: radial-gradient(circle at 50% 0%, #122b18 0%, #07140a 65%, #000000 100%); --theme-accent: #b98ef5; --card-border-active: rgba(185, 142, 245, 0.6); }
+body.theme-wimbledon    { --bg-gradient: radial-gradient(circle at 50% 0%, #122b18 0%, #07140a 65%, #000000 100%); --theme-accent: #d8b8ff; --card-border-active: rgba(216, 184, 255, 0.6); }
 body.theme-monaco       { --bg-gradient: radial-gradient(circle at 50% 0%, #301928 0%, #170912 65%, #000000 100%); --theme-accent: #e6b800; --card-border-active: rgba(230, 184, 0, 0.6); }
 body.theme-cyberpunk    { --bg-gradient: radial-gradient(circle at 50% 0%, #051e2e 0%, #000a12 65%, #000000 100%); --theme-accent: #00ffcc; --card-border-active: rgba(0, 255, 204, 0.6); }
 body.theme-ferrari      { --bg-gradient: radial-gradient(circle at 50% 0%, #400000 0%, #1a0000 65%, #000000 100%); --theme-accent: #ff2800; --card-border-active: rgba(255, 40, 0, 0.6); }
@@ -295,7 +295,10 @@ body.page-rosters main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-templa
   letter-spacing: 0.01em;
   color: var(--text-main);
   line-height: 1.15;
-  white-space: nowrap;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
