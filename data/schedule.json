@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-06T00:33:50Z",
+  "lastUpdated": "2026-10-06T00:36:05Z",
   "date": "2026-10-05",
   "courtHosts": [
-    {
-      "start": "09:00",
-      "end": "17:00",
-      "host": "Lillian H"
-    },
     {
       "start": "19:00",
       "end": "23:00",
@@ -15,12 +10,17 @@
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Nelson C"
+      "host": "Wendy X"
     },
     {
       "start": "16:00",
       "end": "19:45",
-      "host": "Wendy X"
+      "host": "Nelson C"
+    },
+    {
+      "start": "09:00",
+      "end": "17:00",
+      "host": "Lillian H"
     }
   ],
   "courtOverrides": [],
@@ -1077,17 +1077,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Michael C",
-      "checkedIn": true
-    },
-    {
       "eventId": 2162309,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-05T19:30:00",
@@ -1125,6 +1114,18 @@
       ],
       "playerName": "thomas l",
       "checkedIn": true
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Giovanni R",
+      "checkedIn": false
     },
     {
       "eventId": 2196165,
@@ -1940,6 +1941,17 @@
       "checkedIn": true
     },
     {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Michael C",
+      "checkedIn": true
+    },
+    {
       "eventId": 2257689,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2406,18 +2418,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "YuYi H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2635,10 +2635,10 @@
       "checkedIn": true
     },
     {
-      "eventId": 2257709,
+      "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-06T20:00:00",
-      "endTime": "2026-10-06T22:00:00",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
       "courts": [
         "Court 5",
         "Court 3",
@@ -2648,10 +2648,10 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257655,
+      "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
       "courts": [
         "Court 5",
         "Court 3",
@@ -3655,6 +3655,18 @@
         "Court 6"
       ],
       "playerName": "may w",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281680,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T17:30:00",
+      "endTime": "2026-10-05T19:30:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "YuYi H",
       "checkedIn": true
     },
     {
