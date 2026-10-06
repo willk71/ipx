@@ -138,7 +138,7 @@
       };
 
       const isExcludedSession = (title) => {
-        return /\b(road|assessment|skill)s?\b/i.test(title || '');
+        return /\b(road|assessment|skill|clinic|foundation)s?\b/i.test(title || '');
       };
 
       const isRunningAtTarget = (startIso, endIso) => {
