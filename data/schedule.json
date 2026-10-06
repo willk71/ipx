@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-06T03:27:51Z",
+  "lastUpdated": "2026-10-06T03:39:29Z",
   "date": "2026-10-05",
   "courtHosts": [
+    {
+      "start": "09:00",
+      "end": "17:00",
+      "host": "Lillian H"
+    },
     {
       "start": "19:00",
       "end": "23:00",
@@ -16,11 +21,6 @@
       "start": "16:00",
       "end": "19:45",
       "host": "Nelson C"
-    },
-    {
-      "start": "09:00",
-      "end": "17:00",
-      "host": "Lillian H"
     }
   ],
   "courtOverrides": [],
@@ -73,6 +73,12 @@
       "holderLabel": "Yocheved G.",
       "startTime": "2026-10-06T22:00:00",
       "endTime": "2026-10-06T23:00:00"
+    },
+    {
+      "court": "Court 6",
+      "holderLabel": "",
+      "startTime": "2026-10-06T21:00:00",
+      "endTime": "2026-10-06T22:00:00"
     }
   ],
   "events": [
@@ -155,6 +161,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2118697,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "Timothy Y",
+      "checkedIn": false
+    },
+    {
       "eventId": 2109626,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-05T21:30:00",
@@ -175,19 +194,6 @@
       ],
       "playerName": "GHULAM M",
       "checkedIn": true
-    },
-    {
-      "eventId": 2118697,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-07T21:30:00",
-      "endTime": "2026-10-07T23:59:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Rawdon T",
-      "checkedIn": false
     },
     {
       "eventId": 2118692,
@@ -338,18 +344,17 @@
       "checkedIn": true
     },
     {
-      "eventId": 2162308,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
+      "eventId": 2118697,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
       "courts": [
-        "Court 8",
-        "Court 11",
         "Court 7 (Livestreaming)",
+        "Court 8",
         "Court 9"
       ],
-      "playerName": "Eric T",
-      "checkedIn": true
+      "playerName": "Rawdon T",
+      "checkedIn": false
     },
     {
       "eventId": 2159647,
@@ -541,19 +546,6 @@
         "Court 5",
         "Court 1 (Livestreaming)"
       ],
-      "playerName": "Scott L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
       "playerName": "Wyatt W",
       "checkedIn": true
     },
@@ -597,6 +589,20 @@
         "Court 9"
       ],
       "playerName": "Janet N",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162308,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 7 (Livestreaming)",
+        "Court 9"
+      ],
+      "playerName": "Eric T",
       "checkedIn": true
     },
     {
@@ -915,876 +921,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2220809,
-      "title": "Morning Brew Drill & Social",
-      "startTime": "2026-10-06T09:00:00",
-      "endTime": "2026-10-06T11:00:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220829,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T09:00:00",
-      "endTime": "2026-10-07T11:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2212829,
-      "title": "DUPR Rated Games",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Will P",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Will P",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Timmy M",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Liah K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Sze K",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Dan H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Benny W",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Michael C",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "GHULAM M",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "kevin j",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "thomas l",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162585,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-06T13:30:00",
-      "endTime": "2026-10-06T16:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Richard Z",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196151,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Giovanni R",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162585,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-06T13:30:00",
-      "endTime": "2026-10-06T16:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Jillian L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Matthew T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196151,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Matthew T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Onson L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2220793,
-      "title": "Rise and Grind Drill/Play",
-      "startTime": "2026-10-06T07:00:00",
-      "endTime": "2026-10-06T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Michael L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Joseph W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Andrew C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "MD K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2212829,
-      "title": "DUPR Rated Games",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Kyle M",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Sandi H",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196151,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Steven C",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2212829,
-      "title": "DUPR Rated Games",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Adam S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Adam S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220809,
-      "title": "Morning Brew Drill & Social",
-      "startTime": "2026-10-06T09:00:00",
-      "endTime": "2026-10-06T11:00:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Katie P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Wendy W",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220809,
-      "title": "Morning Brew Drill & Social",
-      "startTime": "2026-10-06T09:00:00",
-      "endTime": "2026-10-06T11:00:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Gregg P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2220793,
-      "title": "Rise and Grind Drill/Play",
-      "startTime": "2026-10-06T07:00:00",
-      "endTime": "2026-10-06T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Daisy N",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2220793,
-      "title": "Rise and Grind Drill/Play",
-      "startTime": "2026-10-06T07:00:00",
-      "endTime": "2026-10-06T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Richard D",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Jacky C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Rohan V",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162585,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-06T13:30:00",
-      "endTime": "2026-10-06T16:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Andrew L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2220829,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T09:00:00",
-      "endTime": "2026-10-07T11:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Guillermo E",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Jonathan A",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2197161,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-07T21:30:00",
-      "endTime": "2026-10-07T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Jana P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196151,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Julian B",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2197161,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-07T21:30:00",
-      "endTime": "2026-10-07T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Julian B",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Johnpaul Z",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2197161,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-07T21:30:00",
-      "endTime": "2026-10-07T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "James F",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Simon M",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Jonathan Z",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Albee^^ l",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Jalen W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Toni T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220829,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T09:00:00",
-      "endTime": "2026-10-07T11:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Martin H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2196151,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Chirag J",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2220824,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T09:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Asteris D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2248616,
-      "title": "IPX Wednesday League (Fall 2026)",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Johnny h",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2212829,
-      "title": "DUPR Rated Games",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Johnny h",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2197161,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-07T21:30:00",
-      "endTime": "2026-10-07T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Stephanie L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 5",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Stephanie L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196151,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-05T21:30:00",
-      "endTime": "2026-10-05T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Stephanie L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2212829,
-      "title": "DUPR Rated Games",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Juan S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Juan S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2197161,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-07T21:30:00",
-      "endTime": "2026-10-07T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Juan S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Andrew K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281270,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T17:30:00",
-      "endTime": "2026-10-07T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Andrew B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257718,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-06T20:00:00",
-      "endTime": "2026-10-06T22:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Zayd A",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257702,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-06T20:00:00",
-      "endTime": "2026-10-06T22:00:00",
-      "courts": [
-        "Court 3",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Minhdiep V",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "steven a",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281284,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-07T17:30:00",
-      "endTime": "2026-10-07T19:30:00",
-      "courts": [
-        "Court 6",
-        "Court 5",
-        "Court 3"
-      ],
-      "playerName": "steven a",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2257655,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Emily S",
-      "checkedIn": true
-    },
-    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -1819,6 +955,19 @@
         "Court 5",
         "Court 3",
         "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Timmy M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Timmy M",
       "checkedIn": true
@@ -1900,16 +1049,15 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281668,
+      "eventId": 2281699,
       "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
       "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
-      "playerName": "Kevin T",
+      "playerName": "Benny W",
       "checkedIn": true
     },
     {
@@ -1923,19 +1071,6 @@
         "Court 8"
       ],
       "playerName": "Kevin T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Michael C",
       "checkedIn": true
     },
     {
@@ -2103,19 +1238,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Darren H",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257689,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2155,28 +1277,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281674,
-      "title": "Advanced Beginner+ Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Nelson C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281674,
-      "title": "Advanced Beginner+ Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Wendy X",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257718,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2189,28 +1289,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Yi W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Jimmy J",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281270,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-07T17:30:00",
@@ -2220,6 +1298,43 @@
         "Court 2"
       ],
       "playerName": "Jimmy J",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Wyatt W",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Chris L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Jessica L",
       "checkedIn": false
     },
     {
@@ -2249,6 +1364,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "William Z",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2262,6 +1389,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Melody E",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257702,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2273,6 +1413,19 @@
       ],
       "playerName": "Johnathan L",
       "checkedIn": false
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Michael L",
+      "checkedIn": true
     },
     {
       "eventId": 2257709,
@@ -2340,6 +1493,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Bill F",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257689,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2366,6 +1532,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Janet N",
+      "checkedIn": true
+    },
+    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2374,6 +1553,19 @@
         "Court 8",
         "Court 11",
         "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Eric T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Eric T",
       "checkedIn": true
@@ -2390,19 +1582,6 @@
       ],
       "playerName": "Linda C",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Clarisse E",
-      "checkedIn": true
     },
     {
       "eventId": 2257689,
@@ -2493,17 +1672,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Arthur L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2554,19 +1722,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Nick W",
-      "checkedIn": true
-    },
-    {
       "eventId": 2257689,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2605,6 +1760,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Guillermo E",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2615,6 +1783,865 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Isaac Y",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220809,
+      "title": "Morning Brew Drill & Social",
+      "startTime": "2026-10-06T09:00:00",
+      "endTime": "2026-10-06T11:00:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220824,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T07:00:00",
+      "endTime": "2026-10-07T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220829,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T09:00:00",
+      "endTime": "2026-10-07T11:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Will P",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Will P",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Timmy M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Liah K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Sze K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Dan H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Benny W",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Michael C",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "GHULAM M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220824,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T07:00:00",
+      "endTime": "2026-10-07T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "kevin j",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "thomas l",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162585,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-06T13:30:00",
+      "endTime": "2026-10-06T16:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Richard Z",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Scott L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Giovanni R",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162585,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-06T13:30:00",
+      "endTime": "2026-10-06T16:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jillian L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Matthew T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Matthew T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Yi W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jimmy J",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Onson L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220793,
+      "title": "Rise and Grind Drill/Play",
+      "startTime": "2026-10-06T07:00:00",
+      "endTime": "2026-10-06T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Michael L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220824,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T07:00:00",
+      "endTime": "2026-10-07T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Joseph W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Andrew C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "MD K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Sandi H",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Steven C",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Adam S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220809,
+      "title": "Morning Brew Drill & Social",
+      "startTime": "2026-10-06T09:00:00",
+      "endTime": "2026-10-06T11:00:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Katie P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Wendy W",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220809,
+      "title": "Morning Brew Drill & Social",
+      "startTime": "2026-10-06T09:00:00",
+      "endTime": "2026-10-06T11:00:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Gregg P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220793,
+      "title": "Rise and Grind Drill/Play",
+      "startTime": "2026-10-06T07:00:00",
+      "endTime": "2026-10-06T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Daisy N",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Arthur L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220793,
+      "title": "Rise and Grind Drill/Play",
+      "startTime": "2026-10-06T07:00:00",
+      "endTime": "2026-10-06T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Richard D",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Jacky C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Rohan V",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162585,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-06T13:30:00",
+      "endTime": "2026-10-06T16:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Andrew L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220829,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T09:00:00",
+      "endTime": "2026-10-07T11:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Guillermo E",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Jonathan A",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2197161,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Jana P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Julian B",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2197161,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Julian B",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Johnpaul Z",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2197161,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "James F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "John C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2220824,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T07:00:00",
+      "endTime": "2026-10-07T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Simon M",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jonathan Z",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Albee^^ l",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220824,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T07:00:00",
+      "endTime": "2026-10-07T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jalen W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Toni T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220829,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T09:00:00",
+      "endTime": "2026-10-07T11:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Martin H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Chirag J",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2220824,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T07:00:00",
+      "endTime": "2026-10-07T09:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Asteris D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2248616,
+      "title": "IPX Wednesday League (Fall 2026)",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Johnny h",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2197161,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Stephanie L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Stephanie L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Stephanie L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Juan S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2197161,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-07T21:30:00",
+      "endTime": "2026-10-07T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Juan S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281270,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T17:30:00",
+      "endTime": "2026-10-07T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Andrew B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257718,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Zayd A",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2257702,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 3",
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Minhdiep V",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281284,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-07T17:30:00",
+      "endTime": "2026-10-07T19:30:00",
+      "courts": [
+        "Court 6",
+        "Court 5",
+        "Court 3"
+      ],
+      "playerName": "steven a",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2257655,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 5",
+        "Court 3",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Emily S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Emily S",
       "checkedIn": true
     },
     {
@@ -2696,6 +2723,17 @@
       "checkedIn": true
     },
     {
+      "eventId": 2257680,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Isaac M",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2774,19 +2812,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Kiley P",
-      "checkedIn": true
-    },
-    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -2795,6 +2820,19 @@
         "Court 8",
         "Court 11",
         "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Noel L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Noel L",
       "checkedIn": true
@@ -2836,17 +2874,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "John C",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257680,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -2869,19 +2896,6 @@
       ],
       "playerName": "Greg P",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Haebichan J",
-      "checkedIn": true
     },
     {
       "eventId": 2257702,
@@ -2983,6 +2997,32 @@
       "checkedIn": true
     },
     {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Albee^^ l",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Tracy C",
+      "checkedIn": true
+    },
+    {
       "eventId": 2257709,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -3045,19 +3085,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Nicholas B",
-      "checkedIn": false
-    },
-    {
       "eventId": 2257718,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -3070,19 +3097,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Nick P",
-      "checkedIn": true
-    },
-    {
       "eventId": 2270006,
       "title": "Women's 3.25+ Strategic Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -3093,19 +3107,6 @@
       ],
       "playerName": "Rachael T",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281668,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 5",
-        "Court 3",
-        "Court 2"
-      ],
-      "playerName": "Tim M",
-      "checkedIn": true
     },
     {
       "eventId": 2257709,
@@ -3132,6 +3133,19 @@
       ],
       "playerName": "Toni T",
       "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Anthony A",
+      "checkedIn": false
     },
     {
       "eventId": 2257655,
@@ -3173,6 +3187,31 @@
       "checkedIn": false
     },
     {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Stephanie L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281704,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Pedro E",
+      "checkedIn": false
+    },
+    {
       "eventId": 2257718,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -3195,28 +3234,6 @@
       ],
       "playerName": "Mingyi L",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281674,
-      "title": "Advanced Beginner+ Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "JP D",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281674,
-      "title": "Advanced Beginner+ Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Nelson T",
-      "checkedIn": true
     },
     {
       "eventId": 2257689,
@@ -3294,19 +3311,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Anisha N",
-      "checkedIn": true
-    },
-    {
       "eventId": 2285321,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -3327,44 +3331,6 @@
         "Court 6"
       ],
       "playerName": "Minhdiep V",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Emily S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Emily S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Timmy M",
       "checkedIn": true
     },
     {
@@ -3392,18 +3358,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Benny W",
-      "checkedIn": true
-    },
-    {
       "eventId": 2285321,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-06T20:00:00",
@@ -3412,18 +3366,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Michael C",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Chok L",
       "checkedIn": true
     },
     {
@@ -3472,55 +3414,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Wyatt W",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Chris L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Jessica L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "William Z",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281704,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-07T19:30:00",
@@ -3534,19 +3427,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Melody E",
-      "checkedIn": false
-    },
-    {
       "eventId": 2294093,
       "title": "Drilling w/ Coach Wally Green (3.5+)",
       "startTime": "2026-10-07T17:30:00",
@@ -3556,19 +3436,6 @@
       ],
       "playerName": "Melody E",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Michael L",
-      "checkedIn": true
     },
     {
       "eventId": 2294093,
@@ -3582,31 +3449,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Bill F",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Andy H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-07T19:30:00",
@@ -3616,32 +3458,6 @@
         "Court 6"
       ],
       "playerName": "Emily C",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Janet N",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Eric T",
       "checkedIn": true
     },
     {
@@ -3680,18 +3496,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "YuYi H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-07T19:30:00",
@@ -3710,19 +3514,6 @@
       "endTime": "2026-10-07T19:30:00",
       "courts": [
         "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Guillermo E",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
       ],
       "playerName": "Guillermo E",
       "checkedIn": false
@@ -3751,45 +3542,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Noel L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Patrick T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Christopher G",
-      "checkedIn": true
-    },
-    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-07T19:30:00",
@@ -3800,32 +3552,6 @@
       ],
       "playerName": "Gina H",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Albee^^ l",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Tracy C",
-      "checkedIn": true
     },
     {
       "eventId": 2294093,
@@ -3873,31 +3599,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Toni T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Anthony K",
-      "checkedIn": true
-    },
-    {
       "eventId": 2281721,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-07T19:30:00",
@@ -3907,57 +3608,6 @@
         "Court 6"
       ],
       "playerName": "Alex I",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Jai W",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Anthony A",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Stephanie L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281704,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Pedro E",
       "checkedIn": false
     },
     {
@@ -3971,31 +3621,6 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Juan S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Owen F",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Kunal S",
       "checkedIn": true
     },
     {
@@ -4025,19 +3650,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Jackson Z",
-      "checkedIn": true
-    },
-    {
       "eventId": 2301928,
       "title": "Lunch Break Open Play (AdvBeg-Int)",
       "startTime": "2026-10-07T11:00:00",
@@ -4049,19 +3661,6 @@
       ],
       "playerName": "Michael P",
       "checkedIn": false
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Jack F",
-      "checkedIn": true
     },
     {
       "eventId": 2109596,
@@ -4318,31 +3917,6 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Florence G",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281677,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "Spencer B",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2281680,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T17:30:00",
-      "endTime": "2026-10-05T19:30:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Jai S",
       "checkedIn": true
     },
     {
