@@ -117,7 +117,9 @@
         document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
       }
 
-      const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
+      const baseForTarget = (typeof explicitTargetDate !== 'undefined' && explicitTargetDate !== null) ? new Date(explicitTargetDate) : now;
+      const timeOffset = (urlParams.has('time') && !urlParams.has('ahead')) ? 0 : (lookaheadMinutes * 60 * 1000);
+      const targetTime = new Date(baseForTarget.getTime() + timeOffset);
       const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
       applyDynamicTheme(targetTime);
@@ -300,7 +302,7 @@
               e = new Date(e.getTime() + 61 * 60 * 1000);
             }
 
-            const isNow = now >= s && now <= e;
+            const isNow = targetTime >= s && targetTime <= e;
             const card = document.createElement('div');
             card.className = `session-card ${isNow ? 'is-now' : ''}`;
 
