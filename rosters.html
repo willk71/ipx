@@ -155,6 +155,7 @@
           sessions.push({
             title: ev.title,
             courtsLabel: courtsLabel,
+            courtCount: ev.courts ? ev.courts.size : 0,
             startTime: ev.startTime,
             endTime: ev.endTime,
             players: sortedPlayers
@@ -210,7 +211,20 @@
 
         const totalSessions = Math.min(sessions.length, 6);
         const isSingle = sessions.length === 1;
-        container.className = `count-${totalSessions}`;
+        
+        const largeSessionsCount = sessions.filter(s => s.courtCount >= 3).length;
+        const hasLargeSession = largeSessionsCount > 0 && sessions.length > 1; // Only apply if >1 session to avoid breaking single view
+        
+        if (hasLargeSession) {
+          container.className = 'layout-large';
+          const smallCount = Math.max(1, sessions.length - largeSessionsCount);
+          container.style.gridTemplateColumns = '1fr 1fr 1fr';
+          container.style.gridTemplateRows = `repeat(${smallCount}, 1fr)`;
+        } else {
+          container.className = `count-${totalSessions}`;
+          container.style.gridTemplateColumns = '';
+          container.style.gridTemplateRows = '';
+        }
 
         const totalReportPlayers = sessions.reduce((sum, s) => sum + s.players.length, 0);
 
@@ -299,10 +313,21 @@
           }
 
           const isNow = now >= s && now <= e;
+          const isLarge = item.courtCount >= 3 && !isSingle;
           const count = item.players.length;
 
           const card = document.createElement('div');
-          card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''}`;
+          card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''} ${isLarge ? 'large-session' : ''}`;
+          
+          if (isLarge) {
+            card.style.gridColumn = '1 / 3';
+            if (largeSessionsCount === 1) {
+              card.style.gridRow = '1 / -1';
+            } else {
+              card.style.gridRow = 'auto';
+            }
+          }
+          
           card.style.setProperty('--title-font-size', uniformTitleSize);
           card.style.setProperty('--courts-font-size', uniformCourtsSize);
 

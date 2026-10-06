@@ -294,22 +294,9 @@
           });
 
           const totalSessions = Math.min(sessions.length, 6);
-          
-          const largeSessionsCount = sessions.filter(s => s.courtCount >= 3).length;
-          const hasLargeSession = largeSessionsCount > 0;
-          
-          if (hasLargeSession) {
-            container.className = 'layout-large';
-            const smallCount = Math.max(1, sessions.length - largeSessionsCount);
-            container.style.gridTemplateColumns = '1fr 1fr 1fr';
-            container.style.gridTemplateRows = `repeat(${smallCount}, 1fr)`;
-          } else {
-            container.className = `count-${totalSessions}`;
-            container.style.gridTemplateColumns = '';
-            container.style.gridTemplateRows = '';
-          }
-
-          let largeIndex = 0;
+          container.className = `count-${totalSessions}`;
+          container.style.gridTemplateColumns = '';
+          container.style.gridTemplateRows = '';
 
           sessions.forEach(item => {
             let s = new Date(item.startTime);
@@ -319,22 +306,9 @@
             }
 
             const isNow = targetTime >= s && targetTime <= e;
-            const isLarge = item.courtCount >= 3;
             const card = document.createElement('div');
-            card.className = `session-card ${isNow ? 'is-now' : ''} ${isLarge ? 'large-session' : ''}`;
+            card.className = `session-card ${isNow ? 'is-now' : ''}`;
             
-            if (isLarge) {
-              // If there are multiple large sessions, we just stack them manually or let auto-flow handle them
-              // For a single large session, we span it.
-              card.style.gridColumn = '1 / 3';
-              if (largeSessionsCount === 1) {
-                card.style.gridRow = '1 / -1';
-              } else {
-                // If multiple large sessions, divide rows
-                card.style.gridRow = 'auto'; 
-              }
-            }
-
             card.innerHTML = `
               <div class="session-title">${item.title}</div>
               <div class="session-courts">${item.courtsLabel}</div>
