@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-06T13:34:46Z",
+  "lastUpdated": "2026-10-06T13:49:12Z",
   "date": "2026-10-06",
   "courtHosts": [],
   "courtOverrides": [],
@@ -840,6 +840,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2257680,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "steven a",
+      "checkedIn": true
+    },
+    {
       "eventId": 2257655,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-06T18:00:00",
@@ -905,16 +916,28 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257689,
-      "title": "3.5-4.0 Gated Open Play",
+      "eventId": 2257709,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-06T20:00:00",
+      "endTime": "2026-10-06T22:00:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Earl B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2270006,
+      "title": "Women's 3.25+ Strategic Open Play",
       "startTime": "2026-10-06T18:00:00",
       "endTime": "2026-10-06T20:00:00",
       "courts": [
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 8"
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
-      "playerName": "Peter C",
+      "playerName": "Arushi S",
       "checkedIn": false
     },
     {
@@ -1833,15 +1856,16 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
+      "eventId": 2257689,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-06T18:00:00",
+      "endTime": "2026-10-06T20:00:00",
       "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 8"
       ],
-      "playerName": "Stephanie L",
+      "playerName": "Peter C",
       "checkedIn": false
     },
     {
@@ -2276,17 +2300,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Karl H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2257680,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Isaac M",
       "checkedIn": false
     },
     {
@@ -2733,28 +2746,15 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257709,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-06T20:00:00",
-      "endTime": "2026-10-06T22:00:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Earl B",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2270006,
-      "title": "Women's 3.25+ Strategic Open Play",
-      "startTime": "2026-10-06T18:00:00",
-      "endTime": "2026-10-06T20:00:00",
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
       "courts": [
         "Court 2",
         "Court 1 (Livestreaming)"
       ],
-      "playerName": "Arushi S",
+      "playerName": "Stephanie L",
       "checkedIn": false
     },
     {
