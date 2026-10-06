@@ -337,7 +337,7 @@
             const memberLabel = /\b[A-Za-z]\.?$/.test(rawMember)
               ? rawMember
               : formatNameLastInitial(rawMember);
-            activePrivates.push(`<div class="sidebar-item">Court ${courtLabel}</div><div class="sidebar-subtext">(${memberLabel})</div>`);
+            activePrivates.push(`<div class="sidebar-item">Court ${courtLabel}</div><div class="sidebar-subtext">${memberLabel}</div>`);
           } else {
             activePrivates.push(`<div class="sidebar-item">Court ${courtLabel}</div>`);
           }
