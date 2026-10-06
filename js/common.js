@@ -118,18 +118,40 @@ function applyDynamicTheme(targetTime) {
     if (urlTheme && allThemes.includes('theme-' + urlTheme)) {
       themeToApply = 'theme-' + urlTheme;
     } else {
+      const day = targetTime.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+      const isTTh = (day === 2 || day === 4);
       const totalMinutes = targetTime.getHours() * 60 + targetTime.getMinutes();
-      if (totalMinutes >= 420 && totalMinutes < 660) {
-        themeToApply = 'theme-tiffany';
-      } else if (totalMinutes >= 660 && totalMinutes < 1035) {
-        themeToApply = 'theme-usopen';
-      } else if (totalMinutes >= 1035 && totalMinutes < 1155) {
-        themeToApply = 'theme-apple';
-      } else if (totalMinutes >= 1155 && totalMinutes < 1275) {
-        themeToApply = 'theme-rolex';
+      
+      // We define the targetTime boundaries (which occur 15 mins before real-time session starts)
+      let boundaries;
+      if (isTTh) {
+        // T/Th: 7AM, 9AM, 11AM, 2PM (14:00), 4PM (16:00), 6PM (18:00), 8PM (20:00), 10PM (22:00)
+        boundaries = [420, 540, 660, 840, 960, 1080, 1200, 1320];
       } else {
-        themeToApply = 'theme-porsche';
+        // M/W/F/S/S: 7AM, 9AM, 11AM, 1:30PM (13:30), 3:30PM (15:30), 5:30PM (17:30), 7:30PM (19:30), 9:30PM (21:30)
+        boundaries = [420, 540, 660, 810, 930, 1050, 1170, 1290];
       }
+      
+      const themeSchedule = [
+        'theme-stealth',    // Before 7AM
+        'theme-tiffany',    // Slot 1
+        'theme-usopen',     // Slot 2
+        'theme-apple',      // Slot 3
+        'theme-rolex',      // Slot 4
+        'theme-porsche',    // Slot 5
+        'theme-wimbledon',  // Slot 6
+        'theme-vice',       // Slot 7
+        'theme-cyberpunk'   // Slot 8 (Late night)
+      ];
+
+      let slotIndex = 0;
+      for (let i = 0; i < boundaries.length; i++) {
+        if (totalMinutes >= boundaries[i]) {
+          slotIndex = i + 1;
+        }
+      }
+      
+      themeToApply = themeSchedule[slotIndex] || 'theme-apple';
     }
   }
 
