@@ -7,26 +7,40 @@
   <title>Sessions</title>
   <link rel="stylesheet" href="css/common.css?v=2.2.7" />
   <style>
-    /* Styling for the Private Court reservations banner */
-    .private-court-bar {
+    /* Styling for the sidebar elements */
+    .sidebar-section {
+      background: var(--card-bg, rgba(255, 255, 255, 0.05));
+      border: 1px solid var(--card-border, rgba(255, 255, 255, 0.10));
+      border-radius: 14px;
+      padding: 1.5vh 1.5vw;
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin: 8px 16px;
-      padding: 8px 14px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      font-size: 1.05rem;
-      font-weight: 500;
+      flex-direction: column;
+      gap: 1vh;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
-    .private-chip {
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 6px;
-      padding: 4px 10px;
-      white-space: nowrap;
+    .sidebar-header {
+      font-size: clamp(1.35rem, 1.7vw, 2.1rem);
+      font-weight: 800;
+      color: var(--theme-accent, #ffd60a);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5vh;
+      text-align: center;
+    }
+    .sidebar-item {
+      font-size: clamp(1.4rem, 1.8vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text-main, #ffffff);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .sidebar-subtext {
+      font-size: clamp(1.05rem, 1.35vw, 1.75rem);
+      font-weight: 400;
+      color: var(--text-sub, #ebebf5);
+      opacity: 0.85;
+      margin-top: 0.2vh;
     }
   </style>
 </head>
@@ -42,15 +56,19 @@
     </div>
   </header>
 
-  <main id="session-container">
-    <div class="no-sessions">
-      <h2>Loading Sessions...</h2>
-    </div>
-  </main>
+  <div class="content-wrapper" style="display: flex; flex: 1; min-height: 0; gap: 1.6vw; margin-top: 1.4vh;">
+    <main id="session-container" style="flex: 1; margin-top: 0;">
+      <div class="no-sessions">
+        <h2>Loading Sessions...</h2>
+      </div>
+    </main>
 
-  <!-- Privates strip: at the bottom, above Court Hosts -->
-  <div id="private-reservations-container" style="display: none;"></div>
-  <div id="court-host-container" style="display: none;"></div>
+    <!-- Sidebar: 20% width -->
+    <aside id="sidebar-container" style="width: 20%; display: flex; flex-direction: column; gap: 1.6vh;">
+      <div id="private-reservations-container" style="display: none;"></div>
+      <div id="court-host-container" style="display: none;"></div>
+    </aside>
+  </div>
 
   <footer>
     <div class="footer-meta-grid">
@@ -318,16 +336,16 @@
             const memberLabel = /\b[A-Za-z]\.?$/.test(rawMember)
               ? rawMember
               : formatNameLastInitial(rawMember);
-            activePrivates.push(`Private Court ${courtLabel} (${memberLabel})`);
+            activePrivates.push(`<div class="sidebar-item">Court ${courtLabel}</div><div class="sidebar-subtext">(${memberLabel})</div>`);
           } else {
-            activePrivates.push(`Private Court ${courtLabel}`);
+            activePrivates.push(`<div class="sidebar-item">Court ${courtLabel}</div>`);
           }
         });
 
         if (activePrivates.length > 0 && privContainer) {
-          privContainer.className = 'private-court-bar';
+          privContainer.className = 'sidebar-section';
           privContainer.style.display = 'flex';
-          privContainer.innerHTML = activePrivates.map(text => `<span class="private-chip">${text}</span>`).join('');
+          privContainer.innerHTML = `<div class="sidebar-header">Private Courts</div>` + activePrivates.map(html => `<div style="margin-bottom: 0.5vh;">${html}</div>`).join('');
         } else if (privContainer) {
           privContainer.className = '';
           privContainer.style.display = 'none';
@@ -363,20 +381,11 @@
         const activeHosts = Array.from(activeHostSet);
 
         if (activeHosts.length > 0 && hostContainer) {
-          let formattedNames = '';
-          if (activeHosts.length === 1) {
-            formattedNames = activeHosts[0];
-          } else if (activeHosts.length === 2) {
-            formattedNames = activeHosts.join(' & ');
-          } else {
-            formattedNames = `${activeHosts.slice(0, -1).join(', ')} & ${activeHosts[activeHosts.length - 1]}`;
-          }
-
-          hostContainer.className = 'court-host-bar';
-          hostContainer.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
+          hostContainer.className = 'sidebar-section';
+          hostContainer.style.cssText = 'display: flex !important;';
           hostContainer.innerHTML = `
-            <span class="host-badge-label">Your Court Host${activeHosts.length > 1 ? 's' : ''}:</span>
-            <span class="host-names">${formattedNames}</span>
+            <div class="sidebar-header">Court Host${activeHosts.length > 1 ? 's' : ''}</div>
+            <div class="sidebar-item">${activeHosts.map(h => `<div>${h}</div>`).join('')}</div>
           `;
         } else if (hostContainer) {
           hostContainer.className = '';
