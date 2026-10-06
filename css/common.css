@@ -209,7 +209,10 @@ body.page-rosters main.count-6 { grid-template-columns: 1fr 1fr 1fr; grid-templa
   line-height: 1.15 !important;
   color: var(--text-main) !important;
   letter-spacing: -0.01em !important;
-  white-space: nowrap !important;
+  white-space: normal !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
