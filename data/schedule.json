@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-06T00:38:21Z",
+  "lastUpdated": "2026-10-06T00:54:54Z",
   "date": "2026-10-05",
   "courtHosts": [
-    {
-      "start": "09:00",
-      "end": "17:00",
-      "host": "Lillian H"
-    },
     {
       "start": "16:00",
       "end": "19:45",
@@ -16,6 +11,11 @@
       "start": "19:00",
       "end": "23:00",
       "host": "Stephanie L"
+    },
+    {
+      "start": "09:00",
+      "end": "17:00",
+      "host": "Lillian H"
     },
     {
       "start": "16:00",
@@ -1137,7 +1137,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Matthew T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2196151,
@@ -1149,7 +1149,7 @@
         "Court 11"
       ],
       "playerName": "Matthew T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257645,
@@ -4049,18 +4049,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2196165,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-05T19:30:00",
-      "endTime": "2026-10-05T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Florence C",
-      "checkedIn": true
-    },
-    {
       "eventId": 2162309,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-05T19:30:00",
@@ -4119,6 +4107,18 @@
       "checkedIn": true
     },
     {
+      "eventId": 2196151,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-05T21:30:00",
+      "endTime": "2026-10-05T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Tejas T",
+      "checkedIn": false
+    },
+    {
       "eventId": 2281704,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-07T19:30:00",
@@ -4168,6 +4168,18 @@
       ],
       "playerName": "Silvio G",
       "checkedIn": false
+    },
+    {
+      "eventId": 2196165,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-05T19:30:00",
+      "endTime": "2026-10-05T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Florence C",
+      "checkedIn": true
     },
     {
       "eventId": 2257680,
