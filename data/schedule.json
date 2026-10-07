@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-07T03:19:32Z",
+  "lastUpdated": "2026-10-07T03:31:36Z",
   "date": "2026-10-06",
   "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "21:00",
-      "host": "Nelson C"
-    },
     {
       "start": "19:00",
       "end": "19:30",
       "host": "Harsh P"
+    },
+    {
+      "start": "18:00",
+      "end": "21:00",
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -2183,18 +2183,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Chris L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281272,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-07T17:30:00",
@@ -2731,6 +2719,19 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Karl H",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281284,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-07T17:30:00",
+      "endTime": "2026-10-07T19:30:00",
+      "courts": [
+        "Court 6",
+        "Court 5",
+        "Court 3"
+      ],
+      "playerName": "Isaac M",
       "checkedIn": true
     },
     {
@@ -3505,6 +3506,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2285765,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-08T20:00:00",
+      "endTime": "2026-10-08T22:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 3",
+        "Court 2"
+      ],
+      "playerName": "Earl B",
+      "checkedIn": true
+    },
+    {
       "eventId": 2261184,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-08T18:00:00",
@@ -3601,6 +3615,18 @@
       "courts": [
         "Court 11",
         "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Chris L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
       "playerName": "Chris L",
       "checkedIn": false
