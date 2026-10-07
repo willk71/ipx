@@ -212,35 +212,11 @@
         const totalSessions = Math.min(sessions.length, 6);
         const isSingle = sessions.length === 1;
         
-        const largeSessionsCount = sessions.filter(s => s.courtCount >= 3).length;
-        const smallCount = sessions.length - largeSessionsCount;
-        const hasLargeSession = largeSessionsCount > 0 && smallCount > 0;
+        const numColumns = sessions.length > 0 ? 3 : 1;
         
-        let leftCol, rightCol;
-        if (hasLargeSession) {
-          container.className = 'layout-large';
-          container.style.gridTemplateColumns = '2fr 1fr';
-          container.style.gridTemplateRows = '1fr';
-          
-          leftCol = document.createElement('div');
-          leftCol.style.display = 'flex';
-          leftCol.style.flexDirection = 'column';
-          leftCol.style.gap = '1.6vh';
-          leftCol.style.minHeight = '0';
-          
-          rightCol = document.createElement('div');
-          rightCol.style.display = 'flex';
-          rightCol.style.flexDirection = 'column';
-          rightCol.style.gap = '1.6vh';
-          rightCol.style.minHeight = '0';
-          
-          container.appendChild(leftCol);
-          container.appendChild(rightCol);
-        } else {
-          container.className = `count-${totalSessions}`;
-          container.style.gridTemplateColumns = '';
-          container.style.gridTemplateRows = '';
-        }
+        container.className = `layout-columns`;
+        container.style.gridTemplateColumns = `repeat(${numColumns}, 1fr)`;
+        container.style.gridTemplateRows = '1fr';
 
         const totalReportPlayers = sessions.reduce((sum, s) => sum + s.players.length, 0);
 
@@ -321,64 +297,89 @@
           }
         }
 
-        let smallIndex = 1;
-        sessions.forEach(item => {
-          const s = new Date(item.startTime);
-          let e = new Date(item.endTime);
-          if (e.getHours() === 23 && e.getMinutes() === 59) {
-            e = new Date(e.getTime() + 61 * 60 * 1000);
+        sessions.forEach(s => {
+          s.weight = s.courtCount >= 3 ? 1.0 : (s.courtCount === 2 ? 0.5 : 0.33);
+        });
+        
+        const sortedForPlacement = [...sessions].sort((a, b) => b.weight - a.weight);
+        const columns = Array.from({length: numColumns}, () => ({ weight: 0, items: [] }));
+        
+        sortedForPlacement.forEach(s => {
+          let minCol = columns[0];
+          for (let i = 1; i < numColumns; i++) {
+            if (columns[i].weight < minCol.weight) {
+              minCol = columns[i];
+            }
           }
+          minCol.items.push(s);
+          minCol.weight += s.weight;
+        });
+        
+        columns.sort((colA, colB) => {
+          if (colA.items.length === 0) return 1;
+          if (colB.items.length === 0) return -1;
+          return sessions.indexOf(colA.items[0]) - sessions.indexOf(colB.items[0]);
+        });
 
-          const isNow = now >= s && now <= e;
-          const isLarge = item.courtCount >= 3 && !isSingle;
-          const count = item.players.length;
-
-          const card = document.createElement('div');
-          card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''} ${isLarge ? 'large-session' : ''}`;
+        columns.forEach(col => {
+          const colEl = document.createElement('div');
+          colEl.style.display = 'flex';
+          colEl.style.flexDirection = 'column';
+          colEl.style.gap = '1.6vh';
+          colEl.style.minHeight = '0';
           
-          card.style.setProperty('--title-font-size', uniformTitleSize);
-          card.style.setProperty('--courts-font-size', uniformCourtsSize);
+          col.items.forEach(item => {
+            const s = new Date(item.startTime);
+            let e = new Date(item.endTime);
+            if (e.getHours() === 23 && e.getMinutes() === 59) {
+              e = new Date(e.getTime() + 61 * 60 * 1000);
+            }
 
-          const listHtml = count > 0 
-            ? item.players.map(p => `
-                <div class="player-item ${p.checkedIn ? 'is-checked-in' : 'is-pending'}">
-                  <span class="status-dot"></span>
-                  <span class="player-name">${p.name}</span>
+            const isNow = now >= s && now <= e;
+            const isLarge = item.courtCount >= 3 && !isSingle;
+            const count = item.players.length;
+
+            const card = document.createElement('div');
+            card.className = `roster-card ${isNow ? 'is-now' : ''} ${isSingle ? 'single-session' : ''} ${isLarge ? 'large-session' : ''}`;
+            
+            card.style.setProperty('--title-font-size', uniformTitleSize);
+            card.style.setProperty('--courts-font-size', uniformCourtsSize);
+
+            const listHtml = count > 0 
+              ? item.players.map(p => `
+                  <div class="player-item ${p.checkedIn ? 'is-checked-in' : 'is-pending'}">
+                    <span class="status-dot"></span>
+                    <span class="player-name">${p.name}</span>
+                  </div>
+                `).join('')
+              : `<div class="player-empty">No registered players</div>`;
+
+            card.innerHTML = `
+              <div class="card-header">
+                <div class="header-titles">
+                  <div class="line-title">${item.title}</div>
+                  <div class="line-courts">${item.courtsLabel}</div>
                 </div>
-              `).join('')
-            : `<div class="player-empty">No registered players</div>`;
-
-          card.innerHTML = `
-            <div class="card-header">
-              <div class="header-titles">
-                <div class="line-title">${item.title}</div>
-                <div class="line-courts">${item.courtsLabel}</div>
+                <div class="card-meta">
+                  <div class="count-badge">${count} ${count === 1 ? 'Player' : 'Players'}</div>
+                </div>
               </div>
-              <div class="card-meta">
-                <div class="count-badge">${count} ${count === 1 ? 'Player' : 'Players'}</div>
+              <div class="player-list" style="
+                --roster-cols: ${uniformCols};
+                --roster-font-size: ${uniformFontSize};
+                --roster-row-gap: ${uniformRowGap};
+                --roster-col-gap: ${uniformColGap};
+              ">
+                ${listHtml}
               </div>
-            </div>
-            <div class="player-list" style="
-              --roster-cols: ${uniformCols};
-              --roster-font-size: ${uniformFontSize};
-              --roster-row-gap: ${uniformRowGap};
-              --roster-col-gap: ${uniformColGap};
-            ">
-              ${listHtml}
-            </div>
-          `;
+            `;
 
-          if (hasLargeSession) {
             card.style.flex = '1';
             card.style.margin = '0';
-            if (isLarge) {
-              leftCol.appendChild(card);
-            } else {
-              rightCol.appendChild(card);
-            }
-          } else {
-            container.appendChild(card);
-          }
+            colEl.appendChild(card);
+          });
+          
+          container.appendChild(colEl);
         });
 
       } catch (err) {
