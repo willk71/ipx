@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-07T15:57:11Z",
+  "lastUpdated": "2026-10-07T16:15:42Z",
   "date": "2026-10-07",
   "courtHosts": [
     {
@@ -40,12 +40,6 @@
       "holderLabel": "",
       "startTime": "2026-10-07T20:00:00",
       "endTime": "2026-10-07T21:00:00"
-    },
-    {
-      "court": "Court 1 (Livestreaming)",
-      "holderLabel": "Wissam A.",
-      "startTime": "2026-10-07T07:00:00",
-      "endTime": "2026-10-07T08:00:00"
     }
   ],
   "events": [
@@ -499,6 +493,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2162345,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-08T14:00:00",
+      "endTime": "2026-10-08T16:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "Richard Z",
+      "checkedIn": false
+    },
+    {
       "eventId": 2197161,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-07T21:30:00",
@@ -594,19 +601,6 @@
       ],
       "playerName": "Sai T",
       "checkedIn": false
-    },
-    {
-      "eventId": 2220829,
-      "title": "Morning Brew and Play Open Play",
-      "startTime": "2026-10-07T09:00:00",
-      "endTime": "2026-10-07T11:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Guillermo E",
-      "checkedIn": true
     },
     {
       "eventId": 2220824,
@@ -1289,6 +1283,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2220829,
+      "title": "Morning Brew and Play Open Play",
+      "startTime": "2026-10-07T09:00:00",
+      "endTime": "2026-10-07T11:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Guillermo E",
+      "checkedIn": true
+    },
+    {
       "eventId": 2248616,
       "title": "IPX Wednesday League (Fall 2026)",
       "startTime": "2026-10-07T19:30:00",
@@ -1464,20 +1471,6 @@
         "Court 6"
       ],
       "playerName": "Abel T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2266510,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-08T20:00:00",
-      "endTime": "2026-10-08T22:00:00",
-      "courts": [
-        "Court 8",
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Wright L",
       "checkedIn": false
     },
     {
@@ -2609,18 +2602,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2281699,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-07T19:30:00",
-      "endTime": "2026-10-07T21:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Isaac M",
-      "checkedIn": false
-    },
-    {
       "eventId": 2281284,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-07T17:30:00",
@@ -2629,6 +2610,18 @@
         "Court 6",
         "Court 5",
         "Court 3"
+      ],
+      "playerName": "Isaac M",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2281699,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-07T19:30:00",
+      "endTime": "2026-10-07T21:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
       "playerName": "Isaac M",
       "checkedIn": false
@@ -2909,6 +2902,20 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Stephanie S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2266510,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-08T20:00:00",
+      "endTime": "2026-10-08T22:00:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Wright L",
       "checkedIn": false
     },
     {
