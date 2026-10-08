@@ -274,6 +274,9 @@ function resolveQueueLocation(courtsSet, customText) {
       if (courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 2) {
         return '📍 - Court 6 Paddle Rack';
       }
+      if (courtsSet.has('8') && courtsSet.has('10') && courtsSet.size === 2) {
+        return '📍 - Court 10 Left Paddle Rack';
+      }
       if (
         (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) ||
         (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2)
