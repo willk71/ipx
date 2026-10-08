@@ -258,9 +258,12 @@
               `).join('')
             : `<div class="player-empty">No registered players</div>`;
 
+          const timeLabel = `${s.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} - ${e.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+
           card.innerHTML = `
             <div class="tablet-left" style="flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
               <div class="line-title" style="font-size: 2.8rem; line-height: 1.1; white-space: normal; -webkit-line-clamp: 3;">${item.title}</div>
+              <div class="line-time" style="font-size: 1.6rem; color: var(--text-sub); opacity: 0.9;">${timeLabel}</div>
               <div class="line-courts" style="font-size: 2.2rem;">${item.courtsLabel}</div>
               ${item.queueText ? `<div class="paddle-queue" style="font-size: 1.6rem; color: var(--theme-accent);">${item.queueText}</div>` : ''}
               <div class="count-badge" style="width: fit-content; font-size: 1.4rem; margin-top: 1vh;">${count} ${count === 1 ? 'Player' : 'Players'}</div>
