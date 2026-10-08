@@ -259,8 +259,8 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 6 Paddle Rack';
       }
 
-      // Group 8, 10, 11
-      if (courtsSet.has('8') && courtsSet.has('10') && courtsSet.has('11') && courtsSet.size === 3) {
+      // Any 8 and 10 without a 7
+      if (courtsSet.has('8') && courtsSet.has('10') && !courtsSet.has('7')) {
         return '📍 - Court 10 Paddle Rack';
       }
 
@@ -273,9 +273,6 @@ function resolveQueueLocation(courtsSet, customText) {
       }
       if (courtsSet.has('3') && courtsSet.has('6') && courtsSet.size === 2) {
         return '📍 - Court 6 Paddle Rack';
-      }
-      if (courtsSet.has('8') && courtsSet.has('10') && courtsSet.size === 2) {
-        return '📍 - Court 10 Left Paddle Rack';
       }
       if (
         (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) ||
