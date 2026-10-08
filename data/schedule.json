@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-08T21:03:52Z",
+  "lastUpdated": "2026-10-08T21:17:09Z",
   "date": "2026-10-08",
   "courtHosts": [
     {
@@ -82,6 +82,12 @@
       "holderLabel": "Alaric Q.",
       "startTime": "2026-10-09T16:00:00",
       "endTime": "2026-10-09T17:00:00"
+    },
+    {
+      "court": "Court 11",
+      "holderLabel": "Nick W.",
+      "startTime": "2026-10-09T13:00:00",
+      "endTime": "2026-10-09T14:00:00"
     }
   ],
   "events": [
@@ -1399,6 +1405,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2261121,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-08T18:00:00",
+      "endTime": "2026-10-08T20:00:00",
+      "courts": [
+        "Court 3",
+        "Court 5",
+        "Court 6"
+      ],
+      "playerName": "Chirag J",
+      "checkedIn": false
+    },
+    {
       "eventId": 2220873,
       "title": "Morning Espress-o Round Robin",
       "startTime": "2026-10-09T07:00:00",
@@ -1535,19 +1554,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Terence D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2261184,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-08T18:00:00",
-      "endTime": "2026-10-08T20:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Ryan L",
       "checkedIn": false
     },
     {
@@ -2332,6 +2338,20 @@
       "checkedIn": true
     },
     {
+      "eventId": 2285771,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-08T20:00:00",
+      "endTime": "2026-10-08T22:00:00",
+      "courts": [
+        "Court 5",
+        "Court 6",
+        "Court 2",
+        "Court 3"
+      ],
+      "playerName": "Kyle J",
+      "checkedIn": false
+    },
+    {
       "eventId": 2266412,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-08T22:00:00",
@@ -2996,6 +3016,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2261184,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-08T18:00:00",
+      "endTime": "2026-10-08T20:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Ryan L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2294628,
       "title": "Guided Open Play w/ Coach Martin (Int-Adv)",
       "startTime": "2026-10-08T16:00:00",
@@ -3159,18 +3192,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2199543,
-      "title": "3.5-4.0 Gated Open Play ",
-      "startTime": "2026-10-09T21:30:00",
-      "endTime": "2026-10-09T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Jordan W",
-      "checkedIn": false
-    },
-    {
       "eventId": 2118699,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-09T21:30:00",
@@ -3193,6 +3214,31 @@
         "Court 2"
       ],
       "playerName": "Adam K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-08T22:00:00",
+      "endTime": "2026-10-08T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Jay V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2199543,
+      "title": "3.5-4.0 Gated Open Play ",
+      "startTime": "2026-10-09T21:30:00",
+      "endTime": "2026-10-09T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Jordan W",
       "checkedIn": false
     },
     {
