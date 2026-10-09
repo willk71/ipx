@@ -1,4 +1,5 @@
-const MQTT_BROKER_URL = 'ws://192.168.1.50:9001'; // Update this to the Dongle PC IP
+// Automatically connect to the same IP hosting the dashboard
+const MQTT_BROKER_URL = `ws://${window.location.hostname}:9001`;
 const MQTT_TOPIC = 'zigbee2mqtt/+'; // Subscribe to all zigbee2mqtt devices
 
 // Mapping of action strings to alert messages
