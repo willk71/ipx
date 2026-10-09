@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-09T01:39:18Z",
+  "lastUpdated": "2026-10-09T01:50:48Z",
   "date": "2026-10-08",
   "courtHosts": [
     {
@@ -180,6 +180,17 @@
       "courts": [
         "Court 7 (Livestreaming)"
       ],
+      "playerName": "Emma V",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2118694,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-09T21:30:00",
+      "endTime": "2026-10-09T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
       "playerName": "Jacob S",
       "checkedIn": false
     },
@@ -194,19 +205,6 @@
         "Court 8"
       ],
       "playerName": "Jessica L",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118698,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-08T22:00:00",
-      "endTime": "2026-10-08T23:59:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "William Z",
       "checkedIn": true
     },
     {
@@ -340,6 +338,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2118698,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-08T22:00:00",
+      "endTime": "2026-10-08T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "William Z",
+      "checkedIn": true
+    },
+    {
       "eventId": 2118699,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-09T21:30:00",
@@ -399,18 +410,7 @@
         "Court 8"
       ],
       "playerName": "Jacob V",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118708,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-09T21:30:00",
-      "endTime": "2026-10-09T23:59:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Max G",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2118699,
@@ -462,13 +462,13 @@
       "checkedIn": false
     },
     {
-      "eventId": 2118960,
-      "title": "3.25+ Open Play",
+      "eventId": 2118949,
+      "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-09T19:30:00",
       "endTime": "2026-10-09T21:30:00",
       "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
+        "Court 10 (Livestreaming)",
+        "Court 8"
       ],
       "playerName": "Emma V",
       "checkedIn": true
@@ -700,6 +700,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2118708,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-09T21:30:00",
+      "endTime": "2026-10-09T23:59:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Max G",
+      "checkedIn": false
+    },
+    {
       "eventId": 2118949,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-09T19:30:00",
@@ -747,18 +758,6 @@
         "Court 8"
       ],
       "playerName": "Nilas J",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118949,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-09T19:30:00",
-      "endTime": "2026-10-09T21:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Toni T",
       "checkedIn": false
     },
     {
@@ -1080,19 +1079,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Pablo R",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2182246,
-      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
-      "startTime": "2026-10-10T21:00:00",
-      "endTime": "2026-10-10T23:59:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Cindy D",
       "checkedIn": false
     },
     {
@@ -2185,7 +2171,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Jessica L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2266510,
@@ -4332,6 +4318,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Angeles G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2182246,
+      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
+      "startTime": "2026-10-10T21:00:00",
+      "endTime": "2026-10-10T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Cindy D",
       "checkedIn": false
     }
   ]
