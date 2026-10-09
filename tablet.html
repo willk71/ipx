@@ -10,16 +10,33 @@
     header {
       display: none !important;
     }
+    body.page-tablet {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
     body.page-tablet main {
-      height: calc(100vh - 8vh) !important; /* Adjust height since header is gone */
-      overflow-y: auto !important;
+      flex: 1;
       display: flex !important;
-      padding-right: 1vw;
-      padding-top: 2vh;
+      padding: 2vh 1vw 2vh 1vw;
+      overflow: hidden !important;
     }
     .tablet-card {
+      flex: 1; /* Stretch to fill the whole main area */
+      margin: 0;
       padding: 3vh 3vw !important;
-      min-height: 80vh !important; /* Make the single card take up most of the screen */
+    }
+    .page-tablet .footer-meta-grid {
+      display: flex !important;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 2vw !important;
+      align-items: center;
+      font-size: 1rem !important;
+    }
+    .page-tablet footer {
+      padding: 1vh 2vw 2vh 2vw;
     }
   </style>
 </head>
@@ -310,8 +327,6 @@
           card.style.display = 'flex';
           card.style.flexDirection = 'row';
           card.style.gap = '3vw';
-          card.style.flex = 'none'; // Don't stretch indefinitely
-          card.style.minHeight = '30vh';
 
           const listHtml = count > 0 
             ? item.players.map(p => `
