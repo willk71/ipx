@@ -97,11 +97,16 @@ function initMqttAlerts() {
     const client = mqtt.connect(MQTT_BROKER_URL);
 
     client.on('connect', () => {
-      console.log('Connected to MQTT Broker for alerts');
+      console.log('✅ Connected to MQTT Broker for alerts');
       client.subscribe(MQTT_TOPIC);
     });
 
+    client.on('error', (err) => {
+      console.error('❌ MQTT Connection Error:', err);
+    });
+
     client.on('message', (topic, message) => {
+      console.log(`📩 Received MQTT message on [${topic}]:`, message.toString());
       try {
         const payload = JSON.parse(message.toString());
         
@@ -111,14 +116,18 @@ function initMqttAlerts() {
           courtName = 'Court ' + match[1];
         }
 
+        console.log(`🔍 Extracted Court: ${courtName} | Current Tablet Filter: ${window.currentTabletFilter || 'NONE'}`);
+
         // If this tablet is filtered to a specific queue, only flash if the court matches
         if (window.currentTabletFilter && courtName !== 'Unknown Court') {
           if (!window.currentTabletFilter.includes(courtName.toLowerCase())) {
+            console.log(`🚫 Ignored alert: Tablet is filtered for ${window.currentTabletFilter}, but alert was for ${courtName}`);
             return; // Ignore this alert, it's for a different court
           }
         }
 
         if (payload.action) {
+          console.log(`⚡ Action triggered: ${payload.action}`);
           if (CLEAR_ACTIONS.includes(payload.action) || payload.action === '3_single') {
             closeAlert();
           } else if (ACTION_MAP[payload.action]) {
@@ -126,10 +135,12 @@ function initMqttAlerts() {
           } else if (payload.action === '1_single') {
             // Fallback for user snippet
             showAlert(courtName, '⚠️ NEED 1 PLAYER');
+          } else {
+            console.log(`🤷 Unknown action: ${payload.action}`);
           }
         }
       } catch (e) {
-        console.error('Failed to parse MQTT message', e);
+        console.error('❌ Failed to parse MQTT message', e);
       }
     });
   } else {
