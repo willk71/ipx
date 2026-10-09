@@ -186,20 +186,38 @@
         const courtOverride = urlParamsTablet.get('court');
 
         const tabletMapping = {
+          'rack1': 'court 1 paddle rack',
+          'rack6': 'court 6 paddle rack',
+          'rack7': 'court 7 paddle rack',
+          'rack9': 'court 9 paddle rack',
+          'rack10': 'court 10 paddle rack',
+          'table4': 'court 4 table',
+          'table7': 'court 7 table',
+          'table9': 'court 9 table',
+          'table11': 'court 11 table',
+          'table12': 'court 12 table',
+          'table10-l': 'court 10 table - left',
+          'table10-r': 'court 10 table - right',
+          'willipad': 'court 1',
           '001': 'court 1',
           'xyz': 'court 7',
-          'fff': 'court 10',
-          'willipad': 'court 1'
+          'fff': 'court 10'
         };
 
         let targetFilter = (queueOverride || courtOverride || '').toLowerCase();
         if (!targetFilter && tabletId && tabletMapping[tabletId]) {
           targetFilter = tabletMapping[tabletId].toLowerCase();
         }
+        
+        // If still no filter (no URL param or unrecognized ID), default to rack7
+        if (!targetFilter) {
+          targetFilter = tabletMapping['rack7'];
+        }
 
         const idDisplay = document.getElementById('tablet-id-pill');
         if (idDisplay) {
-          idDisplay.textContent = tabletId ? `ID: ${tabletId}` : (targetFilter ? `Filter: ${targetFilter}` : 'ID: --');
+          const displayId = tabletId || 'Default (rack7)';
+          idDisplay.textContent = `ID: ${displayId}`;
         }
 
         Object.values(eventMap).forEach(ev => {
