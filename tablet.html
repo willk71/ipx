@@ -7,13 +7,19 @@
   <title>Tablet Rosters</title>
   <link rel="stylesheet" href="css/common.css?v=2.2.0" />
   <style>
+    header {
+      display: none !important;
+    }
     body.page-tablet main {
+      height: calc(100vh - 8vh) !important; /* Adjust height since header is gone */
       overflow-y: auto !important;
       display: flex !important;
       padding-right: 1vw;
+      padding-top: 2vh;
     }
     .tablet-card {
       padding: 3vh 3vw !important;
+      min-height: 80vh !important; /* Make the single card take up most of the screen */
     }
   </style>
 </head>
@@ -156,15 +162,51 @@
           }
         });
 
+        // Tablet ID mapping for filtering sessions
+        const urlParamsTablet = new URLSearchParams(window.location.search);
+        const tabletId = (urlParamsTablet.get('id') || '').toLowerCase().trim();
+        const queueOverride = urlParamsTablet.get('queue');
+        const courtOverride = urlParamsTablet.get('court');
+
+        const tabletMapping = {
+          '001': 'court 1',
+          'xyz': 'court 7',
+          'fff': 'court 10',
+          'willipad': 'court 1'
+        };
+
+        let targetFilter = (queueOverride || courtOverride || '').toLowerCase();
+        if (!targetFilter && tabletId && tabletMapping[tabletId]) {
+          targetFilter = tabletMapping[tabletId].toLowerCase();
+        }
+
         Object.values(eventMap).forEach(ev => {
+          if (targetFilter) {
+            const queueLoc = resolveQueueLocation(ev.courts, ev.queueText).toLowerCase();
+            
+            // Use word boundary to ensure "court 1" doesn't accidentally match "court 10"
+            const regex = new RegExp(`\\b${targetFilter}\\b`, 'i');
+            const matchesQueue = regex.test(queueLoc);
+            
+            const hasCourt = Array.from(ev.courts).some(c => c.toLowerCase() === targetFilter || 'court ' + c.toLowerCase() === targetFilter);
+            
+            if (!matchesQueue && !hasCourt) {
+              return; // Skip if it doesn't match the tablet's location
+            }
+          }
+
           const courtsLabel = formatCourtsLabel(ev.courts, 'rosters');
           const sortedPlayers = Array.from(ev.players.entries())
             .map(([name, checkedIn]) => ({ name, checkedIn }))
             .sort((a, b) => a.name.localeCompare(b.name));
 
+          // Ensure queueText is fully resolved for display
+          const resolvedQueue = resolveQueueLocation(ev.courts, ev.queueText);
+
           sessions.push({
             title: ev.title,
             courtsLabel: courtsLabel,
+            queueText: resolvedQueue,
             courtCount: ev.courts ? ev.courts.size : 0,
             startTime: ev.startTime,
             endTime: ev.endTime,
@@ -225,11 +267,6 @@
         container.style.gap = '2vh';
         container.style.overflowY = 'auto'; // Allow scrolling on tablet
 
-        const uniformCols = 3; // Roster cols
-        const uniformFontSize = '1.4rem';
-        const uniformRowGap = '1vh';
-        const uniformColGap = '2vw';
-
         sessions.forEach(item => {
           const s = new Date(item.startTime);
           let e = new Date(item.endTime);
@@ -239,6 +276,28 @@
 
           const isNow = now >= s && now <= e;
           const count = item.players.length;
+
+          let dynCols = 1;
+          let dynFontSize = '2rem';
+          let dynRowGap = '1vh';
+          let dynColGap = '2vw';
+
+          if (count > 28) {
+            dynCols = 3;
+            dynFontSize = '1.25rem';
+            dynRowGap = '0.4vh';
+            dynColGap = '1.5vw';
+          } else if (count > 16) {
+            dynCols = 2;
+            dynFontSize = '1.5rem';
+            dynRowGap = '0.6vh';
+            dynColGap = '2vw';
+          } else if (count > 10) {
+            dynCols = 2;
+            dynFontSize = '1.7rem';
+            dynRowGap = '0.8vh';
+            dynColGap = '2vw';
+          }
 
           const card = document.createElement('div');
           card.className = `roster-card tablet-card ${isNow ? 'is-now' : ''}`;
@@ -262,19 +321,21 @@
 
           card.innerHTML = `
             <div class="tablet-left" style="flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
-              <div class="line-title" style="font-size: 2.8rem; line-height: 1.1; white-space: normal; -webkit-line-clamp: 3;">${item.title}</div>
-              <div class="line-time" style="font-size: 1.6rem; color: var(--text-sub); opacity: 0.9;">${timeLabel}</div>
-              <div class="line-courts" style="font-size: 2.2rem;">${item.courtsLabel}</div>
-              ${item.queueText ? `<div class="paddle-queue" style="font-size: 1.6rem; color: var(--theme-accent);">${item.queueText}</div>` : ''}
+              <div class="line-title" style="font-size: 4.5rem; line-height: 1.1; font-weight: 800; white-space: normal; -webkit-line-clamp: 3; margin-bottom: 1vh;">${item.title}</div>
+              <div class="line-courts" style="font-size: 3.5rem; font-weight: 700; color: #fff;">${item.courtsLabel}</div>
+              <div class="line-meta" style="font-size: 1.5rem; color: var(--text-sub); opacity: 0.9; display: flex; align-items: center; gap: 1.5vw; flex-wrap: wrap;">
+                <span>${timeLabel}</span>
+                ${item.queueText ? `<span class="paddle-queue" style="color: var(--theme-accent);">${item.queueText}</span>` : ''}
+              </div>
               <div class="count-badge" style="width: fit-content; font-size: 1.4rem; margin-top: 1vh;">${count} ${count === 1 ? 'Player' : 'Players'}</div>
             </div>
             <div class="tablet-right" style="flex: 2; overflow-y: auto; padding-left: 1vw;">
               <div class="player-list" style="
-                column-count: ${uniformCols};
-                column-gap: ${uniformColGap};
-                --roster-font-size: ${uniformFontSize};
-                --roster-row-gap: ${uniformRowGap};
-                --roster-col-gap: ${uniformColGap};
+                column-count: ${dynCols};
+                column-gap: ${dynColGap};
+                --roster-font-size: ${dynFontSize};
+                --roster-row-gap: ${dynRowGap};
+                --roster-col-gap: ${dynColGap};
                 height: 100%;
               ">
                 ${listHtml}
