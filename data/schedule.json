@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-09T21:37:48Z",
+  "lastUpdated": "2026-10-09T21:40:04Z",
   "date": "2026-10-09",
   "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "21:45",
-      "host": "Wendy X"
-    },
     {
       "start": "15:30",
       "end": "21:00",
       "host": "Lillian H"
+    },
+    {
+      "start": "18:00",
+      "end": "21:45",
+      "host": "Nelson"
     },
     {
       "start": "19:00",
@@ -20,7 +20,7 @@
     {
       "start": "18:00",
       "end": "21:45",
-      "host": "Nelson"
+      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -536,9 +536,9 @@
       "eventId": 2290385,
       "title": "Friday Night Challenge Court (High Int+)",
       "startTime": "2026-10-09T17:30:00",
-      "endTime": "2026-10-09T21:00:00",
+      "endTime": "2026-10-09T19:30:00",
       "courts": [
-        "Court 12 (Livestreaming)"
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Will K",
       "checkedIn": true
@@ -569,17 +569,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2290385,
-      "title": "Friday Night Challenge Court (High Int+)",
-      "startTime": "2026-10-09T17:30:00",
-      "endTime": "2026-10-09T21:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Lillian H",
-      "checkedIn": false
-    },
-    {
       "eventId": 2119000,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-09T19:30:00",
@@ -605,9 +594,9 @@
       "eventId": 2290385,
       "title": "Friday Night Challenge Court (High Int+)",
       "startTime": "2026-10-09T17:30:00",
-      "endTime": "2026-10-09T21:00:00",
+      "endTime": "2026-10-09T19:30:00",
       "courts": [
-        "Court 12 (Livestreaming)"
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Chok L",
       "checkedIn": true
@@ -647,6 +636,17 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Darren H",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2290385,
+      "title": "Friday Night Challenge Court (High Int+)",
+      "startTime": "2026-10-09T17:30:00",
+      "endTime": "2026-10-09T19:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Rohan K",
       "checkedIn": true
     },
     {
@@ -912,19 +912,6 @@
         "Court 11",
         "Court 10 (Livestreaming)"
       ],
-      "playerName": "Will K",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2199540,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-09T19:30:00",
-      "endTime": "2026-10-09T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
-      ],
       "playerName": "Zayd A",
       "checkedIn": false
     },
@@ -950,6 +937,17 @@
       ],
       "playerName": "steven a",
       "checkedIn": true
+    },
+    {
+      "eventId": 2290385,
+      "title": "Friday Night Challenge Court (High Int+)",
+      "startTime": "2026-10-09T17:30:00",
+      "endTime": "2026-10-09T19:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Lillian H",
+      "checkedIn": false
     },
     {
       "eventId": 2118708,
@@ -978,9 +976,9 @@
       "eventId": 2290385,
       "title": "Friday Night Challenge Court (High Int+)",
       "startTime": "2026-10-09T17:30:00",
-      "endTime": "2026-10-09T21:00:00",
+      "endTime": "2026-10-09T19:30:00",
       "courts": [
-        "Court 12 (Livestreaming)"
+        "Court 7 (Livestreaming)"
       ],
       "playerName": "Sam C",
       "checkedIn": false
@@ -1693,6 +1691,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2199540,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-09T19:30:00",
+      "endTime": "2026-10-09T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Will K",
+      "checkedIn": true
+    },
+    {
       "eventId": 2303222,
       "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
       "startTime": "2026-10-10T18:00:00",
@@ -1719,6 +1730,18 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Elena G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2200661,
+      "title": "3.5-4.0 Open Play | Saturday | 11am-1pm",
+      "startTime": "2026-10-10T11:00:00",
+      "endTime": "2026-10-10T13:00:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Matthew T",
       "checkedIn": false
     },
     {
@@ -1814,18 +1837,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2200661,
-      "title": "3.5-4.0 Open Play | Saturday | 11am-1pm",
-      "startTime": "2026-10-10T11:00:00",
-      "endTime": "2026-10-10T13:00:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Darren H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2112136,
       "title": "3.25+ Open Play | Saturday ",
       "startTime": "2026-10-10T11:00:00",
@@ -1836,18 +1847,6 @@
       ],
       "playerName": "Richard L",
       "checkedIn": true
-    },
-    {
-      "eventId": 2200661,
-      "title": "3.5-4.0 Open Play | Saturday | 11am-1pm",
-      "startTime": "2026-10-10T11:00:00",
-      "endTime": "2026-10-10T13:00:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Matthew T",
-      "checkedIn": false
     },
     {
       "eventId": 2303222,
