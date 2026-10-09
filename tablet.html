@@ -213,6 +213,8 @@
         if (!targetFilter) {
           targetFilter = tabletMapping['rack7'];
         }
+        
+        window.currentTabletFilter = targetFilter;
 
         const idDisplay = document.getElementById('tablet-id-pill');
         if (idDisplay) {

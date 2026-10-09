@@ -105,12 +105,17 @@ function initMqttAlerts() {
       try {
         const payload = JSON.parse(message.toString());
         
-        // Example topic: zigbee2mqtt/remote_court_7
-        // Extract court name from topic if possible
         let courtName = 'Unknown Court';
         const match = topic.match(/court_(\d+)/i);
         if (match) {
           courtName = 'Court ' + match[1];
+        }
+
+        // If this tablet is filtered to a specific queue, only flash if the court matches
+        if (window.currentTabletFilter && courtName !== 'Unknown Court') {
+          if (!window.currentTabletFilter.includes(courtName.toLowerCase())) {
+            return; // Ignore this alert, it's for a different court
+          }
         }
 
         if (payload.action) {
