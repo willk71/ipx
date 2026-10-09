@@ -40,6 +40,7 @@
 
   <footer class="rosters-footer">
     <div class="footer-meta-grid">
+      <span id="tablet-id-pill">ID: --</span>
       <span id="theme-pill">Theme: --</span>
       <span id="data-refresh-time">Data Sync: --</span>
       <span id="target-mode-pill">Target: --</span>
@@ -50,7 +51,6 @@
         <span class="countdown-label">Next session starts:</span>
         <span class="countdown-clock" id="transition-countdown">--:--</span>
       </div>
-      <div class="footer-clock" id="live-clock">--:-- --</div>
     </div>
   </footer>
 
@@ -178,6 +178,11 @@
         let targetFilter = (queueOverride || courtOverride || '').toLowerCase();
         if (!targetFilter && tabletId && tabletMapping[tabletId]) {
           targetFilter = tabletMapping[tabletId].toLowerCase();
+        }
+
+        const idDisplay = document.getElementById('tablet-id-pill');
+        if (idDisplay) {
+          idDisplay.textContent = tabletId ? `ID: ${tabletId}` : (targetFilter ? `Filter: ${targetFilter}` : 'ID: --');
         }
 
         Object.values(eventMap).forEach(ev => {
