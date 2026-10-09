@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-09T16:31:13Z",
+  "lastUpdated": "2026-10-09T16:33:29Z",
   "date": "2026-10-09",
   "courtHosts": [
+    {
+      "start": "15:30",
+      "end": "21:00",
+      "host": "Lillian H"
+    },
     {
       "start": "18:00",
       "end": "21:45",
@@ -16,11 +21,6 @@
       "start": "19:00",
       "end": "23:00",
       "host": "Stephanie L"
-    },
-    {
-      "start": "15:30",
-      "end": "21:00",
-      "host": "Lillian H"
     }
   ],
   "courtOverrides": [],
@@ -1040,6 +1040,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2292581,
+      "title": "Advanced Beginners+ Open Play",
+      "startTime": "2026-10-09T19:30:00",
+      "endTime": "2026-10-09T21:30:00",
+      "courts": [
+        "Court 2"
+      ],
+      "playerName": "Earl B",
+      "checkedIn": false
+    },
+    {
       "eventId": 2199540,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-09T19:30:00",
@@ -1279,17 +1290,6 @@
       "courts": [
         "Court 2",
         "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Richard D",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2112145,
-      "title": "4.0+ Gated Open Play | Saturday | 11am-1pm",
-      "startTime": "2026-10-10T11:00:00",
-      "endTime": "2026-10-10T13:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
       ],
       "playerName": "Richard D",
       "checkedIn": true
@@ -1840,18 +1840,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2200661,
-      "title": "3.5-4.0 Open Play | Saturday | 11am-1pm",
-      "startTime": "2026-10-10T11:00:00",
-      "endTime": "2026-10-10T13:00:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Darren H",
-      "checkedIn": false
-    },
-    {
       "eventId": 2268293,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-09T15:30:00",
@@ -1860,6 +1848,18 @@
         "Court 12 (Livestreaming)",
         "Court 7 (Livestreaming)",
         "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Darren H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2200661,
+      "title": "3.5-4.0 Open Play | Saturday | 11am-1pm",
+      "startTime": "2026-10-10T11:00:00",
+      "endTime": "2026-10-10T13:00:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)"
       ],
       "playerName": "Darren H",
       "checkedIn": false
@@ -2066,6 +2066,17 @@
       ],
       "playerName": "Linda C",
       "checkedIn": false
+    },
+    {
+      "eventId": 2112145,
+      "title": "4.0+ Gated Open Play | Saturday | 11am-1pm",
+      "startTime": "2026-10-10T11:00:00",
+      "endTime": "2026-10-10T13:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Richard D",
+      "checkedIn": true
     },
     {
       "eventId": 2303222,
@@ -3082,18 +3093,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2199543,
-      "title": "3.5-4.0 Gated Open Play ",
-      "startTime": "2026-10-09T21:30:00",
-      "endTime": "2026-10-09T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Jacky T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2182202,
       "title": "SUMMER | Intermediate - Advanced | Saturday",
       "startTime": "2026-10-10T13:00:00",
@@ -3107,6 +3106,17 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Ian B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2292581,
+      "title": "Advanced Beginners+ Open Play",
+      "startTime": "2026-10-09T19:30:00",
+      "endTime": "2026-10-09T21:30:00",
+      "courts": [
+        "Court 2"
+      ],
+      "playerName": "Jhantelle B",
       "checkedIn": false
     },
     {
@@ -3187,6 +3197,18 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Chris U",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2199543,
+      "title": "3.5-4.0 Gated Open Play ",
+      "startTime": "2026-10-09T21:30:00",
+      "endTime": "2026-10-09T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Jacky T",
       "checkedIn": false
     },
     {
