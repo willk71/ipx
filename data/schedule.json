@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-09T13:10:01Z",
+  "lastUpdated": "2026-10-09T13:12:17Z",
   "date": "2026-10-09",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "15:30",
       "end": "21:00",
@@ -15,12 +10,17 @@
     {
       "start": "18:00",
       "end": "21:45",
-      "host": "Wendy X"
+      "host": "Nelson"
     },
     {
       "start": "18:00",
       "end": "21:45",
-      "host": "Nelson"
+      "host": "Wendy X"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -343,7 +343,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "May S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2127713,
@@ -2095,18 +2095,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2118960,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-09T19:30:00",
-      "endTime": "2026-10-09T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Kevin J",
-      "checkedIn": false
-    },
-    {
       "eventId": 2112136,
       "title": "3.25+ Open Play | Saturday ",
       "startTime": "2026-10-10T11:00:00",
@@ -2168,6 +2156,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Joanne L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118712,
+      "title": "Advanced Beginner+ Open Play",
+      "startTime": "2026-10-09T21:30:00",
+      "endTime": "2026-10-09T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Cara P",
       "checkedIn": false
     },
     {
@@ -2240,18 +2241,6 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Aryan N",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2182223,
-      "title": "SUMMER | Advanced Beginner - Intermediate | Saturday",
-      "startTime": "2026-10-10T15:00:00",
-      "endTime": "2026-10-10T18:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Mina L",
       "checkedIn": false
     },
     {
@@ -2330,6 +2319,18 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Erica G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118960,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-09T19:30:00",
+      "endTime": "2026-10-09T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Kevin J",
       "checkedIn": false
     },
     {
@@ -2720,6 +2721,18 @@
         "Court 11"
       ],
       "playerName": "Larry L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2182223,
+      "title": "SUMMER | Advanced Beginner - Intermediate | Saturday",
+      "startTime": "2026-10-10T15:00:00",
+      "endTime": "2026-10-10T18:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Mina L",
       "checkedIn": false
     },
     {
