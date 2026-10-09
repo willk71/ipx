@@ -320,16 +320,16 @@
           const timeLabel = `${s.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} - ${e.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
 
           card.innerHTML = `
-            <div class="tablet-left" style="flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
-              <div class="line-title" style="font-size: 4.5rem; line-height: 1.1; font-weight: 800; white-space: normal; -webkit-line-clamp: 3; margin-bottom: 1vh;">${item.title}</div>
-              <div class="line-courts" style="font-size: 3.5rem; font-weight: 700; color: #fff;">${item.courtsLabel}</div>
-              <div class="line-meta" style="font-size: 1.5rem; color: var(--text-sub); opacity: 0.9; display: flex; align-items: center; gap: 1.5vw; flex-wrap: wrap;">
+            <div class="tablet-left" style="flex: 2; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
+              <div class="line-title" style="font-size: 6.5rem; line-height: 1.1; font-weight: 800; white-space: normal; margin-bottom: 1vh;">${item.title}</div>
+              <div class="line-courts" style="font-size: 5.5rem; font-weight: 700; color: #fff;">${item.courtsLabel}</div>
+              <div class="line-meta" style="font-size: 2rem; color: var(--text-sub); opacity: 0.9; display: flex; align-items: center; gap: 1.5vw; flex-wrap: wrap;">
                 <span>${timeLabel}</span>
                 ${item.queueText ? `<span class="paddle-queue" style="color: var(--theme-accent);">${item.queueText}</span>` : ''}
               </div>
-              <div class="count-badge" style="width: fit-content; font-size: 1.4rem; margin-top: 1vh;">${count} ${count === 1 ? 'Player' : 'Players'}</div>
+              <div class="count-badge" style="width: fit-content; font-size: 1.8rem; margin-top: 1vh; padding: 0.5vh 1vw;">${count} ${count === 1 ? 'Player' : 'Players'}</div>
             </div>
-            <div class="tablet-right" style="flex: 2; overflow-y: auto; padding-left: 1vw;">
+            <div class="tablet-right" style="flex: 1; overflow-y: auto; padding-left: 1vw;">
               <div class="player-list" style="
                 column-count: ${dynCols};
                 column-gap: ${dynColGap};
