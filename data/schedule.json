@@ -1,17 +1,7 @@
 {
-  "lastUpdated": "2026-10-10T02:18:54Z",
+  "lastUpdated": "2026-10-10T02:30:52Z",
   "date": "2026-10-09",
   "courtHosts": [
-    {
-      "start": "19:00",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
-    {
-      "start": "18:00",
-      "end": "21:45",
-      "host": "Wendy X"
-    },
     {
       "start": "18:00",
       "end": "21:45",
@@ -21,6 +11,16 @@
       "start": "15:30",
       "end": "21:00",
       "host": "Lillian H"
+    },
+    {
+      "start": "19:00",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
+    {
+      "start": "18:00",
+      "end": "21:45",
+      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -576,6 +576,18 @@
       "checkedIn": true
     },
     {
+      "eventId": 2118699,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-09T21:30:00",
+      "endTime": "2026-10-09T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Nick L",
+      "checkedIn": true
+    },
+    {
       "eventId": 2118949,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-09T19:30:00",
@@ -648,18 +660,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Erika R",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2118949,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-09T19:30:00",
-      "endTime": "2026-10-09T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Victor C",
       "checkedIn": true
     },
     {
@@ -1250,6 +1250,18 @@
       "checkedIn": true
     },
     {
+      "eventId": 2118949,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-09T19:30:00",
+      "endTime": "2026-10-09T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Victor C",
+      "checkedIn": true
+    },
+    {
       "eventId": 2148666,
       "title": "Open Play (AdvBeg-Int)",
       "startTime": "2026-10-11T20:00:00",
@@ -1597,6 +1609,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2199540,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-09T19:30:00",
+      "endTime": "2026-10-09T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Mingyi L",
+      "checkedIn": true
+    },
+    {
       "eventId": 2148643,
       "title": "Open Play (AdvBeg-Int)",
       "startTime": "2026-10-11T15:00:00",
@@ -1686,18 +1711,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2182223,
-      "title": "SUMMER | Advanced Beginner - Intermediate | Saturday",
-      "startTime": "2026-10-10T15:00:00",
-      "endTime": "2026-10-10T18:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Jerry H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2118960,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-09T19:30:00",
@@ -1731,18 +1744,6 @@
         "Court 2"
       ],
       "playerName": "Jhas D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2182223,
-      "title": "SUMMER | Advanced Beginner - Intermediate | Saturday",
-      "startTime": "2026-10-10T15:00:00",
-      "endTime": "2026-10-10T18:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Phong H",
       "checkedIn": false
     },
     {
@@ -2360,14 +2361,12 @@
       "checkedIn": true
     },
     {
-      "eventId": 2199540,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-09T19:30:00",
-      "endTime": "2026-10-09T21:30:00",
+      "eventId": 2200658,
+      "title": "3.5-4.0 Gated Open Play | Saturday | 9am-11am",
+      "startTime": "2026-10-10T09:00:00",
+      "endTime": "2026-10-10T11:00:00",
       "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)"
+        "Court 1 (Livestreaming)"
       ],
       "playerName": "Mingyi L",
       "checkedIn": true
@@ -2382,6 +2381,18 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Kristen C",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2182223,
+      "title": "SUMMER | Advanced Beginner - Intermediate | Saturday",
+      "startTime": "2026-10-10T15:00:00",
+      "endTime": "2026-10-10T18:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Jerry H",
       "checkedIn": true
     },
     {
@@ -2410,6 +2421,18 @@
         "Court 11"
       ],
       "playerName": "Oliver M",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2182223,
+      "title": "SUMMER | Advanced Beginner - Intermediate | Saturday",
+      "startTime": "2026-10-10T15:00:00",
+      "endTime": "2026-10-10T18:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Phong H",
       "checkedIn": false
     },
     {
