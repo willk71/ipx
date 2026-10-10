@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-10T14:58:09Z",
+  "lastUpdated": "2026-10-10T15:11:16Z",
   "date": "2026-10-10",
   "courtHosts": [
     {
       "start": "09:00",
       "end": "13:00",
-      "host": "Nelson C"
+      "host": "Lillian H"
     },
     {
       "start": "09:00",
       "end": "13:00",
-      "host": "Lillian H"
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -95,7 +95,7 @@
       "endTime": "2026-10-11T12:00:00"
     },
     {
-      "court": "Court 6",
+      "court": "Court 12 (Livestreaming)",
       "holderLabel": "",
       "startTime": "2026-10-10T11:00:00",
       "endTime": "2026-10-10T12:00:00"
@@ -142,7 +142,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "May S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2112136,
@@ -166,7 +166,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Richard L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2112136,
@@ -216,14 +216,14 @@
       "checkedIn": true
     },
     {
-      "eventId": 2112167,
-      "title": "Advanced Beginner Open Play | Saturday | 9am-11am",
-      "startTime": "2026-10-10T09:00:00",
-      "endTime": "2026-10-10T11:00:00",
+      "eventId": 2112143,
+      "title": "3.5-4.0 Gated Open Play | Saturday | 11am-1pm",
+      "startTime": "2026-10-10T11:00:00",
+      "endTime": "2026-10-10T13:00:00",
       "courts": [
-        "Court 3"
+        "Court 1 (Livestreaming)"
       ],
-      "playerName": "Tori Y",
+      "playerName": "Andy C",
       "checkedIn": true
     },
     {
@@ -261,18 +261,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2112160,
-      "title": "3.5-4.0 Open Play | Saturday | 9am-11am",
-      "startTime": "2026-10-10T09:00:00",
-      "endTime": "2026-10-10T11:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Isaac M",
-      "checkedIn": true
-    },
-    {
       "eventId": 2112157,
       "title": "3.25+ Open Play | Saturday",
       "startTime": "2026-10-10T09:00:00",
@@ -293,6 +281,17 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Nikki M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2112143,
+      "title": "3.5-4.0 Gated Open Play | Saturday | 11am-1pm",
+      "startTime": "2026-10-10T11:00:00",
+      "endTime": "2026-10-10T13:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Mingyi L",
       "checkedIn": true
     },
     {
@@ -338,15 +337,15 @@
       "checkedIn": false
     },
     {
-      "eventId": 2118424,
-      "title": "4.0+ Gated Open Play | Sunday | 11am-1pm",
-      "startTime": "2026-10-11T11:00:00",
-      "endTime": "2026-10-11T13:00:00",
+      "eventId": 2112167,
+      "title": "Advanced Beginner Open Play | Saturday | 9am-11am",
+      "startTime": "2026-10-10T09:00:00",
+      "endTime": "2026-10-10T11:00:00",
       "courts": [
-        "Court 12 (Livestreaming)"
+        "Court 3"
       ],
-      "playerName": "GHULAM M",
-      "checkedIn": false
+      "playerName": "Tori Y",
+      "checkedIn": true
     },
     {
       "eventId": 2118420,
@@ -360,20 +359,6 @@
         "Court 5"
       ],
       "playerName": "Jordi F",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2118420,
-      "title": "3.5-4.0 Open Play | Sunday | 11am-1pm",
-      "startTime": "2026-10-11T11:00:00",
-      "endTime": "2026-10-11T13:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 2",
-        "Court 7 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Alex E",
       "checkedIn": false
     },
     {
@@ -453,6 +438,18 @@
       ],
       "playerName": "Steve L",
       "checkedIn": false
+    },
+    {
+      "eventId": 2112160,
+      "title": "3.5-4.0 Open Play | Saturday | 9am-11am",
+      "startTime": "2026-10-10T09:00:00",
+      "endTime": "2026-10-10T11:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Isaac M",
+      "checkedIn": true
     },
     {
       "eventId": 2118420,
@@ -580,6 +577,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2118424,
+      "title": "4.0+ Gated Open Play | Sunday | 11am-1pm",
+      "startTime": "2026-10-11T11:00:00",
+      "endTime": "2026-10-11T13:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "GHULAM M",
+      "checkedIn": false
+    },
+    {
       "eventId": 2182202,
       "title": "SUMMER | Intermediate - Advanced | Saturday",
       "startTime": "2026-10-10T13:00:00",
@@ -593,6 +601,20 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Igor C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2118420,
+      "title": "3.5-4.0 Open Play | Sunday | 11am-1pm",
+      "startTime": "2026-10-11T11:00:00",
+      "endTime": "2026-10-11T13:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 7 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Alex E",
       "checkedIn": false
     },
     {
@@ -637,22 +659,6 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Pastor T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2182246,
-      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
-      "startTime": "2026-10-10T21:00:00",
-      "endTime": "2026-10-10T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 11"
-      ],
-      "playerName": "Jennifer N",
       "checkedIn": false
     },
     {
@@ -842,22 +848,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2182246,
-      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
-      "startTime": "2026-10-10T21:00:00",
-      "endTime": "2026-10-10T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 11"
-      ],
-      "playerName": "Pedro E",
-      "checkedIn": false
-    },
-    {
       "eventId": 2148643,
       "title": "Open Play (AdvBeg-Int)",
       "startTime": "2026-10-11T15:00:00",
@@ -978,17 +968,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2277153,
-      "title": "Drilling Basics Workshop w/ Coach Wally (AdvBeg+)",
-      "startTime": "2026-10-10T13:00:00",
-      "endTime": "2026-10-10T14:00:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Will K",
-      "checkedIn": false
-    },
-    {
       "eventId": 2182875,
       "title": "Team Challenge Court Ladder - Fixed Partner | Win 4x Daytime Pass!",
       "startTime": "2026-10-11T18:00:00",
@@ -999,6 +978,17 @@
         "Court 3",
         "Court 2",
         "Court 5"
+      ],
+      "playerName": "Will K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2277153,
+      "title": "Drilling Basics Workshop w/ Coach Wally (AdvBeg+)",
+      "startTime": "2026-10-10T13:00:00",
+      "endTime": "2026-10-10T14:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
       ],
       "playerName": "Will K",
       "checkedIn": false
@@ -1214,6 +1204,22 @@
         "Court 8",
         "Court 11"
       ],
+      "playerName": "Jennifer N",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2182246,
+      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
+      "startTime": "2026-10-10T21:00:00",
+      "endTime": "2026-10-10T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 11"
+      ],
       "playerName": "Jimmy Z",
       "checkedIn": false
     },
@@ -1388,6 +1394,22 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Arthur L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2182246,
+      "title": "SUMMER | Open Play | Intermediate - Advanced | Saturday",
+      "startTime": "2026-10-10T21:00:00",
+      "endTime": "2026-10-10T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 11"
+      ],
+      "playerName": "Pedro E",
       "checkedIn": false
     },
     {
