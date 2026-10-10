@@ -1,7 +1,17 @@
 {
-  "lastUpdated": "2026-10-10T22:53:42Z",
+  "lastUpdated": "2026-10-10T22:55:57Z",
   "date": "2026-10-10",
   "courtHosts": [
+    {
+      "start": "09:00",
+      "end": "13:00",
+      "host": "Lillian H"
+    },
+    {
+      "start": "20:00",
+      "end": "02:00",
+      "host": "Nelson C"
+    },
     {
       "start": "20:00",
       "end": "02:00",
@@ -10,16 +20,6 @@
     {
       "start": "09:00",
       "end": "13:00",
-      "host": "Lillian H"
-    },
-    {
-      "start": "09:00",
-      "end": "13:00",
-      "host": "Nelson C"
-    },
-    {
-      "start": "20:00",
-      "end": "02:00",
       "host": "Nelson C"
     }
   ],
@@ -2294,20 +2294,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2148670,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-11T20:00:00",
-      "endTime": "2026-10-11T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Luke O",
-      "checkedIn": false
-    },
-    {
       "eventId": 2118420,
       "title": "3.5-4.0 Open Play | Sunday | 11am-1pm",
       "startTime": "2026-10-11T11:00:00",
@@ -2743,6 +2729,20 @@
       "checkedIn": false
     },
     {
+      "eventId": 2148643,
+      "title": "Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-11T15:00:00",
+      "endTime": "2026-10-11T18:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 5",
+        "Court 2"
+      ],
+      "playerName": "Ben N",
+      "checkedIn": false
+    },
+    {
       "eventId": 2182875,
       "title": "Team Challenge Court Ladder - Fixed Partner | Win 4x Daytime Pass!",
       "startTime": "2026-10-11T18:00:00",
@@ -2820,6 +2820,20 @@
         "Court 11"
       ],
       "playerName": "Roger T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2148670,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-11T20:00:00",
+      "endTime": "2026-10-11T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Luke O",
       "checkedIn": false
     },
     {
