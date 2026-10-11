@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-11T21:18:25Z",
+  "lastUpdated": "2026-10-11T21:35:07Z",
   "date": "2026-10-11",
   "courtHosts": [
     {
@@ -99,6 +99,12 @@
       "holderLabel": "Zain N.",
       "startTime": "2026-10-11T20:00:00",
       "endTime": "2026-10-11T22:00:00"
+    },
+    {
+      "court": "Court 9",
+      "holderLabel": "",
+      "startTime": "2026-10-12T15:00:00",
+      "endTime": "2026-10-12T17:00:00"
     }
   ],
   "events": [
@@ -1687,20 +1693,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2300500,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-12T19:30:00",
-      "endTime": "2026-10-12T21:30:00",
-      "courts": [
-        "Court 9",
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 5"
-      ],
-      "playerName": "Will L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2300468,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-12T17:30:00",
@@ -1800,16 +1792,32 @@
       "checkedIn": false
     },
     {
-      "eventId": 2300492,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-12T19:30:00",
-      "endTime": "2026-10-12T21:30:00",
+      "eventId": 2182875,
+      "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
+      "startTime": "2026-10-11T18:00:00",
+      "endTime": "2026-10-11T20:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 3",
         "Court 2",
-        "Court 1 (Livestreaming)"
+        "Court 5"
       ],
-      "playerName": "KD P",
+      "playerName": "Eric H",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2148670,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-11T20:00:00",
+      "endTime": "2026-10-11T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Juan S",
       "checkedIn": false
     },
     {
@@ -2018,6 +2026,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2303235,
+      "title": "SUMMER | Social Open Play | Intermediate - Advanced",
+      "startTime": "2026-10-11T18:00:00",
+      "endTime": "2026-10-11T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Michael C",
+      "checkedIn": true
+    },
+    {
       "eventId": 2300500,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-12T19:30:00",
@@ -2082,7 +2103,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Catherine R",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2300506,
@@ -2272,6 +2293,20 @@
         "Court 8",
         "Court 5"
       ],
+      "playerName": "Will L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300500,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-12T19:30:00",
+      "endTime": "2026-10-12T21:30:00",
+      "courts": [
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
       "playerName": "Stephanie S",
       "checkedIn": false
     },
@@ -2353,6 +2388,19 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Pedro E",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300492,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-12T19:30:00",
+      "endTime": "2026-10-12T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "KD P",
       "checkedIn": false
     },
     {
