@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Event Choice Breakdown | IPX</title>
+  <link rel="stylesheet" href="css/common.css?v=2.2.0" />
+  <style>
+    :root {
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --color-adv-beg: #2ec4b6;
+      --color-int: #3a86ff;
+      --color-high-int: #8338ec;
+      --color-adv: #ff006e;
+      --color-default: var(--theme-accent, #00f0ff);
+    }
+
+    body.page-event-choices {
+      background-color: var(--bg-main, #0d1117);
+      color: var(--text-main, #f0f6fc);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+    }
+
+    .event-page-container {
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 3vh 4vw 6vh 4vw;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Brand Bar */
+    .brand-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5vh;
+      padding-bottom: 1.5vh;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--theme-accent, #00f0ff);
+    }
+
+    .brand-meta {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Session Header Card */
+    .event-hero {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 3vh 4vw;
+      margin-bottom: 2.5vh;
+      backdrop-filter: blur(12px);
+    }
+
+    .event-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 0 1vh 0;
+      color: #ffffff;
+    }
+
+    .event-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+    }
+
+    .event-courts {
+      display: inline-block;
+      margin-top: 1vh;
+      font-size: 0.95rem;
+      color: var(--theme-accent, #00f0ff);
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+    }
+
+    /* Multi-Date Tabs */
+    .date-selector-wrapper {
+      margin-bottom: 2.5vh;
+    }
+
+    .date-selector-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.8vh;
+    }
+
+    .date-tabs {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding-bottom: 0.5vh;
+      scrollbar-width: none;
+    }
+    .date-tabs::-webkit-scrollbar { display: none; }
+
+    .date-tab-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.6rem 1.1rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .date-tab-btn.is-active {
+      background: var(--theme-accent, #00f0ff);
+      border-color: var(--theme-accent, #00f0ff);
+      color: #000000;
+      box-shadow: 0 4px 16px rgba(0, 240, 255, 0.25);
+    }
+
+    /* Questions / Breakdown Section */
+    .breakdown-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 3vh 4vw;
+      margin-bottom: 2vh;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2.5vh;
+      padding-bottom: 1.2vh;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .question-title {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .respondent-count {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+    }
+
+    /* Choice Bar Item */
+    .choice-item {
+      margin-bottom: 2.2vh;
+    }
+    .choice-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .choice-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6vh;
+    }
+
+    .choice-name {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .choice-tally {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .choice-bar-track {
+      background: rgba(255, 255, 255, 0.08);
+      height: 14px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .choice-bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      background: var(--color-default);
+    }
+
+    /* Empty & Loading States */
+    .empty-state {
+      text-align: center;
+      padding: 8vh 2vw;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .empty-state h3 {
+      font-size: 1.6rem;
+      color: #ffffff;
+      margin-bottom: 1vh;
+    }
+
+    /* Footer Meta */
+    .page-footer {
+      text-align: center;
+      margin-top: auto;
+      padding-top: 3vh;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+  </style>
+</head>
+<body class="page-event-choices">
+  <div class="event-page-container">
+    <header class="brand-header">
+      <div class="brand-title">IPX &bull; Event Choices</div>
+      <div class="brand-meta" id="sync-time">Sync: --</div>
+    </header>
+
+    <main id="main-content">
+      <div class="empty-state">
+        <h3>Loading Breakdown...</h3>
+        <p>Fetching the latest registrations from CourtReserve.</p>
+      </div>
+    </main>
+
+    <footer class="page-footer">
+      <span>Auto-refreshed from CourtReserve data</span>
+    </footer>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventIdParam = urlParams.get('id') || urlParams.get('eventId');
+
+    let cachedEventData = null;
+    let selectedSessionIndex = 0;
+
+    function formatTimeWindow(startIso, endIso) {
+      if (!startIso) return '';
+      const s = new Date(startIso);
+      const e = endIso ? new Date(endIso) : null;
+      
+      const timeOpts = { hour: 'numeric', minute: '2-digit' };
+      const sStr = s.toLocaleTimeString([], timeOpts);
+      const eStr = e ? e.toLocaleTimeString([], timeOpts) : '';
+      
+      const dateOpts = { weekday: 'short', month: 'short', day: 'numeric' };
+      const dateStr = s.toLocaleDateString([], dateOpts);
+      
+      return {
+        dateStr,
+        timeStr: eStr ? `${sStr} – ${eStr}` : sStr
+      };
+    }
+
+    function getLevelColor(choiceName) {
+      const lower = choiceName.toLowerCase();
+      if (lower.includes('adv') && lower.includes('beg')) return 'var(--color-adv-beg)';
+      if (lower.includes('high int')) return 'var(--color-high-int)';
+      if (lower.includes('intermediate')) return 'var(--color-int)';
+      if (lower.includes('advanced')) return 'var(--color-adv)';
+      return 'var(--color-default)';
+    }
+
+    function renderSession(session, allSessions) {
+      const main = document.getElementById('main-content');
+      const timeInfo = formatTimeWindow(session.startTime, session.endTime);
+
+      let dateTabsHtml = '';
+      if (allSessions && allSessions.length > 1) {
+        dateTabsHtml = `
+          <div class="date-selector-wrapper">
+            <div class="date-selector-label">Upcoming Dates (Next 10 Days)</div>
+            <div class="date-tabs">
+              ${allSessions.map((s, idx) => {
+                const dt = formatTimeWindow(s.startTime, s.endTime);
+                const active = idx === selectedSessionIndex ? 'is-active' : '';
+                return `
+                  <button class="date-tab-btn ${active}" onclick="switchSession(${idx})">
+                    ${dt.dateStr}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      let courtsHtml = '';
+      if (session.courts && session.courts.length > 0) {
+        courtsHtml = `<div class="event-courts">Courts ${session.courts.join(', ')}</div>`;
+      }
+
+      let questionsHtml = '';
+      if (session.questions && session.questions.length > 0) {
+        questionsHtml = session.questions.map(q => {
+          const choicesHtml = q.choices.map(c => {
+            const barColor = getLevelColor(c.choice);
+            return `
+              <div class="choice-item">
+                <div class="choice-labels">
+                  <span class="choice-name">${c.choice}</span>
+                  <span class="choice-tally">${c.count} ${c.count === 1 ? 'player' : 'players'} (${c.percentage}%)</span>
+                </div>
+                <div class="choice-bar-track">
+                  <div class="choice-bar-fill" style="width: ${c.percentage}%; background: ${barColor};"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="breakdown-card">
+              <div class="question-header">
+                <h2 class="question-title">${q.question}</h2>
+                <span class="respondent-count">${q.totalResponses} Responses</span>
+              </div>
+              <div class="choices-container">
+                ${choicesHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        questionsHtml = `
+          <div class="breakdown-card" style="text-align: center; padding: 4vh 2vw;">
+            <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 1.1rem;">
+              No custom choices recorded yet for this session (${session.totalRegistered} total players registered).
+            </p>
+          </div>
+        `;
+      }
+
+      main.innerHTML = `
+        ${dateTabsHtml}
+        
+        <div class="event-hero">
+          <h1 class="event-title">${cachedEventData.title}</h1>
+          <div class="event-time-badge">
+            <span>📅 ${timeInfo.dateStr}</span>
+            <span>&bull;</span>
+            <span>⏰ ${timeInfo.timeStr}</span>
+          </div>
+          ${courtsHtml}
+        </div>
+
+        ${questionsHtml}
+      `;
+    }
+
+    function switchSession(idx) {
+      selectedSessionIndex = idx;
+      if (cachedEventData && cachedEventData.sessions && cachedEventData.sessions[idx]) {
+        renderSession(cachedEventData.sessions[idx], cachedEventData.sessions);
+      }
+    }
+
+    async function loadEventData() {
+      const main = document.getElementById('main-content');
+      if (!eventIdParam) {
+        main.innerHTML = `
+          <div class="empty-state">
+            <h3>No Event Specified</h3>
+            <p>Please include an Event ID in the URL, e.g. <code>?id=2162219</code></p>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const res = await fetch(`data/event-choices.json?_t=${Date.now()}`);
+        if (!res.ok) {
+          throw new Error('Data file not found. Sync may be in progress.');
+        }
+
+        const data = await res.json();
+        if (data.lastUpdated) {
+          const syncDate = new Date(data.lastUpdated);
+          document.getElementById('sync-time').textContent = `Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+        }
+
+        const eventData = data.events ? data.events[String(eventIdParam).trim()] : null;
+
+        if (!eventData || !eventData.sessions || eventData.sessions.length === 0) {
+          main.innerHTML = `
+            <div class="empty-state">
+              <h3>Event #${eventIdParam} Not Found</h3>
+              <p>No active sessions found for this event within the next 10 days.</p>
+            </div>
+          `;
+          return;
+        }
+
+        cachedEventData = eventData;
+        renderSession(eventData.sessions[selectedSessionIndex], eventData.sessions);
+
+      } catch (err) {
+        console.error(err);
+        main.innerHTML = `
+          <div class="empty-state">
+            <h3>Breakdown Unavailable</h3>
+            <p>${err.message || 'Unable to load event tallies at this time.'}</p>
+          </div>
+        `;
+      }
+    }
+
+    loadEventData();
+    // Auto-refresh every 60 seconds if page stays open
+    setInterval(loadEventData, 60000);
+  </script>
+</body>
+</html>
