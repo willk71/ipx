@@ -1,17 +1,7 @@
 {
-  "lastUpdated": "2026-10-11T03:08:39Z",
+  "lastUpdated": "2026-10-11T03:10:54Z",
   "date": "2026-10-10",
   "courtHosts": [
-    {
-      "start": "20:00",
-      "end": "02:00",
-      "host": "Nelson C"
-    },
-    {
-      "start": "09:00",
-      "end": "13:00",
-      "host": "Nelson C"
-    },
     {
       "start": "20:00",
       "end": "02:00",
@@ -21,6 +11,16 @@
       "start": "09:00",
       "end": "13:00",
       "host": "Lillian H"
+    },
+    {
+      "start": "20:00",
+      "end": "02:00",
+      "host": "Nelson C"
+    },
+    {
+      "start": "09:00",
+      "end": "13:00",
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -3103,20 +3103,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2148666,
-      "title": "Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-11T20:00:00",
-      "endTime": "2026-10-11T23:59:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Cindy M",
-      "checkedIn": false
-    },
-    {
       "eventId": 2148643,
       "title": "Open Play (AdvBeg-Int)",
       "startTime": "2026-10-11T15:00:00",
@@ -3403,6 +3389,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2225510,
+      "title": "Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-11T13:00:00",
+      "endTime": "2026-10-11T15:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Chloe S",
+      "checkedIn": false
+    },
+    {
       "eventId": 2182875,
       "title": "Team Challenge Court Ladder - Fixed Partner | Win 4x Daytime Pass!",
       "startTime": "2026-10-11T18:00:00",
@@ -3550,6 +3548,20 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Harper K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2148666,
+      "title": "Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-11T20:00:00",
+      "endTime": "2026-10-11T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Cindy M",
       "checkedIn": false
     },
     {
