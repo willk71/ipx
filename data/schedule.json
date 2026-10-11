@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-11T02:05:55Z",
+  "lastUpdated": "2026-10-11T02:08:09Z",
   "date": "2026-10-10",
   "courtHosts": [
-    {
-      "start": "20:00",
-      "end": "02:00",
-      "host": "Wendy X"
-    },
     {
       "start": "09:00",
       "end": "13:00",
@@ -21,6 +16,11 @@
       "start": "09:00",
       "end": "13:00",
       "host": "Nelson C"
+    },
+    {
+      "start": "20:00",
+      "end": "02:00",
+      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -3489,6 +3489,18 @@
         "Court 2"
       ],
       "playerName": "Aaron Z",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2225510,
+      "title": "Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-11T13:00:00",
+      "endTime": "2026-10-11T15:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Richard N",
       "checkedIn": false
     }
   ]
