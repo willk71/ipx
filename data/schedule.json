@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-11T03:26:47Z",
+  "lastUpdated": "2026-10-11T03:29:02Z",
   "date": "2026-10-10",
   "courtHosts": [
     {
@@ -8,9 +8,9 @@
       "host": "Nelson C"
     },
     {
-      "start": "09:00",
-      "end": "13:00",
-      "host": "Lillian H"
+      "start": "20:00",
+      "end": "02:00",
+      "host": "Wendy X"
     },
     {
       "start": "20:00",
@@ -18,9 +18,9 @@
       "host": "Nelson C"
     },
     {
-      "start": "20:00",
-      "end": "02:00",
-      "host": "Wendy X"
+      "start": "09:00",
+      "end": "13:00",
+      "host": "Lillian H"
     }
   ],
   "courtOverrides": [],
@@ -1367,20 +1367,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2300500,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-12T19:30:00",
-      "endTime": "2026-10-12T21:30:00",
-      "courts": [
-        "Court 9",
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 5"
-      ],
-      "playerName": "Pablo R",
-      "checkedIn": true
-    },
-    {
       "eventId": 2300468,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-12T17:30:00",
@@ -1666,6 +1652,20 @@
         "Court 8",
         "Court 5"
       ],
+      "playerName": "Stephanie S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300500,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-12T19:30:00",
+      "endTime": "2026-10-12T21:30:00",
+      "courts": [
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
       "playerName": "Abel T",
       "checkedIn": false
     },
@@ -1711,6 +1711,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2201260,
+      "title": "3.5-4.0 Gated Open Play | Sunday | 11am-1pm",
+      "startTime": "2026-10-11T11:00:00",
+      "endTime": "2026-10-11T13:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Nikki M",
+      "checkedIn": true
+    },
+    {
       "eventId": 2225541,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-11T13:00:00",
@@ -1721,17 +1732,6 @@
         "Court 4 (Livestreaming)",
         "Court 8",
         "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Nikki M",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2201260,
-      "title": "3.5-4.0 Gated Open Play | Sunday | 11am-1pm",
-      "startTime": "2026-10-11T11:00:00",
-      "endTime": "2026-10-11T13:00:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
       ],
       "playerName": "Nikki M",
       "checkedIn": true
@@ -2081,6 +2081,20 @@
         "Court 11"
       ],
       "playerName": "Louie T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2300500,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-12T19:30:00",
+      "endTime": "2026-10-12T21:30:00",
+      "courts": [
+        "Court 9",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
+      "playerName": "Pablo R",
       "checkedIn": true
     },
     {
