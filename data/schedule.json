@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-11T04:20:30Z",
+  "lastUpdated": "2026-10-11T04:35:54Z",
   "date": "2026-10-11",
   "courtHosts": [
     {
       "start": "14:45",
       "end": "18:45",
-      "host": "Nelson C"
+      "host": "Wendy X"
     },
     {
       "start": "14:45",
       "end": "18:45",
-      "host": "Wendy X"
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -87,6 +87,12 @@
       "holderLabel": "Earl B.",
       "startTime": "2026-10-11T18:00:00",
       "endTime": "2026-10-11T20:00:00"
+    },
+    {
+      "court": "Court 6",
+      "holderLabel": "",
+      "startTime": "2026-10-11T12:00:00",
+      "endTime": "2026-10-11T13:00:00"
     }
   ],
   "events": [
@@ -1231,19 +1237,6 @@
         "Court 2",
         "Court 1 (Livestreaming)"
       ],
-      "playerName": "Darren H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2300492,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-12T19:30:00",
-      "endTime": "2026-10-12T21:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
       "playerName": "Andrew H",
       "checkedIn": false
     },
@@ -1885,6 +1878,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2225510,
+      "title": "Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-11T13:00:00",
+      "endTime": "2026-10-11T15:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Jason L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2300500,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-12T19:30:00",
@@ -2004,6 +2009,19 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Maureen H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300492,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-12T19:30:00",
+      "endTime": "2026-10-12T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Darren H",
       "checkedIn": false
     },
     {
