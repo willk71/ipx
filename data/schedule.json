@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-12T01:02:10Z",
+  "lastUpdated": "2026-10-12T01:04:25Z",
   "date": "2026-10-11",
   "courtHosts": [
+    {
+      "start": "14:45",
+      "end": "18:45",
+      "host": "Wendy X"
+    },
     {
       "start": "14:45",
       "end": "18:45",
@@ -10,17 +15,12 @@
     {
       "start": "19:00",
       "end": "22:00",
-      "host": "Varun C"
-    },
-    {
-      "start": "14:45",
-      "end": "18:45",
-      "host": "Wendy X"
+      "host": "Harsh P"
     },
     {
       "start": "19:00",
       "end": "22:00",
-      "host": "Harsh P"
+      "host": "Varun C"
     }
   ],
   "courtOverrides": [],
@@ -958,7 +958,7 @@
         "Court 5"
       ],
       "playerName": "Alia S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2148647,
@@ -2730,6 +2730,19 @@
         "Court 5"
       ],
       "playerName": "Harris B",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2299376,
+      "title": "Morning Mixer | Rotating Partner",
+      "startTime": "2026-10-12T07:00:00",
+      "endTime": "2026-10-12T09:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Wheeler P",
       "checkedIn": false
     },
     {
