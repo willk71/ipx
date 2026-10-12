@@ -386,11 +386,18 @@
           const choicesHtml = validChoices.map(c => {
             const barColor = getLevelColor(c.choice);
             const pct = validTotal > 0 ? ((c.count / validTotal) * 100).toFixed(1) : 0;
+            
+            // Courts assigned: 1 court per 6 players (ceiling if count > 0, 0 if count == 0)
+            const courtsNeeded = c.count > 0 ? Math.ceil(c.count / 6) : 0;
+            const courtsLabel = courtsNeeded > 0 
+              ? `${courtsNeeded} ${courtsNeeded === 1 ? 'Court' : 'Courts'}` 
+              : '0 Courts';
+
             return `
               <div class="choice-item">
                 <div class="choice-labels">
-                  <span class="choice-name">${c.choice}</span>
-                  <span class="choice-tally">${c.count} ${c.count === 1 ? 'player' : 'players'} (${pct}%)</span>
+                  <span class="choice-name">${c.choice} (${c.count})</span>
+                  <span class="choice-tally">${courtsLabel}</span>
                 </div>
                 <div class="choice-bar-track">
                   <div class="choice-bar-fill" style="width: ${pct}%; background: ${barColor};"></div>
