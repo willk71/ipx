@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-12T01:17:43.580760Z",
+  "lastUpdated": "2026-10-12T01:37:02.435599Z",
   "events": {
     "2182875": {
       "eventId": "2182875",
@@ -9,11 +9,11 @@
           "startTime": "2026-10-11T18:00:00",
           "endTime": "2026-10-11T20:00:00",
           "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)",
-            "Court 3",
-            "Court 2",
-            "Court 5"
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
           ],
           "totalRegistered": 20,
           "questions": []
@@ -22,11 +22,11 @@
           "startTime": "2026-10-18T18:00:00",
           "endTime": "2026-10-18T20:00:00",
           "courts": [
-            "Court 3",
-            "Court 5",
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)",
-            "Court 2"
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -41,8 +41,8 @@
           "startTime": "2026-10-14T19:30:00",
           "endTime": "2026-10-14T21:30:00",
           "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 5"
+            "4",
+            "5"
           ],
           "totalRegistered": 10,
           "questions": []
@@ -51,8 +51,8 @@
           "startTime": "2026-10-21T19:30:00",
           "endTime": "2026-10-21T21:30:00",
           "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 5"
+            "4",
+            "5"
           ],
           "totalRegistered": 10,
           "questions": []
@@ -67,8 +67,8 @@
           "startTime": "2026-10-19T19:30:00",
           "endTime": "2026-10-19T21:30:00",
           "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 2"
+            "1",
+            "2"
           ],
           "totalRegistered": 3,
           "questions": []
@@ -83,9 +83,9 @@
           "startTime": "2026-10-15T20:00:00",
           "endTime": "2026-10-15T22:00:00",
           "courts": [
-            "Court 11",
-            "Court 10 (Livestreaming)",
-            "Court 12 (Livestreaming)"
+            "10",
+            "11",
+            "12"
           ],
           "totalRegistered": 14,
           "questions": []
@@ -100,7 +100,7 @@
           "startTime": "2026-10-20T18:00:00",
           "endTime": "2026-10-20T20:00:00",
           "courts": [
-            "Court 12 (Livestreaming)"
+            "12"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -115,8 +115,8 @@
           "startTime": "2026-10-16T09:00:00",
           "endTime": "2026-10-16T11:00:00",
           "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 12 (Livestreaming)"
+            "10",
+            "12"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -131,8 +131,8 @@
           "startTime": "2026-10-17T13:00:00",
           "endTime": "2026-10-17T15:00:00",
           "courts": [
-            "Court 3",
-            "Court 6"
+            "3",
+            "6"
           ],
           "totalRegistered": 2,
           "questions": []
@@ -147,8 +147,8 @@
           "startTime": "2026-10-16T19:30:00",
           "endTime": "2026-10-16T21:30:00",
           "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 11"
+            "11",
+            "12"
           ],
           "totalRegistered": 2,
           "questions": []
@@ -163,9 +163,9 @@
           "startTime": "2026-10-13T18:00:00",
           "endTime": "2026-10-13T20:00:00",
           "courts": [
-            "Court 8",
-            "Court 11",
-            "Court 10 (Livestreaming)"
+            "8",
+            "10",
+            "11"
           ],
           "totalRegistered": 16,
           "questions": []
@@ -174,9 +174,9 @@
           "startTime": "2026-10-20T18:00:00",
           "endTime": "2026-10-20T20:00:00",
           "courts": [
-            "Court 8",
-            "Court 10 (Livestreaming)",
-            "Court 11"
+            "8",
+            "10",
+            "11"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -191,11 +191,11 @@
           "startTime": "2026-10-12T19:30:00",
           "endTime": "2026-10-12T21:30:00",
           "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 10 (Livestreaming)",
-            "Court 11"
+            "10",
+            "11",
+            "12"
           ],
-          "totalRegistered": 5,
+          "totalRegistered": 6,
           "questions": []
         }
       ]
@@ -208,7 +208,7 @@
           "startTime": "2026-10-19T21:30:00",
           "endTime": "2026-10-19T23:59:00",
           "courts": [
-            "Court 1 (Livestreaming)"
+            "1"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -223,7 +223,7 @@
           "startTime": "2026-10-14T21:30:00",
           "endTime": "2026-10-14T23:59:00",
           "courts": [
-            "Court 1 (Livestreaming)"
+            "1"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -238,9 +238,9 @@
           "startTime": "2026-10-13T18:00:00",
           "endTime": "2026-10-13T20:00:00",
           "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 5",
-            "Court 3"
+            "3",
+            "4",
+            "5"
           ],
           "totalRegistered": 18,
           "questions": []
@@ -249,9 +249,9 @@
           "startTime": "2026-10-20T18:00:00",
           "endTime": "2026-10-20T20:00:00",
           "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 5",
-            "Court 3"
+            "3",
+            "4",
+            "5"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -266,11 +266,11 @@
           "startTime": "2026-10-12T19:30:00",
           "endTime": "2026-10-12T21:30:00",
           "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 2",
-            "Court 1 (Livestreaming)"
+            "1",
+            "2",
+            "4"
           ],
-          "totalRegistered": 9,
+          "totalRegistered": 8,
           "questions": []
         }
       ]
@@ -283,9 +283,9 @@
           "startTime": "2026-10-12T07:00:00",
           "endTime": "2026-10-12T09:00:00",
           "courts": [
-            "Court 8",
-            "Court 7 (Livestreaming)",
-            "Court 10 (Livestreaming)"
+            "7",
+            "8",
+            "10"
           ],
           "totalRegistered": 5,
           "questions": []
@@ -300,10 +300,10 @@
           "startTime": "2026-10-12T19:30:00",
           "endTime": "2026-10-12T21:30:00",
           "courts": [
-            "Court 9",
-            "Court 7 (Livestreaming)",
-            "Court 8",
-            "Court 5"
+            "5",
+            "7",
+            "8",
+            "9"
           ],
           "totalRegistered": 21,
           "questions": []
@@ -318,10 +318,10 @@
           "startTime": "2026-10-12T17:30:00",
           "endTime": "2026-10-12T19:30:00",
           "courts": [
-            "Court 7 (Livestreaming)",
-            "Court 9",
-            "Court 5",
-            "Court 8"
+            "5",
+            "7",
+            "8",
+            "9"
           ],
           "totalRegistered": 11,
           "questions": []
@@ -336,9 +336,9 @@
           "startTime": "2026-10-12T21:30:00",
           "endTime": "2026-10-12T23:59:00",
           "courts": [
-            "Court 2",
-            "Court 4 (Livestreaming)",
-            "Court 5"
+            "2",
+            "4",
+            "5"
           ],
           "totalRegistered": 3,
           "questions": []
@@ -353,10 +353,10 @@
           "startTime": "2026-10-11T15:00:00",
           "endTime": "2026-10-11T18:00:00",
           "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 8",
-            "Court 10 (Livestreaming)",
-            "Court 7 (Livestreaming)"
+            "7",
+            "8",
+            "10",
+            "12"
           ],
           "totalRegistered": 24,
           "questions": []
@@ -371,8 +371,8 @@
           "startTime": "2026-10-19T21:30:00",
           "endTime": "2026-10-19T23:59:00",
           "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 11"
+            "11",
+            "12"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -387,191 +387,9 @@
           "startTime": "2026-10-15T18:00:00",
           "endTime": "2026-10-15T20:00:00",
           "courts": [
-            "Court 12 (Livestreaming)"
+            "12"
           ],
           "totalRegistered": 6,
-          "questions": []
-        }
-      ]
-    },
-    "2160558": {
-      "eventId": "2160558",
-      "title": "Lunch Break Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T11:00:00",
-          "endTime": "2026-10-14T13:30:00",
-          "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 8",
-            "Court 12 (Livestreaming)",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 9,
-          "questions": []
-        }
-      ]
-    },
-    "2302724": {
-      "eventId": "2302724",
-      "title": "3.5-4.0 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T22:00:00",
-          "endTime": "2026-10-15T23:59:00",
-          "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 11"
-          ],
-          "totalRegistered": 2,
-          "questions": []
-        }
-      ]
-    },
-    "2302735": {
-      "eventId": "2302735",
-      "title": "4.0+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T19:30:00",
-          "endTime": "2026-10-16T21:30:00",
-          "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302743": {
-      "eventId": "2302743",
-      "title": "4.0+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T21:30:00",
-          "endTime": "2026-10-16T23:59:00",
-          "courts": [
-            "Court 1 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302616": {
-      "eventId": "2302616",
-      "title": "3.75-4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T19:30:00",
-          "endTime": "2026-10-14T21:30:00",
-          "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 11,
-          "questions": []
-        }
-      ]
-    },
-    "2148643": {
-      "eventId": "2148643",
-      "title": "Open Play (AdvBeg-Int)",
-      "sessions": [
-        {
-          "startTime": "2026-10-11T15:00:00",
-          "endTime": "2026-10-11T18:00:00",
-          "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 4 (Livestreaming)",
-            "Court 5",
-            "Court 3",
-            "Court 2"
-          ],
-          "totalRegistered": 30,
-          "questions": []
-        }
-      ]
-    },
-    "2301963": {
-      "eventId": "2301963",
-      "title": "3.5-4.0 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T18:00:00",
-          "endTime": "2026-10-15T20:00:00",
-          "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 12,
-          "questions": []
-        }
-      ]
-    },
-    "2148670": {
-      "eventId": "2148670",
-      "title": "Open Play (Int-Adv)",
-      "sessions": [
-        {
-          "startTime": "2026-10-11T20:00:00",
-          "endTime": "2026-10-11T23:59:00",
-          "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 12 (Livestreaming)",
-            "Court 9",
-            "Court 8",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 23,
-          "questions": []
-        }
-      ]
-    },
-    "2301964": {
-      "eventId": "2301964",
-      "title": "3.25-3.75 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T18:00:00",
-          "endTime": "2026-10-15T20:00:00",
-          "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 11"
-          ],
-          "totalRegistered": 4,
-          "questions": []
-        }
-      ]
-    },
-    "2294628": {
-      "eventId": "2294628",
-      "title": "Guided Open Play w/ Coach Martin (Int+)",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T16:00:00",
-          "endTime": "2026-10-15T18:00:00",
-          "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)"
-          ],
-          "totalRegistered": 6,
-          "questions": []
-        }
-      ]
-    },
-    "2123780": {
-      "eventId": "2123780",
-      "title": "Skill Clinic: Speed-ups & Resets w/ Coach Martin (3.5+)",
-      "sessions": [
-        {
-          "startTime": "2026-10-12T18:30:00",
-          "endTime": "2026-10-12T19:30:00",
-          "courts": [
-            "Court 13"
-          ],
-          "totalRegistered": 1,
           "questions": []
         }
       ]
@@ -584,242 +402,11 @@
           "startTime": "2026-10-14T19:30:00",
           "endTime": "2026-10-14T21:30:00",
           "courts": [
-            "Court 7 (Livestreaming)",
-            "Court 11",
-            "Court 8"
-          ],
-          "totalRegistered": 11,
-          "questions": []
-        }
-      ]
-    },
-    "2301933": {
-      "eventId": "2301933",
-      "title": "3.25-3.75 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T17:30:00",
-          "endTime": "2026-10-14T19:30:00",
-          "courts": [
-            "Court 11",
-            "Court 7 (Livestreaming)",
-            "Court 10 (Livestreaming)",
-            "Court 8"
-          ],
-          "totalRegistered": 7,
-          "questions": []
-        }
-      ]
-    },
-    "2148666": {
-      "eventId": "2148666",
-      "title": "Open Play (AdvBeg-Int)",
-      "sessions": [
-        {
-          "startTime": "2026-10-11T20:00:00",
-          "endTime": "2026-10-11T23:59:00",
-          "courts": [
-            "Court 3",
-            "Court 2",
-            "Court 1 (Livestreaming)",
-            "Court 5"
-          ],
-          "totalRegistered": 18,
-          "questions": []
-        }
-      ]
-    },
-    "2301890": {
-      "eventId": "2301890",
-      "title": "3.5-4.0 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T20:00:00",
-          "endTime": "2026-10-13T22:00:00",
-          "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 8",
-            "Court 11"
-          ],
-          "totalRegistered": 11,
-          "questions": []
-        }
-      ]
-    },
-    "2301927": {
-      "eventId": "2301927",
-      "title": "Morning Brew and Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T09:00:00",
-          "endTime": "2026-10-14T11:00:00",
-          "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 10 (Livestreaming)",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 5,
-          "questions": []
-        }
-      ]
-    },
-    "2301944": {
-      "eventId": "2301944",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T19:30:00",
-          "endTime": "2026-10-14T21:30:00",
-          "courts": [
-            "Court 6",
-            "Court 3"
+            "7",
+            "8",
+            "11"
           ],
           "totalRegistered": 12,
-          "questions": []
-        }
-      ]
-    },
-    "2257702": {
-      "eventId": "2257702",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T20:00:00",
-          "endTime": "2026-10-13T22:00:00",
-          "courts": [
-            "Court 3",
-            "Court 5"
-          ],
-          "totalRegistered": 3,
-          "questions": []
-        }
-      ]
-    },
-    "2302646": {
-      "eventId": "2302646",
-      "title": "3.5-4.0 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T21:30:00",
-          "endTime": "2026-10-14T23:59:00",
-          "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 11"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302748": {
-      "eventId": "2302748",
-      "title": "3.5-4.0 Gated Open Play ",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T21:30:00",
-          "endTime": "2026-10-16T23:59:00",
-          "courts": [
-            "Court 11",
-            "Court 12 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2167909": {
-      "eventId": "2167909",
-      "title": "Intro to Pickleball with Coach Sze",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T19:00:00",
-          "endTime": "2026-10-13T20:00:00",
-          "courts": [
-            "Court 13"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301970": {
-      "eventId": "2301970",
-      "title": "3.25-3.75 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T20:00:00",
-          "endTime": "2026-10-15T22:00:00",
-          "courts": [
-            "Court 3",
-            "Court 5",
-            "Court 4 (Livestreaming)"
-          ],
-          "totalRegistered": 5,
-          "questions": []
-        }
-      ]
-    },
-    "2127713": {
-      "eventId": "2127713",
-      "title": "Pickleball for Parkinson's - VOLUNTEER Sign-up",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T11:00:00",
-          "endTime": "2026-10-16T13:00:00",
-          "courts": [
-            "Court 6"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301935": {
-      "eventId": "2301935",
-      "title": "3.75-4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T17:30:00",
-          "endTime": "2026-10-14T19:30:00",
-          "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 4,
-          "questions": []
-        }
-      ]
-    },
-    "2299540": {
-      "eventId": "2299540",
-      "title": "3.75 - 4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-12T17:30:00",
-          "endTime": "2026-10-12T19:30:00",
-          "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 2,
-          "questions": []
-        }
-      ]
-    },
-    "2301967": {
-      "eventId": "2301967",
-      "title": "3.25-3.75 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T20:00:00",
-          "endTime": "2026-10-15T22:00:00",
-          "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 3,
           "questions": []
         }
       ]
@@ -832,73 +419,27 @@
           "startTime": "2026-10-16T19:30:00",
           "endTime": "2026-10-16T21:30:00",
           "courts": [
-            "Court 10 (Livestreaming)"
+            "10"
           ],
           "totalRegistered": 5,
           "questions": []
         }
       ]
     },
-    "2301892": {
-      "eventId": "2301892",
-      "title": "3.5-4.0 Gated Open Play",
+    "2148666": {
+      "eventId": "2148666",
+      "title": "Open Play (AdvBeg-Int)",
       "sessions": [
         {
-          "startTime": "2026-10-13T20:00:00",
-          "endTime": "2026-10-13T22:00:00",
+          "startTime": "2026-10-11T20:00:00",
+          "endTime": "2026-10-11T23:59:00",
           "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 2"
+            "1",
+            "2",
+            "3",
+            "5"
           ],
-          "totalRegistered": 6,
-          "questions": []
-        }
-      ]
-    },
-    "2301996": {
-      "eventId": "2301996",
-      "title": " 3.75-4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T17:30:00",
-          "endTime": "2026-10-16T19:30:00",
-          "courts": [
-            "Court 2",
-            "Court 1 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301953": {
-      "eventId": "2301953",
-      "title": "Rise and Grind Drill/Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-15T07:00:00",
-          "endTime": "2026-10-15T09:00:00",
-          "courts": [
-            "Court 8",
-            "Court 10 (Livestreaming)",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302777": {
-      "eventId": "2302777",
-      "title": "3.5-4.0 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-17T11:00:00",
-          "endTime": "2026-10-17T13:00:00",
-          "courts": [
-            "Court 1 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
+          "totalRegistered": 18,
           "questions": []
         }
       ]
@@ -911,353 +452,11 @@
           "startTime": "2026-10-11T18:00:00",
           "endTime": "2026-10-11T20:00:00",
           "courts": [
-            "Court 12 (Livestreaming)",
-            "Court 8",
-            "Court 10 (Livestreaming)"
+            "8",
+            "10",
+            "12"
           ],
           "totalRegistered": 16,
-          "questions": []
-        }
-      ]
-    },
-    "2301838": {
-      "eventId": "2301838",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T18:00:00",
-          "endTime": "2026-10-13T20:00:00",
-          "courts": [
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 3,
-          "questions": []
-        }
-      ]
-    },
-    "2302780": {
-      "eventId": "2302780",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-17T11:00:00",
-          "endTime": "2026-10-17T13:00:00",
-          "courts": [
-            "Court 8",
-            "Court 7 (Livestreaming)",
-            "Court 10 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301942": {
-      "eventId": "2301942",
-      "title": "Advanced Beginner+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T19:30:00",
-          "endTime": "2026-10-14T21:30:00",
-          "courts": [
-            "Court 10 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302802": {
-      "eventId": "2302802",
-      "title": " Open Play (AdvBeg-Int)",
-      "sessions": [
-        {
-          "startTime": "2026-10-18T13:00:00",
-          "endTime": "2026-10-18T16:00:00",
-          "courts": [
-            "Court 1 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2299441": {
-      "eventId": "2299441",
-      "title": "Morning Mixer | Rotating Partner",
-      "sessions": [
-        {
-          "startTime": "2026-10-12T09:00:00",
-          "endTime": "2026-10-12T11:00:00",
-          "courts": [
-            "Court 7 (Livestreaming)",
-            "Court 10 (Livestreaming)",
-            "Court 8"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2162219": {
-      "eventId": "2162219",
-      "title": "Afternoon Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T15:30:00",
-          "endTime": "2026-10-14T17:30:00",
-          "courts": [
-            "Court 7 (Livestreaming)",
-            "Court 10 (Livestreaming)",
-            "Court 12 (Livestreaming)",
-            "Court 8"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301896": {
-      "eventId": "2301896",
-      "title": "4.0+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T20:00:00",
-          "endTime": "2026-10-13T22:00:00",
-          "courts": [
-            "Court 12 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302024": {
-      "eventId": "2302024",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T19:30:00",
-          "endTime": "2026-10-16T21:30:00",
-          "courts": [
-            "Court 5",
-            "Court 4 (Livestreaming)"
-          ],
-          "totalRegistered": 6,
-          "questions": []
-        }
-      ]
-    },
-    "2302007": {
-      "eventId": "2302007",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T21:30:00",
-          "endTime": "2026-10-16T23:59:00",
-          "courts": [
-            "Court 2",
-            "Court 5",
-            "Court 4 (Livestreaming)"
-          ],
-          "totalRegistered": 2,
-          "questions": []
-        }
-      ]
-    },
-    "2303073": {
-      "eventId": "2303073",
-      "title": "Singles Gauntlet",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T17:30:00",
-          "endTime": "2026-10-16T19:30:00",
-          "courts": [
-            "Court 10 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301934": {
-      "eventId": "2301934",
-      "title": "Guided Open Play | Wednesday",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T17:30:00",
-          "endTime": "2026-10-14T19:30:00",
-          "courts": [
-            "Court 9"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302014": {
-      "eventId": "2302014",
-      "title": "Advanced Beginner Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T21:30:00",
-          "endTime": "2026-10-16T23:59:00",
-          "courts": [
-            "Court 3"
-          ],
-          "totalRegistered": 2,
-          "questions": []
-        }
-      ]
-    },
-    "2302044": {
-      "eventId": "2302044",
-      "title": "3.5-4.0 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T21:30:00",
-          "endTime": "2026-10-16T23:59:00",
-          "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 8",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2301903": {
-      "eventId": "2301903",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T22:00:00",
-          "endTime": "2026-10-13T23:59:00",
-          "courts": [
-            "Court 3",
-            "Court 5",
-            "Court 4 (Livestreaming)",
-            "Court 2"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302787": {
-      "eventId": "2302787",
-      "title": "Open Play (Int-Adv)",
-      "sessions": [
-        {
-          "startTime": "2026-10-17T18:00:00",
-          "endTime": "2026-10-17T21:00:00",
-          "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 7 (Livestreaming)",
-            "Court 8"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302017": {
-      "eventId": "2302017",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-16T17:30:00",
-          "endTime": "2026-10-16T19:30:00",
-          "courts": [
-            "Court 4 (Livestreaming)",
-            "Court 5"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2302783": {
-      "eventId": "2302783",
-      "title": "Open Play (Int-Adv)",
-      "sessions": [
-        {
-          "startTime": "2026-10-17T13:00:00",
-          "endTime": "2026-10-17T16:00:00",
-          "courts": [
-            "Court 8",
-            "Court 4 (Livestreaming)",
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 6,
-          "questions": []
-        }
-      ]
-    },
-    "2301936": {
-      "eventId": "2301936",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-14T17:30:00",
-          "endTime": "2026-10-14T19:30:00",
-          "courts": [
-            "Court 6",
-            "Court 5"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2303237": {
-      "eventId": "2303237",
-      "title": "SUMMER | Social Open Play | Advanced Beginner - Intermediate",
-      "sessions": [
-        {
-          "startTime": "2026-10-11T18:00:00",
-          "endTime": "2026-10-11T20:00:00",
-          "courts": [
-            "Court 7 (Livestreaming)"
-          ],
-          "totalRegistered": 1,
-          "questions": []
-        }
-      ]
-    },
-    "2299451": {
-      "eventId": "2299451",
-      "title": "Lunch Break Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-12T11:00:00",
-          "endTime": "2026-10-12T13:30:00",
-          "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 2",
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)",
-            "Court 7 (Livestreaming)",
-            "Court 8"
-          ],
-          "totalRegistered": 3,
-          "questions": []
-        }
-      ]
-    },
-    "2124544": {
-      "eventId": "2124544",
-      "title": "Pickleball Foundation's Beginners Clinic with Coach Sze",
-      "sessions": [
-        {
-          "startTime": "2026-10-13T18:00:00",
-          "endTime": "2026-10-13T19:00:00",
-          "courts": [
-            "Court 13"
-          ],
-          "totalRegistered": 1,
           "questions": []
         }
       ]
@@ -1270,9 +469,9 @@
           "startTime": "2026-10-12T15:30:00",
           "endTime": "2026-10-12T17:30:00",
           "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 7 (Livestreaming)",
-            "Court 8"
+            "7",
+            "8",
+            "10"
           ],
           "totalRegistered": 1,
           "questions": []
@@ -1287,11 +486,94 @@
           "startTime": "2026-10-12T15:30:00",
           "endTime": "2026-10-12T17:30:00",
           "courts": [
-            "Court 2",
-            "Court 4 (Livestreaming)",
-            "Court 1 (Livestreaming)"
+            "1",
+            "2",
+            "4"
           ],
           "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301964": {
+      "eventId": "2301964",
+      "title": "3.25-3.75 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T18:00:00",
+          "endTime": "2026-10-15T20:00:00",
+          "courts": [
+            "10",
+            "11"
+          ],
+          "totalRegistered": 4,
+          "questions": []
+        }
+      ]
+    },
+    "2148670": {
+      "eventId": "2148670",
+      "title": "Open Play (Int-Adv)",
+      "sessions": [
+        {
+          "startTime": "2026-10-11T20:00:00",
+          "endTime": "2026-10-11T23:59:00",
+          "courts": [
+            "7",
+            "8",
+            "9",
+            "10",
+            "12"
+          ],
+          "totalRegistered": 23,
+          "questions": []
+        }
+      ]
+    },
+    "2302024": {
+      "eventId": "2302024",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T19:30:00",
+          "endTime": "2026-10-16T21:30:00",
+          "courts": [
+            "4",
+            "5"
+          ],
+          "totalRegistered": 6,
+          "questions": []
+        }
+      ]
+    },
+    "2302014": {
+      "eventId": "2302014",
+      "title": "Advanced Beginner Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T21:30:00",
+          "endTime": "2026-10-16T23:59:00",
+          "courts": [
+            "3"
+          ],
+          "totalRegistered": 2,
+          "questions": []
+        }
+      ]
+    },
+    "2302783": {
+      "eventId": "2302783",
+      "title": "Open Play (Int-Adv)",
+      "sessions": [
+        {
+          "startTime": "2026-10-17T13:00:00",
+          "endTime": "2026-10-17T16:00:00",
+          "courts": [
+            "4",
+            "7",
+            "8"
+          ],
+          "totalRegistered": 6,
           "questions": []
         }
       ]
@@ -1304,14 +586,748 @@
           "startTime": "2026-10-18T13:00:00",
           "endTime": "2026-10-18T16:00:00",
           "courts": [
-            "Court 10 (Livestreaming)",
-            "Court 9",
-            "Court 12 (Livestreaming)",
-            "Court 8",
-            "Court 11",
-            "Court 7 (Livestreaming)"
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"
           ],
           "totalRegistered": 6,
+          "questions": []
+        }
+      ]
+    },
+    "2160558": {
+      "eventId": "2160558",
+      "title": "Lunch Break Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T11:00:00",
+          "endTime": "2026-10-14T13:30:00",
+          "courts": [
+            "7",
+            "8",
+            "10",
+            "12"
+          ],
+          "totalRegistered": 9,
+          "questions": []
+        }
+      ]
+    },
+    "2302724": {
+      "eventId": "2302724",
+      "title": "3.5-4.0 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T22:00:00",
+          "endTime": "2026-10-15T23:59:00",
+          "courts": [
+            "11",
+            "12"
+          ],
+          "totalRegistered": 2,
+          "questions": []
+        }
+      ]
+    },
+    "2302735": {
+      "eventId": "2302735",
+      "title": "4.0+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T19:30:00",
+          "endTime": "2026-10-16T21:30:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302743": {
+      "eventId": "2302743",
+      "title": "4.0+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T21:30:00",
+          "endTime": "2026-10-16T23:59:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302616": {
+      "eventId": "2302616",
+      "title": "3.75-4.25 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T19:30:00",
+          "endTime": "2026-10-14T21:30:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 11,
+          "questions": []
+        }
+      ]
+    },
+    "2148643": {
+      "eventId": "2148643",
+      "title": "Open Play (AdvBeg-Int)",
+      "sessions": [
+        {
+          "startTime": "2026-10-11T15:00:00",
+          "endTime": "2026-10-11T18:00:00",
+          "courts": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "totalRegistered": 30,
+          "questions": []
+        }
+      ]
+    },
+    "2301963": {
+      "eventId": "2301963",
+      "title": "3.5-4.0 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T18:00:00",
+          "endTime": "2026-10-15T20:00:00",
+          "courts": [
+            "4",
+            "7"
+          ],
+          "totalRegistered": 12,
+          "questions": []
+        }
+      ]
+    },
+    "2123780": {
+      "eventId": "2123780",
+      "title": "Skill Clinic: Speed-ups & Resets w/ Coach Martin (3.5+)",
+      "sessions": [
+        {
+          "startTime": "2026-10-12T18:30:00",
+          "endTime": "2026-10-12T19:30:00",
+          "courts": [
+            "13"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301933": {
+      "eventId": "2301933",
+      "title": "3.25-3.75 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T17:30:00",
+          "endTime": "2026-10-14T19:30:00",
+          "courts": [
+            "7",
+            "8",
+            "10",
+            "11"
+          ],
+          "totalRegistered": 8,
+          "questions": []
+        }
+      ]
+    },
+    "2301890": {
+      "eventId": "2301890",
+      "title": "3.5-4.0 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T20:00:00",
+          "endTime": "2026-10-13T22:00:00",
+          "courts": [
+            "8",
+            "10",
+            "11"
+          ],
+          "totalRegistered": 11,
+          "questions": []
+        }
+      ]
+    },
+    "2301927": {
+      "eventId": "2301927",
+      "title": "Morning Brew and Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T09:00:00",
+          "endTime": "2026-10-14T11:00:00",
+          "courts": [
+            "7",
+            "10",
+            "12"
+          ],
+          "totalRegistered": 5,
+          "questions": []
+        }
+      ]
+    },
+    "2301944": {
+      "eventId": "2301944",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T19:30:00",
+          "endTime": "2026-10-14T21:30:00",
+          "courts": [
+            "3",
+            "6"
+          ],
+          "totalRegistered": 12,
+          "questions": []
+        }
+      ]
+    },
+    "2257702": {
+      "eventId": "2257702",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T20:00:00",
+          "endTime": "2026-10-13T22:00:00",
+          "courts": [
+            "3",
+            "5"
+          ],
+          "totalRegistered": 3,
+          "questions": []
+        }
+      ]
+    },
+    "2302646": {
+      "eventId": "2302646",
+      "title": "3.5-4.0 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T21:30:00",
+          "endTime": "2026-10-14T23:59:00",
+          "courts": [
+            "11",
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302748": {
+      "eventId": "2302748",
+      "title": "3.5-4.0 Gated Open Play ",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T21:30:00",
+          "endTime": "2026-10-16T23:59:00",
+          "courts": [
+            "11",
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2167909": {
+      "eventId": "2167909",
+      "title": "Intro to Pickleball with Coach Sze",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T19:00:00",
+          "endTime": "2026-10-13T20:00:00",
+          "courts": [
+            "13"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301970": {
+      "eventId": "2301970",
+      "title": "3.25-3.75 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T20:00:00",
+          "endTime": "2026-10-15T22:00:00",
+          "courts": [
+            "3",
+            "4",
+            "5"
+          ],
+          "totalRegistered": 5,
+          "questions": []
+        }
+      ]
+    },
+    "2127713": {
+      "eventId": "2127713",
+      "title": "Pickleball for Parkinson's - VOLUNTEER Sign-up",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T11:00:00",
+          "endTime": "2026-10-16T13:00:00",
+          "courts": [
+            "6"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301935": {
+      "eventId": "2301935",
+      "title": "3.75-4.25 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T17:30:00",
+          "endTime": "2026-10-14T19:30:00",
+          "courts": [
+            "1",
+            "2",
+            "4"
+          ],
+          "totalRegistered": 4,
+          "questions": []
+        }
+      ]
+    },
+    "2294628": {
+      "eventId": "2294628",
+      "title": "Guided Open Play w/ Coach Martin (Int+)",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T16:00:00",
+          "endTime": "2026-10-15T18:00:00",
+          "courts": [
+            "1",
+            "4"
+          ],
+          "totalRegistered": 6,
+          "questions": []
+        }
+      ]
+    },
+    "2301967": {
+      "eventId": "2301967",
+      "title": "3.25-3.75 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T20:00:00",
+          "endTime": "2026-10-15T22:00:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 3,
+          "questions": []
+        }
+      ]
+    },
+    "2301892": {
+      "eventId": "2301892",
+      "title": "3.5-4.0 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T20:00:00",
+          "endTime": "2026-10-13T22:00:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 6,
+          "questions": []
+        }
+      ]
+    },
+    "2301996": {
+      "eventId": "2301996",
+      "title": " 3.75-4.25 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T17:30:00",
+          "endTime": "2026-10-16T19:30:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301953": {
+      "eventId": "2301953",
+      "title": "Rise and Grind Drill/Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-15T07:00:00",
+          "endTime": "2026-10-15T09:00:00",
+          "courts": [
+            "7",
+            "8",
+            "10"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302777": {
+      "eventId": "2302777",
+      "title": "3.5-4.0 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-17T11:00:00",
+          "endTime": "2026-10-17T13:00:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301838": {
+      "eventId": "2301838",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T18:00:00",
+          "endTime": "2026-10-13T20:00:00",
+          "courts": [
+            "7"
+          ],
+          "totalRegistered": 3,
+          "questions": []
+        }
+      ]
+    },
+    "2302780": {
+      "eventId": "2302780",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-17T11:00:00",
+          "endTime": "2026-10-17T13:00:00",
+          "courts": [
+            "7",
+            "8",
+            "10"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2299540": {
+      "eventId": "2299540",
+      "title": "3.75 - 4.25 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-12T17:30:00",
+          "endTime": "2026-10-12T19:30:00",
+          "courts": [
+            "1",
+            "2",
+            "4"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301942": {
+      "eventId": "2301942",
+      "title": "Advanced Beginner+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T19:30:00",
+          "endTime": "2026-10-14T21:30:00",
+          "courts": [
+            "10"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302802": {
+      "eventId": "2302802",
+      "title": " Open Play (AdvBeg-Int)",
+      "sessions": [
+        {
+          "startTime": "2026-10-18T13:00:00",
+          "endTime": "2026-10-18T16:00:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2299441": {
+      "eventId": "2299441",
+      "title": "Morning Mixer | Rotating Partner",
+      "sessions": [
+        {
+          "startTime": "2026-10-12T09:00:00",
+          "endTime": "2026-10-12T11:00:00",
+          "courts": [
+            "7",
+            "8",
+            "10"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2162219": {
+      "eventId": "2162219",
+      "title": "Afternoon Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T15:30:00",
+          "endTime": "2026-10-14T17:30:00",
+          "courts": [
+            "7",
+            "8",
+            "10",
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301896": {
+      "eventId": "2301896",
+      "title": "4.0+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T20:00:00",
+          "endTime": "2026-10-13T22:00:00",
+          "courts": [
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302007": {
+      "eventId": "2302007",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T21:30:00",
+          "endTime": "2026-10-16T23:59:00",
+          "courts": [
+            "2",
+            "4",
+            "5"
+          ],
+          "totalRegistered": 2,
+          "questions": []
+        }
+      ]
+    },
+    "2303073": {
+      "eventId": "2303073",
+      "title": "Singles Gauntlet",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T17:30:00",
+          "endTime": "2026-10-16T19:30:00",
+          "courts": [
+            "10"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301934": {
+      "eventId": "2301934",
+      "title": "Guided Open Play | Wednesday",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T17:30:00",
+          "endTime": "2026-10-14T19:30:00",
+          "courts": [
+            "9"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302044": {
+      "eventId": "2302044",
+      "title": "3.5-4.0 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T21:30:00",
+          "endTime": "2026-10-16T23:59:00",
+          "courts": [
+            "7",
+            "8",
+            "10"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301903": {
+      "eventId": "2301903",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T22:00:00",
+          "endTime": "2026-10-13T23:59:00",
+          "courts": [
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302787": {
+      "eventId": "2302787",
+      "title": "Open Play (Int-Adv)",
+      "sessions": [
+        {
+          "startTime": "2026-10-17T18:00:00",
+          "endTime": "2026-10-17T21:00:00",
+          "courts": [
+            "4",
+            "7",
+            "8"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2302017": {
+      "eventId": "2302017",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-16T17:30:00",
+          "endTime": "2026-10-16T19:30:00",
+          "courts": [
+            "4",
+            "5"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2301936": {
+      "eventId": "2301936",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-14T17:30:00",
+          "endTime": "2026-10-14T19:30:00",
+          "courts": [
+            "5",
+            "6"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2300477": {
+      "eventId": "2300477",
+      "title": "3.25-3.75 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-12T17:30:00",
+          "endTime": "2026-10-12T19:30:00",
+          "courts": [
+            "10",
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2303237": {
+      "eventId": "2303237",
+      "title": "SUMMER | Social Open Play | Advanced Beginner - Intermediate",
+      "sessions": [
+        {
+          "startTime": "2026-10-11T18:00:00",
+          "endTime": "2026-10-11T20:00:00",
+          "courts": [
+            "7"
+          ],
+          "totalRegistered": 1,
+          "questions": []
+        }
+      ]
+    },
+    "2299451": {
+      "eventId": "2299451",
+      "title": "Lunch Break Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-12T11:00:00",
+          "endTime": "2026-10-12T13:30:00",
+          "courts": [
+            "1",
+            "2",
+            "4",
+            "7",
+            "8",
+            "10"
+          ],
+          "totalRegistered": 3,
+          "questions": []
+        }
+      ]
+    },
+    "2124544": {
+      "eventId": "2124544",
+      "title": "Pickleball Foundation's Beginners Clinic with Coach Sze",
+      "sessions": [
+        {
+          "startTime": "2026-10-13T18:00:00",
+          "endTime": "2026-10-13T19:00:00",
+          "courts": [
+            "13"
+          ],
+          "totalRegistered": 1,
           "questions": []
         }
       ]

@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-12T01:24:36Z",
+  "lastUpdated": "2026-10-12T01:37:05Z",
   "date": "2026-10-11",
   "courtHosts": [
+    {
+      "start": "14:45",
+      "end": "18:45",
+      "host": "Nelson C"
+    },
     {
       "start": "19:00",
       "end": "22:00",
@@ -16,11 +21,6 @@
       "start": "19:00",
       "end": "22:00",
       "host": "Harsh P"
-    },
-    {
-      "start": "14:45",
-      "end": "18:45",
-      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -2684,6 +2684,31 @@
         "Court 11"
       ],
       "playerName": "Stephanie S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300506,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-12T19:30:00",
+      "endTime": "2026-10-12T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Toni T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300477,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-12T17:30:00",
+      "endTime": "2026-10-12T19:30:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Toni T",
       "checkedIn": false
     },
     {
