@@ -163,7 +163,7 @@ jobs:
             if [ "$pass_num" = "1" ]; then
               echo "Pass 1: Pulling 10-day event registrations for choice tallies..."
               TO_10D_UTC=$(date -u -d "+10 days" +%Y-%m-%dT%H:%M:%SZ)
-              EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeCustomFields=true&includeQuestions=true"
+              EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeCustomFields=true&includeQuestions=true&includeUserDefinedFields=true&includeMemberUserDefinedFields=true&includeCustomFieldValues=true"
               curl -s --connect-timeout 10 --max-time 35 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_10D_URL" -o data/events_10d.json
               python3 Scripts/parse_event_choices.py
               rm -f data/events_10d.json

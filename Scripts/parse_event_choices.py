@@ -85,6 +85,16 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
 
     print(f"Processing {len(items)} event registrant records from {input_path}...")
 
+    # PII-Free Diagnostic logging for target event 2160558
+    target_558 = [it for it in items if str(it.get('EventId') or it.get('eventId') or '') == '2160558']
+    if target_558:
+        print(f"=== [NO-PII] DIAGNOSTIC for Event 2160558: {len(target_558)} registrants found ===")
+        for idx, it in enumerate(target_558):
+            udf = it.get('UserDefinedFields')
+            mudf = it.get('MemberUserDefinedFields')
+            qa = extract_answers_from_item(it)
+            print(f"  Reg #{idx+1}: UDF={udf} | MUDF={mudf} | Extracted QA={qa}")
+
     # Group by EventId and StartTime
     # key: (eventId, startTime)
     events_by_id = {}
