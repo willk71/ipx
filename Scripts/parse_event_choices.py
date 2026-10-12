@@ -45,10 +45,10 @@ def extract_answers_from_item(item):
         if isinstance(container, list):
             for entry in container:
                 if isinstance(entry, dict):
-                    q = (entry.get('CustomFieldName') or entry.get('FieldName') or 
-                         entry.get('Name') or entry.get('Question') or 
-                         entry.get('QuestionName') or entry.get('Title') or '')
-                    a = (entry.get('Value') or entry.get('Answer') or 
+                    q = (entry.get('FieldName') or entry.get('CustomFieldName') or 
+                         entry.get('Name') or entry.get('Label') or entry.get('FieldLabel') or
+                         entry.get('Question') or entry.get('QuestionName') or entry.get('Title') or '')
+                    a = (entry.get('Value') or entry.get('FieldValue') or entry.get('Answer') or 
                          entry.get('SelectedValue') or entry.get('Text') or 
                          entry.get('Choice') or entry.get('Option') or '')
                     if a:
@@ -84,41 +84,6 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         items = []
 
     print(f"Processing {len(items)} event registrant records from {input_path}...")
-
-    # Diagnostic logging: inspect Event 2162219 or sample item
-    target_item = next((it for it in items if str(it.get('EventId') or it.get('eventId') or '') == '2162219'), None)
-    debug_info = {}
-    if target_item:
-        print(f"=== DIAGNOSTIC for Event 2162219 ===")
-        print("Keys:", list(target_item.keys()))
-        debug_info['target_item_2162219'] = target_item
-    if len(items) > 0:
-        debug_info['sample_item_0_keys'] = list(items[0].keys())
-        for it in items:
-            for k in it.keys():
-                if any(t in k.lower() for t in ['custom', 'question', 'choice', 'survey', 'answer', 'rate', 'level']):
-                    debug_info['found_custom_key_sample'] = {
-                        'eventId': it.get('EventId'),
-                        'key': k,
-                        'val': str(it[k])[:200]
-                    }
-                    break
-            if 'found_custom_key_sample' in debug_info:
-                break
-
-    for extra_file in ['data/cr_event_reg_list.json', 'data/cr_event_details.json']:
-        if os.path.exists(extra_file):
-            try:
-                with open(extra_file, 'r', encoding='utf-8') as ef:
-                    debug_info[os.path.basename(extra_file)] = json.load(ef)
-            except Exception as e:
-                debug_info[os.path.basename(extra_file)] = str(e)
-
-    try:
-        with open('data/debug_sample.json', 'w', encoding='utf-8') as df:
-            json.dump(debug_info, df, indent=2)
-    except Exception as e:
-        print("Failed to save debug_sample:", e)
 
     # Group by EventId and StartTime
     # key: (eventId, startTime)
