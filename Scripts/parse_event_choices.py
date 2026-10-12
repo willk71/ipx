@@ -140,12 +140,15 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 'endTime': end_time,
                 'courts': court_names,
                 'totalRegistered': 0,
-                'questions': {}
+                'questions': {},
+                'registrants': []
             }
 
         org_id = item.get('OrganizationMemberId') or item.get('MemberId')
         email = item.get('Email') or item.get('MemberEmail')
-        name = f"{item.get('FirstName') or item.get('MemberFirstName') or ''}_{item.get('LastName') or item.get('MemberLastName') or ''}".strip('_')
+        first_raw = item.get('FirstName') or item.get('MemberFirstName') or item.get('UserFirstName') or ''
+        last_raw = item.get('LastName') or item.get('MemberLastName') or item.get('UserLastName') or ''
+        name = f"{first_raw}_{last_raw}".strip('_')
         reg_id = item.get('EventRegistrationId') or item.get('Id')
         player_id = str(org_id or email or name or reg_id or id(item)).strip()
         session_player_key = f"{session_key}_{player_id}"
@@ -153,6 +156,24 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         if session_player_key not in seen_players_per_session:
             seen_players_per_session.add(session_player_key)
             events_by_id[session_key]['totalRegistered'] += 1
+
+            # Format registrant label: First Name Last Init (e.g., "John D." or "John D")
+            f_clean = str(first_raw).strip()
+            l_clean = str(last_raw).strip()
+            if f_clean and l_clean:
+                display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
+            elif f_clean:
+                display_name = f_clean.title()
+            elif item.get('MemberName'):
+                parts = str(item.get('MemberName')).strip().split()
+                if len(parts) >= 2:
+                    display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
+                else:
+                    display_name = parts[0].title() if parts else "Player"
+            else:
+                display_name = "Player"
+            
+            events_by_id[session_key]['registrants'].append(display_name)
 
         # Extract QA
         qa_pairs = extract_answers_from_item(item)
@@ -239,7 +260,8 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
             'endTime': s_data['endTime'],
             'courts': s_data['courts'],
             'totalRegistered': s_data['totalRegistered'],
-            'questions': q_list
+            'questions': q_list,
+            'registrants': sorted(s_data.get('registrants', []))
         })
 
     # Sort sessions by startTime for each event

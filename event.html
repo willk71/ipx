@@ -241,6 +241,48 @@
       background: var(--color-default);
     }
 
+    /* Registrant List Card */
+    .registrants-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 3vh 4vw;
+      margin-top: 2vh;
+      margin-bottom: 2vh;
+    }
+
+    .registrants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.8rem 1rem;
+      margin-top: 1.5vh;
+    }
+
+    .registrant-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .registrant-pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--theme-accent, #00f0ff);
+      flex-shrink: 0;
+    }
+
     /* Empty & Loading States */
     .empty-state {
       text-align: center;
@@ -433,6 +475,22 @@
         `;
       }
 
+      let registrantsHtml = '';
+      const regList = session.registrants || [];
+      if (regList.length > 0) {
+        registrantsHtml = `
+          <div class="registrants-card">
+            <div class="question-header">
+              <h2 class="question-title">Registrants</h2>
+              <span class="respondent-count">${regList.length} ${regList.length === 1 ? 'Player' : 'Players'}</span>
+            </div>
+            <div class="registrants-grid">
+              ${regList.map(name => `<div class="registrant-pill">${name}</div>`).join('')}
+            </div>
+          </div>
+        `;
+      }
+
       main.innerHTML = `
         ${dateTabsHtml}
         
@@ -450,6 +508,8 @@
         </div>
 
         ${questionsHtml}
+
+        ${registrantsHtml}
       `;
     }
 
