@@ -360,10 +360,15 @@
             `;
           }).join('');
 
+          let displayTitle = q.question;
+          if (displayTitle.toLowerCase().includes('level') || displayTitle.toLowerCase().includes('self-rate')) {
+            displayTitle = 'Selected Playing Levels';
+          }
+
           return `
             <div class="breakdown-card">
               <div class="question-header">
-                <h2 class="question-title">${q.question}</h2>
+                <h2 class="question-title">${displayTitle}</h2>
                 <span class="respondent-count">${validTotal} Responses</span>
               </div>
               <div class="choices-container">
@@ -388,9 +393,9 @@
         <div class="event-hero">
           <h1 class="event-title">${cachedEventData.title}</h1>
           <div class="event-time-badge">
-            <span>📅 ${timeInfo.dateStr}</span>
+            <span>${timeInfo.dateStr}</span>
             <span>&bull;</span>
-            <span>⏰ ${timeInfo.timeStr}</span>
+            <span>${timeInfo.timeStr}</span>
           </div>
           ${courtsHtml}
         </div>

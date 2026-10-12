@@ -127,6 +127,35 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                     court_names.append(clean_c)
         court_names.sort(key=lambda x: int(x) if x.isdigit() else 999)
         
+    # Group by EventId and StartTime
+    # key: (eventId, startTime)
+    events_by_id = {}
+    seen_players_per_session = set()
+    seen_player_answers = set()
+
+    for item in items:
+        # Ignore private / hidden
+        if item.get('IsPublic') is False or item.get('IsHidden') is True:
+            continue
+
+        e_id = str(item.get('EventId') or item.get('eventId') or '').strip()
+        if not e_id:
+            continue
+
+        title = item.get('DivisionName') or item.get('EventName') or item.get('title') or 'Event'
+        start_time = item.get('StartTime') or item.get('startTime') or ''
+        end_time = item.get('EndTime') or item.get('endTime') or ''
+        courts = item.get('Courts') or item.get('courts') or []
+        court_names = []
+        if isinstance(courts, list):
+            for c in courts:
+                name = c.get('CourtName', '') if isinstance(c, dict) else str(c)
+                clean_c = re.sub(r'\s*\([^)]*\)', '', name)
+                clean_c = re.sub(r'^Court\s*', '', clean_c, flags=re.I).strip()
+                if clean_c and clean_c not in court_names:
+                    court_names.append(clean_c)
+        court_names.sort(key=lambda x: int(x) if x.isdigit() else 999)
+        
         # Unique session key
         session_key = f"{e_id}_{start_time}"
 
@@ -141,7 +170,12 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 'questions': {}
             }
 
-        events_by_id[session_key]['totalRegistered'] += 1
+        player_id = str(item.get('OrganizationMemberId') or item.get('Email') or f"{item.get('FirstName')}_{item.get('LastName')}").strip()
+        session_player_key = f"{session_key}_{player_id}"
+
+        if session_player_key not in seen_players_per_session:
+            seen_players_per_session.add(session_player_key)
+            events_by_id[session_key]['totalRegistered'] += 1
 
         # Extract QA
         qa_pairs = extract_answers_from_item(item)
@@ -151,11 +185,17 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
 
             q_title = q if q else 'Playing Level'
             if any(term in q_title.lower() for term in ['level', 'playing level', 'self-rate']):
-                q_title = 'Self-Rated Playing Level'
+                q_title = 'Selected Playing Levels'
 
             norm_a = normalize_choice(a, q_title)
             if not norm_a:
                 continue
+
+            # Ensure each player is only tallied once per question per session
+            player_q_key = f"{session_key}_{player_id}_{q_title}"
+            if player_q_key in seen_player_answers:
+                continue
+            seen_player_answers.add(player_q_key)
 
             if q_title not in events_by_id[session_key]['questions']:
                 events_by_id[session_key]['questions'][q_title] = {
