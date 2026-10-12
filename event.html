@@ -20,15 +20,19 @@
       --color-default: var(--theme-accent, #00f0ff);
     }
 
-    html,
+    html {
+      width: 100%;
+      height: auto !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
     body.page-event-choices {
       width: 100% !important;
       height: auto !important;
       min-height: 100vh !important;
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain !important;
+      overflow: visible !important;
       position: static !important;
     }
 
