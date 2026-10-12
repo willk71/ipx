@@ -103,33 +103,6 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
     # Group by EventId and StartTime
     # key: (eventId, startTime)
     events_by_id = {}
-
-    for item in items:
-        # Ignore private / hidden
-        if item.get('IsPublic') is False or item.get('IsHidden') is True:
-            continue
-
-        e_id = str(item.get('EventId') or item.get('eventId') or '').strip()
-        if not e_id:
-            continue
-
-        title = item.get('DivisionName') or item.get('EventName') or item.get('title') or 'Event'
-        start_time = item.get('StartTime') or item.get('startTime') or ''
-        end_time = item.get('EndTime') or item.get('endTime') or ''
-        courts = item.get('Courts') or item.get('courts') or []
-        court_names = []
-        if isinstance(courts, list):
-            for c in courts:
-                name = c.get('CourtName', '') if isinstance(c, dict) else str(c)
-                clean_c = re.sub(r'\s*\([^)]*\)', '', name)
-                clean_c = re.sub(r'^Court\s*', '', clean_c, flags=re.I).strip()
-                if clean_c and clean_c not in court_names:
-                    court_names.append(clean_c)
-        court_names.sort(key=lambda x: int(x) if x.isdigit() else 999)
-        
-    # Group by EventId and StartTime
-    # key: (eventId, startTime)
-    events_by_id = {}
     seen_players_per_session = set()
     seen_player_answers = set()
 
@@ -170,7 +143,11 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 'questions': {}
             }
 
-        player_id = str(item.get('OrganizationMemberId') or item.get('Email') or f"{item.get('FirstName')}_{item.get('LastName')}").strip()
+        org_id = item.get('OrganizationMemberId') or item.get('MemberId')
+        email = item.get('Email') or item.get('MemberEmail')
+        name = f"{item.get('FirstName') or item.get('MemberFirstName') or ''}_{item.get('LastName') or item.get('MemberLastName') or ''}".strip('_')
+        reg_id = item.get('EventRegistrationId') or item.get('Id')
+        player_id = str(org_id or email or name or reg_id or id(item)).strip()
         session_player_key = f"{session_key}_{player_id}"
 
         if session_player_key not in seen_players_per_session:
