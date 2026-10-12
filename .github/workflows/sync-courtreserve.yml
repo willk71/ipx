@@ -165,8 +165,10 @@ jobs:
               TO_10D_UTC=$(date -u -d "+10 days" +%Y-%m-%dT%H:%M:%SZ)
               EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeCustomFields=true&includeQuestions=true"
               curl -s --connect-timeout 10 --max-time 35 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_10D_URL" -o data/events_10d.json
+              curl -s --connect-timeout 10 --max-time 15 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "https://api.courtreserve.com/api/v1/eventregistrations/list?eventId=2162219" -o data/cr_event_reg_list.json
+              curl -s --connect-timeout 10 --max-time 15 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "https://api.courtreserve.com/api/v1/events/details?eventId=2162219" -o data/cr_event_details.json
               python3 Scripts/parse_event_choices.py
-              rm -f data/events_10d.json
+              rm -f data/events_10d.json data/cr_event_reg_list.json data/cr_event_details.json
             fi
 
             CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
@@ -256,6 +258,7 @@ jobs:
 
             git add data/schedule.json
             [ -f data/event-choices.json ] && git add data/event-choices.json
+            [ -f data/debug_sample.json ] && git add data/debug_sample.json
             if git diff --staged --quiet; then
               echo "Pass $pass_num: No schedule changes detected."
             else

@@ -87,17 +87,38 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
 
     # Diagnostic logging: inspect Event 2162219 or sample item
     target_item = next((it for it in items if str(it.get('EventId') or it.get('eventId') or '') == '2162219'), None)
+    debug_info = {}
     if target_item:
         print(f"=== DIAGNOSTIC for Event 2162219 ===")
         print("Keys:", list(target_item.keys()))
-        for k, v in target_item.items():
-            if v and not isinstance(v, (dict, list)):
-                print(f"  {k}: {v}")
-            elif isinstance(v, (dict, list)) and len(v) > 0:
-                print(f"  {k} ({type(v).__name__}): {json.dumps(v)[:250]}")
-    elif len(items) > 0:
-        print(f"=== DIAGNOSTIC: Sample item 0 keys ===")
-        print(list(items[0].keys()))
+        debug_info['target_item_2162219'] = target_item
+    if len(items) > 0:
+        debug_info['sample_item_0_keys'] = list(items[0].keys())
+        for it in items:
+            for k in it.keys():
+                if any(t in k.lower() for t in ['custom', 'question', 'choice', 'survey', 'answer', 'rate', 'level']):
+                    debug_info['found_custom_key_sample'] = {
+                        'eventId': it.get('EventId'),
+                        'key': k,
+                        'val': str(it[k])[:200]
+                    }
+                    break
+            if 'found_custom_key_sample' in debug_info:
+                break
+
+    for extra_file in ['data/cr_event_reg_list.json', 'data/cr_event_details.json']:
+        if os.path.exists(extra_file):
+            try:
+                with open(extra_file, 'r', encoding='utf-8') as ef:
+                    debug_info[os.path.basename(extra_file)] = json.load(ef)
+            except Exception as e:
+                debug_info[os.path.basename(extra_file)] = str(e)
+
+    try:
+        with open('data/debug_sample.json', 'w', encoding='utf-8') as df:
+            json.dump(debug_info, df, indent=2)
+    except Exception as e:
+        print("Failed to save debug_sample:", e)
 
     # Group by EventId and StartTime
     # key: (eventId, startTime)
