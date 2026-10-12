@@ -1,0 +1,99 @@
+{
+  "target_item_2162219": {
+    "EventId": 2162219,
+    "EventName": "Afternoon Open Play",
+    "IsPublic": true,
+    "IsTeamEvent": false,
+    "EventCategoryId": 96500,
+    "EventCategoryName": "Social Open Play",
+    "EventDateId": 62002961,
+    "StartTime": "2026-10-14T15:30:00",
+    "EndTime": "2026-10-14T17:30:00",
+    "OrganizationMemberId": 10785330,
+    "MembershipTypeId": null,
+    "FirstName": "Will",
+    "LastName": "Kang",
+    "PartnersInfo": [],
+    "Email": "willkang@yahoo.com",
+    "Phone": "9176924531",
+    "PriceToPay": 0.0,
+    "PaidAmount": null,
+    "UnsubscribeFromMarketingEmails": false,
+    "UnsubscribeFromMarketingTextAlerts": false,
+    "SignedUpOnUtc": "2026-10-11T20:57:40.627",
+    "CancelledOnUtc": null,
+    "TournamentName": null,
+    "DivisionName": null,
+    "Courts": [
+      {
+        "CourtId": 75591,
+        "CourtTypeId": 10512,
+        "CourtName": "Court 7 (Livestreaming)",
+        "CourtTypeName": "Standard Pickleball Court"
+      },
+      {
+        "CourtId": 76851,
+        "CourtTypeId": 10512,
+        "CourtName": "Court 10 (Livestreaming)",
+        "CourtTypeName": "Standard Pickleball Court"
+      },
+      {
+        "CourtId": 76853,
+        "CourtTypeId": 10512,
+        "CourtName": "Court 12 (Livestreaming)",
+        "CourtTypeName": "Standard Pickleball Court"
+      },
+      {
+        "CourtId": 76849,
+        "CourtTypeId": 10512,
+        "CourtName": "Court 8",
+        "CourtTypeName": "Standard Pickleball Court"
+      }
+    ],
+    "UserDefinedFields": [],
+    "IsGuest": false,
+    "PublicBookingId": null,
+    "MemberUserDefinedFields": [],
+    "Ratings": []
+  },
+  "sample_item_0_keys": [
+    "EventId",
+    "EventName",
+    "IsPublic",
+    "IsTeamEvent",
+    "EventCategoryId",
+    "EventCategoryName",
+    "EventDateId",
+    "StartTime",
+    "EndTime",
+    "OrganizationMemberId",
+    "MembershipTypeId",
+    "FirstName",
+    "LastName",
+    "PartnersInfo",
+    "Email",
+    "Phone",
+    "PriceToPay",
+    "PaidAmount",
+    "UnsubscribeFromMarketingEmails",
+    "UnsubscribeFromMarketingTextAlerts",
+    "SignedUpOnUtc",
+    "CancelledOnUtc",
+    "TournamentName",
+    "DivisionName",
+    "Courts",
+    "UserDefinedFields",
+    "IsGuest",
+    "PublicBookingId",
+    "MemberUserDefinedFields",
+    "Ratings"
+  ],
+  "cr_event_reg_list.json": {
+    "Message": "No HTTP resource was found that matches the request URI 'https://api.courtreserve.com/api/v1/eventregistrations/list?eventId=2162219'.",
+    "MessageDetail": "No type was found that matches the controller named 'eventregistrations'."
+  },
+  "cr_event_details.json": {
+    "Message": "No HTTP resource was found that matches the request URI 'https://api.courtreserve.com/api/v1/events/details?eventId=2162219'.",
+    "MessageDetail": "No type was found that matches the controller named 'events'."
+  }
+}
