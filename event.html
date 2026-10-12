@@ -328,18 +328,33 @@
       }
 
       let questionsHtml = '';
-      if (session.questions && session.questions.length > 0) {
-        questionsHtml = session.questions.map(q => {
-          const choicesHtml = q.choices.map(c => {
+      const relevantQuestions = (session.questions || []).filter(q => {
+        const qLower = q.question.toLowerCase();
+        const isIgnored = ['emergency', 'contact', 'phone', 'zip', 'wellhub', 'address', 'waiver', 'relationship', 'member id'].some(term => qLower.includes(term));
+        return !isIgnored && q.choices && q.choices.length > 0;
+      });
+
+      if (relevantQuestions.length > 0) {
+        questionsHtml = relevantQuestions.map(q => {
+          const isLevelQ = q.question.toLowerCase().includes('level');
+          const validChoices = isLevelQ 
+            ? q.choices.filter(c => ['advanced beginner', 'intermediate', 'high intermediate', 'advanced'].includes(c.choice.toLowerCase()))
+            : q.choices;
+
+          // Re-calculate percentages based on valid choices
+          const validTotal = validChoices.reduce((sum, c) => sum + c.count, 0);
+
+          const choicesHtml = validChoices.map(c => {
             const barColor = getLevelColor(c.choice);
+            const pct = validTotal > 0 ? ((c.count / validTotal) * 100).toFixed(1) : 0;
             return `
               <div class="choice-item">
                 <div class="choice-labels">
                   <span class="choice-name">${c.choice}</span>
-                  <span class="choice-tally">${c.count} ${c.count === 1 ? 'player' : 'players'} (${c.percentage}%)</span>
+                  <span class="choice-tally">${c.count} ${c.count === 1 ? 'player' : 'players'} (${pct}%)</span>
                 </div>
                 <div class="choice-bar-track">
-                  <div class="choice-bar-fill" style="width: ${c.percentage}%; background: ${barColor};"></div>
+                  <div class="choice-bar-fill" style="width: ${pct}%; background: ${barColor};"></div>
                 </div>
               </div>
             `;
@@ -349,7 +364,7 @@
             <div class="breakdown-card">
               <div class="question-header">
                 <h2 class="question-title">${q.question}</h2>
-                <span class="respondent-count">${q.totalResponses} Responses</span>
+                <span class="respondent-count">${validTotal} Responses</span>
               </div>
               <div class="choices-container">
                 ${choicesHtml}

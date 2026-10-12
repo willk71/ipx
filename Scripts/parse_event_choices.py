@@ -3,22 +3,34 @@ import os
 import re
 from datetime import datetime
 
-def normalize_choice(raw_answer):
+IGNORED_QUESTION_TERMS = [
+    'emergency', 'contact', 'phone', 'zip', 'postal', 'address',
+    'wellhub', 'gympass', 'waiver', 'medical', 'email', 'name', 'relationship'
+]
+
+def is_ignored_question(q_title):
+    q_lower = str(q_title).lower().strip()
+    return any(term in q_lower for term in IGNORED_QUESTION_TERMS)
+
+def normalize_choice(raw_answer, q_title=''):
     if not raw_answer:
-        return 'Unspecified'
+        return None
     
     clean = str(raw_answer).strip()
     lower = clean.lower()
     
-    # Specific level matching for Afternoon Open Play & similar sessions
-    if 'high intermediate' in lower or 'high-intermediate' in lower:
-        return 'High Intermediate'
-    if ('adv' in lower and 'beg' in lower) or 'advanced beginner' in lower:
-        return 'Advanced Beginner'
-    if 'intermediate' in lower:
-        return 'Intermediate'
-    if 'advanced' in lower:
-        return 'Advanced'
+    # Specific level matching for playing level questions
+    if any(term in q_title.lower() for term in ['level', 'self-rate', 'playing']):
+        if 'high intermediate' in lower or 'high-intermediate' in lower:
+            return 'High Intermediate'
+        if ('adv' in lower and 'beg' in lower) or 'advanced beginner' in lower:
+            return 'Advanced Beginner'
+        if 'intermediate' in lower and 'high' not in lower:
+            return 'Intermediate'
+        if 'advanced' in lower and 'beg' not in lower:
+            return 'Advanced'
+        # Drop old numeric rating strings like 3.0-3.49
+        return None
         
     # Generic fallback: if choice has a colon like "Choice: description", take the title
     if ':' in clean:
@@ -29,15 +41,14 @@ def normalize_choice(raw_answer):
 def extract_answers_from_item(item):
     """
     Extract all question-answer pairs from a registrant object.
-    CourtReserve may store questions under various container keys.
+    Only pulls event-specific custom fields, ignoring member profile fields.
     """
     qa_list = []
     
-    # 1. Search known array containers
+    # Search ONLY event-specific custom field containers
     containers = [
-        'CustomFieldValues', 'CustomFields', 'RegistrationQuestions',
-        'Questions', 'MemberUserDefinedFields', 'UserDefinedFields',
-        'Answers', 'EventCustomFields', 'RegistrantCustomFields'
+        'UserDefinedFields', 'CustomFieldValues', 'CustomFields',
+        'RegistrationQuestions', 'Questions', 'EventCustomFields'
     ]
     
     for c_key in containers:
@@ -46,25 +57,19 @@ def extract_answers_from_item(item):
             for entry in container:
                 if isinstance(entry, dict):
                     q = (entry.get('FieldName') or entry.get('CustomFieldName') or 
-                         entry.get('Name') or entry.get('Label') or entry.get('FieldLabel') or
+                         entry.get('UserDefinedFieldName') or entry.get('Name') or 
+                         entry.get('Label') or entry.get('FieldLabel') or
                          entry.get('Question') or entry.get('QuestionName') or entry.get('Title') or '')
                     a = (entry.get('Value') or entry.get('FieldValue') or entry.get('Answer') or 
                          entry.get('SelectedValue') or entry.get('Text') or 
                          entry.get('Choice') or entry.get('Option') or '')
-                    if a:
+                    if a and not is_ignored_question(q):
                         qa_list.append((str(q).strip(), str(a).strip()))
         elif isinstance(container, dict):
             for q, a in container.items():
-                if a:
+                if a and not is_ignored_question(q):
                     qa_list.append((str(q).strip(), str(a).strip()))
                         
-    # 2. Search direct keys on item (in case CourtReserve flattens fields)
-    for k, v in item.items():
-        if isinstance(v, (str, int, float)) and v:
-            k_lower = k.lower()
-            if any(term in k_lower for term in ['self-rate', 'playinglevel', 'playing_level', 'levelchoice', 'customchoice', 'question', 'answer']):
-                qa_list.append((k, str(v).strip()))
-                
     return qa_list
 
 def process_events(input_path='data/events_10d.json', output_path='data/event-choices.json'):
@@ -141,10 +146,16 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         # Extract QA
         qa_pairs = extract_answers_from_item(item)
         for q, a in qa_pairs:
+            if is_ignored_question(q):
+                continue
+
             q_title = q if q else 'Playing Level'
-            # Check question similarity or default
             if any(term in q_title.lower() for term in ['level', 'playing level', 'self-rate']):
                 q_title = 'Self-Rated Playing Level'
+
+            norm_a = normalize_choice(a, q_title)
+            if not norm_a:
+                continue
 
             if q_title not in events_by_id[session_key]['questions']:
                 events_by_id[session_key]['questions'][q_title] = {
@@ -154,8 +165,6 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 }
 
             q_obj = events_by_id[session_key]['questions'][q_title]
-            norm_a = normalize_choice(a)
-
             q_obj['totalResponses'] += 1
             q_obj['tallies'][norm_a] = q_obj['tallies'].get(norm_a, 0) + 1
 
