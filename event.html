@@ -315,18 +315,17 @@
       text-align: center;
       margin-top: auto;
       padding-top: 3vh;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: rgba(255, 255, 255, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
     }
   </style>
 </head>
 <body class="page-event-choices">
   <div class="event-page-container">
-    <header class="brand-header">
-      <div class="brand-title">IPX &bull; Event Choices</div>
-      <div class="brand-meta" id="sync-time">Sync: --</div>
-    </header>
-
     <main id="main-content">
       <div class="empty-state">
         <h3>Loading Breakdown...</h3>
@@ -335,7 +334,9 @@
     </main>
 
     <footer class="page-footer">
-      <span>Auto-refreshed from CourtReserve data</span>
+      <span id="footer-event-info">Event #--</span>
+      <span>&bull;</span>
+      <span id="sync-time">Sync: --</span>
     </footer>
   </div>
 
@@ -563,9 +564,14 @@
         }
 
         const data = await res.json();
+        const eventInfoEl = document.getElementById('footer-event-info');
+        if (eventInfoEl && eventIdParam) {
+          eventInfoEl.textContent = `Event #${eventIdParam}`;
+        }
         if (data.lastUpdated) {
           const syncDate = new Date(data.lastUpdated);
-          document.getElementById('sync-time').textContent = `Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+          const syncEl = document.getElementById('sync-time');
+          if (syncEl) syncEl.textContent = `Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
         }
 
         const eventData = data.events ? data.events[String(eventIdParam).trim()] : null;
