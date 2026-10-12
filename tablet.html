@@ -7,7 +7,8 @@
   <title>Tablet Rosters</title>
   <link rel="stylesheet" href="css/common.css?v=2.2.0" />
   <style>
-    header {
+    header,
+    footer {
       display: none !important;
     }
     body.page-tablet {
@@ -19,24 +20,13 @@
     body.page-tablet main {
       flex: 1;
       display: flex !important;
-      padding: 2vh 1vw 2vh 1vw;
+      padding: 2.5vh 2vw;
       overflow: hidden !important;
     }
     .tablet-card {
       flex: 1; /* Stretch to fill the whole main area */
       margin: 0;
       padding: 3vh 3vw !important;
-    }
-    .page-tablet .footer-meta-grid {
-      display: flex !important;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 2vw !important;
-      align-items: center;
-      font-size: 1rem !important;
-    }
-    .page-tablet footer {
-      padding: 1vh 2vw 2vh 2vw;
     }
   </style>
 </head>
@@ -55,22 +45,6 @@
     </div>
   </main>
 
-  <footer class="rosters-footer">
-    <div class="footer-meta-grid">
-      <span id="tablet-id-pill">ID: --</span>
-      <span id="theme-pill">Theme: --</span>
-      <span id="data-refresh-time">Data Sync: --</span>
-      <span id="target-mode-pill">Target: --</span>
-      <span id="page-refresh-time">Display: --</span>
-    </div>
-    <div class="footer-right">
-      <div class="footer-countdown-container" id="countdown-box">
-        <span class="countdown-label">Next session starts:</span>
-        <span class="countdown-clock" id="transition-countdown">--:--</span>
-      </div>
-    </div>
-  </footer>
-
   <script src="js/common.js?v=2.2.0"></script>
   <script>
     async function refreshDisplay() {
@@ -80,21 +54,9 @@
         const data = await res.json();
 
         const now = new Date();
-        document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
-        
-        if (data.lastUpdated) {
-          const syncDate = new Date(data.lastUpdated);
-          document.getElementById('data-refresh-time').textContent = `Data Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}`;
-        }
-
         const targetTime = new Date(now.getTime() + lookaheadMinutes * 60 * 1000);
-        const targetTimeString = targetTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
 
         applyDynamicTheme(targetTime);
-
-        document.getElementById('target-mode-pill').textContent = isPreview 
-          ? `Target: ${targetTimeString}` 
-          : 'Target: Live';
 
         const isRunningAtTarget = (startIso, endIso) => {
           if (!startIso || !endIso) return false;
@@ -107,29 +69,6 @@
         };
 
         const events = Array.isArray(data) ? data : (data.events || []);
-
-        let closestFutureEpoch = null;
-        events.forEach(e => {
-          const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
-          if (/\bRoad\b/i.test(rawName)) return;
-
-          const s = new Date(e.startTime || e.StartTime).getTime();
-          let endDt = new Date(e.endTime || e.EndTime);
-          if (endDt.getHours() === 23 && endDt.getMinutes() === 59) {
-            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
-          }
-          const endEpoch = endDt.getTime();
-
-          [s, endEpoch].forEach(epoch => {
-            if (epoch > now.getTime()) {
-              if (closestFutureEpoch === null || epoch < closestFutureEpoch) {
-                closestFutureEpoch = epoch;
-              }
-            }
-          });
-        });
-        nextTransitionTargetEpoch = closestFutureEpoch;
-        updateCountdown();
 
         const sessions = [];
         const eventMap = {};
@@ -216,12 +155,6 @@
         
         window.currentTabletFilter = targetFilter;
 
-        const idDisplay = document.getElementById('tablet-id-pill');
-        if (idDisplay) {
-          const displayId = tabletId || 'Default (rack7)';
-          idDisplay.textContent = `ID: ${displayId}`;
-        }
-
         Object.values(eventMap).forEach(ev => {
           if (targetFilter) {
             const queueLoc = resolveQueueLocation(ev.courts, ev.queueText).toLowerCase();
@@ -237,7 +170,10 @@
             }
           }
 
-          const courtsLabel = formatCourtsLabel(ev.courts, 'rosters');
+          // Court numbers only without 'Courts' or 'Court' prefix
+          const courtArr = Array.from(ev.courts || []).sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0));
+          const courtsLabel = courtArr.length > 0 ? courtArr.join(', ') : 'TBD';
+
           const sortedPlayers = Array.from(ev.players.entries())
             .map(([name, checkedIn]) => ({ name, checkedIn }))
             .sort((a, b) => a.name.localeCompare(b.name));
@@ -255,24 +191,6 @@
             players: sortedPlayers
           });
         });
-
-        let bestWindowTag = '';
-        if (sessions.length > 0) {
-          const windowCounts = {};
-          sessions.forEach(item => {
-            const w = formatTimeWindow(item.startTime, item.endTime);
-            windowCounts[w] = (windowCounts[w] || 0) + 1;
-          });
-          const bestWindow = Object.keys(windowCounts).reduce((a, b) => windowCounts[a] >= windowCounts[b] ? a : b);
-          bestWindowTag = `<span class="header-window">(${bestWindow})</span>`;
-        }
-
-        const subtitleText = isPreview 
-          ? `Rosters (${targetTimeString} Preview)` 
-          : 'Rosters';
-
-        const titleEl = document.getElementById('header-title');
-        titleEl.innerHTML = `<span>Welcome to IPX!</span><span class="header-separator">&ndash;</span><span>${subtitleText}</span>${bestWindowTag}`;
 
         const container = document.getElementById('roster-container');
         container.innerHTML = '';
@@ -307,7 +225,7 @@
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
         container.style.gap = '2vh';
-        container.style.overflowY = 'auto'; // Allow scrolling on tablet
+        container.style.overflowY = 'auto';
 
         sessions.forEach(item => {
           const s = new Date(item.startTime);
@@ -319,26 +237,27 @@
           const isNow = now >= s && now <= e;
           const count = item.players.length;
 
+          // Responsive columns and font sizing to fit up to 30 names cleanly without clipping
           let dynCols = 1;
-          let dynFontSize = '2rem';
-          let dynRowGap = '1vh';
-          let dynColGap = '2vw';
+          let dynFontSize = '1.8rem';
+          let dynRowGap = '0.8vh';
+          let dynColGap = '1.8vw';
 
-          if (count > 28) {
-            dynCols = 3;
-            dynFontSize = '1.25rem';
-            dynRowGap = '0.4vh';
+          if (count > 22) {
+            dynCols = 2;
+            dynFontSize = '1.15rem';
+            dynRowGap = '0.3vh';
+            dynColGap = '1.2vw';
+          } else if (count > 14) {
+            dynCols = 2;
+            dynFontSize = '1.3rem';
+            dynRowGap = '0.5vh';
             dynColGap = '1.5vw';
-          } else if (count > 16) {
+          } else if (count > 8) {
             dynCols = 2;
             dynFontSize = '1.5rem';
             dynRowGap = '0.6vh';
-            dynColGap = '2vw';
-          } else if (count > 10) {
-            dynCols = 2;
-            dynFontSize = '1.7rem';
-            dynRowGap = '0.8vh';
-            dynColGap = '2vw';
+            dynColGap = '1.8vw';
           }
 
           const card = document.createElement('div');
@@ -360,16 +279,16 @@
           const timeLabel = `${s.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} - ${e.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
 
           card.innerHTML = `
-            <div class="tablet-left" style="flex: 2; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
-              <div class="line-title" style="font-size: 6.5rem; line-height: 1.1; font-weight: 800; white-space: normal; margin-bottom: 1vh;">${item.title}</div>
-              <div class="line-courts" style="font-size: 5.5rem; font-weight: 700; color: #fff;">${item.courtsLabel}</div>
-              <div class="line-meta" style="font-size: 2rem; color: var(--text-sub); opacity: 0.9; display: flex; align-items: center; gap: 1.5vw; flex-wrap: wrap;">
+            <div class="tablet-left" style="flex: 1.8; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
+              <div class="line-title" style="font-size: 5.5rem; line-height: 1.1; font-weight: 800; white-space: normal; margin-bottom: 0.5vh;">${item.title}</div>
+              <div class="line-courts" style="font-size: 2.75rem; font-weight: 700; color: #fff;">${item.courtsLabel}</div>
+              <div class="line-meta" style="font-size: 1.8rem; color: var(--text-sub); opacity: 0.9; display: flex; align-items: center; gap: 1.5vw; flex-wrap: wrap;">
                 <span>${timeLabel}</span>
                 ${item.queueText ? `<span class="paddle-queue" style="color: var(--theme-accent);">${item.queueText}</span>` : ''}
               </div>
-              <div class="count-badge" style="width: fit-content; font-size: 1.8rem; margin-top: 1vh; padding: 0.5vh 1vw;">${count} ${count === 1 ? 'Player' : 'Players'}</div>
+              <div class="count-badge" style="width: fit-content; font-size: 1.6rem; margin-top: 0.5vh; padding: 0.4vh 1vw;">${count} ${count === 1 ? 'Player' : 'Players'}</div>
             </div>
-            <div class="tablet-right" style="flex: 1; overflow-y: auto; padding-left: 1vw;">
+            <div class="tablet-right" style="flex: 1.2; overflow-y: auto; padding-left: 1vw;">
               <div class="player-list" style="
                 column-count: ${dynCols};
                 column-gap: ${dynColGap};
