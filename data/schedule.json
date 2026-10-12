@@ -1,7 +1,17 @@
 {
-  "lastUpdated": "2026-10-12T02:46:46Z",
+  "lastUpdated": "2026-10-12T02:49:00Z",
   "date": "2026-10-11",
   "courtHosts": [
+    {
+      "start": "19:00",
+      "end": "22:00",
+      "host": "Varun C"
+    },
+    {
+      "start": "19:00",
+      "end": "22:00",
+      "host": "Harsh P"
+    },
     {
       "start": "14:45",
       "end": "18:45",
@@ -11,16 +21,6 @@
       "start": "14:45",
       "end": "18:45",
       "host": "Nelson C"
-    },
-    {
-      "start": "19:00",
-      "end": "22:00",
-      "host": "Harsh P"
-    },
-    {
-      "start": "19:00",
-      "end": "22:00",
-      "host": "Varun C"
     }
   ],
   "courtOverrides": [],
@@ -1978,6 +1978,18 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Catherine R",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2301892,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-13T20:00:00",
+      "endTime": "2026-10-13T22:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Michael L",
       "checkedIn": true
     },
     {
