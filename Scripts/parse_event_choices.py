@@ -206,17 +206,27 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         for q_title, q_data in s_data['questions'].items():
             tot = q_data['totalResponses']
             tallies_with_pct = []
-            for choice, count in q_data['tallies'].items():
-                pct = round((count / tot * 100), 1) if tot > 0 else 0
-                tallies_with_pct.append({
-                    'choice': choice,
-                    'count': count,
-                    'percentage': pct
-                })
             
-            # Sort tallies: standard skill order if present, otherwise by count descending
-            level_order = {'Advanced Beginner': 1, 'Intermediate': 2, 'High Intermediate': 3, 'Advanced': 4}
-            tallies_with_pct.sort(key=lambda x: (level_order.get(x['choice'], 99), -x['count']))
+            is_level_q = any(term in q_title.lower() for term in ['level', 'playing level', 'self-rate'])
+            if is_level_q:
+                standard_levels = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']
+                for lvl in standard_levels:
+                    cnt = q_data['tallies'].get(lvl, 0)
+                    pct = round((cnt / tot * 100), 1) if tot > 0 else 0
+                    tallies_with_pct.append({
+                        'choice': lvl,
+                        'count': cnt,
+                        'percentage': pct
+                    })
+            else:
+                for choice, count in q_data['tallies'].items():
+                    pct = round((count / tot * 100), 1) if tot > 0 else 0
+                    tallies_with_pct.append({
+                        'choice': choice,
+                        'count': count,
+                        'percentage': pct
+                    })
+                tallies_with_pct.sort(key=lambda x: -x['count'])
 
             q_list.append({
                 'question': q_title,

@@ -357,18 +357,27 @@
 
       if (relevantQuestions.length > 0) {
         questionsHtml = relevantQuestions.map(q => {
-          const isLevelQ = q.question.toLowerCase().includes('level');
-          const validChoices = isLevelQ 
-            ? q.choices.filter(c => ['advanced beginner', 'intermediate', 'high intermediate', 'advanced'].includes(c.choice.toLowerCase()))
-            : q.choices;
+          const isLevelQ = q.question.toLowerCase().includes('level') || q.question.toLowerCase().includes('self-rate');
+          let validChoices = [];
 
           if (isLevelQ) {
-            const levelOrder = ['advanced beginner', 'intermediate', 'high intermediate', 'advanced'];
-            validChoices.sort((a, b) => {
-              const idxA = levelOrder.indexOf(a.choice.toLowerCase());
-              const idxB = levelOrder.indexOf(b.choice.toLowerCase());
-              return (idxA !== -1 ? idxA : 99) - (idxB !== -1 ? idxB : 99);
+            const standardLevels = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
+            const countMap = {};
+            standardLevels.forEach(lvl => { countMap[lvl] = 0; });
+
+            (q.choices || []).forEach(c => {
+              const matched = standardLevels.find(lvl => lvl.toLowerCase() === c.choice.toLowerCase());
+              if (matched) {
+                countMap[matched] = c.count;
+              }
             });
+
+            validChoices = standardLevels.map(lvl => ({
+              choice: lvl,
+              count: countMap[lvl]
+            }));
+          } else {
+            validChoices = q.choices;
           }
 
           // Re-calculate percentages based on valid choices
