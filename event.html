@@ -321,7 +321,10 @@
 
       let courtsHtml = '';
       if (session.courts && session.courts.length > 0) {
-        courtsHtml = `<div class="event-courts">Courts ${session.courts.join(', ')}</div>`;
+        const cleanCourts = session.courts
+          .map(c => String(c).replace(/\s*\([^)]*\)/g, '').replace(/^Court\s*/i, '').trim())
+          .filter(Boolean);
+        courtsHtml = `<div class="event-courts">Court${cleanCourts.length > 1 ? 's' : ''} ${cleanCourts.join(', ')}</div>`;
       }
 
       let questionsHtml = '';
@@ -444,3 +447,4 @@
   </script>
 </body>
 </html>
+

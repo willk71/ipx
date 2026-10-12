@@ -53,12 +53,16 @@ def extract_answers_from_item(item):
                          entry.get('Choice') or entry.get('Option') or '')
                     if a:
                         qa_list.append((str(q).strip(), str(a).strip()))
+        elif isinstance(container, dict):
+            for q, a in container.items():
+                if a:
+                    qa_list.append((str(q).strip(), str(a).strip()))
                         
     # 2. Search direct keys on item (in case CourtReserve flattens fields)
     for k, v in item.items():
         if isinstance(v, (str, int, float)) and v:
             k_lower = k.lower()
-            if any(term in k_lower for term in ['self-rate', 'playinglevel', 'playing_level', 'levelchoice', 'customchoice']):
+            if any(term in k_lower for term in ['self-rate', 'playinglevel', 'playing_level', 'levelchoice', 'customchoice', 'question', 'answer']):
                 qa_list.append((k, str(v).strip()))
                 
     return qa_list
@@ -81,6 +85,20 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
 
     print(f"Processing {len(items)} event registrant records from {input_path}...")
 
+    # Diagnostic logging: inspect Event 2162219 or sample item
+    target_item = next((it for it in items if str(it.get('EventId') or it.get('eventId') or '') == '2162219'), None)
+    if target_item:
+        print(f"=== DIAGNOSTIC for Event 2162219 ===")
+        print("Keys:", list(target_item.keys()))
+        for k, v in target_item.items():
+            if v and not isinstance(v, (dict, list)):
+                print(f"  {k}: {v}")
+            elif isinstance(v, (dict, list)) and len(v) > 0:
+                print(f"  {k} ({type(v).__name__}): {json.dumps(v)[:250]}")
+    elif len(items) > 0:
+        print(f"=== DIAGNOSTIC: Sample item 0 keys ===")
+        print(list(items[0].keys()))
+
     # Group by EventId and StartTime
     # key: (eventId, startTime)
     events_by_id = {}
@@ -101,10 +119,12 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         court_names = []
         if isinstance(courts, list):
             for c in courts:
-                if isinstance(c, dict):
-                    court_names.append(c.get('CourtName', ''))
-                elif c:
-                    court_names.append(str(c))
+                name = c.get('CourtName', '') if isinstance(c, dict) else str(c)
+                clean_c = re.sub(r'\s*\([^)]*\)', '', name)
+                clean_c = re.sub(r'^Court\s*', '', clean_c, flags=re.I).strip()
+                if clean_c and clean_c not in court_names:
+                    court_names.append(clean_c)
+        court_names.sort(key=lambda x: int(x) if x.isdigit() else 999)
         
         # Unique session key
         session_key = f"{e_id}_{start_time}"
@@ -202,3 +222,4 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
 
 if __name__ == '__main__':
     process_events()
+
