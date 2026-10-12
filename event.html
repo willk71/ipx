@@ -341,7 +341,15 @@
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const eventIdParam = urlParams.get('id') || urlParams.get('eventId');
+    let eventIdParam = urlParams.get('id') || urlParams.get('eventId') || urlParams.get('e');
+
+    // If no named param, check if the query string itself is the ID (e.g. ?2160558 or ?2160558&)
+    if (!eventIdParam && window.location.search) {
+      const rawQuery = window.location.search.replace(/^\?/, '').split('&')[0];
+      if (/^\d+$/.test(rawQuery)) {
+        eventIdParam = rawQuery;
+      }
+    }
 
     let cachedEventData = null;
     let selectedSessionIndex = 0;
@@ -548,7 +556,8 @@
       }
 
       try {
-        const res = await fetch(`data/event-choices.json?_t=${Date.now()}`);
+        const dataUrl = window.location.pathname.includes('/e') ? '../data/event-choices.json' : 'data/event-choices.json';
+        const res = await fetch(`${dataUrl}?_t=${Date.now()}`);
         if (!res.ok) {
           throw new Error('Data file not found. Sync may be in progress.');
         }

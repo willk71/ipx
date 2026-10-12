@@ -87,6 +87,20 @@
 
   <script src="js/common.js?v=2.2.7"></script>
   <script>
+    // Quick redirect if event ID is passed at root (e.g. ipxbk.com/?2160558 or ipxbk.com/?e=2160558)
+    (function() {
+      const q = window.location.search;
+      if (q) {
+        const cleanQ = q.replace(/^\?/, '').split('&')[0];
+        const params = new URLSearchParams(q);
+        const eventId = params.get('e') || params.get('id') || params.get('eventId') || (/^\d+$/.test(cleanQ) ? cleanQ : null);
+        if (eventId) {
+          window.location.replace(`e/?${eventId}`);
+          return;
+        }
+      }
+    })();
+
     function formatNameLastInitial(rawName) {
       if (!rawName) return '';
       const parts = rawName.trim().split(/\s+/);
