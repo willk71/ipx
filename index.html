@@ -95,7 +95,7 @@
         const params = new URLSearchParams(q);
         const eventId = params.get('e') || params.get('id') || params.get('eventId') || (/^\d+$/.test(cleanQ) ? cleanQ : null);
         if (eventId) {
-          window.location.replace(`e/?${eventId}`);
+          window.location.replace(`/event?${eventId}`);
           return;
         }
       }
