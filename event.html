@@ -270,11 +270,42 @@
       margin-bottom: 2vh;
     }
 
+    .registrant-group {
+      margin-top: 2.2vh;
+    }
+
+    .registrant-group:first-of-type {
+      margin-top: 0.5vh;
+    }
+
+    .registrant-group-header {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 1vh;
+    }
+
+    .registrant-group-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .registrant-group-count {
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.88rem;
+    }
+
     .registrants-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 0.8rem 1rem;
-      margin-top: 1.5vh;
+      margin-top: 1vh;
     }
 
     .registrant-pill {
@@ -298,7 +329,7 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--theme-accent, #00f0ff);
+      background: var(--pill-color, var(--theme-accent, #00f0ff));
       flex-shrink: 0;
     }
 
@@ -425,29 +456,44 @@
         return !isIgnored && q.choices && q.choices.length > 0;
       });
 
+      let primaryQuestionChoices = null;
+
       if (relevantQuestions.length > 0) {
-        questionsHtml = relevantQuestions.map(q => {
+        questionsHtml = relevantQuestions.map((q, qIdx) => {
           const isLevelQ = q.question.toLowerCase().includes('level') || q.question.toLowerCase().includes('self-rate');
           let validChoices = [];
 
           if (isLevelQ) {
             const standardLevels = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
             const countMap = {};
-            standardLevels.forEach(lvl => { countMap[lvl] = 0; });
+            const playersMap = {};
+            standardLevels.forEach(lvl => {
+              countMap[lvl] = 0;
+              playersMap[lvl] = [];
+            });
 
             (q.choices || []).forEach(c => {
               const matched = standardLevels.find(lvl => lvl.toLowerCase() === c.choice.toLowerCase());
               if (matched) {
                 countMap[matched] = c.count;
+                playersMap[matched] = Array.isArray(c.players) ? c.players : [];
               }
             });
 
             validChoices = standardLevels.map(lvl => ({
               choice: lvl,
-              count: countMap[lvl]
+              count: countMap[lvl],
+              players: playersMap[lvl]
             }));
           } else {
-            validChoices = q.choices;
+            validChoices = (q.choices || []).map(c => ({
+              ...c,
+              players: Array.isArray(c.players) ? c.players : []
+            }));
+          }
+
+          if (qIdx === 0 || isLevelQ) {
+            primaryQuestionChoices = validChoices;
           }
 
           // Re-calculate percentages based on valid choices
@@ -506,15 +552,74 @@
       let registrantsHtml = '';
       const regList = session.registrants || [];
       if (regList.length > 0) {
+        const hasGroupedPlayers = primaryQuestionChoices && primaryQuestionChoices.some(c => c.players && c.players.length > 0);
+        let bodyHtml = '';
+
+        if (hasGroupedPlayers) {
+          const assignedCounts = {};
+          const groupsHtml = [];
+
+          primaryQuestionChoices.forEach(c => {
+            const pList = c.players || [];
+            pList.forEach(p => { assignedCounts[p] = (assignedCounts[p] || 0) + 1; });
+            if (pList.length > 0) {
+              const grpColor = getLevelColor(c.choice);
+              groupsHtml.push(`
+                <div class="registrant-group">
+                  <div class="registrant-group-header">
+                    <span class="registrant-group-dot" style="background: ${grpColor};"></span>
+                    <span>${c.choice}</span>
+                    <span class="registrant-group-count">(${pList.length})</span>
+                  </div>
+                  <div class="registrants-grid">
+                    ${pList.map(name => `<div class="registrant-pill" style="--pill-color: ${grpColor};">${name}</div>`).join('')}
+                  </div>
+                </div>
+              `);
+            }
+          });
+
+          const remainingCounts = { ...assignedCounts };
+          const unassignedPlayers = [];
+          regList.forEach(name => {
+            if (remainingCounts[name] > 0) {
+              remainingCounts[name]--;
+            } else {
+              unassignedPlayers.push(name);
+            }
+          });
+
+          if (unassignedPlayers.length > 0) {
+            groupsHtml.push(`
+              <div class="registrant-group">
+                <div class="registrant-group-header">
+                  <span class="registrant-group-dot" style="background: rgba(255,255,255,0.4);"></span>
+                  <span>Unassigned</span>
+                  <span class="registrant-group-count">(${unassignedPlayers.length})</span>
+                </div>
+                <div class="registrants-grid">
+                  ${unassignedPlayers.map(name => `<div class="registrant-pill" style="--pill-color: rgba(255,255,255,0.4);">${name}</div>`).join('')}
+                </div>
+              </div>
+            `);
+          }
+
+          bodyHtml = groupsHtml.join('');
+        } else {
+          bodyHtml = `
+            <div class="registrants-grid">
+              ${regList.map(name => `<div class="registrant-pill">${name}</div>`).join('')}
+            </div>
+          `;
+        }
+
         registrantsHtml = `
           <div class="registrants-card">
             <div class="question-header">
               <h2 class="question-title">Registrants</h2>
               <span class="respondent-count">${regList.length} ${regList.length === 1 ? 'Player' : 'Players'}</span>
             </div>
-            <div class="registrants-grid">
-              ${regList.map(name => `<div class="registrant-pill">${name}</div>`).join('')}
-            </div>
+            ${bodyHtml}
           </div>
         `;
       }

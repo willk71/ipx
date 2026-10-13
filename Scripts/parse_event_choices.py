@@ -153,26 +153,25 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         player_id = str(org_id or email or name or reg_id or id(item)).strip()
         session_player_key = f"{session_key}_{player_id}"
 
+        # Format registrant label: First Name Last Init (e.g., "John D.")
+        f_clean = str(first_raw).strip()
+        l_clean = str(last_raw).strip()
+        if f_clean and l_clean:
+            display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
+        elif f_clean:
+            display_name = f_clean.title()
+        elif item.get('MemberName'):
+            parts = str(item.get('MemberName')).strip().split()
+            if len(parts) >= 2:
+                display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
+            else:
+                display_name = parts[0].title() if parts else "Player"
+        else:
+            display_name = "Player"
+
         if session_player_key not in seen_players_per_session:
             seen_players_per_session.add(session_player_key)
             events_by_id[session_key]['totalRegistered'] += 1
-
-            # Format registrant label: First Name Last Init (e.g., "John D." or "John D")
-            f_clean = str(first_raw).strip()
-            l_clean = str(last_raw).strip()
-            if f_clean and l_clean:
-                display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
-            elif f_clean:
-                display_name = f_clean.title()
-            elif item.get('MemberName'):
-                parts = str(item.get('MemberName')).strip().split()
-                if len(parts) >= 2:
-                    display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
-                else:
-                    display_name = parts[0].title() if parts else "Player"
-            else:
-                display_name = "Player"
-            
             events_by_id[session_key]['registrants'].append(display_name)
 
         # Extract QA
@@ -199,12 +198,16 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 events_by_id[session_key]['questions'][q_title] = {
                     'question': q_title,
                     'totalResponses': 0,
-                    'tallies': {}
+                    'tallies': {},
+                    'playersByChoice': {}
                 }
 
             q_obj = events_by_id[session_key]['questions'][q_title]
             q_obj['totalResponses'] += 1
             q_obj['tallies'][norm_a] = q_obj['tallies'].get(norm_a, 0) + 1
+            if norm_a not in q_obj['playersByChoice']:
+                q_obj['playersByChoice'][norm_a] = []
+            q_obj['playersByChoice'][norm_a].append(display_name)
 
     # Format into a clean output dictionary mapped by eventId
     # Since an eventId may have multiple occurrences across the 10 days, store a list of sessions
@@ -227,6 +230,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         for q_title, q_data in s_data['questions'].items():
             tot = q_data['totalResponses']
             tallies_with_pct = []
+            players_by_choice = q_data.get('playersByChoice', {})
             
             is_level_q = any(term in q_title.lower() for term in ['level', 'playing level', 'self-rate'])
             if is_level_q:
@@ -237,7 +241,8 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                     tallies_with_pct.append({
                         'choice': lvl,
                         'count': cnt,
-                        'percentage': pct
+                        'percentage': pct,
+                        'players': sorted(players_by_choice.get(lvl, []))
                     })
             else:
                 for choice, count in q_data['tallies'].items():
@@ -245,7 +250,8 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                     tallies_with_pct.append({
                         'choice': choice,
                         'count': count,
-                        'percentage': pct
+                        'percentage': pct,
+                        'players': sorted(players_by_choice.get(choice, []))
                     })
                 tallies_with_pct.sort(key=lambda x: -x['count'])
 
