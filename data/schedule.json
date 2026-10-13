@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-13T01:08:12Z",
+  "lastUpdated": "2026-10-13T01:23:53Z",
   "date": "2026-10-12",
   "courtHosts": [],
   "courtOverrides": [],
@@ -1487,7 +1487,7 @@
         "Court 5"
       ],
       "playerName": "Marvin M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2300500,
@@ -1776,6 +1776,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2300555,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-12T21:30:00",
+      "endTime": "2026-10-12T23:59:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Minhdiep V",
+      "checkedIn": true
+    },
+    {
       "eventId": 2301890,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-13T20:00:00",
@@ -1811,19 +1822,6 @@
         "Court 3"
       ],
       "playerName": "Emily S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301927,
-      "title": "Morning Brew and Play",
-      "startTime": "2026-10-14T09:00:00",
-      "endTime": "2026-10-14T11:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Linda S",
       "checkedIn": false
     },
     {
@@ -3222,17 +3220,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2300561,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-12T21:30:00",
-      "endTime": "2026-10-12T23:59:00",
-      "courts": [
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Juan S",
-      "checkedIn": true
-    },
-    {
       "eventId": 2301933,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-14T17:30:00",
@@ -3242,6 +3229,17 @@
         "Court 7 (Livestreaming)",
         "Court 10 (Livestreaming)",
         "Court 8"
+      ],
+      "playerName": "Juan S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2300561,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-12T21:30:00",
+      "endTime": "2026-10-12T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)"
       ],
       "playerName": "Juan S",
       "checkedIn": true
@@ -3342,6 +3340,19 @@
         "Court 11",
         "Court 8"
       ],
+      "playerName": "Haim F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301947,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-14T19:30:00",
+      "endTime": "2026-10-14T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 11",
+        "Court 8"
+      ],
       "playerName": "Zayd A",
       "checkedIn": false
     },
@@ -3369,6 +3380,19 @@
       ],
       "playerName": "steven a",
       "checkedIn": true
+    },
+    {
+      "eventId": 2301927,
+      "title": "Morning Brew and Play",
+      "startTime": "2026-10-14T09:00:00",
+      "endTime": "2026-10-14T11:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Linda S",
+      "checkedIn": false
     },
     {
       "eventId": 2301947,
