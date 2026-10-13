@@ -287,6 +287,14 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 10 Table - Right';
       }
 
+      // Courts 7, 8, 9, 10, 11 (and 7, 8, 10, 11) queue at Court 10 Left Paddle Rack
+      if (
+        (courtsSet.has('7') && courtsSet.has('8') && courtsSet.has('9') && courtsSet.has('10') && courtsSet.has('11')) ||
+        (courtsSet.has('7') && courtsSet.has('8') && courtsSet.has('10') && courtsSet.has('11') && !courtsSet.has('4'))
+      ) {
+        return '📍 - Court 10 Left Paddle Rack';
+      }
+
       // Both Court 4 and Court 7 are present:
       if (courtsSet.has('4') && courtsSet.has('7')) {
         if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
