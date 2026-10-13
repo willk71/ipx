@@ -1,21 +1,28 @@
 {
-  "lastUpdated": "2026-10-13T05:54:59Z",
+  "lastUpdated": "2026-10-13T06:20:34Z",
   "date": "2026-10-13",
   "courtHosts": [
     {
       "start": "18:00",
       "end": "21:00",
-      "host": "Nelson C"
+      "host": "Wendy C"
     },
     {
       "start": "18:00",
       "end": "21:00",
-      "host": "Wendy C"
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
   "adHocSessions": [],
-  "reservations": [],
+  "reservations": [
+    {
+      "court": "Court 11",
+      "holderLabel": "Matthew S.",
+      "startTime": "2026-10-14T10:00:00",
+      "endTime": "2026-10-14T11:00:00"
+    }
+  ],
   "events": [
     {
       "eventId": 2162219,
