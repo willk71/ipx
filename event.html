@@ -649,6 +649,7 @@
     function switchSession(idx) {
       selectedSessionIndex = idx;
       if (cachedEventData && cachedEventData.sessions && cachedEventData.sessions[idx]) {
+        window.userSelectedStartTime = cachedEventData.sessions[idx].startTime;
         renderSession(cachedEventData.sessions[idx], cachedEventData.sessions);
       }
     }
@@ -693,6 +694,24 @@
             </div>
           `;
           return;
+        }
+
+        // Filter out sessions whose endTime has already passed (if upcoming sessions exist)
+        const now = new Date();
+        const activeOrUpcoming = eventData.sessions.filter(s => {
+          const endDt = s.endTime ? new Date(s.endTime) : new Date(s.startTime);
+          return endDt > now;
+        });
+        if (activeOrUpcoming.length > 0) {
+          eventData.sessions = activeOrUpcoming;
+        }
+
+        // Preserve user's selected date tab across 60s refreshes, otherwise default to earliest upcoming (0)
+        if (window.userSelectedStartTime) {
+          const foundIdx = eventData.sessions.findIndex(s => s.startTime === window.userSelectedStartTime);
+          selectedSessionIndex = foundIdx >= 0 ? foundIdx : 0;
+        } else if (selectedSessionIndex >= eventData.sessions.length) {
+          selectedSessionIndex = 0;
         }
 
         cachedEventData = eventData;
