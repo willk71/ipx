@@ -165,7 +165,21 @@
             
             const hasCourt = Array.from(ev.courts).some(c => c.toLowerCase() === targetFilter || 'court ' + c.toLowerCase() === targetFilter);
             
-            if (!matchesQueue && !hasCourt) {
+            // Fallback for Court 10 tablets (table10-r, table10-l, rack10):
+            // If the session is queued at Court 10 and not explicitly assigned to the opposite split, display it.
+            let isCourt10Fallback = false;
+            if (targetFilter.includes('court 10')) {
+              const isCourt10Session = queueLoc.includes('court 10');
+              const hasOppositeSplit = targetFilter.includes('right')
+                ? queueLoc.includes('left')
+                : (targetFilter.includes('left') ? queueLoc.includes('right') : false);
+
+              if (isCourt10Session && !hasOppositeSplit) {
+                isCourt10Fallback = true;
+              }
+            }
+
+            if (!matchesQueue && !hasCourt && !isCourt10Fallback) {
               return; // Skip if it doesn't match the tablet's location
             }
           }
