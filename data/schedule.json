@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-14T10:48:50Z",
+  "lastUpdated": "2026-10-14T11:25:29Z",
   "date": "2026-10-14",
   "courtHosts": [
+    {
+      "start": "19:30",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -11,11 +16,6 @@
       "start": "18:00",
       "end": "21:00",
       "host": "Wendy X"
-    },
-    {
-      "start": "19:30",
-      "end": "23:00",
-      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -2921,6 +2921,19 @@
         "Court 8"
       ],
       "playerName": "Albee^^ l",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301950,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-14T21:30:00",
+      "endTime": "2026-10-14T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 5",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Marie C",
       "checkedIn": false
     },
     {
