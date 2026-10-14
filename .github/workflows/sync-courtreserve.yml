@@ -252,6 +252,8 @@ jobs:
                 )
               }' > data/schedule.json
 
+            python3 Scripts/split_choice_events.py
+
             rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
 
             git add data/schedule.json
