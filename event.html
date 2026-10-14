@@ -512,12 +512,20 @@
 
             const advCount = countByLevel['Advanced'] || 0;
             const highIntCount = countByLevel['High Intermediate'] || 0;
-            const advMerged = advCount > 0 && advCount < 4;
+            const advMerged = advCount > 0 && advCount < 4 && highIntCount > 0;
+
+            const advBegCount = countByLevel['Advanced Beginner'] || 0;
+            const intCount = countByLevel['Intermediate'] || 0;
+            const advBegMerged = advBegCount > 0 && advBegCount < 4 && intCount > 0;
 
             const effectiveCounts = { ...countByLevel };
             if (advMerged) {
-              effectiveCounts['High Intermediate'] = highIntCount + advCount;
+              effectiveCounts['High Intermediate'] = (effectiveCounts['High Intermediate'] || 0) + advCount;
               effectiveCounts['Advanced'] = 0;
+            }
+            if (advBegMerged) {
+              effectiveCounts['Intermediate'] = (effectiveCounts['Intermediate'] || 0) + advBegCount;
+              effectiveCounts['Advanced Beginner'] = 0;
             }
 
             const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
@@ -547,27 +555,36 @@
                 floors[remainders[i].level]++;
               }
 
-              // Assign actual courts or count
+              // Pass 1: Assign actual courts or count to levels that have allocated courts
+              const assignedCourtsByLevel = {};
               let courtIdx = 0;
-              let highIntCourtsText = '';
               standardOrder.forEach(lvl => {
                 const numCourts = floors[lvl] || 0;
                 if (numCourts > 0) {
                   if (cleanCourts.length >= totalCourtsAvailable) {
                     const assigned = cleanCourts.slice(courtIdx, courtIdx + numCourts);
                     courtIdx += numCourts;
-                    const txt = (assigned.length === 1 ? 'Court ' : 'Courts ') + assigned.join(', ');
-                    courtLabelsByChoice[lvl] = txt;
-                    if (lvl === 'High Intermediate') highIntCourtsText = txt;
+                    assignedCourtsByLevel[lvl] = (assigned.length === 1 ? 'Court ' : 'Courts ') + assigned.join(', ');
                   } else {
-                    const txt = `${numCourts} ${numCourts === 1 ? 'Court' : 'Courts'}`;
-                    courtLabelsByChoice[lvl] = txt;
-                    if (lvl === 'High Intermediate') highIntCourtsText = txt;
+                    assignedCourtsByLevel[lvl] = `${numCourts} ${numCourts === 1 ? 'Court' : 'Courts'}`;
                   }
+                }
+              });
+
+              // Pass 2: Set label for each level, including merge notices
+              standardOrder.forEach(lvl => {
+                if (assignedCourtsByLevel[lvl]) {
+                  courtLabelsByChoice[lvl] = assignedCourtsByLevel[lvl];
                 } else if (lvl === 'Advanced' && advMerged) {
-                  courtLabelsByChoice[lvl] = highIntCourtsText 
-                    ? `Merge w/ High Int (${highIntCourtsText})`
+                  const targetCourts = assignedCourtsByLevel['High Intermediate'];
+                  courtLabelsByChoice[lvl] = targetCourts 
+                    ? `Merge w/ High Int (${targetCourts})`
                     : 'Merge w/ High Int';
+                } else if (lvl === 'Advanced Beginner' && advBegMerged) {
+                  const targetCourts = assignedCourtsByLevel['Intermediate'];
+                  courtLabelsByChoice[lvl] = targetCourts 
+                    ? `Merge w/ Int (${targetCourts})`
+                    : 'Merge w/ Int';
                 } else {
                   courtLabelsByChoice[lvl] = '0 Courts';
                 }
