@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-14T18:09:27Z",
+  "lastUpdated": "2026-10-14T18:11:43Z",
   "date": "2026-10-14",
   "courtHosts": [
-    {
-      "start": "19:30",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -16,6 +11,11 @@
       "start": "18:00",
       "end": "21:00",
       "host": "Nelson C"
+    },
+    {
+      "start": "19:30",
+      "end": "23:00",
+      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -3410,19 +3410,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2301947,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-14T19:30:00",
-      "endTime": "2026-10-14T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 11",
-        "Court 8"
-      ],
-      "playerName": "Evan M",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302616,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-14T19:30:00",
@@ -4192,6 +4179,17 @@
         "Court 3"
       ],
       "playerName": "Luke J",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301951,
+      "title": "Advanced Beginner Open Play | Play Until 1AM",
+      "startTime": "2026-10-14T21:30:00",
+      "endTime": "2026-10-14T23:59:00",
+      "courts": [
+        "Court 3"
+      ],
+      "playerName": "Waris T",
       "checkedIn": false
     }
   ]
