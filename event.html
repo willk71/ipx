@@ -499,15 +499,97 @@
           // Re-calculate percentages based on valid choices
           const validTotal = validChoices.reduce((sum, c) => sum + c.count, 0);
 
+          // Proportional Court Allocation & Advanced Merging
+          const cleanCourts = (session.courts || [])
+            .map(c => String(c).replace(/\s*\([^)]*\)/g, '').replace(/^Court\s*/i, '').trim())
+            .filter(Boolean)
+            .sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0));
+
+          const courtLabelsByChoice = {};
+          if (isLevelQ) {
+            const countByLevel = {};
+            validChoices.forEach(c => { countByLevel[c.choice] = c.count; });
+
+            const advCount = countByLevel['Advanced'] || 0;
+            const highIntCount = countByLevel['High Intermediate'] || 0;
+            const advMerged = advCount > 0 && advCount < 4;
+
+            const effectiveCounts = { ...countByLevel };
+            if (advMerged) {
+              effectiveCounts['High Intermediate'] = highIntCount + advCount;
+              effectiveCounts['Advanced'] = 0;
+            }
+
+            const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
+            const activeLevels = standardOrder.filter(lvl => (effectiveCounts[lvl] || 0) > 0);
+            const totalEffective = activeLevels.reduce((sum, lvl) => sum + effectiveCounts[lvl], 0);
+
+            const totalCourtsAvailable = cleanCourts.length > 0 
+              ? cleanCourts.length 
+              : Math.max(1, Math.ceil(totalEffective / 6));
+
+            if (totalEffective > 0 && totalCourtsAvailable > 0) {
+              // Largest Remainder (Hamilton-Hare) apportionment
+              const quotas = {};
+              const floors = {};
+              activeLevels.forEach(lvl => {
+                quotas[lvl] = (effectiveCounts[lvl] / totalEffective) * totalCourtsAvailable;
+                floors[lvl] = Math.floor(quotas[lvl]);
+              });
+
+              let assignedSum = activeLevels.reduce((sum, lvl) => sum + floors[lvl], 0);
+              const remainders = activeLevels.map(lvl => ({
+                level: lvl,
+                rem: quotas[lvl] - floors[lvl]
+              })).sort((a, b) => b.rem - a.rem);
+
+              for (let i = 0; i < (totalCourtsAvailable - assignedSum); i++) {
+                floors[remainders[i].level]++;
+              }
+
+              // Assign actual courts or count
+              let courtIdx = 0;
+              let highIntCourtsText = '';
+              standardOrder.forEach(lvl => {
+                const numCourts = floors[lvl] || 0;
+                if (numCourts > 0) {
+                  if (cleanCourts.length >= totalCourtsAvailable) {
+                    const assigned = cleanCourts.slice(courtIdx, courtIdx + numCourts);
+                    courtIdx += numCourts;
+                    const txt = (assigned.length === 1 ? 'Court ' : 'Courts ') + assigned.join(', ');
+                    courtLabelsByChoice[lvl] = txt;
+                    if (lvl === 'High Intermediate') highIntCourtsText = txt;
+                  } else {
+                    const txt = `${numCourts} ${numCourts === 1 ? 'Court' : 'Courts'}`;
+                    courtLabelsByChoice[lvl] = txt;
+                    if (lvl === 'High Intermediate') highIntCourtsText = txt;
+                  }
+                } else if (lvl === 'Advanced' && advMerged) {
+                  courtLabelsByChoice[lvl] = highIntCourtsText 
+                    ? `Merge w/ High Int (${highIntCourtsText})`
+                    : 'Merge w/ High Int';
+                } else {
+                  courtLabelsByChoice[lvl] = '0 Courts';
+                }
+              });
+            } else {
+              standardOrder.forEach(lvl => {
+                courtLabelsByChoice[lvl] = '0 Courts';
+              });
+            }
+          }
+
           const choicesHtml = validChoices.map(c => {
             const barColor = getLevelColor(c.choice);
             const pct = validTotal > 0 ? ((c.count / validTotal) * 100).toFixed(1) : 0;
             
-            // Courts assigned: 1 court per 6 players (ceiling if count > 0, 0 if count == 0)
-            const courtsNeeded = c.count > 0 ? Math.ceil(c.count / 6) : 0;
-            const courtsLabel = courtsNeeded > 0 
-              ? `${courtsNeeded} ${courtsNeeded === 1 ? 'Court' : 'Courts'}` 
-              : '0 Courts';
+            let courtsLabel = courtLabelsByChoice[c.choice];
+            if (!courtsLabel) {
+              const courtsNeeded = c.count > 0 ? Math.ceil(c.count / 6) : 0;
+              courtsLabel = courtsNeeded > 0 
+                ? `${courtsNeeded} ${courtsNeeded === 1 ? 'Court' : 'Courts'}` 
+                : '0 Courts';
+            }
 
             return `
               <div class="choice-item">
