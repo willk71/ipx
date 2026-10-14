@@ -141,6 +141,8 @@
           'rack10-r': 'court 10 right paddle rack',
           'willipad': 'court 1',
           '001': 'court 1',
+          'court1': 'court 1',
+          'c1': 'court 1',
           'xyz': 'court 7',
           'fff': 'court 10'
         };
@@ -307,10 +309,13 @@
             : `<div class="player-empty">No registered players</div>`;
 
           const timeLabel = `${s.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} - ${e.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+          const displayTitle = (item.title || '')
+            .replace(/^Lunch\s+Break(\s+Open\s+Play)?\s*[-–—:]\s*/i, '')
+            .trim() || item.title;
 
           card.innerHTML = `
             <div class="tablet-left" style="flex: 1.8; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 2vw; gap: 1.5vh;">
-              <div class="line-title" style="font-size: 5.5rem; line-height: 1.1; font-weight: 800; white-space: normal; margin-bottom: 0.5vh;">${item.title}</div>
+              <div class="line-title" style="font-size: 5.5rem; line-height: 1.1; font-weight: 800; white-space: normal; margin-bottom: 0.5vh;">${displayTitle}</div>
               <div class="line-courts" style="font-size: 2.75rem; font-weight: 700; color: #fff;">${item.courtsLabel}</div>
               <div class="line-meta" style="font-size: 1.8rem; color: var(--text-sub); opacity: 0.9; display: flex; align-items: center; gap: 1.5vw; flex-wrap: wrap;">
                 <span>${timeLabel}</span>
