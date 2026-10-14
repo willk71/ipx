@@ -219,13 +219,22 @@
             ? new Date(data.lastUpdated).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
             : '--';
 
+          const numMatch = targetFilter.match(/\bcourt\s*(\d+)/i) || targetFilter.match(/\b(\d+)\b/);
+          const courtNum = numMatch ? numMatch[1] : '';
+          const courtQueueTitle = courtNum ? `Court ${courtNum} Queue - Inactive` : `Court Queue - Inactive`;
+
           container.className = '';
           container.innerHTML = `
             <div class="no-sessions" style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; width: 100%; padding: 4vh 2vw 2vh 2vw; box-sizing: border-box;">
-              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <h2>No Sessions Found</h2>
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 2vh;">
+                <h2 style="font-size: clamp(3rem, 5.5vw, 6.5rem); font-weight: 800; color: #ffffff; letter-spacing: -0.02em; line-height: 1.15; margin: 0;">
+                  ${courtQueueTitle}
+                </h2>
+                <p style="font-size: clamp(1.8rem, 2.8vw, 3.4rem); font-weight: 500; color: rgba(255, 255, 255, 0.7); margin: 0;">
+                  See TVs for queue locations
+                </p>
               </div>
-              <div class="tablet-status-footer" style="font-size: clamp(1.2rem, 1.8vw, 2.2rem); color: rgba(255, 255, 255, 0.45); display: flex; align-items: center; justify-content: center; gap: 2vw; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1.5vh; width: 100%;">
+              <div class="tablet-status-footer" style="font-size: clamp(1.1rem, 1.4vw, 1.8rem); color: rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; gap: 2vw; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1.5vh; width: 100%;">
                 <span><strong style="color: var(--text-sub);">URL:</strong> ${rawParams}</span>
                 <span>&bull;</span>
                 <span><strong style="color: var(--text-sub);">Filter:</strong> ${targetFilter}</span>
