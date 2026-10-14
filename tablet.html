@@ -310,7 +310,7 @@
 
           const timeLabel = `${s.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} - ${e.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
           const displayTitle = (item.title || '')
-            .replace(/^Lunch\s+Break(\s+Open\s+Play)?\s*[-–—:]\s*/i, '')
+            .replace(/^(Lunch\s+Break|Afternoon)(\s+Open\s+Play)?\s*[-–—:]\s*/i, '')
             .trim() || item.title;
 
           card.innerHTML = `
