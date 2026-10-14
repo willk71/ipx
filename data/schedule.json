@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-14T17:30:02Z",
+  "lastUpdated": "2026-10-14T17:32:20Z",
   "date": "2026-10-14",
   "courtHosts": [
+    {
+      "start": "18:00",
+      "end": "21:00",
+      "host": "Nelson C"
+    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -11,11 +16,6 @@
       "start": "19:30",
       "end": "23:00",
       "host": "Stephanie L"
-    },
-    {
-      "start": "18:00",
-      "end": "21:00",
-      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -3432,7 +3432,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Larry L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301975,
