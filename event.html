@@ -590,6 +590,7 @@
                 ? `${courtsNeeded} ${courtsNeeded === 1 ? 'Court' : 'Courts'}` 
                 : '0 Courts';
             }
+            c.courtsLabel = courtsLabel;
 
             return `
               <div class="choice-item">
@@ -646,12 +647,17 @@
             pList.forEach(p => { assignedCounts[p] = (assignedCounts[p] || 0) + 1; });
             if (pList.length > 0) {
               const grpColor = getLevelColor(c.choice);
+              const courtsBadge = c.courtsLabel && c.courtsLabel !== '0 Courts'
+                ? `<span class="registrant-group-courts" style="margin-left: auto; font-size: 0.85rem; font-weight: 600; color: ${grpColor}; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); padding: 0.2rem 0.65rem; border-radius: 6px;">${c.courtsLabel}</span>`
+                : '';
+
               groupsHtml.push(`
                 <div class="registrant-group">
                   <div class="registrant-group-header">
                     <span class="registrant-group-dot" style="background: ${grpColor};"></span>
                     <span>${c.choice}</span>
                     <span class="registrant-group-count">(${pList.length})</span>
+                    ${courtsBadge}
                   </div>
                   <div class="registrants-grid">
                     ${pList.map(name => `<div class="registrant-pill" style="--pill-color: ${grpColor};">${name}</div>`).join('')}
