@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 
 IGNORED_QUESTION_TERMS = [
     'emergency', 'contact', 'phone', 'zip', 'postal', 'address',
@@ -72,23 +72,21 @@ def extract_answers_from_item(item):
                         
     return qa_list
 
-def process_events(input_path='data/events_10d.json', output_path='data/event-choices.json'):
-    if not os.path.exists(input_path):
-        print(f"Input file {input_path} not found.")
-        return
-        
-    with open(input_path, 'r', encoding='utf-8') as f:
-        try:
-            raw_data = json.load(f)
-        except Exception as e:
-            print(f"Error reading JSON from {input_path}: {e}")
-            return
-
-    items = raw_data.get('Data', raw_data) if isinstance(raw_data, dict) else raw_data
-    if not isinstance(items, list):
-        items = []
-
-    print(f"Processing {len(items)} event registrant records from {input_path}...")
+def process_events(input_path='data/events_10d.json', output_path='data/event-choices.json', schedule_path='data/schedule.json'):
+    items = []
+    if os.path.exists(input_path):
+        with open(input_path, 'r', encoding='utf-8') as f:
+            try:
+                raw_data = json.load(f)
+                items = raw_data.get('Data', raw_data) if isinstance(raw_data, dict) else raw_data
+                if not isinstance(items, list):
+                    items = []
+            except Exception as e:
+                print(f"Error reading JSON from {input_path}: {e}")
+                items = []
+        print(f"Processing {len(items)} event registrant records from {input_path}...")
+    else:
+        print(f"Input file {input_path} not found. Will preserve/backfill events from schedule and previous cache.")
 
     # PII-Free Diagnostic logging for target event 2160558
     target_558 = [it for it in items if str(it.get('EventId') or it.get('eventId') or '') == '2160558']
@@ -147,32 +145,35 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         org_id = item.get('OrganizationMemberId') or item.get('MemberId')
         email = item.get('Email') or item.get('MemberEmail')
         first_raw = item.get('FirstName') or item.get('MemberFirstName') or item.get('UserFirstName') or ''
-        last_raw = item.get('LastName') or item.get('MemberLastName') or item.get('UserLastName') or ''
         name = f"{first_raw}_{last_raw}".strip('_')
         reg_id = item.get('EventRegistrationId') or item.get('Id')
-        player_id = str(org_id or email or name or reg_id or id(item)).strip()
-        session_player_key = f"{session_key}_{player_id}"
+        has_real_player = bool(org_id or email or name or item.get('MemberName') or reg_id)
+        if has_real_player:
+            player_id = str(org_id or email or name or reg_id or id(item)).strip()
+            session_player_key = f"{session_key}_{player_id}"
 
-        # Format registrant label: First Name Last Init (e.g., "John D.")
-        f_clean = str(first_raw).strip()
-        l_clean = str(last_raw).strip()
-        if f_clean and l_clean:
-            display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
-        elif f_clean:
-            display_name = f_clean.title()
-        elif item.get('MemberName'):
-            parts = str(item.get('MemberName')).strip().split()
-            if len(parts) >= 2:
-                display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
+            # Format registrant label: First Name Last Init (e.g., "John D.")
+            f_clean = str(first_raw).strip()
+            l_clean = str(last_raw).strip()
+            if f_clean and l_clean:
+                display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
+            elif f_clean:
+                display_name = f_clean.title()
+            elif item.get('MemberName'):
+                parts = str(item.get('MemberName')).strip().split()
+                if len(parts) >= 2:
+                    display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
+                else:
+                    display_name = parts[0].title() if parts else "Player"
             else:
-                display_name = parts[0].title() if parts else "Player"
-        else:
-            display_name = "Player"
+                display_name = "Player"
 
-        if session_player_key not in seen_players_per_session:
-            seen_players_per_session.add(session_player_key)
-            events_by_id[session_key]['totalRegistered'] += 1
-            events_by_id[session_key]['registrants'].append(display_name)
+            if session_player_key not in seen_players_per_session:
+                seen_players_per_session.add(session_player_key)
+                events_by_id[session_key]['totalRegistered'] += 1
+                events_by_id[session_key]['registrants'].append(display_name)
+        else:
+            display_name = None
 
         # Extract QA
         qa_pairs = extract_answers_from_item(item)
@@ -209,10 +210,78 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 q_obj['playersByChoice'][norm_a] = []
             q_obj['playersByChoice'][norm_a].append(display_name)
 
+    # 1. Backfill events from schedule.json (for sessions that may currently have 0 signups)
+    if schedule_path and os.path.exists(schedule_path):
+        try:
+            with open(schedule_path, 'r', encoding='utf-8') as sf:
+                sched_data = json.load(sf)
+                for e in sched_data.get('events', []):
+                    raw_eid = str(e.get('eventId') or '').split('_')[0].strip()
+                    if not raw_eid:
+                        continue
+                    s_time = e.get('startTime') or ''
+                    e_time = e.get('endTime') or ''
+                    s_key = f"{raw_eid}_{s_time}"
+                    if s_key not in events_by_id:
+                        c_list = e.get('courts') or []
+                        clean_c_list = []
+                        for c in c_list:
+                            clean_c = re.sub(r'\s*\([^)]*\)', '', str(c))
+                            clean_c = re.sub(r'^Court\s*', '', clean_c, flags=re.I).strip()
+                            if clean_c and clean_c not in clean_c_list:
+                                clean_c_list.append(clean_c)
+                        clean_c_list.sort(key=lambda x: int(x) if x.isdigit() else 999)
+                        
+                        events_by_id[s_key] = {
+                            'eventId': raw_eid,
+                            'title': e.get('title') or 'Event',
+                            'startTime': s_time,
+                            'endTime': e_time,
+                            'courts': clean_c_list,
+                            'totalRegistered': 0,
+                            'questions': {},
+                            'registrants': []
+                        }
+        except Exception as ex:
+            print(f"Error backfilling from {schedule_path}: {ex}")
+
+    # 2. Preserve any upcoming sessions from existing output_path that weren't in events_10d
+    if output_path and os.path.exists(output_path):
+        try:
+            with open(output_path, 'r', encoding='utf-8') as prev_f:
+                prev_data = json.load(prev_f)
+                now_iso = datetime.now(timezone.utc).isoformat()
+                for prev_id, prev_ev in prev_data.get('events', {}).items():
+                    for s in prev_ev.get('sessions', []):
+                        s_time = s.get('startTime') or ''
+                        e_time = s.get('endTime') or s_time
+                        if e_time and e_time > now_iso:
+                            s_key = f"{prev_id}_{s_time}"
+                            if s_key not in events_by_id:
+                                events_by_id[s_key] = {
+                                    'eventId': prev_id,
+                                    'title': prev_ev.get('title') or 'Event',
+                                    'startTime': s_time,
+                                    'endTime': s.get('endTime') or '',
+                                    'courts': s.get('courts') or [],
+                                    'totalRegistered': s.get('totalRegistered') or 0,
+                                    'questions': {
+                                        q['question']: {
+                                            'question': q['question'],
+                                            'totalResponses': q['totalResponses'],
+                                            'tallies': {c['choice']: c['count'] for c in q.get('choices', [])},
+                                            'playersByChoice': {c['choice']: c.get('players', []) for c in q.get('choices', [])}
+                                        } for q in s.get('questions', [])
+                                    },
+                                    'registrants': s.get('registrants') or []
+                                }
+        except Exception as ex:
+            print(f"Error preserving existing sessions from {output_path}: {ex}")
+
     # Format into a clean output dictionary mapped by eventId
     # Since an eventId may have multiple occurrences across the 10 days, store a list of sessions
     result = {
-        'lastUpdated': datetime.utcnow().isoformat() + 'Z',
+        'lastUpdated': datetime.now(timezone.utc).isoformat() + 'Z',
         'events': {}
     }
 

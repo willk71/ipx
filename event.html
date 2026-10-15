@@ -391,20 +391,20 @@
     let selectedSessionIndex = 0;
 
     function formatTimeWindow(startIso, endIso) {
-      if (!startIso) return '';
+      if (!startIso) return { dateStr: 'Upcoming Session', timeStr: 'Time TBD' };
       const s = new Date(startIso);
       const e = endIso ? new Date(endIso) : null;
       
       const timeOpts = { hour: 'numeric', minute: '2-digit' };
-      const sStr = s.toLocaleTimeString([], timeOpts);
-      const eStr = e ? e.toLocaleTimeString([], timeOpts) : '';
+      const sStr = isNaN(s.getTime()) ? '' : s.toLocaleTimeString([], timeOpts);
+      const eStr = e && !isNaN(e.getTime()) ? e.toLocaleTimeString([], timeOpts) : '';
       
       const dateOpts = { weekday: 'short', month: 'short', day: 'numeric' };
-      const dateStr = s.toLocaleDateString([], dateOpts);
+      const dateStr = isNaN(s.getTime()) ? 'Upcoming' : s.toLocaleDateString([], dateOpts);
       
       return {
         dateStr,
-        timeStr: eStr ? `${sStr} – ${eStr}` : sStr
+        timeStr: eStr ? `${sStr} – ${eStr}` : (sStr || 'Time TBD')
       };
     }
 
@@ -446,7 +446,12 @@
         const cleanCourts = session.courts
           .map(c => String(c).replace(/\s*\([^)]*\)/g, '').replace(/^Court\s*/i, '').trim())
           .filter(Boolean);
-        courtsHtml = `<div class="event-courts">Court${cleanCourts.length > 1 ? 's' : ''} ${cleanCourts.join(', ')}</div>`;
+        if (cleanCourts.length > 0) {
+          courtsHtml = `<div class="event-courts">Court${cleanCourts.length > 1 ? 's' : ''} ${cleanCourts.join(', ')}</div>`;
+        }
+      }
+      if (!courtsHtml) {
+        courtsHtml = `<div class="event-courts" style="color: rgba(255, 255, 255, 0.65); background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.12);">Courts Pending</div>`;
       }
 
       let questionsHtml = '';
@@ -640,13 +645,49 @@
           `;
         }).join('');
       } else {
-        questionsHtml = `
-          <div class="breakdown-card" style="text-align: center; padding: 4vh 2vw;">
-            <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 1.1rem;">
-              No custom choices recorded yet for this session (${session.totalRegistered} total players registered).
-            </p>
-          </div>
-        `;
+        const titleLower = (cachedEventData.title || '').toLowerCase();
+        const isChoiceOrLevelEvent = titleLower.includes('open play') || titleLower.includes('choice') || titleLower.includes('level') || titleLower.includes('afternoon') || titleLower.includes('lunch') || titleLower.includes('break') || titleLower.includes('drill');
+
+        if (isChoiceOrLevelEvent && (session.totalRegistered || 0) === 0) {
+          const standardLevels = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
+          const choicesHtml = standardLevels.map(lvl => {
+            const barColor = getLevelColor(lvl);
+            return `
+              <div class="choice-item">
+                <div class="choice-labels">
+                  <span class="choice-name">${lvl} (0)</span>
+                  <span class="choice-tally">0 Courts</span>
+                </div>
+                <div class="choice-bar-track">
+                  <div class="choice-bar-fill" style="width: 0%; background: ${barColor};"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          questionsHtml = `
+            <div class="breakdown-card">
+              <div class="question-header">
+                <h2 class="question-title">Selected Playing Levels</h2>
+                <span class="respondent-count">0 Responses</span>
+              </div>
+              <div class="choices-container">
+                ${choicesHtml}
+              </div>
+            </div>
+          `;
+        } else {
+          const msg = (session.totalRegistered || 0) === 0
+            ? 'No players have signed up yet for this session.'
+            : `No custom choices recorded yet for this session (${session.totalRegistered} total players registered).`;
+          questionsHtml = `
+            <div class="breakdown-card" style="text-align: center; padding: 4vh 2vw;">
+              <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 1.1rem;">
+                ${msg}
+              </p>
+            </div>
+          `;
+        }
       }
 
       let registrantsHtml = '';
@@ -727,6 +768,18 @@
             ${bodyHtml}
           </div>
         `;
+      } else {
+        registrantsHtml = `
+          <div class="registrants-card">
+            <div class="question-header">
+              <h2 class="question-title">Registrants</h2>
+              <span class="respondent-count">0 Players</span>
+            </div>
+            <div style="text-align: center; padding: 4vh 2vw; color: rgba(255, 255, 255, 0.45); font-size: 1.05rem;">
+              No players have registered yet.
+            </div>
+          </div>
+        `;
       }
 
       main.innerHTML = `
@@ -740,7 +793,7 @@
             <span>${timeInfo.timeStr}</span>
           </div>
           <div class="event-meta-badges">
-            <span class="event-players-badge">${session.totalRegistered} ${session.totalRegistered === 1 ? 'Player' : 'Players'} Registered</span>
+            <span class="event-players-badge">${(session.totalRegistered || 0)} ${(session.totalRegistered === 1) ? 'Player' : 'Players'} Registered</span>
             ${courtsHtml}
           </div>
         </div>
@@ -789,16 +842,61 @@
           if (syncEl) syncEl.textContent = `Sync: ${syncDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
         }
 
-        const eventData = data.events ? data.events[String(eventIdParam).trim()] : null;
+        let eventData = data.events ? data.events[String(eventIdParam).trim()] : null;
 
         if (!eventData || !eventData.sessions || eventData.sessions.length === 0) {
-          main.innerHTML = `
-            <div class="empty-state">
-              <h3>Event #${eventIdParam} Not Found</h3>
-              <p>No active sessions found for this event within the next 10 days.</p>
-            </div>
-          `;
-          return;
+          // Fallback 1: check schedule.json
+          try {
+            const schedUrl = window.location.pathname.includes('/e') ? '../data/schedule.json' : 'data/schedule.json';
+            const schedRes = await fetch(`${schedUrl}?_t=${Date.now()}`);
+            if (schedRes.ok) {
+              const schedData = await schedRes.json();
+              const matchedEvents = (schedData.events || []).filter(e => {
+                const eIdStr = String(e.eventId || '').split('_')[0].trim();
+                return eIdStr === String(eventIdParam).trim();
+              });
+              if (matchedEvents.length > 0) {
+                const first = matchedEvents[0];
+                const courts = Array.from(new Set(matchedEvents.flatMap(e => e.courts || [])));
+                eventData = {
+                  eventId: String(eventIdParam).trim(),
+                  title: first.title || 'Event',
+                  sessions: [{
+                    startTime: first.startTime,
+                    endTime: first.endTime,
+                    courts: courts,
+                    totalRegistered: 0,
+                    questions: [],
+                    registrants: []
+                  }]
+                };
+              }
+            }
+          } catch (e) {
+            console.warn('Schedule fallback check failed:', e);
+          }
+        }
+
+        // Fallback 2: If event was not found in either data file (e.g. newly created event in CourtReserve before signups or sync)
+        // Synthesize a normally formatted page with event info so the page never displays a broken "Event not found" state.
+        if (!eventData || !eventData.sessions || eventData.sessions.length === 0) {
+          const customTitle = urlParams.get('title') || urlParams.get('name') || `Event #${eventIdParam}`;
+          const customStart = urlParams.get('start') || urlParams.get('time') || null;
+          const customEnd = urlParams.get('end') || null;
+          const customCourts = urlParams.get('courts') ? urlParams.get('courts').split(',').map(c => c.trim()) : [];
+
+          eventData = {
+            eventId: String(eventIdParam).trim(),
+            title: customTitle,
+            sessions: [{
+              startTime: customStart || new Date().toISOString(),
+              endTime: customEnd || null,
+              courts: customCourts,
+              totalRegistered: 0,
+              questions: [],
+              registrants: []
+            }]
+          };
         }
 
         // Filter out sessions whose endTime has already passed (if upcoming sessions exist)
