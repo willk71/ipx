@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-15T10:32:34Z",
+  "lastUpdated": "2026-10-15T11:01:24Z",
   "date": "2026-10-15",
   "courtHosts": [
     {
@@ -8,14 +8,14 @@
       "host": "Nelson C"
     },
     {
-      "start": "19:30",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
-    {
       "start": "18:00",
       "end": "21:00",
       "host": "Wendy X"
+    },
+    {
+      "start": "19:30",
+      "end": "23:00",
+      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -871,6 +871,19 @@
         "Court 6"
       ],
       "playerName": "Emma V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301967,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-15T20:00:00",
+      "endTime": "2026-10-15T22:00:00",
+      "courts": [
+        "Court 3",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Jonathan Z",
       "checkedIn": false
     },
     {
@@ -2986,6 +2999,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2303258,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-15T18:00:00",
+      "endTime": "2026-10-15T20:00:00",
+      "courts": [
+        "Court 6",
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Aaron K",
+      "checkedIn": false
+    },
+    {
       "eventId": 2301970,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-15T20:00:00",
@@ -3011,6 +3037,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302748,
+      "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
+      "startTime": "2026-10-16T21:30:00",
+      "endTime": "2026-10-16T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Jana P",
+      "checkedIn": false
+    },
+    {
       "eventId": 2303258,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-15T18:00:00",
@@ -3019,17 +3056,6 @@
         "Court 6",
         "Court 12 (Livestreaming)",
         "Court 11"
-      ],
-      "playerName": "Jana P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302748,
-      "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
-      "startTime": "2026-10-16T21:30:00",
-      "endTime": "2026-10-16T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
       ],
       "playerName": "Jana P",
       "checkedIn": false
@@ -3101,17 +3127,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302748,
-      "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
-      "startTime": "2026-10-16T21:30:00",
-      "endTime": "2026-10-16T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "James F",
-      "checkedIn": false
-    },
-    {
       "eventId": 2303258,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-15T18:00:00",
@@ -3120,6 +3135,17 @@
         "Court 6",
         "Court 12 (Livestreaming)",
         "Court 11"
+      ],
+      "playerName": "James F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302748,
+      "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
+      "startTime": "2026-10-16T21:30:00",
+      "endTime": "2026-10-16T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
       ],
       "playerName": "James F",
       "checkedIn": false
@@ -3135,19 +3161,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Amna S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301967,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-15T20:00:00",
-      "endTime": "2026-10-15T22:00:00",
-      "courts": [
-        "Court 3",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Jonathan Z",
       "checkedIn": false
     }
   ]
