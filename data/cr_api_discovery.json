@@ -1,0 +1,24 @@
+{
+  "help_links": [],
+  "event_endpoints": [],
+  "endpoint_details": {},
+  "test_calls": {
+    "https://api.courtreserve.com/api/v1/eventreport/listactive": {
+      "status": 403,
+      "error": "b'{\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/\",\"title\":\"Error 1010: Access denied\",\"status\":403,\"detail\":\"The site owner has b'"
+    },
+    "https://api.courtreserve.com/api/v1/events": {
+      "status": 403,
+      "error": "b'{\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/\",\"title\":\"Error 1010: Access denied\",\"status\":403,\"detail\":\"The site owner has b'"
+    },
+    "https://api.courtreserve.com/api/v1/event": {
+      "status": 403,
+      "error": "b'{\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/\",\"title\":\"Error 1010: Access denied\",\"status\":403,\"detail\":\"The site owner has b'"
+    },
+    "https://api.courtreserve.com/Events": {
+      "status": 403,
+      "error": "b'{\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/\",\"title\":\"Error 1010: Access denied\",\"status\":403,\"detail\":\"The site owner has b'"
+    }
+  },
+  "help_error": "HTTP Error 403: Forbidden"
+}
