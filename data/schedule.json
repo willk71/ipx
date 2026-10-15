@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-15T18:54:51Z",
+  "lastUpdated": "2026-10-15T19:21:14Z",
   "date": "2026-10-15",
   "courtHosts": [
+    {
+      "start": "19:30",
+      "end": "23:00",
+      "host": "Stephanie L"
+    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -11,11 +16,6 @@
       "start": "18:00",
       "end": "21:00",
       "host": "Wendy X"
-    },
-    {
-      "start": "19:30",
-      "end": "23:00",
-      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -2565,7 +2565,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Enrico B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": "2301961_highint",
@@ -2576,7 +2576,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Enrico B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302748,
@@ -3166,7 +3166,18 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Carl A",
-      "checkedIn": false
+      "checkedIn": true
+    },
+    {
+      "eventId": "2301961_highint",
+      "title": "Afternoon Open Play - High Intermediate",
+      "startTime": "2026-10-15T16:00:00",
+      "endTime": "2026-10-15T18:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Carl A",
+      "checkedIn": true
     },
     {
       "eventId": 2184284,
@@ -3273,7 +3284,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Zubair S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": "2301959_highint",
@@ -3465,19 +3476,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302024,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-16T19:30:00",
-      "endTime": "2026-10-16T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Nick L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302014,
       "title": "Advanced Beginner Open Play | Play Until 1AM",
       "startTime": "2026-10-16T21:30:00",
@@ -3659,17 +3657,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2303073,
-      "title": "Singles Gauntlet",
-      "startTime": "2026-10-16T17:30:00",
-      "endTime": "2026-10-16T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Gustavo R",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302044,
       "title": "3.5-4.0 Open Play | Play Until 1AM",
       "startTime": "2026-10-16T21:30:00",
@@ -3682,6 +3669,17 @@
         "Court 11"
       ],
       "playerName": "Kevin C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2303073,
+      "title": "Singles Gauntlet",
+      "startTime": "2026-10-16T17:30:00",
+      "endTime": "2026-10-16T19:30:00",
+      "courts": [
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Gustavo R",
       "checkedIn": false
     }
   ]
