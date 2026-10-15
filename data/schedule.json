@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-15T14:45:34Z",
+  "lastUpdated": "2026-10-15T14:47:49Z",
   "date": "2026-10-15",
   "courtHosts": [
     {
@@ -8,14 +8,14 @@
       "host": "Wendy X"
     },
     {
-      "start": "19:30",
-      "end": "23:00",
-      "host": "Stephanie L"
-    },
-    {
       "start": "18:00",
       "end": "21:00",
       "host": "Nelson C"
+    },
+    {
+      "start": "19:30",
+      "end": "23:00",
+      "host": "Stephanie L"
     }
   ],
   "courtOverrides": [],
@@ -879,36 +879,6 @@
         "Court 6"
       ],
       "playerName": "Emma V",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302044,
-      "title": "3.5-4.0 Open Play | Play Until 1AM",
-      "startTime": "2026-10-16T21:30:00",
-      "endTime": "2026-10-16T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 11"
-      ],
-      "playerName": "Kitty X",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302044,
-      "title": "3.5-4.0 Open Play | Play Until 1AM",
-      "startTime": "2026-10-16T21:30:00",
-      "endTime": "2026-10-16T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 11"
-      ],
-      "playerName": "Kevin Y",
       "checkedIn": false
     },
     {
@@ -2536,6 +2506,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2301967,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-15T20:00:00",
+      "endTime": "2026-10-15T22:00:00",
+      "courts": [
+        "Court 3",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Beatrice F",
+      "checkedIn": false
+    },
+    {
       "eventId": 2301962,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-15T18:00:00",
@@ -3283,6 +3266,36 @@
         "Court 8"
       ],
       "playerName": "Molly W",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302044,
+      "title": "3.5-4.0 Open Play | Play Until 1AM",
+      "startTime": "2026-10-16T21:30:00",
+      "endTime": "2026-10-16T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 11"
+      ],
+      "playerName": "Kitty X",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302044,
+      "title": "3.5-4.0 Open Play | Play Until 1AM",
+      "startTime": "2026-10-16T21:30:00",
+      "endTime": "2026-10-16T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 11"
+      ],
+      "playerName": "Kevin Y",
       "checkedIn": false
     }
   ]
