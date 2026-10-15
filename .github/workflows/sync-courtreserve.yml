@@ -5,6 +5,9 @@ on:
     - cron: '*/10 11-23 * * *'
     - cron: '*/10 0-3 * * *'
     - cron: '*/15 4-10 * * *'
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -161,6 +164,9 @@ jobs:
 
             # Pass 1: Fetch 10-day lookahead for event custom choices & tallies
             if [ "$pass_num" = "1" ]; then
+              echo "Pass 1: Probing CourtReserve API endpoints..."
+              python3 Scripts/discover_cr_api.py || true
+
               echo "Pass 1: Pulling 10-day event registrations for choice tallies..."
               TO_10D_UTC=$(date -u -d "+10 days" +%Y-%m-%dT%H:%M:%SZ)
               EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeUserDefinedFields=true"
@@ -258,6 +264,7 @@ jobs:
 
             git add data/schedule.json
             [ -f data/event-choices.json ] && git add data/event-choices.json
+            [ -f data/cr_api_discovery.json ] && git add data/cr_api_discovery.json
             if git diff --staged --quiet; then
               echo "Pass $pass_num: No schedule changes detected."
             else
