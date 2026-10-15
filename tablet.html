@@ -120,36 +120,75 @@
 
         // Tablet ID mapping for filtering sessions
         const urlParamsTablet = new URLSearchParams(window.location.search);
-        const tabletId = (urlParamsTablet.get('id') || '').toLowerCase().trim();
+        let tabletId = (urlParamsTablet.get('id') || '').toLowerCase().trim();
         const queueOverride = urlParamsTablet.get('queue');
-        const courtOverride = urlParamsTablet.get('court');
+        const courtOverride = urlParamsTablet.get('court') || urlParamsTablet.get('rack');
+
+        // Allow bare query shortcuts like ?rack4, ?court4, ?c4, ?4
+        if (!tabletId && !queueOverride && !courtOverride && window.location.search) {
+          const rawQ = window.location.search.replace(/^\?/, '').split('&')[0].toLowerCase().trim();
+          if (rawQ) {
+            tabletId = rawQ;
+          }
+        }
 
         const tabletMapping = {
           'rack1': 'court 1 paddle rack',
-          'rack6': 'court 6 paddle rack',
-          'rack7': 'court 7 paddle rack',
-          'rack9': 'court 9 paddle rack',
-          'rack10': 'court 10 paddle rack',
+          'court1': 'court 1',
+          'c1': 'court 1',
+          '001': 'court 1',
+          'willipad': 'court 1',
+          'rack4': 'court 4',
           'table4': 'court 4 table',
+          'court4': 'court 4',
+          'c4': 'court 4',
+          '004': 'court 4',
+          '4': 'court 4',
+          'rack6': 'court 6 paddle rack',
+          'court6': 'court 6',
+          'c6': 'court 6',
+          'rack7': 'court 7 paddle rack',
           'table7': 'court 7 table',
+          'court7': 'court 7',
+          'c7': 'court 7',
+          'xyz': 'court 7',
+          'rack9': 'court 9 paddle rack',
           'table9': 'court 9 table',
-          'table11': 'court 11 table',
-          'table12': 'court 12 table',
+          'court9': 'court 9',
+          'c9': 'court 9',
+          'rack10': 'court 10 paddle rack',
           'table10-l': 'court 10 table - left',
           'table10-r': 'court 10 table - right',
           'rack10-l': 'court 10 left paddle rack',
           'rack10-r': 'court 10 right paddle rack',
-          'willipad': 'court 1',
-          '001': 'court 1',
-          'court1': 'court 1',
-          'c1': 'court 1',
-          'xyz': 'court 7',
-          'fff': 'court 10'
+          'court10': 'court 10',
+          'c10': 'court 10',
+          'fff': 'court 10',
+          'table11': 'court 11 table',
+          'court11': 'court 11',
+          'c11': 'court 11',
+          'table12': 'court 12 table',
+          'court12': 'court 12',
+          'c12': 'court 12'
         };
 
         let targetFilter = (queueOverride || courtOverride || '').toLowerCase();
-        if (!targetFilter && tabletId && tabletMapping[tabletId]) {
-          targetFilter = tabletMapping[tabletId].toLowerCase();
+        if (!targetFilter && tabletId) {
+          if (tabletMapping[tabletId]) {
+            targetFilter = tabletMapping[tabletId].toLowerCase();
+          } else {
+            const match = tabletId.match(/(?:rack|table|court|c)?\s*(\d+)/i);
+            if (match) {
+              const num = match[1];
+              if (tabletId.includes('table')) {
+                targetFilter = `court ${num} table`;
+              } else if (tabletId.includes('rack')) {
+                targetFilter = `court ${num} paddle rack`;
+              } else {
+                targetFilter = `court ${num}`;
+              }
+            }
+          }
         }
         
         // If still no filter (no URL param or unrecognized ID), default to rack7
@@ -165,10 +204,16 @@
             
             // Use word boundary to ensure "court 1" doesn't accidentally match "court 10"
             const regex = new RegExp(`\\b${targetFilter}\\b`, 'i');
-            const matchesQueue = regex.test(queueLoc);
+            let matchesQueue = regex.test(queueLoc);
             
             const hasCourt = Array.from(ev.courts).some(c => c.toLowerCase() === targetFilter || 'court ' + c.toLowerCase() === targetFilter);
             
+            // Flexible matching for court 4: if tablet is set to court 4 (or rack 4),
+            // match any queue location at Court 4 (whether labeled "Table" or "Paddle Rack")
+            if (targetFilter.includes('court 4') && queueLoc.includes('court 4')) {
+              matchesQueue = true;
+            }
+
             // Fallback for Court 10 tablets (table10-r, table10-l, rack10):
             // If the session is queued at Court 10 and not explicitly assigned to the opposite split, display it.
             let isCourt10Fallback = false;
