@@ -19,7 +19,8 @@ def discover():
 
     headers = {
         'Authorization': auth,
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'User-Agent': 'curl/7.88.1'
     }
 
     results = {
@@ -31,7 +32,7 @@ def discover():
 
     # 1. Fetch /help
     try:
-        req = urllib.request.Request('https://api.courtreserve.com/help', headers={'Authorization': auth, 'Accept': 'text/html'})
+        req = urllib.request.Request('https://api.courtreserve.com/help', headers={'Authorization': auth, 'Accept': 'text/html', 'User-Agent': 'curl/7.88.1'})
         with urllib.request.urlopen(req, timeout=15) as resp:
             html = resp.read().decode('utf-8', errors='ignore')
             links = sorted(list(set(re.findall(r'href="(/Help/Api/[^"]+)"', html, re.I))))
@@ -46,7 +47,7 @@ def discover():
             # Fetch documentation for each event link
             for el in event_links:
                 try:
-                    h_req = urllib.request.Request(f"https://api.courtreserve.com{el}", headers={'Authorization': auth, 'Accept': 'text/html'})
+                    h_req = urllib.request.Request(f"https://api.courtreserve.com{el}", headers={'Authorization': auth, 'Accept': 'text/html', 'User-Agent': 'curl/7.88.1'})
                     with urllib.request.urlopen(h_req, timeout=10) as h_resp:
                         h_html = h_resp.read().decode('utf-8', errors='ignore')
                         # Extract table text or parameter text
