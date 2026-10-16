@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-16T23:35:38Z",
+  "lastUpdated": "2026-10-16T23:37:52Z",
   "date": "2026-10-16",
   "courtHosts": [
-    {
-      "start": "18:45",
-      "end": "22:15",
-      "host": "Harsh P"
-    },
     {
       "start": "17:30",
       "end": "22:30",
@@ -16,6 +11,11 @@
       "start": "20:00",
       "end": "23:00",
       "host": "Neil L"
+    },
+    {
+      "start": "18:45",
+      "end": "22:15",
+      "host": "Harsh P"
     }
   ],
   "courtOverrides": [],
@@ -817,7 +817,7 @@
         "Court 11"
       ],
       "playerName": "Stephen L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302018,
@@ -1646,7 +1646,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Abel T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302030,
@@ -2653,7 +2653,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Abel T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302778,
