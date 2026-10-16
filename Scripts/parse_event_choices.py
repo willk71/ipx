@@ -145,6 +145,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         org_id = item.get('OrganizationMemberId') or item.get('MemberId')
         email = item.get('Email') or item.get('MemberEmail')
         first_raw = item.get('FirstName') or item.get('MemberFirstName') or item.get('UserFirstName') or ''
+        last_raw = item.get('LastName') or item.get('MemberLastName') or item.get('UserLastName') or ''
         name = f"{first_raw}_{last_raw}".strip('_')
         reg_id = item.get('EventRegistrationId') or item.get('Id')
         has_real_player = bool(org_id or email or name or item.get('MemberName') or reg_id)
