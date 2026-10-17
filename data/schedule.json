@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-17T17:52:36Z",
+  "lastUpdated": "2026-10-17T18:04:29Z",
   "date": "2026-10-17",
   "courtHosts": [],
   "courtOverrides": [],
@@ -112,6 +112,12 @@
       "holderLabel": "Sheila B.",
       "startTime": "2026-10-17T15:00:00",
       "endTime": "2026-10-17T17:00:00"
+    },
+    {
+      "court": "Court 11",
+      "holderLabel": "Elliot W.",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T12:00:00"
     }
   ],
   "events": [
@@ -946,7 +952,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "andrew c",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302789,
@@ -1808,7 +1814,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Jackson Z",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302787,
@@ -1853,6 +1859,21 @@
         "Court 2"
       ],
       "playerName": "Paola F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2182875,
+      "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 3",
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Wyatt W",
       "checkedIn": false
     },
     {
