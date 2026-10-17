@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-17T14:15:15Z",
+  "lastUpdated": "2026-10-17T14:37:02Z",
   "date": "2026-10-17",
   "courtHosts": [],
   "courtOverrides": [],
@@ -88,6 +88,12 @@
       "holderLabel": "Izzy D.",
       "startTime": "2026-10-17T11:00:00",
       "endTime": "2026-10-17T12:00:00"
+    },
+    {
+      "court": "Court 11",
+      "holderLabel": "Michael H.",
+      "startTime": "2026-10-17T13:00:00",
+      "endTime": "2026-10-17T14:00:00"
     }
   ],
   "events": [
@@ -698,22 +704,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-17T16:00:00",
-      "endTime": "2026-10-17T18:00:00",
-      "courts": [
-        "Court 11",
-        "Court 12 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Maithreya S",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302784,
       "title": " Open Play (AdvBeg-Int)",
       "startTime": "2026-10-17T16:00:00",
@@ -845,6 +835,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302780,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-17T11:00:00",
+      "endTime": "2026-10-17T13:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Koko S",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302778,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-17T11:00:00",
@@ -924,6 +927,138 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Minhdiep V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302807,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T20:00:00",
+      "endTime": "2026-10-18T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 11",
+        "Court 8",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Kenneth C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302807,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T20:00:00",
+      "endTime": "2026-10-18T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 11",
+        "Court 8",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Kristelle M",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302807,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T20:00:00",
+      "endTime": "2026-10-18T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 11",
+        "Court 8",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Lyra O",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302805,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T16:00:00",
+      "endTime": "2026-10-18T18:00:00",
+      "courts": [
+        "Court 8",
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Tyler V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302805,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T16:00:00",
+      "endTime": "2026-10-18T18:00:00",
+      "courts": [
+        "Court 8",
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Harry D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2324785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Michelle S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2324785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Christopher C",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2324785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Benny P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2324785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Priya K",
       "checkedIn": false
     },
     {
@@ -1382,6 +1517,22 @@
       ],
       "playerName": "Jonathan A",
       "checkedIn": true
+    },
+    {
+      "eventId": 2302785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-17T16:00:00",
+      "endTime": "2026-10-17T18:00:00",
+      "courts": [
+        "Court 11",
+        "Court 12 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Maithreya S",
+      "checkedIn": false
     },
     {
       "eventId": 2302795,
@@ -2239,138 +2390,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Glene J",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302807,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T20:00:00",
-      "endTime": "2026-10-18T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 11",
-        "Court 8",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Kenneth C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302807,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T20:00:00",
-      "endTime": "2026-10-18T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 11",
-        "Court 8",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Kristelle M",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302807,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T20:00:00",
-      "endTime": "2026-10-18T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 11",
-        "Court 8",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Lyra O",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302805,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T16:00:00",
-      "endTime": "2026-10-18T18:00:00",
-      "courts": [
-        "Court 8",
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Tyler V",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302805,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T16:00:00",
-      "endTime": "2026-10-18T18:00:00",
-      "courts": [
-        "Court 8",
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Harry D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2324785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T18:00:00",
-      "endTime": "2026-10-18T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Michelle S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2324785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T18:00:00",
-      "endTime": "2026-10-18T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Christopher C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2324785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T18:00:00",
-      "endTime": "2026-10-18T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Benny P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2324785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T18:00:00",
-      "endTime": "2026-10-18T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Priya K",
       "checkedIn": false
     }
   ]
