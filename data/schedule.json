@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-17T15:08:06Z",
+  "lastUpdated": "2026-10-17T15:32:29Z",
   "date": "2026-10-17",
   "courtHosts": [],
   "courtOverrides": [],
@@ -97,12 +97,6 @@
     },
     {
       "court": "Court 3",
-      "holderLabel": "",
-      "startTime": "2026-10-17T12:00:00",
-      "endTime": "2026-10-17T13:00:00"
-    },
-    {
-      "court": "Court 9",
       "holderLabel": "",
       "startTime": "2026-10-17T12:00:00",
       "endTime": "2026-10-17T13:00:00"
@@ -314,7 +308,7 @@
         "Court 2"
       ],
       "playerName": "Luke V",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302777,
@@ -474,7 +468,7 @@
         "Court 2"
       ],
       "playerName": "Nikki M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302775,
@@ -523,7 +517,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Evan M",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302781,
@@ -534,7 +528,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Michael C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302783,
@@ -572,7 +566,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "William T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302778,
@@ -744,7 +738,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Julian B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302783,
@@ -758,7 +752,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Julian B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302783,
@@ -1483,6 +1477,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302798,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T13:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Kyle P",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302803,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-18T13:00:00",
@@ -1494,18 +1500,6 @@
         "Court 8",
         "Court 11",
         "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Kyle P",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302798,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-18T11:00:00",
-      "endTime": "2026-10-18T13:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 2"
       ],
       "playerName": "Kyle P",
       "checkedIn": false
@@ -1709,22 +1703,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302805,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T16:00:00",
-      "endTime": "2026-10-18T18:00:00",
-      "courts": [
-        "Court 8",
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Jack L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302784,
       "title": " Open Play (AdvBeg-Int)",
       "startTime": "2026-10-17T16:00:00",
@@ -1821,6 +1799,20 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302784,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-17T16:00:00",
+      "endTime": "2026-10-17T18:00:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Luis R",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302805,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-18T16:00:00",
@@ -1850,6 +1842,22 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Juan S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302805,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T16:00:00",
+      "endTime": "2026-10-18T18:00:00",
+      "courts": [
+        "Court 8",
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Jack L",
       "checkedIn": false
     },
     {
