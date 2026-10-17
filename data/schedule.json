@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-17T01:46:13Z",
+  "lastUpdated": "2026-10-17T01:48:28Z",
   "date": "2026-10-16",
   "courtHosts": [
+    {
+      "start": "20:00",
+      "end": "23:00",
+      "host": "Neil L"
+    },
     {
       "start": "18:45",
       "end": "22:15",
@@ -11,11 +16,6 @@
       "start": "17:30",
       "end": "22:30",
       "host": "Winnie Z"
-    },
-    {
-      "start": "20:00",
-      "end": "23:00",
-      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -964,7 +964,7 @@
         "Court 11"
       ],
       "playerName": "Sideman W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302044,
@@ -1218,7 +1218,7 @@
         "Court 11"
       ],
       "playerName": "Yuchen D",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302044,
@@ -1882,7 +1882,7 @@
         "Court 11"
       ],
       "playerName": "Sandy W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302784,
