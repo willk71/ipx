@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-17T16:34:29Z",
+  "lastUpdated": "2026-10-17T16:56:23Z",
   "date": "2026-10-17",
   "courtHosts": [],
   "courtOverrides": [],
@@ -498,6 +498,20 @@
       "checkedIn": true
     },
     {
+      "eventId": 2302783,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-17T13:00:00",
+      "endTime": "2026-10-17T16:00:00",
+      "courts": [
+        "Court 8",
+        "Court 4 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Vincent P",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302781,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-17T11:00:00",
@@ -619,20 +633,6 @@
       ],
       "playerName": "Val T",
       "checkedIn": true
-    },
-    {
-      "eventId": 2302784,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-17T16:00:00",
-      "endTime": "2026-10-17T18:00:00",
-      "courts": [
-        "Court 5",
-        "Court 4 (Livestreaming)",
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "TT L",
-      "checkedIn": false
     },
     {
       "eventId": 2302780,
@@ -780,7 +780,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Thien N",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302784,
@@ -936,22 +936,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302789,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-17T21:00:00",
-      "endTime": "2026-10-17T23:59:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 8",
-        "Court 11",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Minhdiep V",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302787,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-17T18:00:00",
@@ -963,6 +947,22 @@
         "Court 8",
         "Court 10 (Livestreaming)",
         "Court 11"
+      ],
+      "playerName": "Minhdiep V",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302789,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-17T21:00:00",
+      "endTime": "2026-10-17T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)"
       ],
       "playerName": "Minhdiep V",
       "checkedIn": false
@@ -1364,6 +1364,20 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302784,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-17T16:00:00",
+      "endTime": "2026-10-17T18:00:00",
+      "courts": [
+        "Court 5",
+        "Court 4 (Livestreaming)",
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "TT L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302787,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-17T18:00:00",
@@ -1530,22 +1544,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302803,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T13:00:00",
-      "endTime": "2026-10-18T16:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 9",
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 11",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Patrick T",
-      "checkedIn": true
-    },
-    {
       "eventId": 2302785,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-17T16:00:00",
@@ -1584,7 +1582,7 @@
         "Court 8"
       ],
       "playerName": "Thien N",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302803,
@@ -1600,7 +1598,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Thien N",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302785,
@@ -1854,6 +1852,22 @@
       ],
       "playerName": "Raymond L",
       "checkedIn": false
+    },
+    {
+      "eventId": 2302803,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T13:00:00",
+      "endTime": "2026-10-18T16:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 9",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Patrick T",
+      "checkedIn": true
     },
     {
       "eventId": 2302805,
