@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-17T03:36:07Z",
+  "lastUpdated": "2026-10-17T03:57:51Z",
   "date": "2026-10-16",
   "courtHosts": [
     {
@@ -8,14 +8,14 @@
       "host": "Harsh P"
     },
     {
-      "start": "20:00",
-      "end": "23:00",
-      "host": "Neil L"
-    },
-    {
       "start": "17:30",
       "end": "22:30",
       "host": "Winnie Z"
+    },
+    {
+      "start": "20:00",
+      "end": "23:00",
+      "host": "Neil L"
     }
   ],
   "courtOverrides": [],
@@ -929,6 +929,18 @@
       "checkedIn": true
     },
     {
+      "eventId": 2302030,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-16T19:30:00",
+      "endTime": "2026-10-16T21:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Emma V",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302044,
       "title": "3.5-4.0 Open Play | Play Until 1AM",
       "startTime": "2026-10-16T21:30:00",
@@ -940,18 +952,6 @@
         "Court 7 (Livestreaming)",
         "Court 9",
         "Court 11"
-      ],
-      "playerName": "Emma V",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2302030,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-16T19:30:00",
-      "endTime": "2026-10-16T21:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5"
       ],
       "playerName": "Emma V",
       "checkedIn": true
@@ -1563,6 +1563,20 @@
       "checkedIn": true
     },
     {
+      "eventId": 2302773,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-17T09:00:00",
+      "endTime": "2026-10-17T11:00:00",
+      "courts": [
+        "Court 5",
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Dan O",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302748,
       "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
       "startTime": "2026-10-16T21:30:00",
@@ -1709,18 +1723,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2302748,
-      "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
-      "startTime": "2026-10-16T21:30:00",
-      "endTime": "2026-10-16T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Kint B",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302044,
       "title": "3.5-4.0 Open Play | Play Until 1AM",
       "startTime": "2026-10-16T21:30:00",
@@ -1857,22 +1859,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302787,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-17T18:00:00",
-      "endTime": "2026-10-17T21:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Emma V",
-      "checkedIn": true
-    },
-    {
       "eventId": 2302789,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-17T21:00:00",
@@ -1884,6 +1870,22 @@
         "Court 11",
         "Court 7 (Livestreaming)",
         "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Emma V",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302787,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-17T18:00:00",
+      "endTime": "2026-10-17T21:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 11"
       ],
       "playerName": "Emma V",
       "checkedIn": true
@@ -2657,20 +2659,6 @@
         "Court 2"
       ],
       "playerName": "Dan H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302773,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-17T09:00:00",
-      "endTime": "2026-10-17T11:00:00",
-      "courts": [
-        "Court 5",
-        "Court 2",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Dan O",
       "checkedIn": false
     },
     {
