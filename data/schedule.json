@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-17T01:50:43Z",
+  "lastUpdated": "2026-10-17T02:09:08Z",
   "date": "2026-10-16",
   "courtHosts": [
-    {
-      "start": "17:30",
-      "end": "22:30",
-      "host": "Winnie Z"
-    },
     {
       "start": "20:00",
       "end": "23:00",
@@ -16,6 +11,11 @@
       "start": "18:45",
       "end": "22:15",
       "host": "Harsh P"
+    },
+    {
+      "start": "17:30",
+      "end": "22:30",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -837,6 +837,19 @@
       ],
       "playerName": "Juan S",
       "checkedIn": true
+    },
+    {
+      "eventId": 2302785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-17T16:00:00",
+      "endTime": "2026-10-17T18:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Ehsan A",
+      "checkedIn": false
     },
     {
       "eventId": 2302798,
@@ -2687,6 +2700,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302781,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-17T11:00:00",
+      "endTime": "2026-10-17T13:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Michael C",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302044,
       "title": "3.5-4.0 Open Play | Play Until 1AM",
       "startTime": "2026-10-16T21:30:00",
@@ -3028,6 +3052,18 @@
       ],
       "playerName": "Janet N",
       "checkedIn": true
+    },
+    {
+      "eventId": 2302778,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-17T11:00:00",
+      "endTime": "2026-10-17T13:00:00",
+      "courts": [
+        "Court 6",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Mark E",
+      "checkedIn": false
     },
     {
       "eventId": 2302787,
@@ -3651,6 +3687,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302784,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-17T16:00:00",
+      "endTime": "2026-10-17T18:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Brian M",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302774,
       "title": "Advanced Beginner Open Play",
       "startTime": "2026-10-17T09:00:00",
@@ -3839,16 +3887,15 @@
       "checkedIn": true
     },
     {
-      "eventId": 2302785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-17T16:00:00",
-      "endTime": "2026-10-17T18:00:00",
+      "eventId": 2302748,
+      "title": "3.5-4.0 Gated Open Play | Play Until 1AM",
+      "startTime": "2026-10-16T21:30:00",
+      "endTime": "2026-10-16T23:59:00",
       "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)"
       ],
-      "playerName": "Ehsan A",
+      "playerName": "Kint B",
       "checkedIn": false
     },
     {
