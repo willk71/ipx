@@ -194,7 +194,7 @@ def render_gantt_chart(week_id, shifts, days, title, output_path, palette):
         day_shifts[s["day"]].append(s)
 
     # High-resolution figure with comfortable margins for readability
-    fig, ax = plt.subplots(figsize=(20, 13), dpi=180)
+    fig, ax = plt.subplots(figsize=(20, 11.8), dpi=180)
     fig.patch.set_facecolor("#F8F9FA")
     ax.set_facecolor("#FFFFFF")
 
@@ -323,7 +323,7 @@ def render_gantt_chart(week_id, shifts, days, title, output_path, palette):
     )
 
     plt.tight_layout()
-    plt.subplots_adjust(bottom=0.08, top=0.89)
+    plt.subplots_adjust(bottom=0.07, top=0.91)
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     plt.savefig(output_path, dpi=180, bbox_inches="tight")
@@ -586,22 +586,12 @@ def generate_schedule_html():
     }}
 
     .header-left h1 {{
-      font-size: clamp(1.6rem, 2.2vw, 2.8rem);
+      font-size: clamp(1.4rem, 2vw, 2.3rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.6vw;
-      flex-wrap: wrap;
-    }}
-
-    .portal-tag {{
-      color: var(--theme-accent);
-    }}
-
-    .header-separator {{
-      color: rgba(255, 255, 255, 0.3);
+      white-space: nowrap;
+      color: #ffffff;
     }}
 
     .header-badge {{
@@ -620,6 +610,79 @@ def generate_schedule_html():
       background: rgba(255, 69, 58, 0.15) !important;
       border-color: rgba(255, 69, 58, 0.4) !important;
       color: #ff6961 !important;
+    }}
+
+    /* Compact Integrated Yellow Week Nav Pill */
+    .week-pill-badge {{
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 214, 10, 0.15);
+      border: 1px solid rgba(255, 214, 10, 0.45);
+      border-radius: 999px;
+      padding: 0.2vh 0.4vw;
+      gap: 0.2vw;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 10px rgba(255, 214, 10, 0.12);
+    }}
+
+    .week-pill-badge:hover {{
+      border-color: rgba(255, 214, 10, 0.7);
+      background: rgba(255, 214, 10, 0.22);
+    }}
+
+    .week-arrow-btn {{
+      background: transparent;
+      border: none;
+      color: var(--theme-accent);
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0.2vh 0.6vw;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }}
+
+    .week-arrow-btn:hover:not(:disabled) {{
+      background: rgba(255, 214, 10, 0.35);
+      color: #ffffff;
+      transform: scale(1.15);
+    }}
+
+    .week-arrow-btn:disabled {{
+      opacity: 0.25;
+      cursor: not-allowed;
+      transform: none;
+    }}
+
+    .week-pill-center {{
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }}
+
+    .week-pill-label {{
+      color: var(--theme-accent);
+      font-size: clamp(0.85rem, 0.95vw, 1.15rem);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      pointer-events: none;
+      padding: 0 0.2vw;
+    }}
+
+    .week-pill-select {{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
     }}
 
     .header-actions {{
@@ -651,99 +714,39 @@ def generate_schedule_html():
       transform: translateY(-1px);
     }}
 
-    /* Week Navigator Bar */
-    .week-nav-bar {{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1vh 1.5vw;
-      margin-top: 1.5vh;
-      gap: 1vw;
-      flex-wrap: wrap;
-    }}
-
-    .nav-btn {{
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: #ffffff;
-      font-size: clamp(0.9rem, 1vw, 1.15rem);
-      font-weight: 700;
-      padding: 0.8vh 1.4vw;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5vw;
-    }}
-
-    .nav-btn:hover:not(:disabled) {{
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--theme-accent);
-      color: var(--theme-accent);
-    }}
-
-    .nav-btn:disabled {{
-      opacity: 0.35;
-      cursor: not-allowed;
-    }}
-
-    .week-selector-center {{
-      display: flex;
-      align-items: center;
-      gap: 1vw;
-    }}
-
-    .week-dropdown {{
-      background: #18181b;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      font-size: clamp(0.95rem, 1.1vw, 1.25rem);
-      font-weight: 700;
-      padding: 0.8vh 1.2vw;
-      border-radius: 8px;
-      outline: none;
-      cursor: pointer;
-    }}
-
-    .week-dropdown:focus {{
-      border-color: var(--theme-accent);
-    }}
-
     .main-content {{
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 2vh;
-      margin-top: 1.8vh;
+      gap: 1.2vh;
+      margin-top: 1.2vh;
+      min-height: 0;
     }}
 
-    /* Stats Overview Grid */
+    /* Stats Overview Grid - Compact */
     .stats-bar {{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 1vw;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.8vw;
+      flex-shrink: 0;
     }}
 
     .stat-card {{
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.2vh 1.2vw;
+      border-radius: 10px;
+      padding: 0.7vh 0.9vw;
       display: flex;
       align-items: center;
-      gap: 1vw;
+      gap: 0.7vw;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }}
 
     .stat-chip {{
-      width: 14px;
-      height: 38px;
-      border-radius: 4px;
+      width: 10px;
+      height: 30px;
+      border-radius: 3px;
       flex-shrink: 0;
     }}
 
@@ -754,7 +757,7 @@ def generate_schedule_html():
     }}
 
     .stat-name {{
-      font-size: clamp(1rem, 1.1vw, 1.35rem);
+      font-size: clamp(0.95rem, 1.05vw, 1.25rem);
       font-weight: 700;
       color: #ffffff;
       white-space: nowrap;
@@ -763,7 +766,7 @@ def generate_schedule_html():
     }}
 
     .stat-hours {{
-      font-size: clamp(0.85rem, 0.95vw, 1.15rem);
+      font-size: clamp(0.78rem, 0.85vw, 1.05rem);
       color: var(--text-muted);
       font-weight: 500;
     }}
@@ -773,32 +776,41 @@ def generate_schedule_html():
       font-weight: 700;
     }}
 
-    /* Chart Container */
+    /* Chart Container - Auto-resized so bottom 11:30 PM & legend always show */
     .schedule-wrapper {{
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 1.5vh 1.5vw;
+      padding: 1vh 1vw;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
       overflow: hidden;
+      flex: 1;
+      min-height: 0;
     }}
 
     .schedule-img-container {{
       width: 100%;
-      overflow-x: auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
       text-align: center;
-      -webkit-overflow-scrolling: touch;
     }}
 
     .schedule-img {{
       max-width: 100%;
+      max-height: calc(100vh - 195px); /* Entire image always fits; bottom 11:30 PM & legend always visible */
+      width: auto;
       height: auto;
-      display: inline-block;
+      object-fit: contain;
+      display: block;
       border-radius: 8px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }}
@@ -809,11 +821,12 @@ def generate_schedule_html():
       align-items: center;
       font-size: clamp(0.8rem, 0.85vw, 1.05rem);
       color: var(--text-muted);
-      padding-top: 1.5vh;
+      padding-top: 1.2vh;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      margin-top: 2vh;
+      margin-top: 1.2vh;
       flex-wrap: wrap;
       gap: 1vh;
+      flex-shrink: 0;
     }}
 
     .footer-left {{
@@ -833,8 +846,13 @@ def generate_schedule_html():
     }}
 
     @media (max-width: 768px) {{
+      .schedule-wrapper {{
+        max-height: none;
+        overflow-x: auto;
+      }}
       .schedule-img {{
-        min-width: 900px;
+        max-height: none;
+        min-width: 850px;
       }}
     }}
   </style>
@@ -875,13 +893,18 @@ def generate_schedule_html():
   <div id="schedule-content" style="display: none;">
     <header>
       <div class="header-left">
-        <h1 id="header-title">
-          <span class="portal-tag">IPX Operations</span>
-          <span class="header-separator">&ndash;</span>
-          <span>Staff Schedule</span>
+        <h1 id="header-title" style="white-space: nowrap; margin: 0; font-size: clamp(1.4rem, 2vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em;">
+          IPX Staff Schedule
         </h1>
+        <div class="week-pill-badge">
+          <button id="btn-prev-week" class="week-arrow-btn" onclick="stepWeek(-1)" title="Previous Week">&#x2039;</button>
+          <div class="week-pill-center" title="Click to choose a week">
+            <span id="active-week-badge" class="week-pill-label">--</span>
+            <select id="week-dropdown" class="week-pill-select" onchange="onWeekDropdownChange(this.value)"></select>
+          </div>
+          <button id="btn-next-week" class="week-arrow-btn" onclick="stepWeek(1)" title="Next Week">&#x203A;</button>
+        </div>
         <span class="header-badge badge-internal">Internal Only</span>
-        <span id="active-week-badge" class="header-badge">--</span>
       </div>
 
       <div class="header-actions">
@@ -899,21 +922,6 @@ def generate_schedule_html():
         </a>
       </div>
     </header>
-
-    <!-- Interactive Week Navigator Bar -->
-    <div class="week-nav-bar">
-      <button id="btn-prev-week" class="nav-btn" onclick="stepWeek(-1)" title="Previous Week (Left Arrow)">
-        <span>&larr;</span> Previous Week
-      </button>
-
-      <div class="week-selector-center">
-        <select id="week-dropdown" class="week-dropdown" onchange="onWeekDropdownChange(this.value)"></select>
-      </div>
-
-      <button id="btn-next-week" class="nav-btn" onclick="stepWeek(1)" title="Next Week (Right Arrow)">
-        Next Week <span>&rarr;</span>
-      </button>
-    </div>
 
     <main class="main-content">
       <!-- Dynamic Stats Grid -->
