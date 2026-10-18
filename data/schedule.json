@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-18T15:04:58Z",
+  "lastUpdated": "2026-10-18T15:07:13Z",
   "date": "2026-10-18",
   "courtHosts": [],
   "courtOverrides": [],
@@ -86,6 +86,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2302795,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-18T09:00:00",
+      "endTime": "2026-10-18T11:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 9"
+      ],
+      "playerName": "May S",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302790,
       "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-18T09:00:00",
@@ -122,29 +135,16 @@
       "checkedIn": true
     },
     {
-      "eventId": 2302790,
+      "eventId": 2302797,
       "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-18T09:00:00",
-      "endTime": "2026-10-18T11:00:00",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T13:00:00",
       "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 2"
+        "Court 2",
+        "Court 1 (Livestreaming)"
       ],
-      "playerName": "Sumeen M",
+      "playerName": "Anna D",
       "checkedIn": false
-    },
-    {
-      "eventId": 2302795,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-18T09:00:00",
-      "endTime": "2026-10-18T11:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 9"
-      ],
-      "playerName": "May S",
-      "checkedIn": true
     },
     {
       "eventId": 2302797,
@@ -247,18 +247,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2302797,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-18T11:00:00",
-      "endTime": "2026-10-18T13:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Anna D",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302801,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-18T11:00:00",
@@ -280,7 +268,7 @@
         "Court 8"
       ],
       "playerName": "Chok L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302798,
@@ -368,6 +356,18 @@
         "Court 2",
         "Court 1 (Livestreaming)"
       ],
+      "playerName": "Sumeen M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302797,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T13:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
       "playerName": "Isaac M",
       "checkedIn": false
     },
@@ -411,7 +411,7 @@
         "Court 8"
       ],
       "playerName": "Yue W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302798,
