@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-18T15:39:08Z",
+  "lastUpdated": "2026-10-18T15:59:54Z",
   "date": "2026-10-18",
   "courtHosts": [],
   "courtOverrides": [],
@@ -30,7 +30,7 @@
       "endTime": "2026-10-18T15:00:00"
     },
     {
-      "court": "Court 3",
+      "court": "Court 12 (Livestreaming)",
       "holderLabel": "",
       "startTime": "2026-10-18T12:00:00",
       "endTime": "2026-10-18T13:00:00"
@@ -413,6 +413,19 @@
         "Court 7 (Livestreaming)",
         "Court 8"
       ],
+      "playerName": "Johnny h",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302798,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T13:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
       "playerName": "Yue W",
       "checkedIn": true
     },
@@ -427,19 +440,6 @@
         "Court 8"
       ],
       "playerName": "Kristen C",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2302798,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-18T11:00:00",
-      "endTime": "2026-10-18T13:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Kunal S",
       "checkedIn": true
     },
     {
@@ -654,19 +654,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2299376,
-      "title": "Morning Mixer | Rotating Partner",
-      "startTime": "2026-10-19T07:00:00",
-      "endTime": "2026-10-19T09:00:00",
-      "courts": [
-        "Court 8",
-        "Court 7 (Livestreaming)",
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Richard D",
-      "checkedIn": false
-    },
-    {
       "eventId": 2182875,
       "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
       "startTime": "2026-10-18T18:00:00",
@@ -869,6 +856,19 @@
       ],
       "playerName": "Juan S",
       "checkedIn": false
+    },
+    {
+      "eventId": 2302798,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T13:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Kunal S",
+      "checkedIn": true
     },
     {
       "eventId": 2302803,
@@ -1287,6 +1287,32 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Peter F",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300468,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-19T17:30:00",
+      "endTime": "2026-10-19T19:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 5",
+        "Court 8"
+      ],
+      "playerName": "may w",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2299376,
+      "title": "Morning Mixer | Rotating Partner",
+      "startTime": "2026-10-19T07:00:00",
+      "endTime": "2026-10-19T09:00:00",
+      "courts": [
+        "Court 8",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Richard D",
       "checkedIn": false
     },
     {
