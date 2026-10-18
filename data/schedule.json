@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-18T20:57:25Z",
+  "lastUpdated": "2026-10-18T20:59:40Z",
   "date": "2026-10-18",
   "courtHosts": [
     {
       "start": "15:45",
-      "end": "19:45",
-      "host": "Kirby E"
+      "end": "20:15",
+      "host": "Sheila B"
     },
     {
       "start": "15:45",
-      "end": "20:15",
-      "host": "Sheila B"
+      "end": "19:45",
+      "host": "Kirby E"
     }
   ],
   "courtOverrides": [],
@@ -1259,6 +1259,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302805,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T16:00:00",
+      "endTime": "2026-10-18T18:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Eric E",
+      "checkedIn": true
+    },
+    {
       "eventId": 2300477,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-19T17:30:00",
@@ -1269,19 +1282,6 @@
         "Court 11"
       ],
       "playerName": "Eric T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2300506,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-19T19:30:00",
-      "endTime": "2026-10-19T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Clarisse E",
       "checkedIn": false
     },
     {
@@ -1842,6 +1842,19 @@
         "Court 11"
       ],
       "playerName": "Janet N",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300506,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-19T19:30:00",
+      "endTime": "2026-10-19T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Clarisse E",
       "checkedIn": false
     },
     {
