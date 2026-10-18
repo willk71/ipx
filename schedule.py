@@ -413,7 +413,7 @@ html_content = f"""<!DOCTYPE html>
       <a href="team_schedule_gantt.png" download="IPX_Team_Schedule_Oct19-25.png" class="btn-action" title="Download Image">
         <span>&#x21E9;</span> Download
       </a>
-      <a href="/" class="btn-action" title="Back to Court Sessions">
+      <a href="https://ipxbk.com" class="btn-action" title="Back to Court Sessions">
         <span>&#x2190;</span> Sessions
       </a>
     </div>
@@ -450,11 +450,16 @@ html_content = f"""<!DOCTYPE html>
       <span id="sync-indicator">Auto-refreshed</span>
     </div>
     <div class="footer-right">
-      <span>ipxbk.com/schedule</span>
+      <span id="host-url-display">staff.ipxbk.com</span>
     </div>
   </footer>
 
   <script>
+    const hostSpan = document.getElementById('host-url-display');
+    if (hostSpan && window.location.host) {{
+      hostSpan.textContent = window.location.host;
+    }}
+
     const chartImg = document.getElementById('schedule-chart');
     if (chartImg) {{
       chartImg.src = `team_schedule_gantt.png?v=${{Date.now()}}`;
@@ -475,7 +480,7 @@ with open(html_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
 print(f"Web page generated: {html_path}")
-print(f"Live website URL: https://ipxbk.com/schedule")
+print(f"Live website URL: https://staff.ipxbk.com (or https://ipxbk.com/schedule)")
 
 # Open local web page in browser
 webbrowser.open(f"file:///{html_path}")

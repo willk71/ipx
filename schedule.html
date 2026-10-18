@@ -218,7 +218,7 @@
       <a href="team_schedule_gantt.png" download="IPX_Team_Schedule_Oct19-25.png" class="btn-action" title="Download Image">
         <span>&#x21E9;</span> Download
       </a>
-      <a href="/" class="btn-action" title="Back to Court Sessions">
+      <a href="https://ipxbk.com" class="btn-action" title="Back to Court Sessions">
         <span>&#x2190;</span> Sessions
       </a>
     </div>
@@ -289,11 +289,16 @@
       <span id="sync-indicator">Auto-refreshed</span>
     </div>
     <div class="footer-right">
-      <span>ipxbk.com/schedule</span>
+      <span id="host-url-display">staff.ipxbk.com</span>
     </div>
   </footer>
 
   <script>
+    const hostSpan = document.getElementById('host-url-display');
+    if (hostSpan && window.location.host) {
+      hostSpan.textContent = window.location.host;
+    }
+
     const chartImg = document.getElementById('schedule-chart');
     if (chartImg) {
       chartImg.src = `team_schedule_gantt.png?v=${Date.now()}`;

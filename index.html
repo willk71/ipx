@@ -87,6 +87,15 @@
 
   <script src="js/common.js?v=2.2.8"></script>
   <script>
+    // If accessed via staff.ipxbk.com or schedule.ipxbk.com at root, redirect to schedule
+    (function() {
+      const host = window.location.hostname.toLowerCase();
+      if ((host === 'staff.ipxbk.com' || host === 'schedule.ipxbk.com') && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
+        window.location.replace('/schedule');
+        return;
+      }
+    })();
+
     // Quick redirect if event ID is passed at root (e.g. ipxbk.com/?2160558 or ipxbk.com/?e=2160558)
     (function() {
       const q = window.location.search;
