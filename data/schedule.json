@@ -1,15 +1,21 @@
 {
-  "lastUpdated": "2026-10-18T14:41:56Z",
+  "lastUpdated": "2026-10-18T15:00:29Z",
   "date": "2026-10-18",
   "courtHosts": [],
   "courtOverrides": [],
   "adHocSessions": [],
   "reservations": [
     {
-      "court": "Court 5",
+      "court": "Court 9",
       "holderLabel": "",
       "startTime": "2026-10-18T11:00:00",
       "endTime": "2026-10-18T12:00:00"
+    },
+    {
+      "court": "Court 3",
+      "holderLabel": "",
+      "startTime": "2026-10-19T19:00:00",
+      "endTime": "2026-10-19T20:00:00"
     },
     {
       "court": "Court 3",
@@ -200,7 +206,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Nick P",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302795,
@@ -239,22 +245,6 @@
       ],
       "playerName": "steven a",
       "checkedIn": true
-    },
-    {
-      "eventId": 2302803,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T13:00:00",
-      "endTime": "2026-10-18T16:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 11",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Emily S",
-      "checkedIn": false
     },
     {
       "eventId": 2302797,
@@ -303,7 +293,7 @@
         "Court 8"
       ],
       "playerName": "Peter B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302798,
@@ -370,7 +360,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Yehoon K",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302797,
@@ -414,16 +404,19 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302798,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-18T11:00:00",
-      "endTime": "2026-10-18T13:00:00",
+      "eventId": 2302803,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T13:00:00",
+      "endTime": "2026-10-18T16:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 7 (Livestreaming)"
       ],
-      "playerName": "Kristen C",
+      "playerName": "Hee-Kyong K",
       "checkedIn": false
     },
     {
@@ -436,7 +429,36 @@
         "Court 7 (Livestreaming)",
         "Court 8"
       ],
+      "playerName": "Kristen C",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302798,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-18T11:00:00",
+      "endTime": "2026-10-18T13:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
       "playerName": "Kunal S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302803,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T13:00:00",
+      "endTime": "2026-10-18T16:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Emily S",
       "checkedIn": false
     },
     {
@@ -485,6 +507,22 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302803,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T13:00:00",
+      "endTime": "2026-10-18T16:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 11",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Jimmy Z",
+      "checkedIn": false
+    },
+    {
       "eventId": 2182875,
       "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
       "startTime": "2026-10-18T18:00:00",
@@ -497,19 +535,6 @@
         "Court 2"
       ],
       "playerName": "Paola F",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2300468,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-19T17:30:00",
-      "endTime": "2026-10-19T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 5",
-        "Court 8"
-      ],
-      "playerName": "Maureen H",
       "checkedIn": false
     },
     {
@@ -790,19 +815,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2300468,
-      "title": "3.25-3.75 Open Play",
-      "startTime": "2026-10-19T17:30:00",
-      "endTime": "2026-10-19T19:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 5",
-        "Court 8"
-      ],
-      "playerName": "Rachael T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2182875,
       "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
       "startTime": "2026-10-18T18:00:00",
@@ -968,6 +980,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2324785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Benny W",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302805,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-18T16:00:00",
@@ -979,19 +1004,6 @@
         "Court 10 (Livestreaming)",
         "Court 7 (Livestreaming)",
         "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Benny W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2324785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T18:00:00",
-      "endTime": "2026-10-18T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
       ],
       "playerName": "Benny W",
       "checkedIn": false
@@ -1057,6 +1069,19 @@
         "Court 8"
       ],
       "playerName": "Jessica L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2300468,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-19T17:30:00",
+      "endTime": "2026-10-19T19:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 5",
+        "Court 8"
+      ],
+      "playerName": "Maureen H",
       "checkedIn": false
     },
     {
@@ -1407,6 +1432,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2300468,
+      "title": "3.25-3.75 Open Play",
+      "startTime": "2026-10-19T17:30:00",
+      "endTime": "2026-10-19T19:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 5",
+        "Court 8"
+      ],
+      "playerName": "Rachael T",
+      "checkedIn": false
+    },
+    {
       "eventId": 2162309,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-19T19:30:00",
@@ -1461,19 +1499,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2324785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T18:00:00",
-      "endTime": "2026-10-18T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Stephanie L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302805,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-18T16:00:00",
@@ -1485,6 +1510,19 @@
         "Court 10 (Livestreaming)",
         "Court 7 (Livestreaming)",
         "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Stephanie L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2324785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T18:00:00",
+      "endTime": "2026-10-18T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
       ],
       "playerName": "Stephanie L",
       "checkedIn": false
@@ -1640,7 +1678,7 @@
         "Court 8"
       ],
       "playerName": "Ian B",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302805,
