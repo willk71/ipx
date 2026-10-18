@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-18T23:50:10Z",
+  "lastUpdated": "2026-10-18T23:52:24Z",
   "date": "2026-10-18",
   "courtHosts": [
     {
@@ -1793,19 +1793,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302805,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-18T16:00:00",
-      "endTime": "2026-10-18T18:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Tyler V",
-      "checkedIn": true
-    },
-    {
       "eventId": 2302803,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-18T13:00:00",
@@ -1848,6 +1835,30 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Sella V",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2281674,
+      "title": "Advanced Beginner+ Open Play",
+      "startTime": "2026-10-19T17:30:00",
+      "endTime": "2026-10-19T19:30:00",
+      "courts": [
+        "Court 6"
+      ],
+      "playerName": "Stephen L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302805,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-18T16:00:00",
+      "endTime": "2026-10-18T18:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Tyler V",
       "checkedIn": true
     },
     {
@@ -1934,17 +1945,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302806,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-18T20:00:00",
-      "endTime": "2026-10-18T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "John K",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302807,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-18T20:00:00",
@@ -1980,6 +1980,17 @@
       ],
       "playerName": "Calvin T",
       "checkedIn": true
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-18T20:00:00",
+      "endTime": "2026-10-18T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "John K",
+      "checkedIn": false
     }
   ]
 }
