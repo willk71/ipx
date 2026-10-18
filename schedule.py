@@ -1,4 +1,8 @@
 import os
+import sys
+import json
+import re
+import datetime
 import webbrowser
 import hashlib
 import matplotlib.patches as patches
@@ -12,196 +16,402 @@ import numpy as np
 TEAM_PASSCODE = os.environ.get("TEAM_PASSCODE", "ipxstaff")
 PASSCODE_HASH = hashlib.sha256(TEAM_PASSCODE.strip().lower().encode("utf-8")).hexdigest()
 
-# 1. Schedule Data
-data = [
-    # Mon 19
-    {"name": "Carlos", "day": 0, "start": 16.0, "end": 23.0, "label": "4:00 PM - 11:00 PM"},
-    {"name": "Johnpaul", "day": 0, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
-    {"name": "Johnpaul", "day": 0, "start": 18.5, "end": 23.0, "label": "6:30 PM - 11:00 PM"},
-    # Tue 20
-    {"name": "Carlos", "day": 1, "start": 11.0, "end": 19.0, "label": "11:00 AM - 7:00 PM"},
-    {"name": "Carl", "day": 1, "start": 13.5, "end": 23.0, "label": "1:30 PM - 11:00 PM"},
-    {"name": "Kadeem", "day": 1, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
-    {"name": "Johnpaul", "day": 1, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
-    # Wed 21
-    {"name": "Carl", "day": 2, "start": 13.5, "end": 23.0, "label": "1:30 PM - 11:00 PM"},
-    {"name": "Nicole", "day": 2, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
-    {"name": "Johnpaul", "day": 2, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
-    # Thu 22
-    {"name": "Carlos", "day": 3, "start": 14.0, "end": 22.0, "label": "2:00 PM - 10:00 PM"},
-    {"name": "Kadeem", "day": 3, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
-    # Fri 23
-    {"name": "Nicole", "day": 4, "start": 15.5, "end": 23.0, "label": "3:30 PM - 11:00 PM"},
-    {"name": "Johnpaul", "day": 4, "start": 15.5, "end": 23.0, "label": "3:30 PM - 11:00 PM"},
-    # Sat 24
-    {"name": "Carlos", "day": 5, "start": 11.0, "end": 19.0, "label": "11:00 AM - 7:00 PM"},
-    {"name": "Kadeem", "day": 5, "start": 9.0, "end": 15.5, "label": "9:00 AM - 3:30 PM"},
-    # Sun 25
-    {"name": "Carlos", "day": 6, "start": 9.0, "end": 15.0, "label": "9:00 AM - 3:00 PM"},
-    {"name": "Nicole", "day": 6, "start": 9.0, "end": 15.5, "label": "9:00 AM - 3:30 PM"},
-    {"name": "Johnpaul", "day": 6, "start": 15.0, "end": 22.5, "label": "3:00 PM - 10:30 PM"},
-]
+DATA_DIR = os.path.abspath("data")
+SCHEDULES_DIR = os.path.abspath("schedules")
+SCHEDULES_JSON_PATH = os.path.join(DATA_DIR, "staff_schedules.json")
 
-days = ["Mon 19", "Tue 20", "Wed 21", "Thu 22", "Fri 23", "Sat 24", "Sun 25"]
-people = ["Carlos", "Carl", "Kadeem", "Nicole", "Johnpaul"]
-
-# 2. Distinct color palette for each person
-palette = {
+# Default distinct color palette for staff members
+DEFAULT_PALETTE = {
     "Carlos": "#1E5F8A",
     "Carl": "#D96B27",
     "Kadeem": "#2E7D32",
     "Nicole": "#7B1FA2",
     "Johnpaul": "#C2185B",
+    "Will": "#0D9488",
+    "Alex": "#E11D48",
+    "Sam": "#4F46E5",
+    "Jordan": "#D97706",
+    "Chris": "#059669",
 }
 
-# 3. Group shifts by day
-day_shifts = {d: [] for d in range(7)}
-for shift in data:
-    day_shifts[shift["day"]].append(shift)
+EXTRA_COLORS = [
+    "#0284C7", "#7C3AED", "#DB2777", "#EA580C", "#65A30D",
+    "#0891B2", "#9333EA", "#C026D3", "#B45309", "#15803D"
+]
 
-fig, ax = plt.subplots(figsize=(18, 12), dpi=150)
-fig.patch.set_facecolor("#F8F9FA")
-ax.set_facecolor("#FFFFFF")
+def get_color_for_person(name, existing_palette):
+    if name in existing_palette:
+        return existing_palette[name]
+    if name in DEFAULT_PALETTE:
+        return DEFAULT_PALETTE[name]
+    used = set(existing_palette.values())
+    for c in EXTRA_COLORS:
+        if c not in used:
+            return c
+    return "#3B82F6"
 
-# 4. Contrasting alternating day background columns
-for day_idx in range(7):
-    bg_color = "#EBF0F5" if day_idx % 2 == 1 else "#FFFFFF"
-    ax.axvspan(day_idx, day_idx + 1, facecolor=bg_color, alpha=0.9, zorder=0)
 
-# 5. Half-hour grid lines
-y_half_hours = np.arange(8.0, 24.5, 0.5)
-for y in y_half_hours:
-    if y % 1.0 == 0:
-        ax.axhline(y, color="#CBD5E1", linestyle="-", linewidth=0.8, alpha=0.8, zorder=1)
+# -------------------------------------------------------------
+# Text Schedule Parser
+# Parses raw text (from images/OCR/spreadsheets) into shift data
+# -------------------------------------------------------------
+def parse_time_str(t_str, is_end=False, prev_hour=None):
+    t = t_str.strip().lower()
+    m = re.match(r'(\d{1,2})(?::(\d{2}))?\s*(am|pm|a|p)?', t)
+    if not m:
+        return None
+    h = int(m.group(1))
+    mins = int(m.group(2) or 0)
+    merid = m.group(3)
+    if merid:
+        if merid.startswith('p') and h < 12:
+            h += 12
+        elif merid.startswith('a') and h == 12:
+            h = 0
     else:
-        ax.axhline(y, color="#E2E8F0", linestyle=":", linewidth=0.6, alpha=0.7, zorder=1)
+        # Infer meridiem based on operating hours (8:00 AM - 11:30 PM)
+        if h < 8:
+            h += 12
+        elif is_end and prev_hour and h < prev_hour:
+            h += 12
+    return h + mins / 60.0
 
-# 6. Render Gantt bars (side-by-side sub-columns for concurrent shifts)
-track_padding = 0.04
-for day_idx, shifts in day_shifts.items():
-    shifts.sort(key=lambda s: (s["start"], s["name"]))
-    columns = []
-    shift_col = {}
-    for shift in shifts:
-        placed = False
-        for c_idx, col in enumerate(columns):
-            if col[-1]["end"] <= shift["start"]:
-                col.append(shift)
-                shift_col[id(shift)] = c_idx
-                placed = True
+def format_hour_decimal_label(start_dec, end_dec):
+    def fmt(t):
+        h = int(t)
+        m = int(round((t - h) * 60))
+        suffix = "AM" if h < 12 else "PM"
+        display_h = h if h <= 12 else h - 12
+        if display_h == 0:
+            display_h = 12
+        return f"{display_h}:{m:02d} {suffix}"
+    return f"{fmt(start_dec)} - {fmt(end_dec)}"
+
+def parse_schedule_text(raw_text, start_date_str="2026-10-19"):
+    """
+    Parses unstructured or structured schedule text into shifts.
+    Accepts text grouped by day (e.g. 'Mon 19', 'Monday', 'Tuesday')
+    with lines like:
+      Carlos 4:00 PM - 11:00 PM
+      Johnpaul: 9:00 AM - 1:30 PM, 6:30 PM - 11:00 PM
+    """
+    day_map = {
+        'mon': 0, 'monday': 0,
+        'tue': 1, 'tues': 1, 'tuesday': 1,
+        'wed': 2, 'wednesday': 2,
+        'thu': 3, 'thur': 3, 'thurs': 3, 'thursday': 3,
+        'fri': 4, 'friday': 4,
+        'sat': 5, 'saturday': 5,
+        'sun': 6, 'sunday': 6
+    }
+
+    shifts = []
+    current_day = 0
+    time_pattern = re.compile(
+        r'(\d{1,2}(?::\d{2})?\s*(?:am|pm|a|p)?)\s*[-–—to]+\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm|a|p)?)',
+        re.I
+    )
+
+    day_header_pattern = re.compile(
+        r'^(mon|tue|wed|thu|fri|sat|sun)\w*\s*(\d+)?',
+        re.I
+    )
+
+    lines = raw_text.strip().splitlines()
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+
+        # Check for day header
+        dh_match = day_header_pattern.match(line)
+        if dh_match and not time_pattern.search(line):
+            d_name = dh_match.group(1).lower()
+            if d_name in day_map:
+                current_day = day_map[d_name]
+                continue
+
+        # Find all time ranges on this line
+        time_matches = list(time_pattern.finditer(line))
+        if not time_matches:
+            # Check if line indicates day header without standard word boundary
+            for d_key, d_idx in day_map.items():
+                if line.lower().startswith(d_key):
+                    current_day = d_idx
+                    break
+            continue
+
+        # Extract name from preceding text
+        first_time_idx = time_matches[0].start()
+        prefix = line[:first_time_idx].strip()
+        name_clean = re.sub(r'[:\-\*\•\d\.]+$', '', prefix).strip()
+        # Remove leading day names if present in the same line (e.g. "Mon Carlos 4pm-11pm")
+        for d_key in sorted(day_map.keys(), key=len, reverse=True):
+            if name_clean.lower().startswith(d_key):
+                current_day = day_map[d_key]
+                name_clean = name_clean[len(d_key):].strip(" :-–—\t\r\n")
                 break
-        if not placed:
-            shift_col[id(shift)] = len(columns)
-            columns.append([shift])
 
-    num_cols = max(len(columns), 1)
-    col_width = (1.0 - 2 * track_padding) / num_cols
+        name = name_clean.title() if name_clean else "Staff"
 
-    for shift in shifts:
-        c_idx = shift_col[id(shift)]
-        x_left = day_idx + track_padding + c_idx * col_width + 0.015
-        width = col_width - 0.03
-        y_bottom = shift["start"]
-        height = shift["end"] - shift["start"]
-        color = palette[shift["name"]]
+        # Parse each shift on this line
+        for tm in time_matches:
+            start_raw, end_raw = tm.group(1), tm.group(2)
+            s_dec = parse_time_str(start_raw)
+            e_dec = parse_time_str(end_raw, is_end=True, prev_hour=s_dec)
+            if s_dec is not None and e_dec is not None and e_dec > s_dec:
+                lbl = format_hour_decimal_label(s_dec, e_dec)
+                shifts.append({
+                    "name": name,
+                    "day": current_day,
+                    "start": s_dec,
+                    "end": e_dec,
+                    "label": lbl
+                })
 
-        box = patches.FancyBboxPatch(
-            (x_left, y_bottom), width, height,
-            boxstyle="round,pad=0.01,rounding_size=0.06",
-            facecolor=color, edgecolor="#1E293B", linewidth=1.2, alpha=0.92, zorder=3
-        )
-        ax.add_patch(box)
+    # Compute day date labels based on start_date_str
+    try:
+        dt_start = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
+    except Exception:
+        dt_start = datetime.date(2026, 10, 19)
 
-        label_text = f"{shift['name']}\n{shift['label']}"
-        y_center = y_bottom + (height / 2.0)
-        x_center = x_left + (width / 2.0)
+    days = []
+    day_abbrs = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    for i in range(7):
+        cur_d = dt_start + datetime.timedelta(days=i)
+        days.append(f"{day_abbrs[i]} {cur_d.day}")
 
-        # Flipped vertical orientation (rotation=90)
-        ax.text(
-            x_center, y_center, label_text,
-            color="#FFFFFF", weight="bold", fontsize=9.5,
-            rotation=90,
-            ha="center", va="center", linespacing=1.2, zorder=4
-        )
+    return shifts, days
 
-# 7. Left axis: half-hour increments, 8:00 AM at top to 11:30 PM at bottom
-ax.set_ylim(23.5, 8.0)
-time_ticks = np.arange(8.0, 24.0, 0.5)
 
-def format_half_hour(t):
-    h = int(t)
-    m = int(round((t - h) * 60))
-    suffix = "AM" if h < 12 else "PM"
-    display_h = h if h <= 12 else h - 12
-    if display_h == 0:
-        display_h = 12
-    return f"{display_h}:{m:02d} {suffix}"
+# -------------------------------------------------------------
+# Gantt Chart Renderer
+# High-DPI, large-text, publication-quality shift schedule chart
+# -------------------------------------------------------------
+def render_gantt_chart(week_id, shifts, days, title, output_path, palette):
+    day_shifts = {d: [] for d in range(7)}
+    for s in shifts:
+        day_shifts[s["day"]].append(s)
 
-ax.set_yticks(time_ticks)
-ax.set_yticklabels([format_half_hour(t) for t in time_ticks], fontsize=9.5, fontweight="bold", color="#334155")
-ax.set_ylabel("Time of Day (Half-Hour Increments)", fontsize=12, fontweight="bold", color="#0F172A", labelpad=12)
+    # High-resolution figure with comfortable margins for readability
+    fig, ax = plt.subplots(figsize=(20, 13), dpi=180)
+    fig.patch.set_facecolor("#F8F9FA")
+    ax.set_facecolor("#FFFFFF")
 
-# 8. Top axis: Days
-ax.set_xlim(0, 7)
-ax.xaxis.tick_top()
-ax.xaxis.set_label_position("top")
-ax.set_xticks([i + 0.5 for i in range(7)])
-ax.set_xticklabels(days, fontsize=12.5, fontweight="bold", color="#0F172A")
-ax.tick_params(axis="x", which="both", pad=12)
+    # Alternating day background columns
+    for day_idx in range(7):
+        bg_color = "#EBF0F5" if day_idx % 2 == 1 else "#FFFFFF"
+        ax.axvspan(day_idx, day_idx + 1, facecolor=bg_color, alpha=0.9, zorder=0)
 
-for x in range(8):
-    ax.axvline(x, color="#94A3B8", linestyle="-", linewidth=1.2, zorder=2)
+    # Half-hour grid lines
+    y_half_hours = np.arange(8.0, 24.5, 0.5)
+    for y in y_half_hours:
+        if y % 1.0 == 0:
+            ax.axhline(y, color="#CBD5E1", linestyle="-", linewidth=0.9, alpha=0.85, zorder=1)
+        else:
+            ax.axhline(y, color="#E2E8F0", linestyle=":", linewidth=0.7, alpha=0.75, zorder=1)
 
-for spine in ax.spines.values():
-    spine.set_edgecolor("#94A3B8")
-    spine.set_linewidth(1.2)
+    # Side-by-side sub-columns for overlapping shifts
+    track_padding = 0.035
+    for day_idx, d_shifts in day_shifts.items():
+        d_shifts.sort(key=lambda s: (s["start"], s["name"]))
+        columns = []
+        shift_col = {}
+        for s in d_shifts:
+            placed = False
+            for c_idx, col in enumerate(columns):
+                if col[-1]["end"] <= s["start"]:
+                    col.append(s)
+                    shift_col[id(s)] = c_idx
+                    placed = True
+                    break
+            if not placed:
+                shift_col[id(s)] = len(columns)
+                columns.append([s])
 
-# Title & Legend
-plt.title("Team Schedule — Week of October 19, 2026 to October 25, 2026", fontsize=16, fontweight="bold", pad=25, color="#0F172A")
+        num_cols = max(len(columns), 1)
+        col_width = (1.0 - 2 * track_padding) / num_cols
 
-legend_handles = [patches.Patch(facecolor=palette[p], edgecolor="#334155", label=p, linewidth=0.8, alpha=0.95) for p in people]
-ax.legend(
-    handles=legend_handles, loc="lower center", bbox_to_anchor=(0.5, -0.075),
-    ncol=5, frameon=True, facecolor="#FFFFFF", edgecolor="#CBD5E1",
-    fontsize=10.5, title="Team Members", title_fontsize=11.5
-)
+        for s in d_shifts:
+            c_idx = shift_col[id(s)]
+            x_left = day_idx + track_padding + c_idx * col_width + 0.015
+            width = col_width - 0.03
+            y_bottom = s["start"]
+            height = s["end"] - s["start"]
+            color = palette.get(s["name"], "#1E5F8A")
 
-plt.tight_layout()
-plt.subplots_adjust(bottom=0.08, top=0.89)
+            # Shift bar with rounded corners
+            box = patches.FancyBboxPatch(
+                (x_left, y_bottom), width, height,
+                boxstyle="round,pad=0.015,rounding_size=0.07",
+                facecolor=color, edgecolor="#0F172A", linewidth=1.4, alpha=0.94, zorder=3
+            )
+            ax.add_patch(box)
 
-output_path = os.path.abspath("team_schedule_gantt.png")
-plt.savefig(output_path, dpi=150, bbox_inches="tight")
-plt.close(fig)
+            # Enhanced typography: larger, bolder text for crisp legibility
+            label_text = f"{s['name']}\n{s['label']}"
+            y_center = y_bottom + (height / 2.0)
+            x_center = x_left + (width / 2.0)
 
-print(f"Chart saved to: {output_path}")
+            # Scale font slightly if many columns share the day
+            font_size = 11.5 if num_cols <= 2 else (10.5 if num_cols == 3 else 9.5)
 
-# 9. Calculate stats and generate/update schedule.html for ipxbk.com/schedule
-stats = {p: {"hours": 0.0, "shifts": 0} for p in people}
-for s in data:
-    name = s["name"]
-    if name in stats:
-        stats[name]["hours"] += s["end"] - s["start"]
-        stats[name]["shifts"] += 1
+            ax.text(
+                x_center, y_center, label_text,
+                color="#FFFFFF", weight="bold", fontsize=font_size,
+                rotation=90,
+                ha="center", va="center", linespacing=1.25, zorder=4
+            )
 
-total_hours = sum(st["hours"] for st in stats.values())
-total_shifts = sum(st["shifts"] for st in stats.values())
+    # Left Y-axis: 8:00 AM at top to 11:30 PM at bottom
+    ax.set_ylim(23.5, 8.0)
+    time_ticks = np.arange(8.0, 24.0, 0.5)
 
-cards_html = []
-for p in people:
-    c = palette.get(p, "#ffd60a")
-    h = stats[p]["hours"]
-    sh = stats[p]["shifts"]
-    cards_html.append(f"""      <div class="stat-card">
-        <div class="stat-chip" style="background-color: {c};"></div>
-        <div class="stat-info">
-          <span class="stat-name">{p}</span>
-          <span class="stat-hours"><strong>{h:.1f}h</strong> &bull; {sh} {('shift' if sh == 1 else 'shifts')}</span>
-        </div>
-      </div>""")
+    def format_half_hour(t):
+        h = int(t)
+        m = int(round((t - h) * 60))
+        suffix = "AM" if h < 12 else "PM"
+        display_h = h if h <= 12 else h - 12
+        if display_h == 0:
+            display_h = 12
+        return f"{display_h}:{m:02d} {suffix}"
 
-stat_cards_rendered = "\n".join(cards_html)
+    ax.set_yticks(time_ticks)
+    ax.set_yticklabels(
+        [format_half_hour(t) for t in time_ticks],
+        fontsize=11.5, fontweight="bold", color="#334155"
+    )
+    ax.set_ylabel(
+        "Time of Day (Half-Hour Increments)",
+        fontsize=13.5, fontweight="bold", color="#0F172A", labelpad=14
+    )
 
-html_content = f"""<!DOCTYPE html>
+    # Top X-axis: Days of the week
+    ax.set_xlim(0, 7)
+    ax.xaxis.tick_top()
+    ax.xaxis.set_label_position("top")
+    ax.set_xticks([i + 0.5 for i in range(7)])
+    ax.set_xticklabels(days, fontsize=14.5, fontweight="bold", color="#0F172A")
+    ax.tick_params(axis="x", which="both", pad=14)
+
+    for x in range(8):
+        ax.axvline(x, color="#94A3B8", linestyle="-", linewidth=1.4, zorder=2)
+
+    for spine in ax.spines.values():
+        spine.set_edgecolor("#94A3B8")
+        spine.set_linewidth(1.3)
+
+    # Title & Legend
+    plt.title(title, fontsize=18, fontweight="bold", pad=28, color="#0F172A")
+
+    people_in_shifts = sorted(list(set(s["name"] for s in shifts)))
+    legend_handles = [
+        patches.Patch(
+            facecolor=palette.get(p, "#3B82F6"),
+            edgecolor="#1E293B",
+            label=p,
+            linewidth=1.0,
+            alpha=0.95
+        ) for p in people_in_shifts
+    ]
+
+    ax.legend(
+        handles=legend_handles, loc="lower center", bbox_to_anchor=(0.5, -0.075),
+        ncol=min(len(people_in_shifts), 6), frameon=True,
+        facecolor="#FFFFFF", edgecolor="#CBD5E1",
+        fontsize=12, title="Team Members", title_fontsize=13
+    )
+
+    plt.tight_layout()
+    plt.subplots_adjust(bottom=0.08, top=0.89)
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    plt.savefig(output_path, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
+# -------------------------------------------------------------
+# Multi-Week Data Storage & HTML Generation
+# -------------------------------------------------------------
+def load_all_weeks():
+    if os.path.exists(SCHEDULES_JSON_PATH):
+        try:
+            with open(SCHEDULES_JSON_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"current_week": "", "weeks": {}}
+
+def save_all_weeks(master_data):
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(SCHEDULES_JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(master_data, f, indent=2)
+
+def register_week(week_id, shifts, days, title, label, palette=None):
+    master = load_all_weeks()
+    if palette is None:
+        palette = dict(DEFAULT_PALETTE)
+
+    # Compute people and palette
+    people = sorted(list(set(s["name"] for s in shifts)))
+    for p in people:
+        if p not in palette:
+            palette[p] = get_color_for_person(p, palette)
+
+    # Calculate employee stats
+    stats = {}
+    for s in shifts:
+        n = s["name"]
+        if n not in stats:
+            stats[n] = {"hours": 0.0, "shifts": 0, "color": palette.get(n, "#3B82F6")}
+        stats[n]["hours"] += s["end"] - s["start"]
+        stats[n]["shifts"] += 1
+
+    total_hours = sum(st["hours"] for st in stats.values())
+    total_shifts = sum(st["shifts"] for st in stats.values())
+
+    # Generate image for this week
+    week_img_filename = f"schedule_{week_id}.png"
+    week_img_path = os.path.join(SCHEDULES_DIR, week_img_filename)
+    render_gantt_chart(week_id, shifts, days, title, week_img_path, palette)
+
+    # Also update root team_schedule_gantt.png to point to this week
+    root_img_path = os.path.abspath("team_schedule_gantt.png")
+    render_gantt_chart(week_id, shifts, days, title, root_img_path, palette)
+
+    week_entry = {
+        "week_id": week_id,
+        "label": label,
+        "title": title,
+        "image": f"schedules/{week_img_filename}",
+        "days": days,
+        "people": people,
+        "palette": palette,
+        "total_hours": total_hours,
+        "total_shifts": total_shifts,
+        "stats": stats,
+        "shifts": shifts
+    }
+
+    master["weeks"][week_id] = week_entry
+    master["current_week"] = week_id
+    save_all_weeks(master)
+    print(f"Registered week {week_id}: {label}")
+    print(f"Chart saved to: {week_img_path}")
+    return master
+
+
+def generate_schedule_html():
+    master = load_all_weeks()
+    weeks = master.get("weeks", {})
+    if not weeks:
+        print("No weeks available to generate HTML.")
+        return
+
+    # Embed data JSON directly into HTML so page works instantly without extra fetch latency
+    weeks_json_str = json.dumps(master, indent=2)
+
+    html_content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -441,6 +651,68 @@ html_content = f"""<!DOCTYPE html>
       transform: translateY(-1px);
     }}
 
+    /* Week Navigator Bar */
+    .week-nav-bar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1vh 1.5vw;
+      margin-top: 1.5vh;
+      gap: 1vw;
+      flex-wrap: wrap;
+    }}
+
+    .nav-btn {{
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: #ffffff;
+      font-size: clamp(0.9rem, 1vw, 1.15rem);
+      font-weight: 700;
+      padding: 0.8vh 1.4vw;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5vw;
+    }}
+
+    .nav-btn:hover:not(:disabled) {{
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--theme-accent);
+      color: var(--theme-accent);
+    }}
+
+    .nav-btn:disabled {{
+      opacity: 0.35;
+      cursor: not-allowed;
+    }}
+
+    .week-selector-center {{
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }}
+
+    .week-dropdown {{
+      background: #18181b;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: clamp(0.95rem, 1.1vw, 1.25rem);
+      font-weight: 700;
+      padding: 0.8vh 1.2vw;
+      border-radius: 8px;
+      outline: none;
+      cursor: pointer;
+    }}
+
+    .week-dropdown:focus {{
+      border-color: var(--theme-accent);
+    }}
+
     .main-content {{
       flex: 1;
       display: flex;
@@ -562,7 +834,7 @@ html_content = f"""<!DOCTYPE html>
 
     @media (max-width: 768px) {{
       .schedule-img {{
-        min-width: 800px;
+        min-width: 900px;
       }}
     }}
   </style>
@@ -609,17 +881,17 @@ html_content = f"""<!DOCTYPE html>
           <span>Staff Schedule</span>
         </h1>
         <span class="header-badge badge-internal">Internal Only</span>
-        <span class="header-badge">Oct 19 &ndash; Oct 25, 2026</span>
+        <span id="active-week-badge" class="header-badge">--</span>
       </div>
 
       <div class="header-actions">
         <button type="button" class="btn-action" onclick="lockSchedule()" title="Lock Screen">
           <span>&#x1F512;</span> Lock
         </button>
-        <a href="team_schedule_gantt.png" target="_blank" class="btn-action" title="View Full Resolution">
+        <a id="btn-full-size" href="team_schedule_gantt.png" target="_blank" class="btn-action" title="View Full Resolution">
           <span>&#x2922;</span> Full Size
         </a>
-        <a href="team_schedule_gantt.png" download="IPX_Team_Schedule_Oct19-25.png" class="btn-action" title="Download Image">
+        <a id="btn-download" href="team_schedule_gantt.png" download="IPX_Team_Schedule.png" class="btn-action" title="Download Image">
           <span>&#x21E9;</span> Download
         </a>
         <a href="https://ipxbk.com" class="btn-action" title="Go to Public Court Display">
@@ -628,23 +900,31 @@ html_content = f"""<!DOCTYPE html>
       </div>
     </header>
 
-    <main class="main-content">
-      <section class="stats-bar">
-{stat_cards_rendered}
-        <div class="stat-card" style="border-color: rgba(255, 214, 10, 0.35); background: rgba(255, 214, 10, 0.05);">
-          <div class="stat-chip" style="background-color: var(--theme-accent);"></div>
-          <div class="stat-info">
-            <span class="stat-name" style="color: var(--theme-accent);">Total Team</span>
-            <span class="stat-hours"><strong style="color: #ffffff;">{total_hours:.1f}h</strong> &bull; {total_shifts} shifts</span>
-          </div>
-        </div>
-      </section>
+    <!-- Interactive Week Navigator Bar -->
+    <div class="week-nav-bar">
+      <button id="btn-prev-week" class="nav-btn" onclick="stepWeek(-1)" title="Previous Week (Left Arrow)">
+        <span>&larr;</span> Previous Week
+      </button>
 
+      <div class="week-selector-center">
+        <select id="week-dropdown" class="week-dropdown" onchange="onWeekDropdownChange(this.value)"></select>
+      </div>
+
+      <button id="btn-next-week" class="nav-btn" onclick="stepWeek(1)" title="Next Week (Right Arrow)">
+        Next Week <span>&rarr;</span>
+      </button>
+    </div>
+
+    <main class="main-content">
+      <!-- Dynamic Stats Grid -->
+      <section id="stats-container" class="stats-bar"></section>
+
+      <!-- Dynamic Schedule Chart -->
       <section class="schedule-wrapper">
         <div class="schedule-img-container">
           <img
             id="schedule-chart"
-            alt="IPX Team Staff Schedule — Week of Oct 19 to Oct 25, 2026"
+            alt="IPX Team Staff Schedule"
             class="schedule-img"
           />
         </div>
@@ -664,12 +944,22 @@ html_content = f"""<!DOCTYPE html>
   </div>
 
   <script>
+    const SCHEDULE_DATA = {weeks_json_str};
     const TARGET_HASH = "{PASSCODE_HASH}";
+    let activeWeekId = SCHEDULE_DATA.current_week || Object.keys(SCHEDULE_DATA.weeks || {{}})[0];
+
     const overlay = document.getElementById('auth-overlay');
     const content = document.getElementById('schedule-content');
     const chartImg = document.getElementById('schedule-chart');
     const errorBox = document.getElementById('auth-error');
     const passInput = document.getElementById('passcode-input');
+    const weekDropdown = document.getElementById('week-dropdown');
+    const activeBadge = document.getElementById('active-week-badge');
+    const statsContainer = document.getElementById('stats-container');
+    const btnFullSize = document.getElementById('btn-full-size');
+    const btnDownload = document.getElementById('btn-download');
+    const btnPrevWeek = document.getElementById('btn-prev-week');
+    const btnNextWeek = document.getElementById('btn-next-week');
 
     async function computeHash(text) {{
       const enc = new TextEncoder();
@@ -678,12 +968,116 @@ html_content = f"""<!DOCTYPE html>
       return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
     }}
 
+    function getSortedWeekIds() {{
+      return Object.keys(SCHEDULE_DATA.weeks || {{}}).sort();
+    }}
+
+    function populateWeekDropdown() {{
+      const sortedIds = getSortedWeekIds();
+      weekDropdown.innerHTML = '';
+      sortedIds.forEach(wId => {{
+        const opt = document.createElement('option');
+        opt.value = wId;
+        opt.textContent = SCHEDULE_DATA.weeks[wId].label || wId;
+        if (wId === activeWeekId) opt.selected = true;
+        weekDropdown.appendChild(opt);
+      }});
+    }}
+
+    function renderActiveWeek() {{
+      const week = SCHEDULE_DATA.weeks[activeWeekId];
+      if (!week) return;
+
+      // Update badge and dropdown
+      if (activeBadge) activeBadge.textContent = week.label;
+      if (weekDropdown) weekDropdown.value = activeWeekId;
+
+      // Update image and action links
+      const imgPath = `${{week.image}}?v=${{Date.now()}}`;
+      chartImg.src = imgPath;
+      chartImg.alt = week.title || `Schedule for ${{week.label}}`;
+      btnFullSize.href = week.image;
+      btnDownload.href = week.image;
+      btnDownload.download = `IPX_Schedule_${{activeWeekId}}.png`;
+
+      // Update stats cards
+      statsContainer.innerHTML = '';
+      const stats = week.stats || {{}};
+      Object.keys(stats).forEach(name => {{
+        const s = stats[name];
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+        card.innerHTML = `
+          <div class="stat-chip" style="background-color: ${{s.color}};"></div>
+          <div class="stat-info">
+            <span class="stat-name">${{name}}</span>
+            <span class="stat-hours"><strong>${{s.hours.toFixed(1)}}h</strong> &bull; ${{s.shifts}} ${{s.shifts === 1 ? 'shift' : 'shifts'}}</span>
+          </div>
+        `;
+        statsContainer.appendChild(card);
+      }});
+
+      // Total team card
+      const totalCard = document.createElement('div');
+      totalCard.className = 'stat-card';
+      totalCard.style.borderColor = 'rgba(255, 214, 10, 0.35)';
+      totalCard.style.background = 'rgba(255, 214, 10, 0.05)';
+      totalCard.innerHTML = `
+        <div class="stat-chip" style="background-color: var(--theme-accent);"></div>
+        <div class="stat-info">
+          <span class="stat-name" style="color: var(--theme-accent);">Total Team</span>
+          <span class="stat-hours"><strong style="color: #ffffff;">${{week.total_hours.toFixed(1)}}h</strong> &bull; ${{week.total_shifts}} shifts</span>
+        </div>
+      `;
+      statsContainer.appendChild(totalCard);
+
+      // Update prev/next button disabled state
+      const sortedIds = getSortedWeekIds();
+      const curIdx = sortedIds.indexOf(activeWeekId);
+      btnPrevWeek.disabled = (curIdx <= 0);
+      btnNextWeek.disabled = (curIdx === -1 || curIdx >= sortedIds.length - 1);
+    }}
+
+    function onWeekDropdownChange(newWeekId) {{
+      if (newWeekId && SCHEDULE_DATA.weeks[newWeekId]) {{
+        activeWeekId = newWeekId;
+        renderActiveWeek();
+        updateUrlWeekParam();
+      }}
+    }}
+
+    function stepWeek(offset) {{
+      const sortedIds = getSortedWeekIds();
+      const curIdx = sortedIds.indexOf(activeWeekId);
+      if (curIdx === -1) return;
+      const targetIdx = curIdx + offset;
+      if (targetIdx >= 0 && targetIdx < sortedIds.length) {{
+        activeWeekId = sortedIds[targetIdx];
+        renderActiveWeek();
+        updateUrlWeekParam();
+      }}
+    }}
+
+    function updateUrlWeekParam() {{
+      const params = new URLSearchParams(window.location.search);
+      params.set('w', activeWeekId);
+      const cleanUrl = `${{window.location.pathname}}?${{params.toString()}}`;
+      window.history.replaceState({{}}, document.title, cleanUrl);
+    }}
+
+    // Keyboard navigation: Left & Right arrows flip through weeks
+    window.addEventListener('keydown', (e) => {{
+      if (content.style.display !== 'none' && document.activeElement.tagName !== 'INPUT') {{
+        if (e.key === 'ArrowLeft') stepWeek(-1);
+        if (e.key === 'ArrowRight') stepWeek(1);
+      }}
+    }});
+
     function unlockUI() {{
       overlay.style.display = 'none';
       content.style.display = 'flex';
-      if (!chartImg.getAttribute('src')) {{
-        chartImg.src = `team_schedule_gantt.png?v=${{Date.now()}}`;
-      }}
+      populateWeekDropdown();
+      renderActiveWeek();
     }}
 
     function showLockUI() {{
@@ -740,16 +1134,23 @@ html_content = f"""<!DOCTYPE html>
       }}
     }}
 
-    // Check auth on load
+    // Check auth and URL on load
     (async function initAuth() {{
       const params = new URLSearchParams(window.location.search);
+      const urlWeek = params.get('w') || params.get('week');
+      if (urlWeek && SCHEDULE_DATA.weeks[urlWeek]) {{
+        activeWeekId = urlWeek;
+      }}
+
       const urlKey = params.get('pin') || params.get('key') || params.get('pass') || params.get('auth');
       if (urlKey) {{
         try {{
           const urlHash = await computeHash(urlKey);
           if (urlHash === TARGET_HASH) {{
             localStorage.setItem('ipx_staff_auth', TARGET_HASH);
-            const cleanUrl = window.location.pathname;
+            const p = new URLSearchParams(window.location.search);
+            p.delete('pin'); p.delete('key'); p.delete('pass'); p.delete('auth');
+            const cleanUrl = window.location.pathname + (p.toString() ? `?${{p.toString()}}` : '');
             window.history.replaceState({{}}, document.title, cleanUrl);
             unlockUI();
             return;
@@ -771,8 +1172,11 @@ html_content = f"""<!DOCTYPE html>
     }})();
 
     setInterval(() => {{
-      if (content.style.display !== 'none' && chartImg) {{
-        chartImg.src = `team_schedule_gantt.png?v=${{Date.now()}}`;
+      if (content.style.display !== 'none' && chartImg.getAttribute('src')) {{
+        const curWeek = SCHEDULE_DATA.weeks[activeWeekId];
+        if (curWeek) {{
+          chartImg.src = `${{curWeek.image}}?v=${{Date.now()}}`;
+        }}
       }}
     }}, 300000);
   </script>
@@ -780,13 +1184,117 @@ html_content = f"""<!DOCTYPE html>
 </html>
 """
 
-html_path = os.path.abspath("schedule.html")
-with open(html_path, "w", encoding="utf-8") as f:
-    f.write(html_content)
+    html_path = os.path.abspath("schedule.html")
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(html_content)
 
-print(f"Web page generated: {html_path}")
-print(f"Live website URL: https://staff.ipxbk.com (or https://ipxbk.com/schedule)")
-print(f"Team Passcode: {TEAM_PASSCODE}")
+    print(f"Web page generated: {html_path}")
+    print(f"Live website URL: https://staff.ipxbk.com (or https://ipxbk.com/schedule)")
+    print(f"Team Passcode: {TEAM_PASSCODE}")
+    return html_path
 
-# Open local web page in browser
-webbrowser.open(f"file:///{html_path}")
+
+# -------------------------------------------------------------
+# Main Execution / CLI Handler
+# -------------------------------------------------------------
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="IPX Staff Schedule Generator")
+    parser.add_argument("--week", type=str, default="", help="Week start date (YYYY-MM-DD, e.g. 2026-10-19)")
+    parser.add_argument("--input", type=str, default="", help="Path to schedule text file")
+    parser.add_argument("--text", type=str, default="", help="Raw schedule text string")
+    parser.add_argument("--no-browser", action="store_true", help="Do not open browser")
+    args = parser.parse_args()
+
+    # If raw text or input file is provided, parse and register that week
+    raw_text = args.text
+    if args.input and os.path.exists(args.input):
+        with open(args.input, "r", encoding="utf-8") as f:
+            raw_text = f.read()
+
+    if raw_text:
+        # Determine week start date
+        week_start_str = args.week
+        if not week_start_str:
+            # Try to find date in text or default to today's Monday
+            today = datetime.date.today()
+            monday = today - datetime.timedelta(days=today.weekday())
+            week_start_str = monday.strftime("%Y-%m-%d")
+
+        try:
+            dt_start = datetime.datetime.strptime(week_start_str, "%Y-%m-%d").date()
+        except Exception:
+            dt_start = datetime.date.today()
+
+        dt_end = dt_start + datetime.timedelta(days=6)
+        label = f"{dt_start.strftime('%b %d')} - {dt_end.strftime('%b %d, %Y')}"
+        title = f"Team Schedule — Week of {dt_start.strftime('%B %d, %Y')} to {dt_end.strftime('%B %d, %Y')}"
+
+        shifts, days = parse_schedule_text(raw_text, start_date_str=week_start_str)
+        print(f"Parsed {len(shifts)} shifts from text for week {week_start_str}")
+        register_week(week_start_str, shifts, days, title, label)
+
+    else:
+        # If no input provided and master data is empty, seed with the baseline Oct 19-25 week
+        master = load_all_weeks()
+        if not master.get("weeks"):
+            default_shifts = [
+                {"name": "Carlos", "day": 0, "start": 16.0, "end": 23.0, "label": "4:00 PM - 11:00 PM"},
+                {"name": "Johnpaul", "day": 0, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
+                {"name": "Johnpaul", "day": 0, "start": 18.5, "end": 23.0, "label": "6:30 PM - 11:00 PM"},
+                {"name": "Carlos", "day": 1, "start": 11.0, "end": 19.0, "label": "11:00 AM - 7:00 PM"},
+                {"name": "Carl", "day": 1, "start": 13.5, "end": 23.0, "label": "1:30 PM - 11:00 PM"},
+                {"name": "Kadeem", "day": 1, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
+                {"name": "Johnpaul", "day": 1, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
+                {"name": "Carl", "day": 2, "start": 13.5, "end": 23.0, "label": "1:30 PM - 11:00 PM"},
+                {"name": "Nicole", "day": 2, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
+                {"name": "Johnpaul", "day": 2, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
+                {"name": "Carlos", "day": 3, "start": 14.0, "end": 22.0, "label": "2:00 PM - 10:00 PM"},
+                {"name": "Kadeem", "day": 3, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
+                {"name": "Nicole", "day": 4, "start": 15.5, "end": 23.0, "label": "3:30 PM - 11:00 PM"},
+                {"name": "Johnpaul", "day": 4, "start": 15.5, "end": 23.0, "label": "3:30 PM - 11:00 PM"},
+                {"name": "Carlos", "day": 5, "start": 11.0, "end": 19.0, "label": "11:00 AM - 7:00 PM"},
+                {"name": "Kadeem", "day": 5, "start": 9.0, "end": 15.5, "label": "9:00 AM - 3:30 PM"},
+                {"name": "Carlos", "day": 6, "start": 9.0, "end": 15.0, "label": "9:00 AM - 3:00 PM"},
+                {"name": "Nicole", "day": 6, "start": 9.0, "end": 15.5, "label": "9:00 AM - 3:30 PM"},
+                {"name": "Johnpaul", "day": 6, "start": 15.0, "end": 22.5, "label": "3:00 PM - 10:30 PM"}
+            ]
+            days = ["Mon 19", "Tue 20", "Wed 21", "Thu 22", "Fri 23", "Sat 24", "Sun 25"]
+            register_week(
+                "2026-10-19",
+                default_shifts,
+                days,
+                "Team Schedule — Week of October 19, 2026 to October 25, 2026",
+                "Oct 19 - Oct 25, 2026"
+            )
+        else:
+            # Re-render all registered weeks with current font & styling settings
+            for wId, wData in master["weeks"].items():
+                w_img_path = os.path.join(SCHEDULES_DIR, f"schedule_{wId}.png")
+                render_gantt_chart(
+                    wId,
+                    wData["shifts"],
+                    wData["days"],
+                    wData["title"],
+                    w_img_path,
+                    wData.get("palette", DEFAULT_PALETTE)
+                )
+            # Re-render root image for current week
+            cur = master.get("current_week")
+            if cur and cur in master["weeks"]:
+                cw = master["weeks"][cur]
+                render_gantt_chart(
+                    cur,
+                    cw["shifts"],
+                    cw["days"],
+                    cw["title"],
+                    os.path.abspath("team_schedule_gantt.png"),
+                    cw.get("palette", DEFAULT_PALETTE)
+                )
+
+    html_path = generate_schedule_html()
+    if not args.no_browser:
+        webbrowser.open(f"file:///{html_path}")
+
+if __name__ == "__main__":
+    main()

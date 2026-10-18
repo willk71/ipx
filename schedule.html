@@ -238,6 +238,68 @@
       transform: translateY(-1px);
     }
 
+    /* Week Navigator Bar */
+    .week-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1vh 1.5vw;
+      margin-top: 1.5vh;
+      gap: 1vw;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: #ffffff;
+      font-size: clamp(0.9rem, 1vw, 1.15rem);
+      font-weight: 700;
+      padding: 0.8vh 1.4vw;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5vw;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--theme-accent);
+      color: var(--theme-accent);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .week-selector-center {
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+    }
+
+    .week-dropdown {
+      background: #18181b;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: clamp(0.95rem, 1.1vw, 1.25rem);
+      font-weight: 700;
+      padding: 0.8vh 1.2vw;
+      border-radius: 8px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .week-dropdown:focus {
+      border-color: var(--theme-accent);
+    }
+
     .main-content {
       flex: 1;
       display: flex;
@@ -359,7 +421,7 @@
 
     @media (max-width: 768px) {
       .schedule-img {
-        min-width: 800px;
+        min-width: 900px;
       }
     }
   </style>
@@ -406,17 +468,17 @@
           <span>Staff Schedule</span>
         </h1>
         <span class="header-badge badge-internal">Internal Only</span>
-        <span class="header-badge">Oct 19 &ndash; Oct 25, 2026</span>
+        <span id="active-week-badge" class="header-badge">--</span>
       </div>
 
       <div class="header-actions">
         <button type="button" class="btn-action" onclick="lockSchedule()" title="Lock Screen">
           <span>&#x1F512;</span> Lock
         </button>
-        <a href="team_schedule_gantt.png" target="_blank" class="btn-action" title="View Full Resolution">
+        <a id="btn-full-size" href="team_schedule_gantt.png" target="_blank" class="btn-action" title="View Full Resolution">
           <span>&#x2922;</span> Full Size
         </a>
-        <a href="team_schedule_gantt.png" download="IPX_Team_Schedule_Oct19-25.png" class="btn-action" title="Download Image">
+        <a id="btn-download" href="team_schedule_gantt.png" download="IPX_Team_Schedule.png" class="btn-action" title="Download Image">
           <span>&#x21E9;</span> Download
         </a>
         <a href="https://ipxbk.com" class="btn-action" title="Go to Public Court Display">
@@ -425,57 +487,31 @@
       </div>
     </header>
 
-    <main class="main-content">
-      <section class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-chip" style="background-color: #1E5F8A;"></div>
-        <div class="stat-info">
-          <span class="stat-name">Carlos</span>
-          <span class="stat-hours"><strong>37.0h</strong> &bull; 5 shifts</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-chip" style="background-color: #D96B27;"></div>
-        <div class="stat-info">
-          <span class="stat-name">Carl</span>
-          <span class="stat-hours"><strong>19.0h</strong> &bull; 2 shifts</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-chip" style="background-color: #2E7D32;"></div>
-        <div class="stat-info">
-          <span class="stat-name">Kadeem</span>
-          <span class="stat-hours"><strong>19.5h</strong> &bull; 3 shifts</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-chip" style="background-color: #7B1FA2;"></div>
-        <div class="stat-info">
-          <span class="stat-name">Nicole</span>
-          <span class="stat-hours"><strong>20.5h</strong> &bull; 3 shifts</span>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-chip" style="background-color: #C2185B;"></div>
-        <div class="stat-info">
-          <span class="stat-name">Johnpaul</span>
-          <span class="stat-hours"><strong>33.0h</strong> &bull; 6 shifts</span>
-        </div>
-      </div>
-        <div class="stat-card" style="border-color: rgba(255, 214, 10, 0.35); background: rgba(255, 214, 10, 0.05);">
-          <div class="stat-chip" style="background-color: var(--theme-accent);"></div>
-          <div class="stat-info">
-            <span class="stat-name" style="color: var(--theme-accent);">Total Team</span>
-            <span class="stat-hours"><strong style="color: #ffffff;">129.0h</strong> &bull; 19 shifts</span>
-          </div>
-        </div>
-      </section>
+    <!-- Interactive Week Navigator Bar -->
+    <div class="week-nav-bar">
+      <button id="btn-prev-week" class="nav-btn" onclick="stepWeek(-1)" title="Previous Week (Left Arrow)">
+        <span>&larr;</span> Previous Week
+      </button>
 
+      <div class="week-selector-center">
+        <select id="week-dropdown" class="week-dropdown" onchange="onWeekDropdownChange(this.value)"></select>
+      </div>
+
+      <button id="btn-next-week" class="nav-btn" onclick="stepWeek(1)" title="Next Week (Right Arrow)">
+        Next Week <span>&rarr;</span>
+      </button>
+    </div>
+
+    <main class="main-content">
+      <!-- Dynamic Stats Grid -->
+      <section id="stats-container" class="stats-bar"></section>
+
+      <!-- Dynamic Schedule Chart -->
       <section class="schedule-wrapper">
         <div class="schedule-img-container">
           <img
             id="schedule-chart"
-            alt="IPX Team Staff Schedule — Week of Oct 19 to Oct 25, 2026"
+            alt="IPX Team Staff Schedule"
             class="schedule-img"
           />
         </div>
@@ -495,12 +531,221 @@
   </div>
 
   <script>
+    const SCHEDULE_DATA = {
+  "current_week": "2026-10-19",
+  "weeks": {
+    "2026-10-19": {
+      "week_id": "2026-10-19",
+      "label": "Oct 19 - Oct 25, 2026",
+      "start_date": "2026-10-19",
+      "end_date": "2026-10-25",
+      "title": "Team Schedule \u2014 Week of October 19, 2026 to October 25, 2026",
+      "image": "schedules/schedule_2026-10-19.png",
+      "days": [
+        "Mon 19",
+        "Tue 20",
+        "Wed 21",
+        "Thu 22",
+        "Fri 23",
+        "Sat 24",
+        "Sun 25"
+      ],
+      "people": [
+        "Carlos",
+        "Carl",
+        "Kadeem",
+        "Nicole",
+        "Johnpaul"
+      ],
+      "palette": {
+        "Carlos": "#1E5F8A",
+        "Carl": "#D96B27",
+        "Kadeem": "#2E7D32",
+        "Nicole": "#7B1FA2",
+        "Johnpaul": "#C2185B"
+      },
+      "total_hours": 129.0,
+      "total_shifts": 19,
+      "stats": {
+        "Carlos": {
+          "hours": 37.0,
+          "shifts": 5,
+          "color": "#1E5F8A"
+        },
+        "Johnpaul": {
+          "hours": 33.0,
+          "shifts": 6,
+          "color": "#C2185B"
+        },
+        "Carl": {
+          "hours": 19.0,
+          "shifts": 2,
+          "color": "#D96B27"
+        },
+        "Kadeem": {
+          "hours": 19.5,
+          "shifts": 3,
+          "color": "#2E7D32"
+        },
+        "Nicole": {
+          "hours": 20.5,
+          "shifts": 3,
+          "color": "#7B1FA2"
+        }
+      },
+      "shifts": [
+        {
+          "name": "Carlos",
+          "day": 0,
+          "start": 16.0,
+          "end": 23.0,
+          "label": "4:00 PM - 11:00 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 0,
+          "start": 9.0,
+          "end": 13.5,
+          "label": "9:00 AM - 1:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 0,
+          "start": 18.5,
+          "end": 23.0,
+          "label": "6:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 1,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Carl",
+          "day": 1,
+          "start": 13.5,
+          "end": 23.0,
+          "label": "1:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Kadeem",
+          "day": 1,
+          "start": 15.5,
+          "end": 22.0,
+          "label": "3:30 PM - 10:00 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 1,
+          "start": 9.0,
+          "end": 13.5,
+          "label": "9:00 AM - 1:30 PM"
+        },
+        {
+          "name": "Carl",
+          "day": 2,
+          "start": 13.5,
+          "end": 23.0,
+          "label": "1:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Nicole",
+          "day": 2,
+          "start": 15.5,
+          "end": 22.0,
+          "label": "3:30 PM - 10:00 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 2,
+          "start": 9.0,
+          "end": 13.5,
+          "label": "9:00 AM - 1:30 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 3,
+          "start": 14.0,
+          "end": 22.0,
+          "label": "2:00 PM - 10:00 PM"
+        },
+        {
+          "name": "Kadeem",
+          "day": 3,
+          "start": 15.5,
+          "end": 22.0,
+          "label": "3:30 PM - 10:00 PM"
+        },
+        {
+          "name": "Nicole",
+          "day": 4,
+          "start": 15.5,
+          "end": 23.0,
+          "label": "3:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 4,
+          "start": 15.5,
+          "end": 23.0,
+          "label": "3:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 5,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Kadeem",
+          "day": 5,
+          "start": 9.0,
+          "end": 15.5,
+          "label": "9:00 AM - 3:30 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 6,
+          "start": 9.0,
+          "end": 15.0,
+          "label": "9:00 AM - 3:00 PM"
+        },
+        {
+          "name": "Nicole",
+          "day": 6,
+          "start": 9.0,
+          "end": 15.5,
+          "label": "9:00 AM - 3:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 6,
+          "start": 15.0,
+          "end": 22.5,
+          "label": "3:00 PM - 10:30 PM"
+        }
+      ]
+    }
+  }
+};
     const TARGET_HASH = "c55f0253dcb8aa5fccdb111785e5e38158cad6568778efb0d06b46c40e3d781a";
+    let activeWeekId = SCHEDULE_DATA.current_week || Object.keys(SCHEDULE_DATA.weeks || {})[0];
+
     const overlay = document.getElementById('auth-overlay');
     const content = document.getElementById('schedule-content');
     const chartImg = document.getElementById('schedule-chart');
     const errorBox = document.getElementById('auth-error');
     const passInput = document.getElementById('passcode-input');
+    const weekDropdown = document.getElementById('week-dropdown');
+    const activeBadge = document.getElementById('active-week-badge');
+    const statsContainer = document.getElementById('stats-container');
+    const btnFullSize = document.getElementById('btn-full-size');
+    const btnDownload = document.getElementById('btn-download');
+    const btnPrevWeek = document.getElementById('btn-prev-week');
+    const btnNextWeek = document.getElementById('btn-next-week');
 
     async function computeHash(text) {
       const enc = new TextEncoder();
@@ -509,12 +754,116 @@
       return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
+    function getSortedWeekIds() {
+      return Object.keys(SCHEDULE_DATA.weeks || {}).sort();
+    }
+
+    function populateWeekDropdown() {
+      const sortedIds = getSortedWeekIds();
+      weekDropdown.innerHTML = '';
+      sortedIds.forEach(wId => {
+        const opt = document.createElement('option');
+        opt.value = wId;
+        opt.textContent = SCHEDULE_DATA.weeks[wId].label || wId;
+        if (wId === activeWeekId) opt.selected = true;
+        weekDropdown.appendChild(opt);
+      });
+    }
+
+    function renderActiveWeek() {
+      const week = SCHEDULE_DATA.weeks[activeWeekId];
+      if (!week) return;
+
+      // Update badge and dropdown
+      if (activeBadge) activeBadge.textContent = week.label;
+      if (weekDropdown) weekDropdown.value = activeWeekId;
+
+      // Update image and action links
+      const imgPath = `${week.image}?v=${Date.now()}`;
+      chartImg.src = imgPath;
+      chartImg.alt = week.title || `Schedule for ${week.label}`;
+      btnFullSize.href = week.image;
+      btnDownload.href = week.image;
+      btnDownload.download = `IPX_Schedule_${activeWeekId}.png`;
+
+      // Update stats cards
+      statsContainer.innerHTML = '';
+      const stats = week.stats || {};
+      Object.keys(stats).forEach(name => {
+        const s = stats[name];
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+        card.innerHTML = `
+          <div class="stat-chip" style="background-color: ${s.color};"></div>
+          <div class="stat-info">
+            <span class="stat-name">${name}</span>
+            <span class="stat-hours"><strong>${s.hours.toFixed(1)}h</strong> &bull; ${s.shifts} ${s.shifts === 1 ? 'shift' : 'shifts'}</span>
+          </div>
+        `;
+        statsContainer.appendChild(card);
+      });
+
+      // Total team card
+      const totalCard = document.createElement('div');
+      totalCard.className = 'stat-card';
+      totalCard.style.borderColor = 'rgba(255, 214, 10, 0.35)';
+      totalCard.style.background = 'rgba(255, 214, 10, 0.05)';
+      totalCard.innerHTML = `
+        <div class="stat-chip" style="background-color: var(--theme-accent);"></div>
+        <div class="stat-info">
+          <span class="stat-name" style="color: var(--theme-accent);">Total Team</span>
+          <span class="stat-hours"><strong style="color: #ffffff;">${week.total_hours.toFixed(1)}h</strong> &bull; ${week.total_shifts} shifts</span>
+        </div>
+      `;
+      statsContainer.appendChild(totalCard);
+
+      // Update prev/next button disabled state
+      const sortedIds = getSortedWeekIds();
+      const curIdx = sortedIds.indexOf(activeWeekId);
+      btnPrevWeek.disabled = (curIdx <= 0);
+      btnNextWeek.disabled = (curIdx === -1 || curIdx >= sortedIds.length - 1);
+    }
+
+    function onWeekDropdownChange(newWeekId) {
+      if (newWeekId && SCHEDULE_DATA.weeks[newWeekId]) {
+        activeWeekId = newWeekId;
+        renderActiveWeek();
+        updateUrlWeekParam();
+      }
+    }
+
+    function stepWeek(offset) {
+      const sortedIds = getSortedWeekIds();
+      const curIdx = sortedIds.indexOf(activeWeekId);
+      if (curIdx === -1) return;
+      const targetIdx = curIdx + offset;
+      if (targetIdx >= 0 && targetIdx < sortedIds.length) {
+        activeWeekId = sortedIds[targetIdx];
+        renderActiveWeek();
+        updateUrlWeekParam();
+      }
+    }
+
+    function updateUrlWeekParam() {
+      const params = new URLSearchParams(window.location.search);
+      params.set('w', activeWeekId);
+      const cleanUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+
+    // Keyboard navigation: Left & Right arrows flip through weeks
+    window.addEventListener('keydown', (e) => {
+      if (content.style.display !== 'none' && document.activeElement.tagName !== 'INPUT') {
+        if (e.key === 'ArrowLeft') stepWeek(-1);
+        if (e.key === 'ArrowRight') stepWeek(1);
+      }
+    });
+
     function unlockUI() {
       overlay.style.display = 'none';
       content.style.display = 'flex';
-      if (!chartImg.getAttribute('src')) {
-        chartImg.src = `team_schedule_gantt.png?v=${Date.now()}`;
-      }
+      populateWeekDropdown();
+      renderActiveWeek();
     }
 
     function showLockUI() {
@@ -571,16 +920,23 @@
       }
     }
 
-    // Check auth on load
+    // Check auth and URL on load
     (async function initAuth() {
       const params = new URLSearchParams(window.location.search);
+      const urlWeek = params.get('w') || params.get('week');
+      if (urlWeek && SCHEDULE_DATA.weeks[urlWeek]) {
+        activeWeekId = urlWeek;
+      }
+
       const urlKey = params.get('pin') || params.get('key') || params.get('pass') || params.get('auth');
       if (urlKey) {
         try {
           const urlHash = await computeHash(urlKey);
           if (urlHash === TARGET_HASH) {
             localStorage.setItem('ipx_staff_auth', TARGET_HASH);
-            const cleanUrl = window.location.pathname;
+            const p = new URLSearchParams(window.location.search);
+            p.delete('pin'); p.delete('key'); p.delete('pass'); p.delete('auth');
+            const cleanUrl = window.location.pathname + (p.toString() ? `?${p.toString()}` : '');
             window.history.replaceState({}, document.title, cleanUrl);
             unlockUI();
             return;
@@ -602,8 +958,11 @@
     })();
 
     setInterval(() => {
-      if (content.style.display !== 'none' && chartImg) {
-        chartImg.src = `team_schedule_gantt.png?v=${Date.now()}`;
+      if (content.style.display !== 'none' && chartImg.getAttribute('src')) {
+        const curWeek = SCHEDULE_DATA.weeks[activeWeekId];
+        if (curWeek) {
+          chartImg.src = `${curWeek.image}?v=${Date.now()}`;
+        }
       }
     }, 300000);
   </script>
