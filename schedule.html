@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Team Schedule &mdash; IPX</title>
+  <title>Staff Portal &mdash; IPX Operations</title>
   <link rel="stylesheet" href="css/common.css?v=2.2.7" />
   <style>
     body {
@@ -15,6 +15,151 @@
       background: var(--bg-gradient);
       color: var(--text-main);
       overflow-x: hidden;
+    }
+
+    /* Auth Overlay */
+    .auth-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 30%, #1a1a1c 0%, #0d0d0f 65%, #000000 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 4vh 2.5vw;
+      width: 100%;
+      max-width: 420px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8vh;
+    }
+
+    .auth-icon {
+      font-size: 3rem;
+      line-height: 1;
+    }
+
+    .auth-title {
+      font-size: clamp(1.5rem, 2vw, 2.1rem);
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .auth-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      opacity: 0.8;
+      margin: 0;
+    }
+
+    .auth-input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-top: 1vh;
+    }
+
+    .auth-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 1.25rem;
+      padding: 1.3vh 48px 1.3vh 16px;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s ease;
+      text-align: center;
+      letter-spacing: 0.12em;
+    }
+
+    .auth-input:focus {
+      border-color: var(--theme-accent);
+      box-shadow: 0 0 0 3px rgba(255, 214, 10, 0.25);
+    }
+
+    .btn-toggle-vis {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.55);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 4px;
+    }
+
+    .btn-toggle-vis:hover {
+      color: #ffffff;
+    }
+
+    .auth-error {
+      color: #ff453a;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: rgba(255, 69, 58, 0.12);
+      border: 1px solid rgba(255, 69, 58, 0.3);
+      border-radius: 8px;
+      padding: 0.8vh 1vw;
+    }
+
+    .auth-remember {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .auth-remember label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6vw;
+      cursor: pointer;
+    }
+
+    .btn-unlock {
+      background: var(--theme-accent);
+      color: #000000;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 1.4vh 1.5vw;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 0.5vh;
+    }
+
+    .btn-unlock:hover {
+      background: #ffe14d;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 214, 10, 0.35);
+    }
+
+    /* Protected Content Layout */
+    #schedule-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
 
     header {
@@ -38,21 +183,30 @@
       flex-wrap: wrap;
     }
 
-    .header-separator {
+    .portal-tag {
       color: var(--theme-accent);
-      opacity: 0.7;
+    }
+
+    .header-separator {
+      color: rgba(255, 255, 255, 0.3);
     }
 
     .header-badge {
       background: rgba(255, 214, 10, 0.15);
       border: 1px solid rgba(255, 214, 10, 0.4);
       color: var(--theme-accent);
-      font-size: clamp(0.85rem, 1.0vw, 1.2rem);
+      font-size: clamp(0.85rem, 0.95vw, 1.15rem);
       font-weight: 700;
       padding: 0.4vh 1vw;
       border-radius: 999px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+    }
+
+    .badge-internal {
+      background: rgba(255, 69, 58, 0.15) !important;
+      border-color: rgba(255, 69, 58, 0.4) !important;
+      color: #ff6961 !important;
     }
 
     .header-actions {
@@ -193,6 +347,16 @@
       gap: 0.8vw;
     }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .shake {
+      animation: shake 0.35s ease-in-out;
+    }
+
     @media (max-width: 768px) {
       .schedule-img {
         min-width: 800px;
@@ -201,31 +365,68 @@
   </style>
 </head>
 <body class="page-schedule theme-apple">
-  <header>
-    <div class="header-left">
-      <h1 id="header-title">
-        <span>Welcome to IPX!</span>
-        <span class="header-separator">&ndash;</span>
-        <span>Team Schedule</span>
-      </h1>
-      <span class="header-badge">Oct 19 &ndash; Oct 25, 2026</span>
-    </div>
 
-    <div class="header-actions">
-      <a href="team_schedule_gantt.png" target="_blank" class="btn-action" title="View Full Resolution">
-        <span>&#x2922;</span> Full Size
-      </a>
-      <a href="team_schedule_gantt.png" download="IPX_Team_Schedule_Oct19-25.png" class="btn-action" title="Download Image">
-        <span>&#x21E9;</span> Download
-      </a>
-      <a href="https://ipxbk.com" class="btn-action" title="Back to Court Sessions">
-        <span>&#x2190;</span> Sessions
-      </a>
+  <!-- Lock / Authentication Overlay -->
+  <div id="auth-overlay" class="auth-overlay">
+    <div class="auth-card">
+      <div class="auth-icon">&#x1F512;</div>
+      <h2 class="auth-title">IPX Staff Portal</h2>
+      <p class="auth-subtitle">Restricted Access &bull; Team Operations</p>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <div class="auth-input-group">
+          <input
+            type="password"
+            id="passcode-input"
+            class="auth-input"
+            placeholder="Enter team passcode"
+            autocomplete="current-password"
+            required
+          />
+          <button type="button" class="btn-toggle-vis" onclick="togglePasscodeVis()" title="Show/Hide">&#x1F441;</button>
+        </div>
+        <div id="auth-error" class="auth-error" style="display: none;">Incorrect passcode. Please try again.</div>
+        <div class="auth-remember" style="margin-top: 1vh;">
+          <label>
+            <input type="checkbox" id="remember-me" checked />
+            <span>Remember this device</span>
+          </label>
+        </div>
+        <button type="submit" class="btn-unlock" style="width: 100%;">Unlock Schedule</button>
+      </form>
     </div>
-  </header>
+  </div>
 
-  <main class="main-content">
-    <section class="stats-bar">
+  <!-- Protected Schedule Content -->
+  <div id="schedule-content" style="display: none;">
+    <header>
+      <div class="header-left">
+        <h1 id="header-title">
+          <span class="portal-tag">IPX Operations</span>
+          <span class="header-separator">&ndash;</span>
+          <span>Staff Schedule</span>
+        </h1>
+        <span class="header-badge badge-internal">Internal Only</span>
+        <span class="header-badge">Oct 19 &ndash; Oct 25, 2026</span>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="btn-action" onclick="lockSchedule()" title="Lock Screen">
+          <span>&#x1F512;</span> Lock
+        </button>
+        <a href="team_schedule_gantt.png" target="_blank" class="btn-action" title="View Full Resolution">
+          <span>&#x2922;</span> Full Size
+        </a>
+        <a href="team_schedule_gantt.png" download="IPX_Team_Schedule_Oct19-25.png" class="btn-action" title="Download Image">
+          <span>&#x21E9;</span> Download
+        </a>
+        <a href="https://ipxbk.com" class="btn-action" title="Go to Public Court Display">
+          <span>&#x2190;</span> Court Display
+        </a>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="stats-bar">
       <div class="stat-card">
         <div class="stat-chip" style="background-color: #1E5F8A;"></div>
         <div class="stat-info">
@@ -261,51 +462,147 @@
           <span class="stat-hours"><strong>33.0h</strong> &bull; 6 shifts</span>
         </div>
       </div>
-      <div class="stat-card" style="border-color: rgba(255, 214, 10, 0.35); background: rgba(255, 214, 10, 0.05);">
-        <div class="stat-chip" style="background-color: var(--theme-accent);"></div>
-        <div class="stat-info">
-          <span class="stat-name" style="color: var(--theme-accent);">Total Team</span>
-          <span class="stat-hours"><strong style="color: #ffffff;">129.0h</strong> &bull; 19 shifts</span>
+        <div class="stat-card" style="border-color: rgba(255, 214, 10, 0.35); background: rgba(255, 214, 10, 0.05);">
+          <div class="stat-chip" style="background-color: var(--theme-accent);"></div>
+          <div class="stat-info">
+            <span class="stat-name" style="color: var(--theme-accent);">Total Team</span>
+            <span class="stat-hours"><strong style="color: #ffffff;">129.0h</strong> &bull; 19 shifts</span>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="schedule-wrapper">
-      <div class="schedule-img-container">
-        <img
-          id="schedule-chart"
-          src="team_schedule_gantt.png"
-          alt="IPX Team Staff Schedule — Week of Oct 19 to Oct 25, 2026"
-          class="schedule-img"
-        />
-      </div>
-    </section>
-  </main>
+      <section class="schedule-wrapper">
+        <div class="schedule-img-container">
+          <img
+            id="schedule-chart"
+            alt="IPX Team Staff Schedule — Week of Oct 19 to Oct 25, 2026"
+            class="schedule-img"
+          />
+        </div>
+      </section>
+    </main>
 
-  <footer>
-    <div class="footer-left">
-      <span>IPX Court Schedule System</span>
-      <span>&bull;</span>
-      <span id="sync-indicator">Auto-refreshed</span>
-    </div>
-    <div class="footer-right">
-      <span id="host-url-display">staff.ipxbk.com</span>
-    </div>
-  </footer>
+    <footer>
+      <div class="footer-left">
+        <span>IPX Staff Operations System</span>
+        <span>&bull;</span>
+        <span id="sync-indicator">Auto-refreshed</span>
+      </div>
+      <div class="footer-right">
+        <span id="host-url-display">staff.ipxbk.com</span>
+      </div>
+    </footer>
+  </div>
 
   <script>
-    const hostSpan = document.getElementById('host-url-display');
-    if (hostSpan && window.location.host) {
-      hostSpan.textContent = window.location.host;
+    const TARGET_HASH = "c55f0253dcb8aa5fccdb111785e5e38158cad6568778efb0d06b46c40e3d781a";
+    const overlay = document.getElementById('auth-overlay');
+    const content = document.getElementById('schedule-content');
+    const chartImg = document.getElementById('schedule-chart');
+    const errorBox = document.getElementById('auth-error');
+    const passInput = document.getElementById('passcode-input');
+
+    async function computeHash(text) {
+      const enc = new TextEncoder();
+      const data = enc.encode(text.trim().toLowerCase());
+      const hash = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    const chartImg = document.getElementById('schedule-chart');
-    if (chartImg) {
-      chartImg.src = `team_schedule_gantt.png?v=${Date.now()}`;
+    function unlockUI() {
+      overlay.style.display = 'none';
+      content.style.display = 'flex';
+      if (!chartImg.getAttribute('src')) {
+        chartImg.src = `team_schedule_gantt.png?v=${Date.now()}`;
+      }
     }
+
+    function showLockUI() {
+      content.style.display = 'none';
+      overlay.style.display = 'flex';
+      chartImg.removeAttribute('src');
+      if (errorBox) errorBox.style.display = 'none';
+      if (passInput) {
+        passInput.value = '';
+        passInput.focus();
+      }
+    }
+
+    function lockSchedule() {
+      localStorage.removeItem('ipx_staff_auth');
+      showLockUI();
+    }
+
+    function togglePasscodeVis() {
+      if (passInput) {
+        passInput.type = passInput.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      if (e) e.preventDefault();
+      const entered = (passInput ? passInput.value : '').trim();
+      if (!entered) return;
+
+      try {
+        const hash = await computeHash(entered);
+        if (hash === TARGET_HASH) {
+          const remember = document.getElementById('remember-me')?.checked;
+          if (remember) {
+            localStorage.setItem('ipx_staff_auth', TARGET_HASH);
+          }
+          if (errorBox) errorBox.style.display = 'none';
+          unlockUI();
+        } else {
+          if (errorBox) {
+            errorBox.style.display = 'block';
+            errorBox.textContent = 'Incorrect passcode. Please try again.';
+          }
+          passInput.classList.add('shake');
+          setTimeout(() => passInput.classList.remove('shake'), 400);
+        }
+      } catch (err) {
+        if (entered.toLowerCase() === 'ipxstaff'.toLowerCase()) {
+          localStorage.setItem('ipx_staff_auth', TARGET_HASH);
+          unlockUI();
+        } else {
+          if (errorBox) errorBox.style.display = 'block';
+        }
+      }
+    }
+
+    // Check auth on load
+    (async function initAuth() {
+      const params = new URLSearchParams(window.location.search);
+      const urlKey = params.get('pin') || params.get('key') || params.get('pass') || params.get('auth');
+      if (urlKey) {
+        try {
+          const urlHash = await computeHash(urlKey);
+          if (urlHash === TARGET_HASH) {
+            localStorage.setItem('ipx_staff_auth', TARGET_HASH);
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+            unlockUI();
+            return;
+          }
+        } catch (_) {}
+      }
+
+      const saved = localStorage.getItem('ipx_staff_auth');
+      if (saved === TARGET_HASH) {
+        unlockUI();
+      } else {
+        showLockUI();
+      }
+
+      const hostSpan = document.getElementById('host-url-display');
+      if (hostSpan && window.location.host) {
+        hostSpan.textContent = window.location.host;
+      }
+    })();
 
     setInterval(() => {
-      if (chartImg) {
+      if (content.style.display !== 'none' && chartImg) {
         chartImg.src = `team_schedule_gantt.png?v=${Date.now()}`;
       }
     }, 300000);
