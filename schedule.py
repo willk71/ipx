@@ -231,6 +231,18 @@ def parse_schedule_text(raw_text, start_date_str="2026-10-19"):
     return shifts, days
 
 
+def format_compact_time(t_dec):
+    h = int(t_dec)
+    m = int(round((t_dec - h) * 60))
+    suffix = "a" if h < 12 else "p"
+    dh = h if h <= 12 else h - 12
+    if dh == 0:
+        dh = 12
+    if m == 0:
+        return f"{dh}:00{suffix}"
+    return f"{dh}:{m:02d}{suffix}"
+
+
 # -------------------------------------------------------------
 # Gantt Chart Renderer
 # High-DPI, large-text, publication-quality shift schedule chart
@@ -295,19 +307,31 @@ def render_gantt_chart(week_id, shifts, days, title, output_path, palette):
             )
             ax.add_patch(box)
 
-            # Enhanced typography: larger, bolder text for crisp legibility
-            label_text = f"{s['name']}\n{s['label']}"
+            # Enhanced typography: horizontal 3-line format:
+            # FName
+            # StartTimep-
+            # EndTimep
+            s_str = format_compact_time(s["start"])
+            e_str = format_compact_time(s["end"])
+            label_text = f"{s['name']}\n{s_str}-\n{e_str}"
             y_center = y_bottom + (height / 2.0)
             x_center = x_left + (width / 2.0)
 
-            # Scale font slightly if many columns share the day
-            font_size = 11.5 if num_cols <= 2 else (10.5 if num_cols == 3 else 9.5)
+            # Scale font to ensure text fits inside horizontal columns
+            if num_cols == 1:
+                font_size = 12.0
+            elif num_cols == 2:
+                font_size = 11.0
+            elif num_cols == 3:
+                font_size = 10.0
+            else:
+                font_size = 9.0
 
             ax.text(
                 x_center, y_center, label_text,
                 color="#FFFFFF", weight="bold", fontsize=font_size,
-                rotation=90,
-                ha="center", va="center", linespacing=1.25, zorder=4
+                rotation=0,
+                ha="center", va="center", linespacing=1.2, zorder=4
             )
 
     # Left Y-axis: 8:00 AM at top to 11:30 PM at bottom
