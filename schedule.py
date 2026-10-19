@@ -1266,28 +1266,18 @@ def generate_schedule_html():
     return html_path
 
 
-# =============================================================
-# QUICK PASTE SECTION FOR FUTURE WEEKS
-# =============================================================
-# You can paste new weeks directly right here!
-# 1. (Optional) Week start Monday (YYYY-MM-DD):
-#    If left blank, it automatically defaults to the next sequential week.
-NEW_WEEK_START = "2026-10-26"
+RAW_SCHEDULE_INPUT = os.path.join(DATA_DIR, "raw_schedule.txt")
+ARCHIVE_RAW_DIR = os.path.join(DATA_DIR, "raw_schedules")
 
-# 2. Paste the schedule text below between the triple quotes:
-NEW_WEEK_RAW_TEXT = """
-Week of October 26, 2026 - November 1, 2026
-People	Mon 26	Tue 27	Wed 28	Thu 29	Fri 30	Sat 31	Sun 1
-Anthony, Carlos Kajaun	Draft 4:00 PM - 11:00 PM	Draft 11:00 AM - 7:00 PM		Draft 2:00 PM - 10:00 PM		Draft 11:00 AM - 7:00 PM	Draft 9:00 AM - 3:00 PM
-Arce, Carl		Draft 1:30 PM - 11:00 PM	Draft 1:30 PM - 11:00 PM					
-De Jesus, Josue							
-Ho Sang, Kadeem		Draft 3:30 PM - 10:00 PM		Draft 3:30 PM - 10:00 PM		Draft 9:00 AM - 3:30 PM	
-Lugar, Nicole			Draft 3:30 PM - 10:00 PM		Draft 3:30 PM - 11:00 PM		Draft 9:00 AM - 3:30 PM
-Pinos, Cesar							
-Reid, Jahmal							
-Zapata, Johnpaul	Draft 9:00 AM - 1:30 PM Draft 6:30 PM - 11:00 PM	Draft 9:00 AM - 1:30 PM	Draft 9:00 AM - 1:30 PM		Draft 3:30 PM - 11:00 PM		Draft 3:00 PM - 10:30 PM
-"""
+RAW_SCHEDULE_TEMPLATE = """# =============================================================
+# IPX Staff Schedule Input File
 # =============================================================
+# Paste any future schedule text or ADP table below this line.
+# Then run: python schedule.py
+# The script will parse the shifts, append the new week to
+# data/staff_schedules.json, generate the chart, and update the website.
+# =============================================================
+"""
 
 
 # -------------------------------------------------------------
@@ -1302,18 +1292,25 @@ def main():
     parser.add_argument("--no-browser", action="store_true", help="Do not open browser")
     args = parser.parse_args()
 
-    # If raw text or input file is provided, parse and register that week
+    # Determine input source: CLI text, CLI input file, or data/raw_schedule.txt
     raw_text = args.text
-    if not raw_text and NEW_WEEK_RAW_TEXT.strip():
-        raw_text = NEW_WEEK_RAW_TEXT.strip()
+    source_is_default_input = False
 
     if args.input and os.path.exists(args.input):
         with open(args.input, "r", encoding="utf-8") as f:
             raw_text = f.read()
+    elif not raw_text and os.path.exists(RAW_SCHEDULE_INPUT):
+        with open(RAW_SCHEDULE_INPUT, "r", encoding="utf-8") as f:
+            content = f.read()
+        # Check if file has non-comment schedule content
+        non_comment_lines = [l for l in content.splitlines() if l.strip() and not l.strip().startswith("#")]
+        if non_comment_lines:
+            raw_text = content
+            source_is_default_input = True
 
     if raw_text:
         # Determine week start date
-        week_start_str = args.week or NEW_WEEK_START.strip()
+        week_start_str = args.week.strip() if args.week else ""
         if not week_start_str:
             # Check for month name in text (e.g. "Week of October 26, 2026" or "Oct 26, 2026")
             m_month = re.search(r'(?:week\s+of\s+)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(202\d))?', raw_text, re.I)
@@ -1371,51 +1368,35 @@ def main():
         print(f"Parsed {len(shifts)} shifts from text for week {week_start_str}")
         register_week(week_start_str, shifts, days, title, label)
 
+        # Archive raw text and reset default input file
+        if source_is_default_input:
+            os.makedirs(ARCHIVE_RAW_DIR, exist_ok=True)
+            arch_path = os.path.join(ARCHIVE_RAW_DIR, f"{week_start_str}.txt")
+            with open(arch_path, "w", encoding="utf-8") as f:
+                f.write(raw_text)
+            with open(RAW_SCHEDULE_INPUT, "w", encoding="utf-8") as f:
+                f.write(RAW_SCHEDULE_TEMPLATE)
+            print(f"Raw input archived to: {arch_path}")
+
     else:
-        # If no input provided and master data is empty, seed with the baseline Oct 19-25 week
+        # No new text input: load existing weeks from data/staff_schedules.json
         master = load_all_weeks()
         if not master.get("weeks"):
-            default_shifts = [
-                {"name": "Carlos", "day": 0, "start": 16.0, "end": 23.0, "label": "4:00 PM - 11:00 PM"},
-                {"name": "Johnpaul", "day": 0, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
-                {"name": "Johnpaul", "day": 0, "start": 18.5, "end": 23.0, "label": "6:30 PM - 11:00 PM"},
-                {"name": "Carlos", "day": 1, "start": 11.0, "end": 19.0, "label": "11:00 AM - 7:00 PM"},
-                {"name": "Carl", "day": 1, "start": 13.5, "end": 23.0, "label": "1:30 PM - 11:00 PM"},
-                {"name": "Kadeem", "day": 1, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
-                {"name": "Johnpaul", "day": 1, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
-                {"name": "Carl", "day": 2, "start": 13.5, "end": 23.0, "label": "1:30 PM - 11:00 PM"},
-                {"name": "Nicole", "day": 2, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
-                {"name": "Johnpaul", "day": 2, "start": 9.0, "end": 13.5, "label": "9:00 AM - 1:30 PM"},
-                {"name": "Carlos", "day": 3, "start": 14.0, "end": 22.0, "label": "2:00 PM - 10:00 PM"},
-                {"name": "Kadeem", "day": 3, "start": 15.5, "end": 22.0, "label": "3:30 PM - 10:00 PM"},
-                {"name": "Nicole", "day": 4, "start": 15.5, "end": 23.0, "label": "3:30 PM - 11:00 PM"},
-                {"name": "Johnpaul", "day": 4, "start": 15.5, "end": 23.0, "label": "3:30 PM - 11:00 PM"},
-                {"name": "Carlos", "day": 5, "start": 11.0, "end": 19.0, "label": "11:00 AM - 7:00 PM"},
-                {"name": "Kadeem", "day": 5, "start": 9.0, "end": 15.5, "label": "9:00 AM - 3:30 PM"},
-                {"name": "Carlos", "day": 6, "start": 9.0, "end": 15.0, "label": "9:00 AM - 3:00 PM"},
-                {"name": "Nicole", "day": 6, "start": 9.0, "end": 15.5, "label": "9:00 AM - 3:30 PM"},
-                {"name": "Johnpaul", "day": 6, "start": 15.0, "end": 22.5, "label": "3:00 PM - 10:30 PM"}
-            ]
-            days = ["Mon 19", "Tue 20", "Wed 21", "Thu 22", "Fri 23", "Sat 24", "Sun 25"]
-            register_week(
-                "2026-10-19",
-                default_shifts,
-                days,
-                "Team Schedule — Week of October 19, 2026 to October 25, 2026",
-                "Oct 19 - Oct 25, 2026"
+            print("No weeks found in data/staff_schedules.json.")
+            print(f"To add a week, paste schedule text into: {RAW_SCHEDULE_INPUT}")
+            return
+
+        # Re-render all registered weeks with current font & styling settings
+        for wId, wData in master["weeks"].items():
+            w_img_path = os.path.join(SCHEDULES_DIR, f"schedule_{wId}.png")
+            render_gantt_chart(
+                wId,
+                wData["shifts"],
+                wData["days"],
+                wData["title"],
+                w_img_path,
+                wData.get("palette", DEFAULT_PALETTE)
             )
-        else:
-            # Re-render all registered weeks with current font & styling settings
-            for wId, wData in master["weeks"].items():
-                w_img_path = os.path.join(SCHEDULES_DIR, f"schedule_{wId}.png")
-                render_gantt_chart(
-                    wId,
-                    wData["shifts"],
-                    wData["days"],
-                    wData["title"],
-                    w_img_path,
-                    wData.get("palette", DEFAULT_PALETTE)
-                )
             # Re-render root image for current week
             cur = master.get("current_week")
             if cur and cur in master["weeks"]:
