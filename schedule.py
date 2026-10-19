@@ -1202,6 +1202,21 @@ def generate_schedule_html():
     return html_path
 
 
+# =============================================================
+# QUICK PASTE SECTION FOR FUTURE WEEKS
+# =============================================================
+# You can paste new weeks directly right here!
+# 1. (Optional) Week start Monday (YYYY-MM-DD):
+#    If left blank, it automatically defaults to the next sequential week.
+NEW_WEEK_START = ""
+
+# 2. Paste the schedule text below between the triple quotes:
+NEW_WEEK_RAW_TEXT = """
+
+"""
+# =============================================================
+
+
 # -------------------------------------------------------------
 # Main Execution / CLI Handler
 # -------------------------------------------------------------
@@ -1216,18 +1231,45 @@ def main():
 
     # If raw text or input file is provided, parse and register that week
     raw_text = args.text
+    if not raw_text and NEW_WEEK_RAW_TEXT.strip():
+        raw_text = NEW_WEEK_RAW_TEXT.strip()
+
     if args.input and os.path.exists(args.input):
         with open(args.input, "r", encoding="utf-8") as f:
             raw_text = f.read()
 
     if raw_text:
         # Determine week start date
-        week_start_str = args.week
+        week_start_str = args.week or NEW_WEEK_START.strip()
         if not week_start_str:
-            # Try to find date in text or default to today's Monday
-            today = datetime.date.today()
-            monday = today - datetime.timedelta(days=today.weekday())
-            week_start_str = monday.strftime("%Y-%m-%d")
+            # Check if there is an explicit date in the text
+            m_iso = re.search(r'\b(202\d[-/]\d{1,2}[-/]\d{1,2})\b', raw_text)
+            m_us = re.search(r'\b(\d{1,2})[/-](\d{1,2})[/-](202\d)\b', raw_text)
+            if m_iso:
+                d_cand = m_iso.group(1).replace('/', '-')
+                try:
+                    dt = datetime.datetime.strptime(d_cand, "%Y-%m-%d").date()
+                    week_start_str = (dt - datetime.timedelta(days=dt.weekday())).strftime("%Y-%m-%d")
+                except Exception:
+                    pass
+            elif m_us:
+                try:
+                    dt = datetime.date(int(m_us.group(3)), int(m_us.group(1)), int(m_us.group(2)))
+                    week_start_str = (dt - datetime.timedelta(days=dt.weekday())).strftime("%Y-%m-%d")
+                except Exception:
+                    pass
+
+        if not week_start_str:
+            # Default to the next sequential week after the latest week registered
+            master = load_all_weeks()
+            sorted_weeks = sorted(master.get("weeks", {}).keys())
+            if sorted_weeks:
+                last_dt = datetime.datetime.strptime(sorted_weeks[-1], "%Y-%m-%d").date()
+                week_start_str = (last_dt + datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+            else:
+                today = datetime.date.today()
+                monday = today - datetime.timedelta(days=today.weekday())
+                week_start_str = monday.strftime("%Y-%m-%d")
 
         try:
             dt_start = datetime.datetime.strptime(week_start_str, "%Y-%m-%d").date()
