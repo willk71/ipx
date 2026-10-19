@@ -259,6 +259,12 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 6 Paddle Rack';
       }
 
+      // Courts 10, 11, 12 queue at Court 10 Paddle Rack
+      const court10Group = [10, 11, 12];
+      if (nums.every(n => court10Group.includes(n))) {
+        return '📍 - Court 10 Paddle Rack';
+      }
+
       // Any 8 and 10 without a 7
       if (courtsSet.has('8') && courtsSet.has('10') && !courtsSet.has('7')) {
         return '📍 - Court 10 Paddle Rack';
@@ -279,12 +285,6 @@ function resolveQueueLocation(courtsSet, customText) {
         (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2)
       ) {
         return '📍 - Court 10 Table - Left';
-      }
-      if (
-        (courtsSet.has('10') && courtsSet.has('12') && courtsSet.size === 2) ||
-        (courtsSet.has('11') && courtsSet.has('12') && courtsSet.size === 2)
-      ) {
-        return '📍 - Court 10 Table - Right';
       }
 
       // Courts 7, 8, 9, 10, 11 (and 7, 8, 10, 11) queue at Court 10 Left Paddle Rack
@@ -311,7 +311,7 @@ function resolveQueueLocation(courtsSet, customText) {
       else if (nums.length === 1) {
         if ([2, 3, 5, 6].includes(nums[0])) {
           location = 'Court 6 Paddle Rack';
-        } else if ([1, 4, 7, 9, 10, 11, 12].includes(nums[0])) {
+        } else if ([1, 4, 7, 9].includes(nums[0])) {
           location = 'Court ' + nums[0] + ' Table';
         }
       }
