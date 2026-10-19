@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-19T13:36:36Z",
+  "lastUpdated": "2026-10-19T14:16:20Z",
   "date": "2026-10-19",
   "courtHosts": [],
   "courtOverrides": [],
@@ -10,6 +10,12 @@
       "holderLabel": "",
       "startTime": "2026-10-19T19:00:00",
       "endTime": "2026-10-19T20:00:00"
+    },
+    {
+      "court": "Court 6",
+      "holderLabel": "",
+      "startTime": "2026-10-20T18:00:00",
+      "endTime": "2026-10-20T20:00:00"
     },
     {
       "court": "Court 9",
@@ -215,6 +221,18 @@
       "checkedIn": false
     },
     {
+      "eventId": 2299540,
+      "title": "3.75 - 4.25 Open Play",
+      "startTime": "2026-10-19T17:30:00",
+      "endTime": "2026-10-19T19:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Evan M",
+      "checkedIn": false
+    },
+    {
       "eventId": 2162309,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-19T19:30:00",
@@ -351,19 +369,6 @@
         "Court 1 (Livestreaming)",
         "Court 2"
       ],
-      "playerName": "Tim M",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-19T19:30:00",
-      "endTime": "2026-10-19T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
       "playerName": "Quang T",
       "checkedIn": false
     },
@@ -428,18 +433,6 @@
         "Court 11"
       ],
       "playerName": "Liah K",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2299540,
-      "title": "3.75 - 4.25 Open Play",
-      "startTime": "2026-10-19T17:30:00",
-      "endTime": "2026-10-19T19:30:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Evan M",
       "checkedIn": false
     },
     {
@@ -737,6 +730,18 @@
         "Court 5"
       ],
       "playerName": "Rachael T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2299540,
+      "title": "3.75 - 4.25 Open Play",
+      "startTime": "2026-10-19T17:30:00",
+      "endTime": "2026-10-19T19:30:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Tim M",
       "checkedIn": false
     },
     {
