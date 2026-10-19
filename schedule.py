@@ -1146,6 +1146,7 @@ def generate_schedule_html():
     }});
 
     function unlockUI() {{
+      document.cookie = 'ipx_staff_token=' + TARGET_HASH + '; path=/; max-age=31536000; SameSite=Lax';
       overlay.style.display = 'none';
       content.style.display = 'flex';
       populateWeekDropdown();
@@ -1164,6 +1165,7 @@ def generate_schedule_html():
     }}
 
     function lockSchedule() {{
+      document.cookie = 'ipx_staff_token=; path=/; max-age=0; SameSite=Lax';
       localStorage.removeItem('ipx_staff_auth');
       showLockUI();
     }}
