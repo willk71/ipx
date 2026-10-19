@@ -123,27 +123,68 @@ def parse_schedule_text(raw_text, start_date_str="2026-10-19"):
         if not line:
             continue
 
+        # Check for tab-separated row (e.g. from copy-pasting an ADP table or spreadsheet)
+        if '\t' in line:
+            parts = [p.strip() for p in line.split('\t')]
+            name_cell = parts[0]
+            # Ignore header or title rows
+            if re.match(r'^(people|employee|staff|name|week|printed)', name_cell, re.I):
+                continue
+
+            # Clean employee name (strip "Draft", trailing punctuation, and format "Last, First" -> First)
+            name_clean = re.sub(r'\b\(?draft\)?\b', '', name_cell, flags=re.I).strip()
+            name_clean = re.sub(r'[:\-\*\•\d\.]+$', '', name_clean).strip()
+            if ',' in name_clean:
+                p_parts = [p.strip() for p in name_clean.split(',')]
+                if len(p_parts) >= 2 and p_parts[1]:
+                    name_clean = p_parts[1].split()[0]
+            name = name_clean.title() if name_clean else "Staff"
+
+            # Parse columns 1 through 7 for Mon-Sun
+            col_cells = parts[1:]
+            for col_idx, cell in enumerate(col_cells[:7]):
+                cell_clean = re.sub(r'\b\(?draft\)?\b', '', cell, flags=re.I).strip()
+                t_matches = list(time_pattern.finditer(cell_clean))
+                for tm in t_matches:
+                    start_raw, end_raw = tm.group(1), tm.group(2)
+                    s_dec = parse_time_str(start_raw)
+                    e_dec = parse_time_str(end_raw, is_end=True, prev_hour=s_dec)
+                    if s_dec is not None and e_dec is not None and e_dec > s_dec:
+                        lbl = format_hour_decimal_label(s_dec, e_dec)
+                        shifts.append({
+                            "name": name,
+                            "day": col_idx,
+                            "start": s_dec,
+                            "end": e_dec,
+                            "label": lbl
+                        })
+            continue
+
+        # Clean line of "draft" tag
+        line_clean = re.sub(r'\b\(?draft\)?\b', '', line, flags=re.I).strip()
+
         # Check for day header
-        dh_match = day_header_pattern.match(line)
-        if dh_match and not time_pattern.search(line):
+        dh_match = day_header_pattern.match(line_clean)
+        if dh_match and not time_pattern.search(line_clean):
             d_name = dh_match.group(1).lower()
             if d_name in day_map:
                 current_day = day_map[d_name]
                 continue
 
         # Find all time ranges on this line
-        time_matches = list(time_pattern.finditer(line))
+        time_matches = list(time_pattern.finditer(line_clean))
         if not time_matches:
             # Check if line indicates day header without standard word boundary
             for d_key, d_idx in day_map.items():
-                if line.lower().startswith(d_key):
+                if line_clean.lower().startswith(d_key):
                     current_day = d_idx
                     break
             continue
 
         # Extract name from preceding text
         first_time_idx = time_matches[0].start()
-        prefix = line[:first_time_idx].strip()
+        prefix = line_clean[:first_time_idx].strip()
+        prefix = re.sub(r'\b\(?draft\)?\b', '', prefix, flags=re.I).strip()
         name_clean = re.sub(r'[:\-\*\•\d\.]+$', '', prefix).strip()
         # Remove leading day names if present in the same line (e.g. "Mon Carlos 4pm-11pm")
         for d_key in sorted(day_map.keys(), key=len, reverse=True):
@@ -151,6 +192,12 @@ def parse_schedule_text(raw_text, start_date_str="2026-10-19"):
                 current_day = day_map[d_key]
                 name_clean = name_clean[len(d_key):].strip(" :-–—\t\r\n")
                 break
+
+        # Handle "Last, First" in line format
+        if ',' in name_clean:
+            p_parts = [p.strip() for p in name_clean.split(',')]
+            if len(p_parts) >= 2 and p_parts[1]:
+                name_clean = p_parts[1].split()[0]
 
         name = name_clean.title() if name_clean else "Staff"
 
@@ -407,6 +454,23 @@ def generate_schedule_html():
     if not weeks:
         print("No weeks available to generate HTML.")
         return
+
+    # Automatically set current_week based on today's date
+    today = datetime.date.today()
+    sorted_ids = sorted(weeks.keys())
+    active_week = sorted_ids[0]
+    for wId in sorted_ids:
+        try:
+            dt_s = datetime.datetime.strptime(wId, "%Y-%m-%d").date()
+            dt_e = dt_s + datetime.timedelta(days=6)
+            if dt_s <= today <= dt_e:
+                active_week = wId
+                break
+            elif dt_s <= today:
+                active_week = wId
+        except Exception:
+            pass
+    master["current_week"] = active_week
 
     # Embed data JSON directly into HTML so page works instantly without extra fetch latency
     weeks_json_str = json.dumps(master, indent=2)
@@ -1208,11 +1272,20 @@ def generate_schedule_html():
 # You can paste new weeks directly right here!
 # 1. (Optional) Week start Monday (YYYY-MM-DD):
 #    If left blank, it automatically defaults to the next sequential week.
-NEW_WEEK_START = ""
+NEW_WEEK_START = "2026-10-26"
 
 # 2. Paste the schedule text below between the triple quotes:
 NEW_WEEK_RAW_TEXT = """
-
+Week of October 26, 2026 - November 1, 2026
+People	Mon 26	Tue 27	Wed 28	Thu 29	Fri 30	Sat 31	Sun 1
+Anthony, Carlos Kajaun	Draft 4:00 PM - 11:00 PM	Draft 11:00 AM - 7:00 PM		Draft 2:00 PM - 10:00 PM		Draft 11:00 AM - 7:00 PM	Draft 9:00 AM - 3:00 PM
+Arce, Carl		Draft 1:30 PM - 11:00 PM	Draft 1:30 PM - 11:00 PM					
+De Jesus, Josue							
+Ho Sang, Kadeem		Draft 3:30 PM - 10:00 PM		Draft 3:30 PM - 10:00 PM		Draft 9:00 AM - 3:30 PM	
+Lugar, Nicole			Draft 3:30 PM - 10:00 PM		Draft 3:30 PM - 11:00 PM		Draft 9:00 AM - 3:30 PM
+Pinos, Cesar							
+Reid, Jahmal							
+Zapata, Johnpaul	Draft 9:00 AM - 1:30 PM Draft 6:30 PM - 11:00 PM	Draft 9:00 AM - 1:30 PM	Draft 9:00 AM - 1:30 PM		Draft 3:30 PM - 11:00 PM		Draft 3:00 PM - 10:30 PM
 """
 # =============================================================
 
@@ -1242,22 +1315,36 @@ def main():
         # Determine week start date
         week_start_str = args.week or NEW_WEEK_START.strip()
         if not week_start_str:
-            # Check if there is an explicit date in the text
-            m_iso = re.search(r'\b(202\d[-/]\d{1,2}[-/]\d{1,2})\b', raw_text)
-            m_us = re.search(r'\b(\d{1,2})[/-](\d{1,2})[/-](202\d)\b', raw_text)
-            if m_iso:
-                d_cand = m_iso.group(1).replace('/', '-')
+            # Check for month name in text (e.g. "Week of October 26, 2026" or "Oct 26, 2026")
+            m_month = re.search(r'(?:week\s+of\s+)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(202\d))?', raw_text, re.I)
+            if m_month:
+                month_names = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+                m_num = month_names.index(m_month.group(1).lower()[:3]) + 1
+                d_num = int(m_month.group(2))
+                y_num = int(m_month.group(3)) if m_month.group(3) else datetime.date.today().year
                 try:
-                    dt = datetime.datetime.strptime(d_cand, "%Y-%m-%d").date()
+                    dt = datetime.date(y_num, m_num, d_num)
                     week_start_str = (dt - datetime.timedelta(days=dt.weekday())).strftime("%Y-%m-%d")
                 except Exception:
                     pass
-            elif m_us:
-                try:
-                    dt = datetime.date(int(m_us.group(3)), int(m_us.group(1)), int(m_us.group(2)))
-                    week_start_str = (dt - datetime.timedelta(days=dt.weekday())).strftime("%Y-%m-%d")
-                except Exception:
-                    pass
+
+            # Check if there is an explicit date in the text (ISO or US format)
+            if not week_start_str:
+                m_iso = re.search(r'\b(202\d[-/]\d{1,2}[-/]\d{1,2})\b', raw_text)
+                m_us = re.search(r'\b(\d{1,2})[/-](\d{1,2})[/-](202\d)\b', raw_text)
+                if m_iso:
+                    d_cand = m_iso.group(1).replace('/', '-')
+                    try:
+                        dt = datetime.datetime.strptime(d_cand, "%Y-%m-%d").date()
+                        week_start_str = (dt - datetime.timedelta(days=dt.weekday())).strftime("%Y-%m-%d")
+                    except Exception:
+                        pass
+                elif m_us:
+                    try:
+                        dt = datetime.date(int(m_us.group(3)), int(m_us.group(1)), int(m_us.group(2)))
+                        week_start_str = (dt - datetime.timedelta(days=dt.weekday())).strftime("%Y-%m-%d")
+                    except Exception:
+                        pass
 
         if not week_start_str:
             # Default to the next sequential week after the latest week registered

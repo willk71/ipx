@@ -1,5 +1,5 @@
 {
-  "current_week": "2026-10-19",
+  "current_week": "2026-10-26",
   "weeks": {
     "2026-10-19": {
       "week_id": "2026-10-19",
@@ -186,6 +186,204 @@
           "start": 9.0,
           "end": 15.5,
           "label": "9:00 AM - 3:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 6,
+          "start": 15.0,
+          "end": 22.5,
+          "label": "3:00 PM - 10:30 PM"
+        }
+      ]
+    },
+    "2026-10-26": {
+      "week_id": "2026-10-26",
+      "label": "Oct 26 - Nov 01, 2026",
+      "title": "Team Schedule \u2014 Week of October 26, 2026 to November 01, 2026",
+      "image": "schedules/schedule_2026-10-26.png",
+      "days": [
+        "Mon 26",
+        "Tue 27",
+        "Wed 28",
+        "Thu 29",
+        "Fri 30",
+        "Sat 31",
+        "Sun 1"
+      ],
+      "people": [
+        "Carl",
+        "Carlos",
+        "Johnpaul",
+        "Kadeem",
+        "Nicole"
+      ],
+      "palette": {
+        "Carlos": "#1E5F8A",
+        "Carl": "#D96B27",
+        "Kadeem": "#2E7D32",
+        "Nicole": "#7B1FA2",
+        "Johnpaul": "#C2185B",
+        "Will": "#0D9488",
+        "Alex": "#E11D48",
+        "Sam": "#4F46E5",
+        "Jordan": "#D97706",
+        "Chris": "#059669"
+      },
+      "total_hours": 129.0,
+      "total_shifts": 19,
+      "stats": {
+        "Carlos": {
+          "hours": 37.0,
+          "shifts": 5,
+          "color": "#1E5F8A"
+        },
+        "Carl": {
+          "hours": 19.0,
+          "shifts": 2,
+          "color": "#D96B27"
+        },
+        "Kadeem": {
+          "hours": 19.5,
+          "shifts": 3,
+          "color": "#2E7D32"
+        },
+        "Nicole": {
+          "hours": 20.5,
+          "shifts": 3,
+          "color": "#7B1FA2"
+        },
+        "Johnpaul": {
+          "hours": 33.0,
+          "shifts": 6,
+          "color": "#C2185B"
+        }
+      },
+      "shifts": [
+        {
+          "name": "Carlos",
+          "day": 0,
+          "start": 16.0,
+          "end": 23.0,
+          "label": "4:00 PM - 11:00 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 1,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 3,
+          "start": 14.0,
+          "end": 22.0,
+          "label": "2:00 PM - 10:00 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 5,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Carlos",
+          "day": 6,
+          "start": 9.0,
+          "end": 15.0,
+          "label": "9:00 AM - 3:00 PM"
+        },
+        {
+          "name": "Carl",
+          "day": 1,
+          "start": 13.5,
+          "end": 23.0,
+          "label": "1:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Carl",
+          "day": 2,
+          "start": 13.5,
+          "end": 23.0,
+          "label": "1:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Kadeem",
+          "day": 1,
+          "start": 15.5,
+          "end": 22.0,
+          "label": "3:30 PM - 10:00 PM"
+        },
+        {
+          "name": "Kadeem",
+          "day": 3,
+          "start": 15.5,
+          "end": 22.0,
+          "label": "3:30 PM - 10:00 PM"
+        },
+        {
+          "name": "Kadeem",
+          "day": 5,
+          "start": 9.0,
+          "end": 15.5,
+          "label": "9:00 AM - 3:30 PM"
+        },
+        {
+          "name": "Nicole",
+          "day": 2,
+          "start": 15.5,
+          "end": 22.0,
+          "label": "3:30 PM - 10:00 PM"
+        },
+        {
+          "name": "Nicole",
+          "day": 4,
+          "start": 15.5,
+          "end": 23.0,
+          "label": "3:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Nicole",
+          "day": 6,
+          "start": 9.0,
+          "end": 15.5,
+          "label": "9:00 AM - 3:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 0,
+          "start": 9.0,
+          "end": 13.5,
+          "label": "9:00 AM - 1:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 0,
+          "start": 18.5,
+          "end": 23.0,
+          "label": "6:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 1,
+          "start": 9.0,
+          "end": 13.5,
+          "label": "9:00 AM - 1:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 2,
+          "start": 9.0,
+          "end": 13.5,
+          "label": "9:00 AM - 1:30 PM"
+        },
+        {
+          "name": "Johnpaul",
+          "day": 4,
+          "start": 15.5,
+          "end": 23.0,
+          "label": "3:30 PM - 11:00 PM"
         },
         {
           "name": "Johnpaul",
