@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-19T22:31:38Z",
+  "lastUpdated": "2026-10-19T22:33:53Z",
   "date": "2026-10-19",
   "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "21:00",
-      "host": "Nelson C"
-    },
     {
       "start": "17:00",
       "end": "22:00",
       "host": "Neil L"
+    },
+    {
+      "start": "18:00",
+      "end": "21:00",
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -596,6 +596,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2162309,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-19T19:30:00",
+      "endTime": "2026-10-19T21:30:00",
+      "courts": [
+        "Court 5",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Giovanni R",
+      "checkedIn": false
+    },
+    {
       "eventId": 2300477,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-19T17:30:00",
@@ -652,19 +665,6 @@
       ],
       "playerName": "Alaric Q",
       "checkedIn": true
-    },
-    {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-19T19:30:00",
-      "endTime": "2026-10-19T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Nick W",
-      "checkedIn": false
     },
     {
       "eventId": 2300477,
@@ -1046,19 +1046,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2162309,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-19T19:30:00",
-      "endTime": "2026-10-19T21:30:00",
-      "courts": [
-        "Court 5",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Giovanni R",
-      "checkedIn": false
-    },
-    {
       "eventId": 2300500,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-19T19:30:00",
@@ -1096,6 +1083,19 @@
       ],
       "playerName": "Andrew L",
       "checkedIn": true
+    },
+    {
+      "eventId": 2301827,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-20T18:00:00",
+      "endTime": "2026-10-20T20:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5",
+        "Court 3"
+      ],
+      "playerName": "Steven R",
+      "checkedIn": false
     },
     {
       "eventId": 2301827,
@@ -1859,19 +1859,6 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Wyatt W",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301827,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-20T18:00:00",
-      "endTime": "2026-10-20T20:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5",
-        "Court 3"
-      ],
-      "playerName": "Steven R",
       "checkedIn": false
     },
     {
