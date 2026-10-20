@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-20T23:29:28Z",
+  "lastUpdated": "2026-10-20T23:53:11Z",
   "date": "2026-10-20",
   "courtHosts": [
     {
@@ -514,20 +514,6 @@
         "Court 2",
         "Court 3"
       ],
-      "playerName": "Nelson C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301827,
-      "title": "3.5-4.0 Open Play",
-      "startTime": "2026-10-20T18:00:00",
-      "endTime": "2026-10-20T20:00:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5",
-        "Court 2",
-        "Court 3"
-      ],
       "playerName": "Steven R",
       "checkedIn": true
     },
@@ -738,6 +724,20 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Rachael T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2301844,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-20T18:00:00",
+      "endTime": "2026-10-20T20:00:00",
+      "courts": [
+        "Court 9",
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Isaac L",
       "checkedIn": true
     },
     {
@@ -1101,7 +1101,7 @@
         "Court 12 (Livestreaming)"
       ],
       "playerName": "Wyatt W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301890,
@@ -1341,6 +1341,20 @@
       "checkedIn": true
     },
     {
+      "eventId": 2301905,
+      "title": "3.5-4.0 Open Play | Play Until 1AM",
+      "startTime": "2026-10-20T22:00:00",
+      "endTime": "2026-10-20T23:59:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Ken L",
+      "checkedIn": false
+    },
+    {
       "eventId": 2301890,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-20T20:00:00",
@@ -1500,7 +1514,7 @@
         "Court 11"
       ],
       "playerName": "Patrick T",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301890,
@@ -1514,7 +1528,7 @@
         "Court 11"
       ],
       "playerName": "Beatrice F",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257702,
@@ -1567,20 +1581,6 @@
         "Court 3"
       ],
       "playerName": "Stephen L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2301844,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-20T18:00:00",
-      "endTime": "2026-10-20T20:00:00",
-      "courts": [
-        "Court 9",
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Isaac L",
       "checkedIn": true
     },
     {
@@ -1650,7 +1650,7 @@
         "Court 11"
       ],
       "playerName": "Jawed F",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301890,
@@ -1704,7 +1704,7 @@
         "Court 3"
       ],
       "playerName": "Jack F",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2248616,
@@ -1855,6 +1855,19 @@
       "courts": [
         "Court 4 (Livestreaming)",
         "Court 5"
+      ],
+      "playerName": "Dan H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301936,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-21T17:30:00",
+      "endTime": "2026-10-21T19:30:00",
+      "courts": [
+        "Court 5",
+        "Court 6",
+        "Court 3"
       ],
       "playerName": "Dan H",
       "checkedIn": false
@@ -2045,7 +2058,7 @@
         "Court 2"
       ],
       "playerName": "Wyatt W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301933,
@@ -2245,6 +2258,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2301926,
+      "title": "Morning Brew and Play",
+      "startTime": "2026-10-21T07:00:00",
+      "endTime": "2026-10-21T09:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Daisy N",
+      "checkedIn": false
+    },
+    {
       "eventId": 2301933,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-21T17:30:00",
@@ -2363,17 +2389,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2290227,
-      "title": "Pickleball 202: Defense & Smarter Placement",
-      "startTime": "2026-10-21T18:00:00",
-      "endTime": "2026-10-21T19:00:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "Monica T",
-      "checkedIn": false
-    },
-    {
       "eventId": 2301950,
       "title": "3.25+ Open Play | Play Until 1AM",
       "startTime": "2026-10-21T21:30:00",
@@ -2382,6 +2397,17 @@
         "Court 2",
         "Court 4 (Livestreaming)",
         "Court 5"
+      ],
+      "playerName": "Monica T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2290227,
+      "title": "Pickleball 202: Defense & Smarter Placement",
+      "startTime": "2026-10-21T18:00:00",
+      "endTime": "2026-10-21T19:00:00",
+      "courts": [
+        "Court 13"
       ],
       "playerName": "Monica T",
       "checkedIn": false
@@ -2559,7 +2585,7 @@
         "Court 3"
       ],
       "playerName": "Mirza H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301936,
@@ -2572,7 +2598,7 @@
         "Court 3"
       ],
       "playerName": "Mirza H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301947,
@@ -2963,7 +2989,7 @@
         "Court 3"
       ],
       "playerName": "Jack F",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257702,
