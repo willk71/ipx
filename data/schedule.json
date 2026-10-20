@@ -1,13 +1,7 @@
 {
-  "lastUpdated": "2026-10-20T23:53:11Z",
+  "lastUpdated": "2026-10-20T23:55:26Z",
   "date": "2026-10-20",
-  "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "21:00",
-      "host": "Nelson C"
-    }
-  ],
+  "courtHosts": [],
   "courtOverrides": [],
   "adHocSessions": [],
   "reservations": [
@@ -1623,7 +1617,7 @@
         "Court 11"
       ],
       "playerName": "Rio E",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2257702,
@@ -3109,20 +3103,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2301947,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-21T19:30:00",
-      "endTime": "2026-10-21T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 11",
-        "Court 8"
-      ],
-      "playerName": "Jasper B",
-      "checkedIn": false
-    },
-    {
       "eventId": 2301935,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-21T17:30:00",
@@ -3195,6 +3175,34 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Mason S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301905,
+      "title": "3.5-4.0 Open Play | Play Until 1AM",
+      "startTime": "2026-10-20T22:00:00",
+      "endTime": "2026-10-20T23:59:00",
+      "courts": [
+        "Court 8",
+        "Court 11",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Colin K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301947,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-21T19:30:00",
+      "endTime": "2026-10-21T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 11",
+        "Court 8"
+      ],
+      "playerName": "Jasper B",
       "checkedIn": false
     },
     {
