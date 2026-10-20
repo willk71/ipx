@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-20T19:44:14Z",
+  "lastUpdated": "2026-10-20T19:46:28Z",
   "date": "2026-10-20",
   "courtHosts": [
     {
@@ -162,17 +162,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2257645,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-20T18:00:00",
-      "endTime": "2026-10-20T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)"
-      ],
-      "playerName": "Arthur L",
-      "checkedIn": false
-    },
-    {
       "eventId": "2301796_highint",
       "title": "Afternoon Open Play - High Intermediate",
       "startTime": "2026-10-20T16:00:00",
@@ -182,7 +171,18 @@
         "Court 10 (Livestreaming)",
         "Court 7 (Livestreaming)"
       ],
-      "playerName": "Cam W",
+      "playerName": "Alaric Q",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2257645,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-20T18:00:00",
+      "endTime": "2026-10-20T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)"
+      ],
+      "playerName": "Arthur L",
       "checkedIn": false
     },
     {
@@ -247,6 +247,19 @@
         "Court 2"
       ],
       "playerName": "Cristina M",
+      "checkedIn": false
+    },
+    {
+      "eventId": "2301796_highint",
+      "title": "Afternoon Open Play - High Intermediate",
+      "startTime": "2026-10-20T16:00:00",
+      "endTime": "2026-10-20T18:00:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Cam W",
       "checkedIn": false
     },
     {
@@ -386,17 +399,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2167909,
-      "title": "Intro to Pickleball with Coach Sze",
-      "startTime": "2026-10-20T19:00:00",
-      "endTime": "2026-10-20T20:00:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "Rhaneshwaree H",
-      "checkedIn": false
-    },
-    {
       "eventId": "2301796_highint",
       "title": "Afternoon Open Play - High Intermediate",
       "startTime": "2026-10-20T16:00:00",
@@ -511,19 +513,6 @@
         "Court 3"
       ],
       "playerName": "Alvin D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301844,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-20T18:00:00",
-      "endTime": "2026-10-20T20:00:00",
-      "courts": [
-        "Court 8",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Rohan K",
       "checkedIn": false
     },
     {
@@ -814,6 +803,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2167909,
+      "title": "Intro to Pickleball with Coach Sze",
+      "startTime": "2026-10-20T19:00:00",
+      "endTime": "2026-10-20T20:00:00",
+      "courts": [
+        "Court 13"
+      ],
+      "playerName": "Rhaneshwaree H",
+      "checkedIn": false
+    },
+    {
       "eventId": 2301926,
       "title": "Morning Brew and Play",
       "startTime": "2026-10-21T07:00:00",
@@ -1008,6 +1008,19 @@
         "Court 11"
       ],
       "playerName": "Giovanni R",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301844,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-20T18:00:00",
+      "endTime": "2026-10-20T20:00:00",
+      "courts": [
+        "Court 8",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Rohan K",
       "checkedIn": false
     },
     {
@@ -1247,7 +1260,7 @@
         "Court 8"
       ],
       "playerName": "Alaric Q",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301933,
@@ -1344,19 +1357,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2301933,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-21T17:30:00",
-      "endTime": "2026-10-21T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Ken L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2301890,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-20T20:00:00",
@@ -1366,6 +1366,19 @@
         "Court 10 (Livestreaming)",
         "Court 8",
         "Court 11"
+      ],
+      "playerName": "Ken L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301933,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-21T17:30:00",
+      "endTime": "2026-10-21T19:30:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
       ],
       "playerName": "Ken L",
       "checkedIn": false
@@ -1567,19 +1580,6 @@
       ],
       "playerName": "Jalen W",
       "checkedIn": true
-    },
-    {
-      "eventId": 2301933,
-      "title": "3.25-3.75 Gated Open Play",
-      "startTime": "2026-10-21T17:30:00",
-      "endTime": "2026-10-21T19:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Koko S",
-      "checkedIn": false
     },
     {
       "eventId": 2301890,
@@ -2480,6 +2480,19 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Nick P",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301933,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-21T17:30:00",
+      "endTime": "2026-10-21T19:30:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Koko S",
       "checkedIn": false
     },
     {
