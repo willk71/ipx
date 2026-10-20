@@ -259,6 +259,11 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 6 Paddle Rack';
       }
 
+      // If only Court 12, queue at Court 12 Table
+      if (nums.length === 1 && nums[0] === 12) {
+        return '📍 - Court 12 Table';
+      }
+
       // Courts 10, 11, 12 queue at Court 10 Paddle Rack
       const court10Group = [10, 11, 12];
       if (nums.every(n => court10Group.includes(n))) {
@@ -311,7 +316,7 @@ function resolveQueueLocation(courtsSet, customText) {
       else if (nums.length === 1) {
         if ([2, 3, 5, 6].includes(nums[0])) {
           location = 'Court 6 Paddle Rack';
-        } else if ([1, 4, 7, 9].includes(nums[0])) {
+        } else if ([1, 4, 7, 9, 12].includes(nums[0])) {
           location = 'Court ' + nums[0] + ' Table';
         }
       }
