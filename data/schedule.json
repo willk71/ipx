@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-21T22:20:32Z",
+  "lastUpdated": "2026-10-21T22:22:47Z",
   "date": "2026-10-21",
   "courtHosts": [
+    {
+      "start": "18:00",
+      "end": "21:00",
+      "host": "Nelson C"
+    },
     {
       "start": "18:30",
       "end": "22:00",
@@ -11,11 +16,6 @@
       "start": "19:00",
       "end": "21:30",
       "host": "Kirby E"
-    },
-    {
-      "start": "18:00",
-      "end": "21:00",
-      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -2686,6 +2686,19 @@
       ],
       "playerName": "Julian B",
       "checkedIn": true
+    },
+    {
+      "eventId": 2301962,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-22T18:00:00",
+      "endTime": "2026-10-22T20:00:00",
+      "courts": [
+        "Court 6",
+        "Court 3",
+        "Court 5"
+      ],
+      "playerName": "Mirza H",
+      "checkedIn": false
     },
     {
       "eventId": 2301967,
