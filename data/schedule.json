@@ -1,12 +1,7 @@
 {
-  "lastUpdated": "2026-10-22T01:41:18Z",
+  "lastUpdated": "2026-10-22T01:43:32Z",
   "date": "2026-10-21",
   "courtHosts": [
-    {
-      "start": "18:30",
-      "end": "22:00",
-      "host": "Winnie Z"
-    },
     {
       "start": "18:00",
       "end": "21:00",
@@ -16,6 +11,11 @@
       "start": "19:00",
       "end": "21:30",
       "host": "Kirby E"
+    },
+    {
+      "start": "18:30",
+      "end": "22:00",
+      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -959,7 +959,7 @@
         "Court 5"
       ],
       "playerName": "Maike L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301947,
@@ -4085,7 +4085,7 @@
         "Court 5"
       ],
       "playerName": "Eric W",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301974,
