@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-10-22T15:53:03Z",
+  "lastUpdated": "2026-10-22T15:55:19Z",
   "date": "2026-10-22",
   "courtHosts": [
-    {
-      "start": "18:00",
-      "end": "21:00",
-      "host": "Nelson C"
-    },
     {
       "start": "18:30",
       "end": "21:30",
       "host": "Winnie Z"
+    },
+    {
+      "start": "18:00",
+      "end": "21:00",
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -599,20 +599,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2303258,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-22T18:00:00",
-      "endTime": "2026-10-22T20:00:00",
-      "courts": [
-        "Court 2",
-        "Court 10 (Livestreaming)",
-        "Court 12 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Juan R",
-      "checkedIn": false
-    },
-    {
       "eventId": 2301963,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-22T18:00:00",
@@ -799,6 +785,17 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Gina H",
+      "checkedIn": false
+    },
+    {
+      "eventId": "2301961_int",
+      "title": "Afternoon Open Play - Intermediate",
+      "startTime": "2026-10-22T16:00:00",
+      "endTime": "2026-10-22T18:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Kinley D",
       "checkedIn": false
     },
     {
@@ -1035,19 +1032,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2199540,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-23T19:30:00",
-      "endTime": "2026-10-23T21:30:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Paola F",
-      "checkedIn": false
-    },
-    {
       "eventId": 2301970,
       "title": "3.25-3.75 Open Play",
       "startTime": "2026-10-22T20:00:00",
@@ -1202,6 +1186,20 @@
         "Court 3"
       ],
       "playerName": "Pablo R",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2303258,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-22T18:00:00",
+      "endTime": "2026-10-22T20:00:00",
+      "courts": [
+        "Court 2",
+        "Court 10 (Livestreaming)",
+        "Court 12 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Juan R",
       "checkedIn": false
     },
     {
@@ -1771,6 +1769,19 @@
         "Court 2"
       ],
       "playerName": "Kevin T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2199540,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-23T19:30:00",
+      "endTime": "2026-10-23T21:30:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Paola F",
       "checkedIn": false
     },
     {
