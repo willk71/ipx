@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-22T02:09:53Z",
+  "lastUpdated": "2026-10-22T02:12:08Z",
   "date": "2026-10-21",
   "courtHosts": [
+    {
+      "start": "18:30",
+      "end": "22:00",
+      "host": "Winnie Z"
+    },
     {
       "start": "19:00",
       "end": "21:30",
@@ -11,11 +16,6 @@
       "start": "18:00",
       "end": "21:00",
       "host": "Nelson C"
-    },
-    {
-      "start": "18:30",
-      "end": "22:00",
-      "host": "Winnie Z"
     }
   ],
   "courtOverrides": [],
@@ -2464,6 +2464,31 @@
       "checkedIn": true
     },
     {
+      "eventId": 2301974,
+      "title": "Advanced Beginner Open Play | Play Until 1AM",
+      "startTime": "2026-10-22T22:00:00",
+      "endTime": "2026-10-22T23:59:00",
+      "courts": [
+        "Court 6",
+        "Court 3"
+      ],
+      "playerName": "Vladimir A",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302007,
+      "title": "3.25+ Open Play | Play Until 1AM",
+      "startTime": "2026-10-23T21:30:00",
+      "endTime": "2026-10-23T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Luka D",
+      "checkedIn": false
+    },
+    {
       "eventId": 2294628,
       "title": "Coached Open Play w/ Coach Martin (Int+)",
       "startTime": "2026-10-22T14:00:00",
@@ -4181,31 +4206,6 @@
         "Court 5"
       ],
       "playerName": "Michael T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301974,
-      "title": "Advanced Beginner Open Play | Play Until 1AM",
-      "startTime": "2026-10-22T22:00:00",
-      "endTime": "2026-10-22T23:59:00",
-      "courts": [
-        "Court 6",
-        "Court 3"
-      ],
-      "playerName": "Vladimir A",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302007,
-      "title": "3.25+ Open Play | Play Until 1AM",
-      "startTime": "2026-10-23T21:30:00",
-      "endTime": "2026-10-23T23:59:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Luka D",
       "checkedIn": false
     }
   ]
