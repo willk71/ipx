@@ -246,7 +246,10 @@ jobs:
                   )) as $checkedMap |
 
                   [
-                    ($ev[0].Data // $ev[0] // [])[] | select(.IsPublic != false and .IsHidden != true) |
+                    ($ev[0].Data // $ev[0] // [])[] |
+                    select(.IsPublic != false and .IsHidden != true) |
+                    select((.EventName // .DivisionName // "") | test("\\b(hosts?|guests?)\\b"; "i") | not) |
+                    select([.Courts[]? | (.CourtName // . // "") | tostring | test("\\b(hosts?|guests?)\\b"; "i")] | any | not) |
                     (
                       (((.FirstName // .MemberFirstName // "") + " " + (.LastName // .MemberLastName // ""))
                       | gsub("\\s*\\([^)]*\\)"; "") | gsub("^\\s+|\\s+$"; "") | ascii_downcase)

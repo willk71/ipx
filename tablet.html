@@ -68,6 +68,17 @@
           return s <= targetTime && e > targetTime;
         };
 
+        const isExcludedSession = (title, courts) => {
+          const titleStr = String(title || '');
+          if (/\b(road|assessment|skill|clinic|foundation|hosts?|guests?)s?\b/i.test(titleStr)) return true;
+          if (/\bhosts?\s*\/\s*guests?\b/i.test(titleStr)) return true;
+          if (courts) {
+            const courtsArr = Array.isArray(courts) ? courts : Array.from(courts);
+            if (courtsArr.some(c => /\b(hosts?|guests?)\b/i.test(String(c && c.CourtName ? c.CourtName : c)))) return true;
+          }
+          return false;
+        };
+
         const events = Array.isArray(data) ? data : (data.events || []);
 
         const sessions = [];
@@ -77,7 +88,7 @@
           if (!isRunningAtTarget(e.startTime, e.endTime)) return;
 
           const rawName = (e.title || e.DivisionName || e.EventName || e.category || '');
-          if (/\bRoad\b/i.test(rawName)) return;
+          if (isExcludedSession(rawName, e.courts || e.Courts)) return;
 
           const key = `${e.eventId || e.EventId}_${e.startTime || e.StartTime}`;
           const courtNumbers = extractSortedCourts(e.courts || e.Courts);

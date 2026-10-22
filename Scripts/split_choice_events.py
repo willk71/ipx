@@ -194,6 +194,11 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
     }
 
     for item in schedule.get('events', []):
+        title = item.get('title', '')
+        courts = item.get('courts', [])
+        if re.search(r'\b(hosts?|guests?)\b', str(title), re.I) or any(re.search(r'\b(hosts?|guests?)\b', str(c), re.I) for c in courts):
+            continue
+
         raw_id = str(item.get('eventId', '')).strip()
         base_id = re.sub(r'_[a-z0-9]+$', '', raw_id)
         start_time = str(item.get('startTime', '')).strip()
