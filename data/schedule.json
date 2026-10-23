@@ -1,7 +1,12 @@
 {
-  "lastUpdated": "2026-10-23T22:39:38Z",
+  "lastUpdated": "2026-10-23T22:41:53Z",
   "date": "2026-10-23",
   "courtHosts": [
+    {
+      "start": "17:45",
+      "end": "21:45",
+      "host": "Wendy X"
+    },
     {
       "start": "17:45",
       "end": "21:45",
@@ -11,11 +16,6 @@
       "start": "19:00",
       "end": "22:30",
       "host": "Winnie Z"
-    },
-    {
-      "start": "17:45",
-      "end": "21:45",
-      "host": "Wendy X"
     }
   ],
   "courtOverrides": [],
@@ -623,7 +623,7 @@
         "Court 5"
       ],
       "playerName": "Clarisse E",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2199540,
@@ -862,29 +862,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302784,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-24T16:00:00",
-      "endTime": "2026-10-24T18:00:00",
-      "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Winston C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302781,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-24T11:00:00",
-      "endTime": "2026-10-24T13:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Zayd A",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302044,
       "title": "3.5-4.0 Open Play | Play Until 1AM",
       "startTime": "2026-10-23T21:30:00",
@@ -911,6 +888,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2234966,
+      "title": "Intermediate Drills with Coach Martin | 3.0-3.5",
+      "startTime": "2026-10-24T09:00:00",
+      "endTime": "2026-10-24T10:00:00",
+      "courts": [
+        "Court 13"
+      ],
+      "playerName": "steven a",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302773,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-24T09:00:00",
@@ -935,14 +923,16 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302781,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-24T11:00:00",
-      "endTime": "2026-10-24T13:00:00",
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
       "courts": [
-        "Court 10 (Livestreaming)"
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3"
       ],
-      "playerName": "Evan M",
+      "playerName": "David A",
       "checkedIn": false
     },
     {
@@ -969,17 +959,6 @@
         "Court 2"
       ],
       "playerName": "Peter C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302781,
-      "title": "4.0+ Open Play",
-      "startTime": "2026-10-24T11:00:00",
-      "endTime": "2026-10-24T13:00:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Michael C",
       "checkedIn": false
     },
     {
@@ -1069,6 +1048,19 @@
       ],
       "playerName": "Alvin D",
       "checkedIn": false
+    },
+    {
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3"
+      ],
+      "playerName": "Richard L",
+      "checkedIn": true
     },
     {
       "eventId": 2302773,
@@ -1171,21 +1163,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-24T16:00:00",
-      "endTime": "2026-10-24T18:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Mark E",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302024,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-23T19:30:00",
@@ -1196,7 +1173,7 @@
         "Court 2"
       ],
       "playerName": "Clarisse E",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302748,
@@ -1211,19 +1188,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302044,
-      "title": "3.5-4.0 Open Play | Play Until 1AM",
-      "startTime": "2026-10-23T21:30:00",
-      "endTime": "2026-10-23T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Steve L",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302024,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-23T19:30:00",
@@ -1232,6 +1196,19 @@
         "Court 4 (Livestreaming)",
         "Court 5",
         "Court 2"
+      ],
+      "playerName": "Steve L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302044,
+      "title": "3.5-4.0 Open Play | Play Until 1AM",
+      "startTime": "2026-10-23T21:30:00",
+      "endTime": "2026-10-23T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8"
       ],
       "playerName": "Steve L",
       "checkedIn": false
@@ -1273,33 +1250,6 @@
         "Court 2"
       ],
       "playerName": "Ken L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2302785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-24T16:00:00",
-      "endTime": "2026-10-24T18:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Maith S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302784,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-24T16:00:00",
-      "endTime": "2026-10-24T18:00:00",
-      "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Kadeem H",
       "checkedIn": true
     },
     {
@@ -1390,21 +1340,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302785,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-24T16:00:00",
-      "endTime": "2026-10-24T18:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 10 (Livestreaming)",
-        "Court 11",
-        "Court 7 (Livestreaming)",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Thien N",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302773,
       "title": "3.5-4.0 Open Play",
       "startTime": "2026-10-24T09:00:00",
@@ -1417,6 +1352,19 @@
       "checkedIn": true
     },
     {
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3"
+      ],
+      "playerName": "Jonathan Z",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302024,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-23T19:30:00",
@@ -1427,6 +1375,19 @@
         "Court 2"
       ],
       "playerName": "Albee^^ L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3"
+      ],
+      "playerName": "Leslie A",
       "checkedIn": false
     },
     {
@@ -1463,6 +1424,32 @@
       ],
       "playerName": "Rachael T",
       "checkedIn": true
+    },
+    {
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3"
+      ],
+      "playerName": "Meg S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3"
+      ],
+      "playerName": "Toni T",
+      "checkedIn": false
     },
     {
       "eventId": 2302017,
@@ -1503,16 +1490,17 @@
       "checkedIn": true
     },
     {
-      "eventId": 2302784,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-24T16:00:00",
-      "endTime": "2026-10-24T18:00:00",
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-24T13:00:00",
+      "endTime": "2026-10-24T15:00:00",
       "courts": [
+        "Court 2",
         "Court 1 (Livestreaming)",
-        "Court 2"
+        "Court 3"
       ],
-      "playerName": "Jolie Z",
-      "checkedIn": false
+      "playerName": "Martin H",
+      "checkedIn": true
     },
     {
       "eventId": 2302017,
@@ -1642,6 +1630,17 @@
       "checkedIn": true
     },
     {
+      "eventId": 2234964,
+      "title": "Beginner Drills with Coach Martin | 2.5-3.0",
+      "startTime": "2026-10-24T08:00:00",
+      "endTime": "2026-10-24T09:00:00",
+      "courts": [
+        "Court 13"
+      ],
+      "playerName": "Kyle Y",
+      "checkedIn": false
+    },
+    {
       "eventId": 2302044,
       "title": "3.5-4.0 Open Play | Play Until 1AM",
       "startTime": "2026-10-23T21:30:00",
@@ -1667,27 +1666,48 @@
       "checkedIn": true
     },
     {
-      "eventId": 2234966,
-      "title": "Intermediate Drills with Coach Martin | 3.0-3.5",
-      "startTime": "2026-10-24T09:00:00",
-      "endTime": "2026-10-24T10:00:00",
+      "eventId": 2302784,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-24T16:00:00",
+      "endTime": "2026-10-24T18:00:00",
       "courts": [
-        "Court 13"
+        "Court 1 (Livestreaming)",
+        "Court 2"
       ],
-      "playerName": "steven a",
-      "checkedIn": true
+      "playerName": "Winston C",
+      "checkedIn": false
     },
     {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
+      "eventId": 2302781,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-24T11:00:00",
+      "endTime": "2026-10-24T13:00:00",
       "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3"
+        "Court 10 (Livestreaming)"
       ],
-      "playerName": "David A",
+      "playerName": "Zayd A",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302781,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-24T11:00:00",
+      "endTime": "2026-10-24T13:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Evan M",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302781,
+      "title": "4.0+ Open Play",
+      "startTime": "2026-10-24T11:00:00",
+      "endTime": "2026-10-24T13:00:00",
+      "courts": [
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Michael C",
       "checkedIn": false
     },
     {
@@ -1704,16 +1724,45 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
+      "eventId": 2302785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-24T16:00:00",
+      "endTime": "2026-10-24T18:00:00",
       "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3"
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
       ],
-      "playerName": "Richard L",
+      "playerName": "Mark E",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-24T16:00:00",
+      "endTime": "2026-10-24T18:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Maith S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302784,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-24T16:00:00",
+      "endTime": "2026-10-24T18:00:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Kadeem H",
       "checkedIn": true
     },
     {
@@ -1748,79 +1797,30 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
+      "eventId": 2302785,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-24T16:00:00",
+      "endTime": "2026-10-24T18:00:00",
       "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3"
+        "Court 12 (Livestreaming)",
+        "Court 10 (Livestreaming)",
+        "Court 11",
+        "Court 7 (Livestreaming)",
+        "Court 4 (Livestreaming)"
       ],
-      "playerName": "Jonathan Z",
+      "playerName": "Thien N",
       "checkedIn": false
     },
     {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
+      "eventId": 2302784,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-24T16:00:00",
+      "endTime": "2026-10-24T18:00:00",
       "courts": [
-        "Court 2",
         "Court 1 (Livestreaming)",
-        "Court 3"
+        "Court 2"
       ],
-      "playerName": "Leslie A",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3"
-      ],
-      "playerName": "Meg S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3"
-      ],
-      "playerName": "Toni T",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-24T13:00:00",
-      "endTime": "2026-10-24T15:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3"
-      ],
-      "playerName": "Martin H",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2234964,
-      "title": "Beginner Drills with Coach Martin | 2.5-3.0",
-      "startTime": "2026-10-24T08:00:00",
-      "endTime": "2026-10-24T09:00:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "Kyle Y",
+      "playerName": "Jolie Z",
       "checkedIn": false
     },
     {
