@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-25T23:09:07Z",
+  "lastUpdated": "2026-10-25T23:11:21Z",
   "date": "2026-10-25",
   "courtHosts": [
     {
@@ -275,8 +275,22 @@
         "Court 1 (Livestreaming)",
         "Court 5"
       ],
-      "playerName": "Kyle L",
+      "playerName": "Victor C",
       "checkedIn": false
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Kyle L",
+      "checkedIn": true
     },
     {
       "eventId": 2302806,
@@ -458,19 +472,6 @@
         "Court 2"
       ],
       "playerName": "Michael C",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2299540,
-      "title": "3.75 - 4.25 Open Play",
-      "startTime": "2026-10-26T17:30:00",
-      "endTime": "2026-10-26T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 2"
-      ],
-      "playerName": "Kevin T",
       "checkedIn": false
     },
     {
@@ -851,60 +852,16 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302806,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-25T19:00:00",
-      "endTime": "2026-10-25T23:59:00",
+      "eventId": 2299540,
+      "title": "3.75 - 4.25 Open Play",
+      "startTime": "2026-10-26T17:30:00",
+      "endTime": "2026-10-26T19:30:00",
       "courts": [
-        "Court 2",
         "Court 4 (Livestreaming)",
         "Court 1 (Livestreaming)",
-        "Court 5"
+        "Court 2"
       ],
-      "playerName": "Joshua H",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2302806,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-25T19:00:00",
-      "endTime": "2026-10-25T23:59:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Aisha S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2302806,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-25T19:00:00",
-      "endTime": "2026-10-25T23:59:00",
-      "courts": [
-        "Court 2",
-        "Court 4 (Livestreaming)",
-        "Court 1 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Sagar G",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2337250,
-      "title": "Open Play | Play til 1AM",
-      "startTime": "2026-10-26T21:30:00",
-      "endTime": "2026-10-26T23:59:00",
-      "courts": [
-        "Court 10 (Livestreaming)",
-        "Court 4 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 8",
-        "Court 5"
-      ],
-      "playerName": "Paige J",
+      "playerName": "Kevin T",
       "checkedIn": false
     },
     {
@@ -1189,6 +1146,17 @@
       ],
       "playerName": "Mike L",
       "checkedIn": false
+    },
+    {
+      "eventId": 2337238,
+      "title": "4.0+ Gated Open Play",
+      "startTime": "2026-10-26T21:30:00",
+      "endTime": "2026-10-26T23:59:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Julian B",
+      "checkedIn": true
     },
     {
       "eventId": 2300506,
@@ -1699,6 +1667,63 @@
         "Court 5"
       ],
       "playerName": "John K",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Joshua H",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Aisha S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Sagar G",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2337250,
+      "title": "Open Play | Play til 1AM",
+      "startTime": "2026-10-26T21:30:00",
+      "endTime": "2026-10-26T23:59:00",
+      "courts": [
+        "Court 10 (Livestreaming)",
+        "Court 4 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 8",
+        "Court 5"
+      ],
+      "playerName": "Paige J",
       "checkedIn": false
     }
   ]
