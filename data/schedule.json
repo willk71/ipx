@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-25T15:19:13Z",
+  "lastUpdated": "2026-10-25T15:21:28Z",
   "date": "2026-10-25",
   "courtHosts": [],
   "courtOverrides": [],
@@ -382,19 +382,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2302803,
-      "title": "Open Play (Int-Adv)",
-      "startTime": "2026-10-25T13:00:00",
-      "endTime": "2026-10-25T15:00:00",
-      "courts": [
-        "Court 8",
-        "Court 12 (Livestreaming)",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "George H",
-      "checkedIn": true
-    },
-    {
       "eventId": 2302800,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-25T11:00:00",
@@ -419,6 +406,19 @@
       ],
       "playerName": "George K",
       "checkedIn": true
+    },
+    {
+      "eventId": 2302800,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-25T11:00:00",
+      "endTime": "2026-10-25T13:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 8"
+      ],
+      "playerName": "George H",
+      "checkedIn": false
     },
     {
       "eventId": 2302804,
@@ -766,6 +766,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2302803,
+      "title": "Open Play (Int-Adv)",
+      "startTime": "2026-10-25T13:00:00",
+      "endTime": "2026-10-25T15:00:00",
+      "courts": [
+        "Court 8",
+        "Court 12 (Livestreaming)",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "George H",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302148,
       "title": "IPX Pickleball World Cup Warm-up & Tournament",
       "startTime": "2026-10-25T13:00:00",
@@ -777,18 +790,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Albert D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302806,
-      "title": " Open Play (AdvBeg-Int)",
-      "startTime": "2026-10-25T19:00:00",
-      "endTime": "2026-10-25T23:59:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Winnie M",
       "checkedIn": false
     },
     {
@@ -1533,6 +1534,18 @@
         "Court 5"
       ],
       "playerName": "Jack L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Winnie M",
       "checkedIn": false
     },
     {
