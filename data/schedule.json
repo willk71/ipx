@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-25T13:50:12Z",
+  "lastUpdated": "2026-10-25T14:13:10Z",
   "date": "2026-10-25",
   "courtHosts": [],
   "courtOverrides": [],
@@ -10,6 +10,12 @@
       "holderLabel": "",
       "startTime": "2026-10-25T15:00:00",
       "endTime": "2026-10-25T17:00:00"
+    },
+    {
+      "court": "Court 3",
+      "holderLabel": "",
+      "startTime": "2026-10-26T18:00:00",
+      "endTime": "2026-10-26T20:00:00"
     },
     {
       "court": "Court 6",
@@ -34,6 +40,12 @@
       "holderLabel": "",
       "startTime": "2026-10-25T12:00:00",
       "endTime": "2026-10-25T13:00:00"
+    },
+    {
+      "court": "Court 13",
+      "holderLabel": "Lin Z.",
+      "startTime": "2026-10-25T10:00:00",
+      "endTime": "2026-10-25T11:00:00"
     }
   ],
   "events": [
@@ -60,15 +72,14 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302798,
-      "title": "3.5-4.0 Open Play",
+      "eventId": 2302797,
+      "title": "3.5-4.0 Gated Open Play",
       "startTime": "2026-10-25T11:00:00",
       "endTime": "2026-10-25T13:00:00",
       "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 10 (Livestreaming)"
       ],
-      "playerName": "Alana G",
+      "playerName": "Rui H",
       "checkedIn": false
     },
     {
@@ -78,7 +89,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Bryce D",
       "checkedIn": false
@@ -90,7 +102,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Will L",
       "checkedIn": false
@@ -113,7 +126,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Jordi F",
       "checkedIn": false
@@ -125,7 +139,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Jacob S",
       "checkedIn": false
@@ -137,7 +152,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Steve L",
       "checkedIn": false
@@ -149,7 +165,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Jose o",
       "checkedIn": false
@@ -161,7 +178,21 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
+      ],
+      "playerName": "Alana G",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302798,
+      "title": "3.5-4.0 Open Play",
+      "startTime": "2026-10-25T11:00:00",
+      "endTime": "2026-10-25T13:00:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Martin H",
       "checkedIn": false
@@ -173,7 +204,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Kristen C",
       "checkedIn": false
@@ -189,19 +221,6 @@
         "Court 8"
       ],
       "playerName": "George H",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302800,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-25T11:00:00",
-      "endTime": "2026-10-25T13:00:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 9",
-        "Court 8"
-      ],
-      "playerName": "Nicole H",
       "checkedIn": false
     },
     {
@@ -300,20 +319,6 @@
       "checkedIn": false
     },
     {
-      "eventId": 2302148,
-      "title": "IPX Pickleball World Cup Warm-up & Tournament",
-      "startTime": "2026-10-25T13:00:00",
-      "endTime": "2026-10-25T15:00:00",
-      "courts": [
-        "Court 2",
-        "Court 1 (Livestreaming)",
-        "Court 3",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Nestor S",
-      "checkedIn": false
-    },
-    {
       "eventId": 2302803,
       "title": "Open Play (Int-Adv)",
       "startTime": "2026-10-25T13:00:00",
@@ -361,6 +366,19 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "George H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302800,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-25T11:00:00",
+      "endTime": "2026-10-25T13:00:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 9",
+        "Court 8"
+      ],
+      "playerName": "Nicole H",
       "checkedIn": false
     },
     {
@@ -519,6 +537,20 @@
         "Court 8"
       ],
       "playerName": "Eric T",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302148,
+      "title": "IPX Pickleball World Cup Warm-up & Tournament",
+      "startTime": "2026-10-25T13:00:00",
+      "endTime": "2026-10-25T15:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 3",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Nestor S",
       "checkedIn": false
     },
     {
@@ -713,17 +745,6 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Juan S",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2123780,
-      "title": "Skill Clinic: Speed-ups & Resets w/ Coach Martin (3.5+)",
-      "startTime": "2026-10-26T18:30:00",
-      "endTime": "2026-10-26T19:30:00",
-      "courts": [
-        "Court 13"
-      ],
-      "playerName": "JP D",
       "checkedIn": false
     },
     {
@@ -1334,6 +1355,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2299540,
+      "title": "3.75 - 4.25 Open Play",
+      "startTime": "2026-10-26T17:30:00",
+      "endTime": "2026-10-26T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 1 (Livestreaming)",
+        "Court 2"
+      ],
+      "playerName": "Juan S",
+      "checkedIn": false
+    },
+    {
       "eventId": 2300500,
       "title": "3.25+ Open Play",
       "startTime": "2026-10-26T19:30:00",
@@ -1342,6 +1376,17 @@
         "Court 5",
         "Court 7 (Livestreaming)",
         "Court 8"
+      ],
+      "playerName": "JP D",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2123780,
+      "title": "Skill Clinic: Speed-ups & Resets w/ Coach Martin (3.5+)",
+      "startTime": "2026-10-26T18:30:00",
+      "endTime": "2026-10-26T19:30:00",
+      "courts": [
+        "Court 13"
       ],
       "playerName": "JP D",
       "checkedIn": false
@@ -1379,7 +1424,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Rohith M",
       "checkedIn": false
@@ -1391,7 +1437,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Ian B",
       "checkedIn": false
@@ -1442,7 +1489,8 @@
       "endTime": "2026-10-25T13:00:00",
       "courts": [
         "Court 4 (Livestreaming)",
-        "Court 5"
+        "Court 5",
+        "Court 2"
       ],
       "playerName": "Rishi K",
       "checkedIn": false
@@ -1735,6 +1783,30 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Alvin L",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Clement S",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302806,
+      "title": " Open Play (AdvBeg-Int)",
+      "startTime": "2026-10-25T19:00:00",
+      "endTime": "2026-10-25T23:59:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Isabelle X",
       "checkedIn": false
     }
   ]
