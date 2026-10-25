@@ -382,7 +382,7 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
 function formatTime(isoString, isEndTime) {
   if (!isoString) return '';
   const d = new Date(isoString);
-  if (isEndTime && d.getHours() === 23 && d.getMinutes() === 59) {
+  if ((isEndTime || isEndTime === undefined) && ((d && d.getHours() === 23 && d.getMinutes() === 59) || /23:59|11:59\s*pm/i.test(String(isoString || '')))) {
     return '1:00 AM';
   }
   return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });

@@ -286,6 +286,9 @@
     function formatTime(isoString) {
       if (!isoString) return '';
       const d = new Date(isoString);
+      if (d && ((d.getHours() === 23 && d.getMinutes() === 59) || /23:59|11:59\s*pm/i.test(String(isoString || '')))) {
+        return '1:00 AM';
+      }
       return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
     }
 
@@ -416,7 +419,10 @@
 
         items.forEach(item => {
           const s = new Date(item.startTime);
-          const e = new Date(item.endTime);
+          let e = new Date(item.endTime);
+          if (e && ((e.getHours() === 23 && e.getMinutes() === 59) || /23:59|11:59\s*pm/i.test(String(item.endTime || '')))) {
+            e = new Date(e.getTime() + 61 * 60 * 1000);
+          }
           const isLive = now >= s && now <= e;
 
           const row = document.createElement('div');

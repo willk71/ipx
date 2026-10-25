@@ -393,7 +393,10 @@
     function formatTimeWindow(startIso, endIso) {
       if (!startIso) return { dateStr: 'Upcoming Session', timeStr: 'Time TBD' };
       const s = new Date(startIso);
-      const e = endIso ? new Date(endIso) : null;
+      let e = endIso ? new Date(endIso) : null;
+      if (e && ((e.getHours() === 23 && e.getMinutes() === 59) || /23:59|11:59\s*pm/i.test(String(endIso || '')))) {
+        e = new Date(e.getTime() + 61 * 60 * 1000);
+      }
       
       const timeOpts = { hour: 'numeric', minute: '2-digit' };
       const sStr = isNaN(s.getTime()) ? '' : s.toLocaleTimeString([], timeOpts);
@@ -902,7 +905,10 @@
         // Filter out sessions whose endTime has already passed (if upcoming sessions exist)
         const now = new Date();
         const activeOrUpcoming = eventData.sessions.filter(s => {
-          const endDt = s.endTime ? new Date(s.endTime) : new Date(s.startTime);
+          let endDt = s.endTime ? new Date(s.endTime) : new Date(s.startTime);
+          if (endDt && ((endDt.getHours() === 23 && endDt.getMinutes() === 59) || /23:59|11:59\s*pm/i.test(String(s.endTime || '')))) {
+            endDt = new Date(endDt.getTime() + 61 * 60 * 1000);
+          }
           return endDt > now;
         });
         if (activeOrUpcoming.length > 0) {
