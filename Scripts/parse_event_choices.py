@@ -20,7 +20,7 @@ def normalize_choice(raw_answer, q_title=''):
     lower = clean.lower()
     
     # Specific level matching for playing level questions
-    if any(term in q_title.lower() for term in ['level', 'self-rate', 'playing']):
+    if any(term in q_title.lower() for term in ['level', 'self-rate', 'self rating', 'rating', 'playing', 'skill']):
         if 'high intermediate' in lower or 'high-intermediate' in lower:
             return 'High Intermediate'
         if ('adv' in lower and 'beg' in lower) or 'advanced beginner' in lower:
@@ -48,7 +48,8 @@ def extract_answers_from_item(item):
     # Search ONLY event-specific custom field containers
     containers = [
         'UserDefinedFields', 'CustomFieldValues', 'CustomFields',
-        'RegistrationQuestions', 'Questions', 'EventCustomFields'
+        'RegistrationQuestions', 'Questions', 'EventCustomFields',
+        'Answers', 'UserDefinedFieldValues', 'CustomFieldsValues'
     ]
     
     for c_key in containers:
@@ -62,15 +63,51 @@ def extract_answers_from_item(item):
                          entry.get('Question') or entry.get('QuestionName') or entry.get('Title') or '')
                     a = (entry.get('Value') or entry.get('FieldValue') or entry.get('Answer') or 
                          entry.get('SelectedValue') or entry.get('Text') or 
-                         entry.get('Choice') or entry.get('Option') or '')
+                         entry.get('Choice') or entry.get('Option') or entry.get('SelectedOption') or '')
+                    if isinstance(a, list):
+                        a = ", ".join(str(x.get('Name', x) if isinstance(x, dict) else x) for x in a)
+                    elif isinstance(a, dict):
+                        a = a.get('Name') or a.get('Value') or str(a)
                     if a and not is_ignored_question(q):
                         qa_list.append((str(q).strip(), str(a).strip()))
         elif isinstance(container, dict):
             for q, a in container.items():
+                if isinstance(a, list):
+                    a = ", ".join(str(x.get('Name', x) if isinstance(x, dict) else x) for x in a)
+                elif isinstance(a, dict):
+                    a = a.get('Name') or a.get('Value') or str(a)
                 if a and not is_ignored_question(q):
                     qa_list.append((str(q).strip(), str(a).strip()))
                         
     return qa_list
+
+def unpack_registrants(raw_items):
+    """
+    Expands raw items into a flat list of registrant dicts.
+    Handles both top-level registrant items and any nested guest/partner structures
+    (e.g., PartnersInfo, Guests, EventRegistrationGuests, Partners).
+    """
+    flat_list = []
+    for item in raw_items:
+        if not isinstance(item, dict):
+            continue
+        flat_list.append(item)
+        for guest_container_key in ['PartnersInfo', 'Guests', 'EventRegistrationGuests', 'Partners']:
+            nested = item.get(guest_container_key)
+            if isinstance(nested, list) and len(nested) > 0:
+                for sub in nested:
+                    if not isinstance(sub, dict):
+                        continue
+                    sub_copy = dict(sub)
+                    for inherit_key in ['EventId', 'eventId', 'EventDateId', 'StartTime', 'startTime', 
+                                        'EndTime', 'endTime', 'Courts', 'courts', 'DivisionName', 
+                                        'EventName', 'title', 'IsPublic', 'IsHidden']:
+                        if inherit_key not in sub_copy and inherit_key in item:
+                            sub_copy[inherit_key] = item[inherit_key]
+                    if 'IsGuest' not in sub_copy:
+                        sub_copy['IsGuest'] = True
+                    flat_list.append(sub_copy)
+    return flat_list
 
 def process_events(input_path='data/events_10d.json', output_path='data/event-choices.json', schedule_path='data/schedule.json'):
     items = []
@@ -88,15 +125,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
     else:
         print(f"Input file {input_path} not found. Will preserve/backfill events from schedule and previous cache.")
 
-    # PII-Free Diagnostic logging for target event 2160558
-    target_558 = [it for it in items if str(it.get('EventId') or it.get('eventId') or '') == '2160558']
-    if target_558:
-        print(f"=== [NO-PII] DIAGNOSTIC for Event 2160558: {len(target_558)} registrants found ===")
-        for idx, it in enumerate(target_558):
-            udf = it.get('UserDefinedFields')
-            mudf = it.get('MemberUserDefinedFields')
-            qa = extract_answers_from_item(it)
-            print(f"  Reg #{idx+1}: UDF={udf} | MUDF={mudf} | Extracted QA={qa}")
+    items = unpack_registrants(items)
 
     # Group by EventId and StartTime
     # key: (eventId, startTime)
@@ -142,39 +171,81 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 'registrants': []
             }
 
+        is_guest = bool(
+            item.get('IsGuest') is True or 
+            str(item.get('IsGuest')).lower() == 'true' or
+            item.get('GuestName') or
+            re.search(r'\b\(g\)\b|\bguest\b', str(item.get('LastName', '')), re.I) or
+            re.search(r'\b\(g\)\b|\bguest\b', str(item.get('FirstName', '')), re.I) or
+            re.search(r'\b\(g\)\b|\bguest\b', str(item.get('MemberName', '')), re.I)
+        )
+
         org_id = item.get('OrganizationMemberId') or item.get('MemberId')
         email = item.get('Email') or item.get('MemberEmail')
+        
         first_raw = item.get('FirstName') or item.get('MemberFirstName') or item.get('UserFirstName') or ''
         last_raw = item.get('LastName') or item.get('MemberLastName') or item.get('UserLastName') or ''
-        name = f"{first_raw}_{last_raw}".strip('_')
-        reg_id = item.get('EventRegistrationId') or item.get('Id')
-        has_real_player = bool(org_id or email or name or item.get('MemberName') or reg_id)
-        if has_real_player:
-            player_id = str(org_id or email or name or reg_id or id(item)).strip()
-            session_player_key = f"{session_key}_{player_id}"
+        
+        guest_name_field = item.get('GuestName')
+        if guest_name_field and not (first_raw or last_raw):
+            g_parts = str(guest_name_field).strip().split(None, 1)
+            first_raw = g_parts[0]
+            last_raw = g_parts[1] if len(g_parts) > 1 else ''
 
-            # Format registrant label: First Name Last Init (e.g., "John D.")
-            f_clean = str(first_raw).strip()
-            l_clean = str(last_raw).strip()
-            if f_clean and l_clean:
-                display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
-            elif f_clean:
-                display_name = f_clean.title()
-            elif item.get('MemberName'):
-                parts = str(item.get('MemberName')).strip().split()
-                if len(parts) >= 2:
-                    display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
-                else:
-                    display_name = parts[0].title() if parts else "Player"
+        f_clean = re.sub(r'\s*\([^)]*\)', '', str(first_raw)).strip()
+        l_clean = re.sub(r'\s*\([^)]*\)', '', str(last_raw)).strip()
+        
+        if f_clean and not l_clean and ' ' in f_clean:
+            parts = f_clean.split(None, 1)
+            f_clean = parts[0]
+            l_clean = parts[1]
+
+        norm_name = f"{f_clean.lower()}_{l_clean.lower()}".strip('_')
+        reg_id = item.get('EventRegistrationId') or item.get('Id') or item.get('EventRegistrationGuestId')
+        
+        has_real_player = bool(org_id or email or norm_name or item.get('MemberName') or reg_id)
+        if not has_real_player:
+            continue
+
+        if f_clean and l_clean:
+            display_name = f"{f_clean.title()} {l_clean[:1].upper()}."
+        elif f_clean:
+            display_name = f_clean.title()
+        elif item.get('MemberName'):
+            m_clean = re.sub(r'\s*\([^)]*\)', '', str(item.get('MemberName'))).strip()
+            parts = m_clean.split()
+            if len(parts) >= 2:
+                display_name = f"{parts[0].title()} {parts[1][:1].upper()}."
             else:
-                display_name = "Player"
-
-            if session_player_key not in seen_players_per_session:
-                seen_players_per_session.add(session_player_key)
-                events_by_id[session_key]['totalRegistered'] += 1
-                events_by_id[session_key]['registrants'].append(display_name)
+                display_name = parts[0].title() if parts else "Player"
         else:
-            display_name = None
+            display_name = "Player"
+
+        # Construct distinct player_id
+        # Crucial: Guests must NEVER collide with host members sharing OrganizationMemberId or Email!
+        if is_guest:
+            if norm_name:
+                player_id = f"guest_{norm_name}_{org_id or 'noorg'}"
+            elif reg_id:
+                player_id = f"guest_reg_{reg_id}"
+            else:
+                player_id = f"guest_{org_id or 'noorg'}_{id(item)}"
+        else:
+            if org_id:
+                player_id = f"mem_{org_id}"
+            elif email:
+                player_id = f"mem_{email.lower()}"
+            elif norm_name:
+                player_id = f"mem_{norm_name}"
+            else:
+                player_id = f"mem_{reg_id or id(item)}"
+
+        session_player_key = f"{session_key}_{player_id}"
+
+        if session_player_key not in seen_players_per_session:
+            seen_players_per_session.add(session_player_key)
+            events_by_id[session_key]['totalRegistered'] += 1
+            events_by_id[session_key]['registrants'].append(display_name)
 
         # Extract QA
         qa_pairs = extract_answers_from_item(item)
@@ -183,7 +254,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 continue
 
             q_title = q if q else 'Playing Level'
-            if any(term in q_title.lower() for term in ['level', 'playing level', 'self-rate']):
+            if any(term in q_title.lower() for term in ['level', 'self-rate', 'self rating', 'rating', 'playing', 'skill']):
                 q_title = 'Selected Playing Levels'
 
             norm_a = normalize_choice(a, q_title)
@@ -211,42 +282,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 q_obj['playersByChoice'][norm_a] = []
             q_obj['playersByChoice'][norm_a].append(display_name)
 
-    # 1. Backfill events from schedule.json (for sessions that may currently have 0 signups)
-    if schedule_path and os.path.exists(schedule_path):
-        try:
-            with open(schedule_path, 'r', encoding='utf-8') as sf:
-                sched_data = json.load(sf)
-                for e in sched_data.get('events', []):
-                    raw_eid = str(e.get('eventId') or '').split('_')[0].strip()
-                    if not raw_eid:
-                        continue
-                    s_time = e.get('startTime') or ''
-                    e_time = e.get('endTime') or ''
-                    s_key = f"{raw_eid}_{s_time}"
-                    if s_key not in events_by_id:
-                        c_list = e.get('courts') or []
-                        clean_c_list = []
-                        for c in c_list:
-                            clean_c = re.sub(r'\s*\([^)]*\)', '', str(c))
-                            clean_c = re.sub(r'^Court\s*', '', clean_c, flags=re.I).strip()
-                            if clean_c and clean_c not in clean_c_list:
-                                clean_c_list.append(clean_c)
-                        clean_c_list.sort(key=lambda x: int(x) if x.isdigit() else 999)
-                        
-                        events_by_id[s_key] = {
-                            'eventId': raw_eid,
-                            'title': e.get('title') or 'Event',
-                            'startTime': s_time,
-                            'endTime': e_time,
-                            'courts': clean_c_list,
-                            'totalRegistered': 0,
-                            'questions': {},
-                            'registrants': []
-                        }
-        except Exception as ex:
-            print(f"Error backfilling from {schedule_path}: {ex}")
-
-    # 2. Preserve any upcoming sessions from existing output_path that weren't in events_10d
+    # 1. Preserve any upcoming sessions from existing output_path that weren't in events_10d
     if output_path and os.path.exists(output_path):
         try:
             with open(output_path, 'r', encoding='utf-8') as prev_f:
@@ -279,6 +315,59 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         except Exception as ex:
             print(f"Error preserving existing sessions from {output_path}: {ex}")
 
+    # 2. Backfill events and registrants from schedule.json
+    if schedule_path and os.path.exists(schedule_path):
+        try:
+            with open(schedule_path, 'r', encoding='utf-8') as sf:
+                sched_data = json.load(sf)
+                for e in sched_data.get('events', []):
+                    raw_eid = str(e.get('eventId') or '').split('_')[0].strip()
+                    if not raw_eid:
+                        continue
+                    s_time = e.get('startTime') or ''
+                    e_time = e.get('endTime') or ''
+                    s_key = f"{raw_eid}_{s_time}"
+                    if s_key not in events_by_id:
+                        c_list = e.get('courts') or []
+                        clean_c_list = []
+                        for c in c_list:
+                            clean_c = re.sub(r'\s*\([^)]*\)', '', str(c))
+                            clean_c = re.sub(r'^Court\s*', '', clean_c, flags=re.I).strip()
+                            if clean_c and clean_c not in clean_c_list:
+                                clean_c_list.append(clean_c)
+                        clean_c_list.sort(key=lambda x: int(x) if x.isdigit() else 999)
+                        
+                        events_by_id[s_key] = {
+                            'eventId': raw_eid,
+                            'title': e.get('title') or 'Event',
+                            'startTime': s_time,
+                            'endTime': e_time,
+                            'courts': clean_c_list,
+                            'totalRegistered': 0,
+                            'questions': {},
+                            'registrants': []
+                        }
+                    
+                    # Also backfill any player names present in schedule.json
+                    p_name = str(e.get('playerName') or '').strip()
+                    if p_name and s_key in events_by_id:
+                        p_clean = re.sub(r'\s*\([^)]*\)', '', p_name).strip()
+                        parts = p_clean.split()
+                        if len(parts) >= 2:
+                            norm_p = f"{parts[0].title()} {parts[1][:1].upper()}."
+                        elif len(parts) == 1:
+                            norm_p = parts[0].title()
+                        else:
+                            norm_p = p_clean
+                        if norm_p and norm_p not in events_by_id[s_key]['registrants']:
+                            events_by_id[s_key]['registrants'].append(norm_p)
+                            events_by_id[s_key]['totalRegistered'] = max(
+                                events_by_id[s_key]['totalRegistered'],
+                                len(events_by_id[s_key]['registrants'])
+                            )
+        except Exception as ex:
+            print(f"Error backfilling from {schedule_path}: {ex}")
+
     # Format into a clean output dictionary mapped by eventId
     # Since an eventId may have multiple occurrences across the 10 days, store a list of sessions
     result = {
@@ -302,7 +391,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
             tallies_with_pct = []
             players_by_choice = q_data.get('playersByChoice', {})
             
-            is_level_q = any(term in q_title.lower() for term in ['level', 'playing level', 'self-rate'])
+            is_level_q = any(term in q_title.lower() for term in ['level', 'self-rate', 'self rating', 'rating', 'playing', 'skill'])
             if is_level_q:
                 standard_levels = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']
                 for lvl in standard_levels:
@@ -352,4 +441,3 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
 
 if __name__ == '__main__':
     process_events()
-
