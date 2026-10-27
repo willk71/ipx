@@ -256,7 +256,15 @@ jobs:
                     ) as $playerCleanName |
                     {
                       eventId: .EventId,
-                      title: (.DivisionName // .EventName // "Event"),
+                      title: (
+                        (.DivisionName // .EventName // "Event")
+                        | gsub("^\\s*Play\\s*(til|until|till)\\s*1(:00)?\\s*am\\s*[-–—|:]*\\s*"; ""; "i")
+                        | gsub("\\s*\\(\\s*Play\\s*(til|until|till)\\s*1(:00)?\\s*am\\s*\\)"; ""; "i")
+                        | gsub("\\s*[-–—|/]\\s*Play\\s*(til|until|till)\\s*1(:00)?\\s*am\\b"; ""; "i")
+                        | gsub("\\bPlay\\s*(til|until|till)\\s*1(:00)?\\s*am\\b"; ""; "i")
+                        | gsub("\\s*[-–—|/:]\\s*$"; "")
+                        | gsub("^\\s*[-–—|/:]\\s*"; "")
+                      ),
                       startTime: .StartTime,
                       endTime: .EndTime,
                       courts: (if .Courts then [(.Courts[]?.CourtName // .Courts[]? // empty)] else [] end),

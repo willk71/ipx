@@ -1,3 +1,16 @@
+def clean_event_title(title):
+    if not title:
+        return ''
+    t = str(title).strip()
+    t = re.sub(r'^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*', '', t, flags=re.I)
+    t = re.sub(r'\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)', '', t, flags=re.I)
+    t = re.sub(r'\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
+    t = re.sub(r'\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
+    t = re.sub(r'\s*[-–—|/:]\s*$', '', t).strip()
+    t = re.sub(r'^\s*[-–—|/:]\s*', '', t).strip()
+    t = re.sub(r'\s{2,}', ' ', t).strip()
+    return t
+
 import json
 import os
 import re
@@ -205,7 +218,9 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
         plan_key = (base_id, start_time)
 
         if plan_key not in split_plans:
-            new_events.append(item)
+            item_copy = dict(item)
+            item_copy['title'] = clean_event_title(item.get('title', ''))
+            new_events.append(item_copy)
             continue
 
         plan = split_plans[plan_key]
@@ -231,7 +246,7 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
             new_courts = [f"Court {num}" for num in sorted(assigned_court_nums, key=lambda x: int(x) if x.isdigit() else 999)]
 
         slug = group_slugs.get(assigned_group, 'group')
-        orig_title = item.get('title', 'Event')
+        orig_title = clean_event_title(item.get('title', 'Event'))
         base_title = re.sub(r'\s*[-–—]\s*(Intermediate|High Intermediate|Advanced|Adv Beg).*', '', orig_title, flags=re.I).strip()
         new_title = f"{base_title} - {assigned_group}"
 

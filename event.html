@@ -376,6 +376,17 @@
   </div>
 
   <script>
+    function cleanEventTitle(rawTitle) {
+      if (!rawTitle) return '';
+      return String(rawTitle)
+        .replace(/^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*/gi, '')
+        .replace(/\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)/gi, '')
+        .replace(/\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+        .replace(/\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+        .replace(/\s*[-–—|/:]\s*$/g, '')
+        .replace(/^\s*[-–—|/:]\s*/g, '')
+        .trim();
+    }
     const urlParams = new URLSearchParams(window.location.search);
     let eventIdParam = urlParams.get('id') || urlParams.get('eventId') || urlParams.get('e');
 
@@ -789,7 +800,7 @@
         ${dateTabsHtml}
         
         <div class="event-hero">
-          <h1 class="event-title">${cachedEventData.title}</h1>
+          <h1 class="event-title">${cleanEventTitle(cachedEventData.title)}</h1>
           <div class="event-time-badge">
             <span>${timeInfo.dateStr}</span>
             <span>&bull;</span>
@@ -863,7 +874,7 @@
                 const courts = Array.from(new Set(matchedEvents.flatMap(e => e.courts || [])));
                 eventData = {
                   eventId: String(eventIdParam).trim(),
-                  title: first.title || 'Event',
+                  title: cleanEventTitle(first.title || 'Event'),
                   sessions: [{
                     startTime: first.startTime,
                     endTime: first.endTime,
@@ -890,7 +901,7 @@
 
           eventData = {
             eventId: String(eventIdParam).trim(),
-            title: customTitle,
+            title: cleanEventTitle(customTitle),
             sessions: [{
               startTime: customStart || new Date().toISOString(),
               endTime: customEnd || null,

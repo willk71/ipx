@@ -381,7 +381,13 @@
 
           const timeLabel = `${s.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} - ${e.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
           const displayTitle = (item.title || '')
+            .replace(/^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*/gi, '')
+            .replace(/\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)/gi, '')
+            .replace(/\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+            .replace(/\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
             .replace(/^(Lunch\s+Break|Afternoon)(\s+Open\s+Play)?\s*[-–—:]\s*/i, '')
+            .replace(/\s*[-–—|/:]\s*$/g, '')
+            .replace(/^\s*[-–—|/:]\s*/g, '')
             .trim() || item.title;
 
           card.innerHTML = `

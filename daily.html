@@ -310,16 +310,24 @@
 
     function cleanTitle(rawTitle) {
       if (!rawTitle) return '';
-      let firstSegment = String(rawTitle).split('|')[0].trim();
+      let cleaned = String(rawTitle)
+        .replace(/^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*/gi, '')
+        .replace(/\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)/gi, '')
+        .replace(/\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+        .replace(/\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+        .replace(/\s*[-–—|/:]\s*$/g, '')
+        .replace(/^\s*[-–—|/:]\s*/g, '')
+        .trim();
+      let firstSegment = cleaned.split('|')[0].trim();
       firstSegment = firstSegment
         .replace(/\bStrateg(?:ic|y)?(?:\s*(?:Open\s*)?Play)?\b/gi, '')
         .replace(/\bOpen\s*Play\b/gi, '')
         .replace(/\bPrime\s*Time\b/gi, '')
-        .replace(/\bStrategic\b/gi, '');
+        .replace(/\bStrategic\b/gi);
 
-      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').trim();
+      firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/^[-–—/,\s]+/, '').trim();
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
-      return toSentenceCase(firstSegment);
+      return toSentenceCase(firstSegment) || toSentenceCase(cleaned);
     }
 
     async function loadSchedule() {

@@ -205,7 +205,17 @@ function formatCourtsLabel(courts, mode) {
 
 function cleanTitle(rawTitle) {
   if (!rawTitle) return '';
-  const fullStr = String(rawTitle).trim();
+  let fullStr = String(rawTitle).trim();
+
+  // Strip "Play Til 1am" / "Play Until 1am" prefixes, suffixes, and infixes
+  fullStr = fullStr
+    .replace(/^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*/gi, '')
+    .replace(/\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)/gi, '')
+    .replace(/\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+    .replace(/\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
+    .replace(/\s*[-–—|/:]\s*$/g, '')
+    .replace(/^\s*[-–—|/:]\s*/g, '')
+    .trim();
 
   // 1. Explicit Skill Level Matching
   if (/intermediate[\s\-–—]+advanced/i.test(fullStr)) {
@@ -222,7 +232,7 @@ function cleanTitle(rawTitle) {
   const segments = fullStr.split('|').map(s => s.trim()).filter(Boolean);
   let mainSegment = segments[0] || '';
 
-  const isExcluded = /^(summer|winter|spring|fall|autumn|monday|tuesday|wednesday|thursday|friday|saturday|sunday|open\s*play)$/i;
+  const isExcluded = /^(summer|winter|spring|fall|autumn|monday|tuesday|wednesday|thursday|friday|saturday|sunday|open\s*play|play\s*(til|until|till)\s*1\s*am)$/i;
   for (const seg of segments) {
     if (!isExcluded.test(seg)) {
       mainSegment = seg;
@@ -237,11 +247,12 @@ function cleanTitle(rawTitle) {
     .replace(/\bOpen\s*Play\b/gi, '')
     .replace(/\bPrime\s*Time\b/gi);
 
-  mainSegment = mainSegment.replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
+  mainSegment = mainSegment.replace(/^[\-–—/,\s]+/, '').replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
   mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)/g, '$1 – $2');
 
   let formatted = toSentenceCase(mainSegment);
-  return formatted.replace(/\bP4p\b/gi, 'P4P');
+  formatted = formatted.replace(/\bP4p\b/gi, 'P4P');
+  return formatted || toSentenceCase(fullStr);
 }
 
 function resolveQueueLocation(courtsSet, customText) {

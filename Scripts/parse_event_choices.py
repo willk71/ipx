@@ -1,3 +1,16 @@
+def clean_event_title(title):
+    if not title:
+        return ''
+    t = str(title).strip()
+    t = re.sub(r'^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*', '', t, flags=re.I)
+    t = re.sub(r'\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)', '', t, flags=re.I)
+    t = re.sub(r'\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
+    t = re.sub(r'\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
+    t = re.sub(r'\s*[-–—|/:]\s*$', '', t).strip()
+    t = re.sub(r'^\s*[-–—|/:]\s*', '', t).strip()
+    t = re.sub(r'\s{2,}', ' ', t).strip()
+    return t
+
 import json
 import os
 import re
@@ -142,7 +155,8 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
         if not e_id:
             continue
 
-        title = item.get('DivisionName') or item.get('EventName') or item.get('title') or 'Event'
+        raw_title = item.get('DivisionName') or item.get('EventName') or item.get('title') or 'Event'
+        title = clean_event_title(raw_title)
         start_time = item.get('StartTime') or item.get('startTime') or ''
         end_time = item.get('EndTime') or item.get('endTime') or ''
         courts = item.get('Courts') or item.get('courts') or []
@@ -297,7 +311,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                             if s_key not in events_by_id:
                                 events_by_id[s_key] = {
                                     'eventId': prev_id,
-                                    'title': prev_ev.get('title') or 'Event',
+                                    'title': clean_event_title(prev_ev.get('title') or 'Event'),
                                     'startTime': s_time,
                                     'endTime': s.get('endTime') or '',
                                     'courts': s.get('courts') or [],
@@ -339,7 +353,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                         
                         events_by_id[s_key] = {
                             'eventId': raw_eid,
-                            'title': e.get('title') or 'Event',
+                            'title': clean_event_title(e.get('title') or 'Event'),
                             'startTime': s_time,
                             'endTime': e_time,
                             'courts': clean_c_list,
