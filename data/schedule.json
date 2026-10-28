@@ -1,11 +1,16 @@
 {
-  "lastUpdated": "2026-10-28T23:46:35Z",
+  "lastUpdated": "2026-10-28T23:50:17Z",
   "date": "2026-10-28",
   "courtHosts": [
     {
-      "start": "19:30",
+      "start": "19:00",
       "end": "22:30",
-      "host": "Stephanie L"
+      "host": "Winnie Z"
+    },
+    {
+      "start": "17:45",
+      "end": "19:45",
+      "host": "Nelson C"
     },
     {
       "start": "17:45",
@@ -14,23 +19,18 @@
     },
     {
       "start": "19:30",
-      "end": "22:00",
-      "host": "Kirby E"
-    },
-    {
-      "start": "17:45",
-      "end": "19:45",
-      "host": "Nelson C"
-    },
-    {
-      "start": "19:00",
       "end": "22:30",
-      "host": "Winnie Z"
+      "host": "Stephanie L"
     },
     {
       "start": "19:00",
       "end": "22:00",
       "host": "Sheila B"
+    },
+    {
+      "start": "19:30",
+      "end": "22:00",
+      "host": "Kirby E"
     }
   ],
   "courtOverrides": [],
@@ -827,7 +827,7 @@
         "Court 2"
       ],
       "playerName": "Tylah G",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301936,
@@ -1632,7 +1632,7 @@
         "Court 2"
       ],
       "playerName": "Jack F",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301936,
@@ -2556,19 +2556,6 @@
       "checkedIn": false
     },
     {
-      "eventId": "2338063_int",
-      "title": "Open Play - Intermediate",
-      "startTime": "2026-10-28T21:30:00",
-      "endTime": "2026-10-28T23:59:00",
-      "courts": [
-        "Court 3",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Raymond C",
-      "checkedIn": true
-    },
-    {
       "eventId": "2338063_highint",
       "title": "Open Play - High Intermediate",
       "startTime": "2026-10-28T21:30:00",
@@ -2605,6 +2592,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Karl H",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301967,
+      "title": "3.25-3.75 Gated Open Play",
+      "startTime": "2026-10-29T20:00:00",
+      "endTime": "2026-10-29T22:00:00",
+      "courts": [
+        "Court 2",
+        "Court 1 (Livestreaming)",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Isaac M",
       "checkedIn": false
     },
     {
@@ -3223,7 +3223,7 @@
         "Court 5"
       ],
       "playerName": "Tylah G",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2303258,
@@ -3400,6 +3400,19 @@
       "checkedIn": false
     },
     {
+      "eventId": "2338063_int",
+      "title": "Open Play - Intermediate",
+      "startTime": "2026-10-28T21:30:00",
+      "endTime": "2026-10-28T23:59:00",
+      "courts": [
+        "Court 3",
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Raymond C",
+      "checkedIn": true
+    },
+    {
       "eventId": "2338066_int",
       "title": "Open Play - Intermediate",
       "startTime": "2026-10-29T22:00:00",
@@ -3434,6 +3447,31 @@
       ],
       "playerName": "Raeven R",
       "checkedIn": false
+    },
+    {
+      "eventId": 2301935,
+      "title": "3.75-4.25 Open Play",
+      "startTime": "2026-10-28T17:30:00",
+      "endTime": "2026-10-28T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Isaiah T",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2301936,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-28T17:30:00",
+      "endTime": "2026-10-28T19:30:00",
+      "courts": [
+        "Court 3",
+        "Court 6",
+        "Court 2"
+      ],
+      "playerName": "Ryan W",
+      "checkedIn": true
     },
     {
       "eventId": "2338066_int",
@@ -3489,31 +3527,6 @@
       ],
       "playerName": "Jarrett W",
       "checkedIn": false
-    },
-    {
-      "eventId": 2301935,
-      "title": "3.75-4.25 Open Play",
-      "startTime": "2026-10-28T17:30:00",
-      "endTime": "2026-10-28T19:30:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Isaiah T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2301936,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-28T17:30:00",
-      "endTime": "2026-10-28T19:30:00",
-      "courts": [
-        "Court 3",
-        "Court 6",
-        "Court 2"
-      ],
-      "playerName": "Ryan W",
-      "checkedIn": true
     },
     {
       "eventId": 2301936,
