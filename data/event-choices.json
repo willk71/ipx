@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-28T10:24:59.394310+00:00Z",
+  "lastUpdated": "2026-10-28T11:36:14.379754+00:00Z",
   "events": {
     "2301926": {
       "eventId": "2301926",
@@ -171,132 +171,115 @@
         }
       ]
     },
-    "2266510": {
-      "eventId": "2266510",
-      "title": "3.75-4.25 Open Play",
+    "2160558": {
+      "eventId": "2160558",
+      "title": "Lunch Break Open Play",
       "sessions": [
         {
-          "startTime": "2026-10-29T20:00:00",
-          "endTime": "2026-10-29T22:00:00",
+          "startTime": "2026-10-28T11:00:00",
+          "endTime": "2026-10-28T13:30:00",
           "courts": [
-            "7",
-            "10",
-            "11",
-            "12"
-          ],
-          "totalRegistered": 24,
-          "questions": [],
-          "registrants": [
-            "Andrew H.",
-            "Benny W.",
-            "Dan H.",
-            "Darren H.",
-            "Ghulam M.",
-            "James F.",
-            "Jana P.",
-            "Jesse H.",
-            "Jimmy J.",
-            "John C.",
-            "Jon C.",
-            "Kd P.",
-            "Kevin T.",
-            "Michael C.",
-            "Nick P.",
-            "Richard D.",
-            "Scott L.",
-            "Silvio G.",
-            "Stephanie L.",
-            "Varun M.",
-            "Wright L.",
-            "Yi W.",
-            "Yuyi H.",
-            "Zayd A."
-          ]
-        }
-      ]
-    },
-    "2199540": {
-      "eventId": "2199540",
-      "title": "3.5-4.0 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-30T19:30:00",
-          "endTime": "2026-10-30T21:30:00",
-          "courts": [
-            "10",
-            "11",
-            "12"
-          ],
-          "totalRegistered": 5,
-          "questions": [],
-          "registrants": [
-            "Francis A.",
-            "James F.",
-            "Jana P.",
-            "Paola F.",
-            "Stephanie L."
-          ]
-        }
-      ]
-    },
-    "2301970": {
-      "eventId": "2301970",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-29T20:00:00",
-          "endTime": "2026-10-29T22:00:00",
-          "courts": [
-            "3",
-            "5",
-            "6"
-          ],
-          "totalRegistered": 11,
-          "questions": [],
-          "registrants": [
-            "Bryce D.",
-            "Dagem S.",
-            "Daniel N.",
-            "Josephine Q.",
-            "Jp D.",
-            "Katie L.",
-            "Lee G.",
-            "Maggie L.",
-            "Pablo R.",
-            "Thomas A.",
-            "Victor C."
-          ]
-        }
-      ]
-    },
-    "2290261": {
-      "eventId": "2290261",
-      "title": "Halloween Pickleball Party (Drink, Games, Prize!) | Family Friendly | Bring A Friend 50% OFF",
-      "sessions": [
-        {
-          "startTime": "2026-10-31T19:15:00",
-          "endTime": "2026-10-31T23:59:00",
-          "courts": [
-            "1",
-            "2",
-            "3",
             "4",
             "5",
-            "6",
             "7",
             "8",
-            "9",
             "10",
-            "11",
-            "12",
-            "13",
-            "Event Space"
+            "12"
           ],
-          "totalRegistered": 8,
+          "totalRegistered": 18,
           "questions": [
             {
               "question": "Selected Playing Levels",
-              "totalResponses": 8,
+              "totalResponses": 17,
+              "choices": [
+                {
+                  "choice": "Advanced Beginner",
+                  "count": 6,
+                  "percentage": 35.3,
+                  "players": [
+                    "Em L.",
+                    "Iris F.",
+                    "Judy L.",
+                    "Jun Z.",
+                    "Lhei P.",
+                    "Michael Angelo P."
+                  ]
+                },
+                {
+                  "choice": "Intermediate",
+                  "count": 3,
+                  "percentage": 17.6,
+                  "players": [
+                    "Jason C.",
+                    "Rachel N.",
+                    "Safina B."
+                  ]
+                },
+                {
+                  "choice": "High Intermediate",
+                  "count": 6,
+                  "percentage": 35.3,
+                  "players": [
+                    "Arthur L.",
+                    "Lillian H.",
+                    "Nilas J.",
+                    "Peter W.",
+                    "Wendy W.",
+                    "Will K."
+                  ]
+                },
+                {
+                  "choice": "Advanced",
+                  "count": 2,
+                  "percentage": 11.8,
+                  "players": [
+                    "Charles N.",
+                    "Timothy A."
+                  ]
+                }
+              ]
+            }
+          ],
+          "registrants": [
+            "Arthur L.",
+            "Charles N.",
+            "Em L.",
+            "Iris F.",
+            "Jason C.",
+            "Judy L.",
+            "Jun Z.",
+            "Lhei P.",
+            "Lillian H.",
+            "Michael Angelo P.",
+            "Michael P.",
+            "Nilas J.",
+            "Peter W.",
+            "Rachel N.",
+            "Safina B.",
+            "Timothy A.",
+            "Wendy W.",
+            "Will K."
+          ]
+        }
+      ]
+    },
+    "2302727": {
+      "eventId": "2302727",
+      "title": "Afternoon Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-28T13:30:00",
+          "endTime": "2026-10-28T15:30:00",
+          "courts": [
+            "7",
+            "10",
+            "12"
+          ],
+          "totalRegistered": 2,
+          "questions": [
+            {
+              "question": "Selected Playing Levels",
+              "totalResponses": 2,
               "choices": [
                 {
                   "choice": "Advanced Beginner",
@@ -306,24 +289,17 @@
                 },
                 {
                   "choice": "Intermediate",
-                  "count": 4,
-                  "percentage": 50.0,
-                  "players": [
-                    "Jordi F.",
-                    "Leslie A.",
-                    "Noel L.",
-                    "Victor C."
-                  ]
+                  "count": 0,
+                  "percentage": 0.0,
+                  "players": []
                 },
                 {
                   "choice": "High Intermediate",
-                  "count": 4,
-                  "percentage": 50.0,
+                  "count": 2,
+                  "percentage": 100.0,
                   "players": [
-                    "Andy C.",
-                    "Jonathan Z.",
-                    "Kris S.",
-                    "Newton M."
+                    "Lillian H.",
+                    "Will K."
                   ]
                 },
                 {
@@ -336,229 +312,46 @@
             }
           ],
           "registrants": [
-            "Andy C.",
-            "Jonathan Z.",
-            "Jordi F.",
-            "Kris S.",
-            "Leslie A.",
-            "Newton M.",
-            "Noel L.",
-            "Victor C."
+            "Lillian H.",
+            "Will K."
           ]
         }
       ]
     },
-    "2301963": {
-      "eventId": "2301963",
-      "title": "3.5-4.0 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-29T18:00:00",
-          "endTime": "2026-10-29T20:00:00",
-          "courts": [
-            "4"
-          ],
-          "totalRegistered": 6,
-          "questions": [],
-          "registrants": [
-            "Gina H.",
-            "Guillermo E.",
-            "Liam T.",
-            "Melody E.",
-            "Todd Z.",
-            "Tori Y."
-          ]
-        }
-      ]
-    },
-    "2301967": {
-      "eventId": "2301967",
+    "2301933": {
+      "eventId": "2301933",
       "title": "3.25-3.75 Gated Open Play",
       "sessions": [
         {
-          "startTime": "2026-10-29T20:00:00",
-          "endTime": "2026-10-29T22:00:00",
+          "startTime": "2026-10-28T17:30:00",
+          "endTime": "2026-10-28T19:30:00",
           "courts": [
-            "1",
-            "2",
-            "4"
-          ],
-          "totalRegistered": 13,
-          "questions": [],
-          "registrants": [
-            "Anthony A.",
-            "Clarisse E.",
-            "Earl B.",
-            "Emily C.",
-            "Guillermo E.",
-            "Haley K.",
-            "Jordan T.",
-            "Karl H.",
-            "Melody E.",
-            "Rio E.",
-            "Rio Pedro E.",
-            "Toni T.",
-            "Tracy C."
-          ]
-        },
-        {
-          "startTime": "2026-11-05T20:00:00",
-          "endTime": "2026-11-05T22:00:00",
-          "courts": [
-            "1",
-            "2",
-            "4"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Kris S."
-          ]
-        }
-      ]
-    },
-    "2301838": {
-      "eventId": "2301838",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-03T18:00:00",
-          "endTime": "2026-11-03T20:00:00",
-          "courts": [
-            "4",
-            "5",
-            "7"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Monica T."
-          ]
-        }
-      ]
-    },
-    "2299540": {
-      "eventId": "2299540",
-      "title": "3.75 - 4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-02T17:30:00",
-          "endTime": "2026-11-02T19:30:00",
-          "courts": [
-            "1",
-            "2",
-            "4"
-          ],
-          "totalRegistered": 4,
-          "questions": [],
-          "registrants": [
-            "Andrew B.",
-            "Christina N.",
-            "Elena G.",
-            "Isaiah T."
-          ]
-        }
-      ]
-    },
-    "2301844": {
-      "eventId": "2301844",
-      "title": "3.5-4.0 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-03T18:00:00",
-          "endTime": "2026-11-03T20:00:00",
-          "courts": [
+            "7",
             "8",
             "10",
             "11"
           ],
-          "totalRegistered": 5,
+          "totalRegistered": 18,
           "questions": [],
           "registrants": [
-            "Andrew B.",
-            "Chloe C.",
-            "Christina N.",
-            "Jesse H.",
-            "Liah K."
-          ]
-        }
-      ]
-    },
-    "2302616": {
-      "eventId": "2302616",
-      "title": "3.75-4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-28T19:30:00",
-          "endTime": "2026-10-28T21:30:00",
-          "courts": [
-            "1",
-            "2",
-            "4"
-          ],
-          "totalRegistered": 17,
-          "questions": [],
-          "registrants": [
-            "Carl A.",
-            "Evan M.",
-            "Ghulam M.",
-            "Giovanni R.",
-            "James F.",
-            "Jana P.",
-            "Jenny T.",
-            "John C.",
-            "Jon C.",
-            "Juan S.",
-            "Michael C.",
-            "Michael C.",
-            "Neeraj P.",
-            "Paola F.",
-            "Wyatt W.",
-            "Yi W.",
-            "Zayd A."
-          ]
-        }
-      ]
-    },
-    "2300477": {
-      "eventId": "2300477",
-      "title": "3.25-3.75 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-02T17:30:00",
-          "endTime": "2026-11-02T19:30:00",
-          "courts": [
-            "10",
-            "11",
-            "12"
-          ],
-          "totalRegistered": 3,
-          "questions": [],
-          "registrants": [
+            "Alex I.",
+            "Alvin D.",
+            "Eric T.",
+            "Gina H.",
+            "Guillermo E.",
+            "Janet N.",
+            "Janet \ud83e\udd84 N.",
+            "Jonathan Z.",
+            "Katie L.",
+            "Ken L.",
+            "Koko S.",
+            "Kyle M.",
             "Liah K.",
-            "Patrick T.",
-            "Toni T."
-          ]
-        }
-      ]
-    },
-    "2301827": {
-      "eventId": "2301827",
-      "title": "3.5-4.0 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-03T18:00:00",
-          "endTime": "2026-11-03T20:00:00",
-          "courts": [
-            "3"
-          ],
-          "totalRegistered": 4,
-          "questions": [],
-          "registrants": [
-            "Jennifer C.",
-            "Patrick T.",
-            "Todd Z.",
-            "Tori Y."
+            "Louie T.",
+            "Melody E.",
+            "Newton M.",
+            "Tori Y.",
+            "Will K."
           ]
         }
       ]
@@ -868,6 +661,28 @@
         }
       ]
     },
+    "2337256": {
+      "eventId": "2337256",
+      "title": "4.0+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-28T21:30:00",
+          "endTime": "2026-10-28T23:59:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 5,
+          "questions": [],
+          "registrants": [
+            "Carl A.",
+            "Carlos A G.",
+            "Carlos G.",
+            "Julian B.",
+            "Marat Y."
+          ]
+        }
+      ]
+    },
     "2302798": {
       "eventId": "2302798",
       "title": "3.5-4.0 Open Play",
@@ -986,24 +801,51 @@
         }
       ]
     },
-    "2337256": {
-      "eventId": "2337256",
-      "title": "4.0+ Open Play",
+    "2294628": {
+      "eventId": "2294628",
+      "title": "Coached Open Play w/ Coach Martin (Int+)",
       "sessions": [
         {
-          "startTime": "2026-10-28T21:30:00",
-          "endTime": "2026-10-28T23:59:00",
+          "startTime": "2026-11-05T16:00:00",
+          "endTime": "2026-11-05T18:00:00",
           "courts": [
-            "1"
+            "1",
+            "4"
           ],
-          "totalRegistered": 5,
+          "totalRegistered": 1,
           "questions": [],
           "registrants": [
-            "Carl A.",
-            "Carlos A G.",
-            "Carlos G.",
-            "Julian B.",
-            "Marat Y."
+            "Stephen J."
+          ]
+        }
+      ]
+    },
+    "2301970": {
+      "eventId": "2301970",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-29T20:00:00",
+          "endTime": "2026-10-29T22:00:00",
+          "courts": [
+            "3",
+            "5",
+            "6"
+          ],
+          "totalRegistered": 11,
+          "questions": [],
+          "registrants": [
+            "Bryce D.",
+            "Dagem S.",
+            "Daniel N.",
+            "Josephine Q.",
+            "Jp D.",
+            "Katie L.",
+            "Lee G.",
+            "Maggie L.",
+            "Pablo R.",
+            "Thomas A.",
+            "Victor C."
           ]
         }
       ]
@@ -1097,417 +939,6 @@
         }
       ]
     },
-    "2294628": {
-      "eventId": "2294628",
-      "title": "Coached Open Play w/ Coach Martin (Int+)",
-      "sessions": [
-        {
-          "startTime": "2026-11-05T16:00:00",
-          "endTime": "2026-11-05T18:00:00",
-          "courts": [
-            "1",
-            "4"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Stephen J."
-          ]
-        }
-      ]
-    },
-    "2302735": {
-      "eventId": "2302735",
-      "title": "4.0+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-30T19:30:00",
-          "endTime": "2026-10-30T21:30:00",
-          "courts": [
-            "1",
-            "2"
-          ],
-          "totalRegistered": 2,
-          "questions": [],
-          "registrants": [
-            "Benny W.",
-            "Julian B."
-          ]
-        }
-      ]
-    },
-    "2301936": {
-      "eventId": "2301936",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-28T17:30:00",
-          "endTime": "2026-10-28T19:30:00",
-          "courts": [
-            "2",
-            "3",
-            "6"
-          ],
-          "totalRegistered": 15,
-          "questions": [],
-          "registrants": [
-            "Arushi S.",
-            "Emma V.",
-            "George K.",
-            "Ian H.",
-            "Jackson Z.",
-            "Jp D.",
-            "Liam T.",
-            "Mirza H.",
-            "Rachael T.",
-            "Ryan W.",
-            "Simon M.",
-            "Stefan R.",
-            "Steven A.",
-            "Tylah G.",
-            "Wilson L."
-          ]
-        }
-      ]
-    },
-    "2160558": {
-      "eventId": "2160558",
-      "title": "Lunch Break Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-28T11:00:00",
-          "endTime": "2026-10-28T13:30:00",
-          "courts": [
-            "4",
-            "5",
-            "7",
-            "8",
-            "10",
-            "12"
-          ],
-          "totalRegistered": 17,
-          "questions": [
-            {
-              "question": "Selected Playing Levels",
-              "totalResponses": 16,
-              "choices": [
-                {
-                  "choice": "Advanced Beginner",
-                  "count": 5,
-                  "percentage": 31.2,
-                  "players": [
-                    "Em L.",
-                    "Iris F.",
-                    "Judy L.",
-                    "Jun Z.",
-                    "Michael Angelo P."
-                  ]
-                },
-                {
-                  "choice": "Intermediate",
-                  "count": 3,
-                  "percentage": 18.8,
-                  "players": [
-                    "Jason C.",
-                    "Rachel N.",
-                    "Safina B."
-                  ]
-                },
-                {
-                  "choice": "High Intermediate",
-                  "count": 6,
-                  "percentage": 37.5,
-                  "players": [
-                    "Arthur L.",
-                    "Lillian H.",
-                    "Nilas J.",
-                    "Peter W.",
-                    "Wendy W.",
-                    "Will K."
-                  ]
-                },
-                {
-                  "choice": "Advanced",
-                  "count": 2,
-                  "percentage": 12.5,
-                  "players": [
-                    "Charles N.",
-                    "Timothy A."
-                  ]
-                }
-              ]
-            }
-          ],
-          "registrants": [
-            "Arthur L.",
-            "Charles N.",
-            "Em L.",
-            "Iris F.",
-            "Jason C.",
-            "Judy L.",
-            "Jun Z.",
-            "Lillian H.",
-            "Michael Angelo P.",
-            "Michael P.",
-            "Nilas J.",
-            "Peter W.",
-            "Rachel N.",
-            "Safina B.",
-            "Timothy A.",
-            "Wendy W.",
-            "Will K."
-          ]
-        }
-      ]
-    },
-    "2302727": {
-      "eventId": "2302727",
-      "title": "Afternoon Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-28T13:30:00",
-          "endTime": "2026-10-28T15:30:00",
-          "courts": [
-            "7",
-            "10",
-            "12"
-          ],
-          "totalRegistered": 2,
-          "questions": [
-            {
-              "question": "Selected Playing Levels",
-              "totalResponses": 2,
-              "choices": [
-                {
-                  "choice": "Advanced Beginner",
-                  "count": 0,
-                  "percentage": 0.0,
-                  "players": []
-                },
-                {
-                  "choice": "Intermediate",
-                  "count": 0,
-                  "percentage": 0.0,
-                  "players": []
-                },
-                {
-                  "choice": "High Intermediate",
-                  "count": 2,
-                  "percentage": 100.0,
-                  "players": [
-                    "Lillian H.",
-                    "Will K."
-                  ]
-                },
-                {
-                  "choice": "Advanced",
-                  "count": 0,
-                  "percentage": 0.0,
-                  "players": []
-                }
-              ]
-            }
-          ],
-          "registrants": [
-            "Lillian H.",
-            "Will K."
-          ]
-        }
-      ]
-    },
-    "2301933": {
-      "eventId": "2301933",
-      "title": "3.25-3.75 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-28T17:30:00",
-          "endTime": "2026-10-28T19:30:00",
-          "courts": [
-            "7",
-            "8",
-            "10",
-            "11"
-          ],
-          "totalRegistered": 18,
-          "questions": [],
-          "registrants": [
-            "Alex I.",
-            "Alvin D.",
-            "Eric T.",
-            "Gina H.",
-            "Guillermo E.",
-            "Janet N.",
-            "Janet \ud83e\udd84 N.",
-            "Jonathan Z.",
-            "Katie L.",
-            "Ken L.",
-            "Koko S.",
-            "Kyle M.",
-            "Liah K.",
-            "Louie T.",
-            "Melody E.",
-            "Newton M.",
-            "Tori Y.",
-            "Will K."
-          ]
-        }
-      ]
-    },
-    "2301962": {
-      "eventId": "2301962",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-29T18:00:00",
-          "endTime": "2026-10-29T20:00:00",
-          "courts": [
-            "3",
-            "5",
-            "6"
-          ],
-          "totalRegistered": 18,
-          "questions": [],
-          "registrants": [
-            "Al E.",
-            "Emma V.",
-            "George H.",
-            "George K.",
-            "John M.",
-            "Johnny H.",
-            "Jordi F.",
-            "Jp D.",
-            "Katie L.",
-            "Lukasz B.",
-            "Nicole H.",
-            "Onson L.",
-            "Pablo R.",
-            "Rachael T.",
-            "Simon M.",
-            "Steven A.",
-            "Tylah G.",
-            "Wilson L."
-          ]
-        }
-      ]
-    },
-    "2301934": {
-      "eventId": "2301934",
-      "title": "Drilling Workshop w/ Coach Wally",
-      "sessions": [
-        {
-          "startTime": "2026-10-28T17:30:00",
-          "endTime": "2026-10-28T18:30:00",
-          "courts": [
-            "1"
-          ],
-          "totalRegistered": 5,
-          "questions": [],
-          "registrants": [
-            "Alvin D.",
-            "Derek L.",
-            "Janet N.",
-            "Janet \ud83e\udd84 N.",
-            "Kadeem H."
-          ]
-        },
-        {
-          "startTime": "2026-11-04T17:30:00",
-          "endTime": "2026-11-04T18:30:00",
-          "courts": [
-            "1"
-          ],
-          "totalRegistered": 3,
-          "questions": [],
-          "registrants": [
-            "Derek L.",
-            "Kyle Y.",
-            "Lenny \ud83d\udc20."
-          ]
-        }
-      ]
-    },
-    "2127713": {
-      "eventId": "2127713",
-      "title": "Pickleball for Parkinson's - VOLUNTEER Sign-up",
-      "sessions": [
-        {
-          "startTime": "2026-10-30T11:00:00",
-          "endTime": "2026-10-30T13:00:00",
-          "courts": [
-            "12"
-          ],
-          "totalRegistered": 6,
-          "questions": [],
-          "registrants": [
-            "Elaine R.",
-            "Jonathan C.",
-            "Lorna B.",
-            "Maria P.",
-            "Matthew S.",
-            "Tony Y."
-          ]
-        }
-      ]
-    },
-    "2184284": {
-      "eventId": "2184284",
-      "title": "Office Hours",
-      "sessions": [
-        {
-          "startTime": "2026-10-30T09:00:00",
-          "endTime": "2026-10-30T11:00:00",
-          "courts": [
-            "10",
-            "12"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Tony Y."
-          ]
-        }
-      ]
-    },
-    "2167909": {
-      "eventId": "2167909",
-      "title": "Intro to Pickleball with Coach Sze",
-      "sessions": [
-        {
-          "startTime": "2026-11-03T19:00:00",
-          "endTime": "2026-11-03T20:00:00",
-          "courts": [
-            "13"
-          ],
-          "totalRegistered": 3,
-          "questions": [],
-          "registrants": [
-            "Briana D.",
-            "Jennifer S.",
-            "Omer T."
-          ]
-        }
-      ]
-    },
-    "2301996": {
-      "eventId": "2301996",
-      "title": "3.75-4.25 Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-30T17:30:00",
-          "endTime": "2026-10-30T19:30:00",
-          "courts": [
-            "1",
-            "2"
-          ],
-          "totalRegistered": 2,
-          "questions": [],
-          "registrants": [
-            "Julian B.",
-            "Kevin T."
-          ]
-        }
-      ]
-    },
     "2301935": {
       "eventId": "2301935",
       "title": "3.75-4.25 Open Play",
@@ -1551,164 +982,78 @@
         }
       ]
     },
-    "2301822": {
-      "eventId": "2301822",
-      "title": "Women's 3.25+ Strategic Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-29T18:00:00",
-          "endTime": "2026-10-29T20:00:00",
-          "courts": [
-            "1"
-          ],
-          "totalRegistered": 5,
-          "questions": [],
-          "registrants": [
-            "Emily S.",
-            "Janet N.",
-            "Janet \ud83e\udd84 N.",
-            "Louie T.",
-            "Tori Y."
-          ]
-        }
-      ]
-    },
-    "2182875": {
-      "eventId": "2182875",
-      "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
-      "sessions": [
-        {
-          "startTime": "2026-11-01T18:00:00",
-          "endTime": "2026-11-01T20:00:00",
-          "courts": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"
-          ],
-          "totalRegistered": 3,
-          "questions": [],
-          "registrants": [
-            "Arthur L.",
-            "Michael L.",
-            "Nilas J."
-          ]
-        }
-      ]
-    },
-    "2301892": {
-      "eventId": "2301892",
-      "title": "3.5-4.0 Gated Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-03T20:00:00",
-          "endTime": "2026-11-03T22:00:00",
-          "courts": [
-            "1",
-            "2"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Jesse H."
-          ]
-        }
-      ]
-    },
-    "2301942": {
-      "eventId": "2301942",
-      "title": "Advanced Beginner+ Open Play",
+    "2302616": {
+      "eventId": "2302616",
+      "title": "3.75-4.25 Open Play",
       "sessions": [
         {
           "startTime": "2026-10-28T19:30:00",
           "endTime": "2026-10-28T21:30:00",
           "courts": [
-            "10"
+            "1",
+            "2",
+            "4"
           ],
-          "totalRegistered": 6,
+          "totalRegistered": 17,
           "questions": [],
           "registrants": [
-            "Chris P.",
-            "Fatima C.",
+            "Carl A.",
+            "Evan M.",
+            "Ghulam M.",
             "Giovanni R.",
+            "James F.",
+            "Jana P.",
             "Jenny T.",
-            "Lin P.",
-            "Lin Yu P."
+            "John C.",
+            "Jon C.",
+            "Juan S.",
+            "Michael C.",
+            "Michael C.",
+            "Neeraj P.",
+            "Paola F.",
+            "Wyatt W.",
+            "Yi W.",
+            "Zayd A."
           ]
         }
       ]
     },
-    "2333160": {
-      "eventId": "2333160",
-      "title": "Hosts",
+    "2301996": {
+      "eventId": "2301996",
+      "title": "3.75-4.25 Open Play",
       "sessions": [
         {
-          "startTime": "2026-10-28T17:00:00",
-          "endTime": "2026-10-28T22:00:00",
+          "startTime": "2026-10-30T17:30:00",
+          "endTime": "2026-10-30T19:30:00",
           "courts": [
-            "Hosts/Guests"
+            "1",
+            "2"
           ],
           "totalRegistered": 2,
           "questions": [],
           "registrants": [
-            "Kirby E.",
-            "Winnie Z."
-          ]
-        },
-        {
-          "startTime": "2026-10-30T17:00:00",
-          "endTime": "2026-10-30T22:00:00",
-          "courts": [
-            "Hosts/Guests"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Winnie Z."
+            "Julian B.",
+            "Kevin T."
           ]
         }
       ]
     },
-    "2340925": {
-      "eventId": "2340925",
-      "title": "Pickleball 201: Offense & Transition Mechanics (Member Perk Clinic)",
+    "2302735": {
+      "eventId": "2302735",
+      "title": "4.0+ Open Play",
       "sessions": [
         {
-          "startTime": "2026-10-28T16:00:00",
-          "endTime": "2026-10-28T17:00:00",
+          "startTime": "2026-10-30T19:30:00",
+          "endTime": "2026-10-30T21:30:00",
           "courts": [
-            "1"
+            "1",
+            "2"
           ],
-          "totalRegistered": 4,
+          "totalRegistered": 2,
           "questions": [],
           "registrants": [
-            "Gracie W.",
-            "Marvin M.",
-            "Rachael T.",
-            "Will L."
-          ]
-        }
-      ]
-    },
-    "2300500": {
-      "eventId": "2300500",
-      "title": "3.25+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-02T19:30:00",
-          "endTime": "2026-11-02T21:30:00",
-          "courts": [
-            "4",
-            "5",
-            "7"
-          ],
-          "totalRegistered": 3,
-          "questions": [],
-          "registrants": [
-            "Saurav L.",
-            "Sunny S.",
-            "Toni T."
+            "Benny W.",
+            "Julian B."
           ]
         }
       ]
@@ -1795,6 +1140,37 @@
             "Nilas J.",
             "Rainier A.",
             "Steven R."
+          ]
+        }
+      ]
+    },
+    "2333160": {
+      "eventId": "2333160",
+      "title": "Hosts",
+      "sessions": [
+        {
+          "startTime": "2026-10-28T17:00:00",
+          "endTime": "2026-10-28T22:00:00",
+          "courts": [
+            "Hosts/Guests"
+          ],
+          "totalRegistered": 2,
+          "questions": [],
+          "registrants": [
+            "Kirby E.",
+            "Winnie Z."
+          ]
+        },
+        {
+          "startTime": "2026-10-30T17:00:00",
+          "endTime": "2026-10-30T22:00:00",
+          "courts": [
+            "Hosts/Guests"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Winnie Z."
           ]
         }
       ]
@@ -1898,22 +1274,139 @@
         }
       ]
     },
-    "2234964": {
-      "eventId": "2234964",
-      "title": "Beginner Drills with Coach Martin | 2.5-3.0",
+    "2301936": {
+      "eventId": "2301936",
+      "title": "3.25+ Open Play",
       "sessions": [
         {
-          "startTime": "2026-10-31T08:00:00",
-          "endTime": "2026-10-31T09:00:00",
+          "startTime": "2026-10-28T17:30:00",
+          "endTime": "2026-10-28T19:30:00",
           "courts": [
-            "13"
+            "2",
+            "3",
+            "6"
+          ],
+          "totalRegistered": 15,
+          "questions": [],
+          "registrants": [
+            "Arushi S.",
+            "Emma V.",
+            "George K.",
+            "Ian H.",
+            "Jackson Z.",
+            "Jp D.",
+            "Liam T.",
+            "Mirza H.",
+            "Rachael T.",
+            "Ryan W.",
+            "Simon M.",
+            "Stefan R.",
+            "Steven A.",
+            "Tylah G.",
+            "Wilson L."
+          ]
+        }
+      ]
+    },
+    "2301934": {
+      "eventId": "2301934",
+      "title": "Drilling Workshop w/ Coach Wally",
+      "sessions": [
+        {
+          "startTime": "2026-10-28T17:30:00",
+          "endTime": "2026-10-28T18:30:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 5,
+          "questions": [],
+          "registrants": [
+            "Alvin D.",
+            "Derek L.",
+            "Janet N.",
+            "Janet \ud83e\udd84 N.",
+            "Kadeem H."
+          ]
+        },
+        {
+          "startTime": "2026-11-04T17:30:00",
+          "endTime": "2026-11-04T18:30:00",
+          "courts": [
+            "1"
           ],
           "totalRegistered": 3,
           "questions": [],
           "registrants": [
-            "Ben H.",
-            "Dan Y.",
-            "Nicole E."
+            "Derek L.",
+            "Kyle Y.",
+            "Lenny \ud83d\udc20."
+          ]
+        }
+      ]
+    },
+    "2301942": {
+      "eventId": "2301942",
+      "title": "Advanced Beginner+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-28T19:30:00",
+          "endTime": "2026-10-28T21:30:00",
+          "courts": [
+            "10"
+          ],
+          "totalRegistered": 6,
+          "questions": [],
+          "registrants": [
+            "Chris P.",
+            "Fatima C.",
+            "Giovanni R.",
+            "Jenny T.",
+            "Lin P.",
+            "Lin Yu P."
+          ]
+        }
+      ]
+    },
+    "2340925": {
+      "eventId": "2340925",
+      "title": "Pickleball 201: Offense & Transition Mechanics (Member Perk Clinic)",
+      "sessions": [
+        {
+          "startTime": "2026-10-28T16:00:00",
+          "endTime": "2026-10-28T17:00:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 4,
+          "questions": [],
+          "registrants": [
+            "Gracie W.",
+            "Marvin M.",
+            "Rachael T.",
+            "Will L."
+          ]
+        }
+      ]
+    },
+    "2127713": {
+      "eventId": "2127713",
+      "title": "Pickleball for Parkinson's - VOLUNTEER Sign-up",
+      "sessions": [
+        {
+          "startTime": "2026-10-30T11:00:00",
+          "endTime": "2026-10-30T13:00:00",
+          "courts": [
+            "12"
+          ],
+          "totalRegistered": 6,
+          "questions": [],
+          "registrants": [
+            "Elaine R.",
+            "Jonathan C.",
+            "Lorna B.",
+            "Maria P.",
+            "Matthew S.",
+            "Tony Y."
           ]
         }
       ]
@@ -1933,62 +1426,6 @@
           "registrants": [
             "Dan S.",
             "Dana D."
-          ]
-        }
-      ]
-    },
-    "2337309": {
-      "eventId": "2337309",
-      "title": "4.0+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-10-30T21:30:00",
-          "endTime": "2026-10-30T23:59:00",
-          "courts": [
-            "1"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Benny W."
-          ]
-        }
-      ]
-    },
-    "2340804": {
-      "eventId": "2340804",
-      "title": "Birthday Party",
-      "sessions": [
-        {
-          "startTime": "2026-11-07T13:00:00",
-          "endTime": "2026-11-07T16:00:00",
-          "courts": [
-            "10",
-            "11",
-            "12"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Kevin T."
-          ]
-        }
-      ]
-    },
-    "2302801": {
-      "eventId": "2302801",
-      "title": "4.0+ Open Play",
-      "sessions": [
-        {
-          "startTime": "2026-11-01T11:00:00",
-          "endTime": "2026-11-01T13:00:00",
-          "courts": [
-            "12"
-          ],
-          "totalRegistered": 1,
-          "questions": [],
-          "registrants": [
-            "Jimmy J."
           ]
         }
       ]
@@ -2044,6 +1481,416 @@
         }
       ]
     },
+    "2301962": {
+      "eventId": "2301962",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-29T18:00:00",
+          "endTime": "2026-10-29T20:00:00",
+          "courts": [
+            "3",
+            "5",
+            "6"
+          ],
+          "totalRegistered": 18,
+          "questions": [],
+          "registrants": [
+            "Al E.",
+            "Emma V.",
+            "George H.",
+            "George K.",
+            "John M.",
+            "Johnny H.",
+            "Jordi F.",
+            "Jp D.",
+            "Katie L.",
+            "Lukasz B.",
+            "Nicole H.",
+            "Onson L.",
+            "Pablo R.",
+            "Rachael T.",
+            "Simon M.",
+            "Steven A.",
+            "Tylah G.",
+            "Wilson L."
+          ]
+        }
+      ]
+    },
+    "2299540": {
+      "eventId": "2299540",
+      "title": "3.75 - 4.25 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-02T17:30:00",
+          "endTime": "2026-11-02T19:30:00",
+          "courts": [
+            "1",
+            "2",
+            "4"
+          ],
+          "totalRegistered": 4,
+          "questions": [],
+          "registrants": [
+            "Andrew B.",
+            "Christina N.",
+            "Elena G.",
+            "Isaiah T."
+          ]
+        }
+      ]
+    },
+    "2234964": {
+      "eventId": "2234964",
+      "title": "Beginner Drills with Coach Martin | 2.5-3.0",
+      "sessions": [
+        {
+          "startTime": "2026-10-31T08:00:00",
+          "endTime": "2026-10-31T09:00:00",
+          "courts": [
+            "13"
+          ],
+          "totalRegistered": 3,
+          "questions": [],
+          "registrants": [
+            "Ben H.",
+            "Dan Y.",
+            "Nicole E."
+          ]
+        }
+      ]
+    },
+    "2300500": {
+      "eventId": "2300500",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-02T19:30:00",
+          "endTime": "2026-11-02T21:30:00",
+          "courts": [
+            "4",
+            "5",
+            "7"
+          ],
+          "totalRegistered": 3,
+          "questions": [],
+          "registrants": [
+            "Saurav L.",
+            "Sunny S.",
+            "Toni T."
+          ]
+        }
+      ]
+    },
+    "2266510": {
+      "eventId": "2266510",
+      "title": "3.75-4.25 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-29T20:00:00",
+          "endTime": "2026-10-29T22:00:00",
+          "courts": [
+            "7",
+            "10",
+            "11",
+            "12"
+          ],
+          "totalRegistered": 24,
+          "questions": [],
+          "registrants": [
+            "Andrew H.",
+            "Benny W.",
+            "Dan H.",
+            "Darren H.",
+            "Ghulam M.",
+            "James F.",
+            "Jana P.",
+            "Jesse H.",
+            "Jimmy J.",
+            "John C.",
+            "Jon C.",
+            "Kd P.",
+            "Kevin T.",
+            "Michael C.",
+            "Nick P.",
+            "Richard D.",
+            "Scott L.",
+            "Silvio G.",
+            "Stephanie L.",
+            "Varun M.",
+            "Wright L.",
+            "Yi W.",
+            "Yuyi H.",
+            "Zayd A."
+          ]
+        }
+      ]
+    },
+    "2301844": {
+      "eventId": "2301844",
+      "title": "3.5-4.0 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-03T18:00:00",
+          "endTime": "2026-11-03T20:00:00",
+          "courts": [
+            "8",
+            "10",
+            "11"
+          ],
+          "totalRegistered": 5,
+          "questions": [],
+          "registrants": [
+            "Andrew B.",
+            "Chloe C.",
+            "Christina N.",
+            "Jesse H.",
+            "Liah K."
+          ]
+        }
+      ]
+    },
+    "2301822": {
+      "eventId": "2301822",
+      "title": "Women's 3.25+ Strategic Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-29T18:00:00",
+          "endTime": "2026-10-29T20:00:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 6,
+          "questions": [],
+          "registrants": [
+            "Emily S.",
+            "Gina H.",
+            "Janet N.",
+            "Janet \ud83e\udd84 N.",
+            "Louie T.",
+            "Tori Y."
+          ]
+        }
+      ]
+    },
+    "2300477": {
+      "eventId": "2300477",
+      "title": "3.25-3.75 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-02T17:30:00",
+          "endTime": "2026-11-02T19:30:00",
+          "courts": [
+            "10",
+            "11",
+            "12"
+          ],
+          "totalRegistered": 3,
+          "questions": [],
+          "registrants": [
+            "Liah K.",
+            "Patrick T.",
+            "Toni T."
+          ]
+        }
+      ]
+    },
+    "2301967": {
+      "eventId": "2301967",
+      "title": "3.25-3.75 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-29T20:00:00",
+          "endTime": "2026-10-29T22:00:00",
+          "courts": [
+            "1",
+            "2",
+            "4"
+          ],
+          "totalRegistered": 13,
+          "questions": [],
+          "registrants": [
+            "Anthony A.",
+            "Clarisse E.",
+            "Earl B.",
+            "Emily C.",
+            "Guillermo E.",
+            "Haley K.",
+            "Jordan T.",
+            "Karl H.",
+            "Melody E.",
+            "Rio E.",
+            "Rio Pedro E.",
+            "Toni T.",
+            "Tracy C."
+          ]
+        },
+        {
+          "startTime": "2026-11-05T20:00:00",
+          "endTime": "2026-11-05T22:00:00",
+          "courts": [
+            "1",
+            "2",
+            "4"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Kris S."
+          ]
+        }
+      ]
+    },
+    "2301963": {
+      "eventId": "2301963",
+      "title": "3.5-4.0 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-29T18:00:00",
+          "endTime": "2026-10-29T20:00:00",
+          "courts": [
+            "4"
+          ],
+          "totalRegistered": 8,
+          "questions": [],
+          "registrants": [
+            "Earl B.",
+            "Gina H.",
+            "Guillermo E.",
+            "Jennifer C.",
+            "Liam T.",
+            "Melody E.",
+            "Todd Z.",
+            "Tori Y."
+          ]
+        }
+      ]
+    },
+    "2199540": {
+      "eventId": "2199540",
+      "title": "3.5-4.0 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-30T19:30:00",
+          "endTime": "2026-10-30T21:30:00",
+          "courts": [
+            "10",
+            "11",
+            "12"
+          ],
+          "totalRegistered": 5,
+          "questions": [],
+          "registrants": [
+            "Francis A.",
+            "James F.",
+            "Jana P.",
+            "Paola F.",
+            "Stephanie L."
+          ]
+        }
+      ]
+    },
+    "2301827": {
+      "eventId": "2301827",
+      "title": "3.5-4.0 Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-03T18:00:00",
+          "endTime": "2026-11-03T20:00:00",
+          "courts": [
+            "3"
+          ],
+          "totalRegistered": 4,
+          "questions": [],
+          "registrants": [
+            "Jennifer C.",
+            "Patrick T.",
+            "Todd Z.",
+            "Tori Y."
+          ]
+        }
+      ]
+    },
+    "2290261": {
+      "eventId": "2290261",
+      "title": "Halloween Pickleball Party (Drink, Games, Prize!) | Family Friendly | Bring A Friend 50% OFF",
+      "sessions": [
+        {
+          "startTime": "2026-10-31T19:15:00",
+          "endTime": "2026-10-31T23:59:00",
+          "courts": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "Event Space"
+          ],
+          "totalRegistered": 8,
+          "questions": [
+            {
+              "question": "Selected Playing Levels",
+              "totalResponses": 8,
+              "choices": [
+                {
+                  "choice": "Advanced Beginner",
+                  "count": 0,
+                  "percentage": 0.0,
+                  "players": []
+                },
+                {
+                  "choice": "Intermediate",
+                  "count": 4,
+                  "percentage": 50.0,
+                  "players": [
+                    "Jordi F.",
+                    "Leslie A.",
+                    "Noel L.",
+                    "Victor C."
+                  ]
+                },
+                {
+                  "choice": "High Intermediate",
+                  "count": 4,
+                  "percentage": 50.0,
+                  "players": [
+                    "Andy C.",
+                    "Jonathan Z.",
+                    "Kris S.",
+                    "Newton M."
+                  ]
+                },
+                {
+                  "choice": "Advanced",
+                  "count": 0,
+                  "percentage": 0.0,
+                  "players": []
+                }
+              ]
+            }
+          ],
+          "registrants": [
+            "Andy C.",
+            "Jonathan Z.",
+            "Jordi F.",
+            "Kris S.",
+            "Leslie A.",
+            "Newton M.",
+            "Noel L.",
+            "Victor C."
+          ]
+        }
+      ]
+    },
     "2302787": {
       "eventId": "2302787",
       "title": "Open Play (Int-Adv)",
@@ -2086,6 +1933,26 @@
             "Mandy C.",
             "Maya R.",
             "Tori C."
+          ]
+        }
+      ]
+    },
+    "2167909": {
+      "eventId": "2167909",
+      "title": "Intro to Pickleball with Coach Sze",
+      "sessions": [
+        {
+          "startTime": "2026-11-03T19:00:00",
+          "endTime": "2026-11-03T20:00:00",
+          "courts": [
+            "13"
+          ],
+          "totalRegistered": 3,
+          "questions": [],
+          "registrants": [
+            "Briana D.",
+            "Jennifer S.",
+            "Omer T."
           ]
         }
       ]
@@ -2143,6 +2010,144 @@
             "Antonio S.",
             "Arrah Mae D.",
             "Kenneth X."
+          ]
+        }
+      ]
+    },
+    "2182875": {
+      "eventId": "2182875",
+      "title": "Team Ladder: Fixed Partner | Win Daytime Passes!",
+      "sessions": [
+        {
+          "startTime": "2026-11-01T18:00:00",
+          "endTime": "2026-11-01T20:00:00",
+          "courts": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "totalRegistered": 3,
+          "questions": [],
+          "registrants": [
+            "Arthur L.",
+            "Michael L.",
+            "Nilas J."
+          ]
+        }
+      ]
+    },
+    "2301892": {
+      "eventId": "2301892",
+      "title": "3.5-4.0 Gated Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-03T20:00:00",
+          "endTime": "2026-11-03T22:00:00",
+          "courts": [
+            "1",
+            "2"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Jesse H."
+          ]
+        }
+      ]
+    },
+    "2301838": {
+      "eventId": "2301838",
+      "title": "3.25+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-03T18:00:00",
+          "endTime": "2026-11-03T20:00:00",
+          "courts": [
+            "4",
+            "5",
+            "7"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Monica T."
+          ]
+        }
+      ]
+    },
+    "2184284": {
+      "eventId": "2184284",
+      "title": "Office Hours",
+      "sessions": [
+        {
+          "startTime": "2026-10-30T09:00:00",
+          "endTime": "2026-10-30T11:00:00",
+          "courts": [
+            "10",
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Tony Y."
+          ]
+        }
+      ]
+    },
+    "2337309": {
+      "eventId": "2337309",
+      "title": "4.0+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-10-30T21:30:00",
+          "endTime": "2026-10-30T23:59:00",
+          "courts": [
+            "1"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Benny W."
+          ]
+        }
+      ]
+    },
+    "2340804": {
+      "eventId": "2340804",
+      "title": "Birthday Party",
+      "sessions": [
+        {
+          "startTime": "2026-11-07T13:00:00",
+          "endTime": "2026-11-07T16:00:00",
+          "courts": [
+            "10",
+            "11",
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Kevin T."
+          ]
+        }
+      ]
+    },
+    "2302801": {
+      "eventId": "2302801",
+      "title": "4.0+ Open Play",
+      "sessions": [
+        {
+          "startTime": "2026-11-01T11:00:00",
+          "endTime": "2026-11-01T13:00:00",
+          "courts": [
+            "12"
+          ],
+          "totalRegistered": 1,
+          "questions": [],
+          "registrants": [
+            "Jimmy J."
           ]
         }
       ]
