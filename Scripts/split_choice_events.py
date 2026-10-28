@@ -6,8 +6,8 @@ def clean_event_title(title):
     t = re.sub(r'\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)', '', t, flags=re.I)
     t = re.sub(r'\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
     t = re.sub(r'\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
-    t = re.sub(r'\s*[-–—|/:]\s*$', '', t).strip()
-    t = re.sub(r'^\s*[-–—|/:]\s*', '', t).strip()
+    t = re.sub(r'[\s\-–—|/:]+$', '', t).strip()
+    t = re.sub(r'^[\s\-–—|/:]+', '', t).strip()
     t = re.sub(r'\s{2,}', ' ', t).strip()
     return t
 
@@ -248,7 +248,12 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
         slug = group_slugs.get(assigned_group, 'group')
         orig_title = clean_event_title(item.get('title', 'Event'))
         base_title = re.sub(r'\s*[-–—]\s*(Intermediate|High Intermediate|Advanced|Adv Beg).*', '', orig_title, flags=re.I).strip()
-        new_title = f"{base_title} - {assigned_group}"
+        base_title = re.sub(r'^[\s\-–—|/:]+', '', base_title).strip()
+        base_title = re.sub(r'[\s\-–—|/:]+$', '', base_title).strip()
+        if base_title:
+            new_title = f"{base_title} - {assigned_group}"
+        else:
+            new_title = assigned_group
 
         new_item = dict(item)
         new_item['eventId'] = f"{base_id}_{slug}"

@@ -213,8 +213,8 @@ function cleanTitle(rawTitle) {
     .replace(/\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)/gi, '')
     .replace(/\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
     .replace(/\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
-    .replace(/\s*[-–—|/:]\s*$/g, '')
-    .replace(/^\s*[-–—|/:]\s*/g, '')
+    .replace(/[\s\-–—|/:]+$/g, '')
+    .replace(/^[\s\-–—|/:]+/g, '')
     .trim();
 
   // 1. Explicit Skill Level Matching
@@ -245,14 +245,15 @@ function cleanTitle(rawTitle) {
   mainSegment = mainSegment
     .replace(/\bSessions?\b/gi, '')
     .replace(/\bOpen\s*Play\b/gi, '')
-    .replace(/\bPrime\s*Time\b/gi);
+    .replace(/\bPrime\s*Time\b/gi, '');
 
   mainSegment = mainSegment.replace(/^[\-–—/,\s]+/, '').replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
   mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)/g, '$1 – $2');
 
   let formatted = toSentenceCase(mainSegment);
   formatted = formatted.replace(/\bP4p\b/gi, 'P4P');
-  return formatted || toSentenceCase(fullStr);
+  let result = formatted || toSentenceCase(fullStr);
+  return result.replace(/^[\s\-–—|/:]+/, '').replace(/[\s\-–—|/:]+$/, '').trim();
 }
 
 function resolveQueueLocation(courtsSet, customText) {

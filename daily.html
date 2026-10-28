@@ -327,7 +327,8 @@
 
       firstSegment = firstSegment.replace(/[-–—/,\s]+$/, '').replace(/^[-–—/,\s]+/, '').trim();
       firstSegment = firstSegment.replace(/(\d+(?:\.\d+)?)\s*[-–—]\s*(\d+(?:\.\d+)?)/g, '$1 \u2013 $2');
-      return toSentenceCase(firstSegment) || toSentenceCase(cleaned);
+      let res = toSentenceCase(firstSegment) || toSentenceCase(cleaned);
+      return res.replace(/^[\s\-–—|/:]+/, '').replace(/[\s\-–—|/:]+$/, '').trim();
     }
 
     async function loadSchedule() {

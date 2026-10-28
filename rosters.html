@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Rosters</title>
-  <link rel="stylesheet" href="css/common.css?v=2.2.0" />
+  <link rel="stylesheet" href="css/common.css?v=2.3.2" />
 </head>
 <body class="page-rosters">
   <header>
@@ -38,7 +38,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.1"></script>
+  <script src="js/common.js?v=2.3.2"></script>
   <script>
     async function refreshDisplay() {
       try {
@@ -124,7 +124,7 @@
 
           if (!eventMap[key]) {
             eventMap[key] = {
-              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
+              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event').replace(/^[\s\-–—|/:]+/, ''),
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
               courts: new Set(courtNumbers),
@@ -368,7 +368,7 @@
             card.innerHTML = `
               <div class="card-header">
                 <div class="header-titles">
-                  <div class="line-title">${item.title}</div>
+                  <div class="line-title">${(item.title || '').replace(/^[\s\-–—|/:]+/, '')}</div>
                   <div class="line-courts">${item.courtsLabel}</div>
                 </div>
                 <div class="card-meta">

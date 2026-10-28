@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Sessions</title>
-  <link rel="stylesheet" href="css/common.css?v=2.2.7" />
+  <link rel="stylesheet" href="css/common.css?v=2.3.2" />
 </head>
 <body class="page-index">
   <header>
@@ -44,7 +44,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.1"></script>
+  <script src="js/common.js?v=2.3.2"></script>
   <script>
     // If accessed via staff.ipxbk.com or schedule.ipxbk.com at root, redirect to schedule
     (function() {
@@ -186,7 +186,7 @@
 
           if (!eventMap[key]) {
             eventMap[key] = {
-              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event'),
+              title: cleanTitle(e.title || e.DivisionName || e.EventName || 'Event').replace(/^[\s\-–—|/:]+/, ''),
               startTime: e.startTime || e.StartTime,
               endTime: e.endTime || e.EndTime,
               courts: new Set(courtNumbers),
@@ -298,7 +298,7 @@
             card.className = `session-card ${isNow ? 'is-now' : ''}`;
             
             card.innerHTML = `
-              <div class="session-title">${item.title}</div>
+              <div class="session-title">${(item.title || '').replace(/^[\s\-–—|/:]+/, '')}</div>
               <div class="session-courts">${item.courtsLabel}</div>
               ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
             `;

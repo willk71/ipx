@@ -263,7 +263,7 @@ jobs:
                         | gsub("\\s*[-–—|/]\\s*Play\\s*(til|until|till)\\s*1(:00)?\\s*am\\b"; ""; "i")
                         | gsub("\\bPlay\\s*(til|until|till)\\s*1(:00)?\\s*am\\b"; ""; "i")
                         | gsub("\\s*[-–—|/:]\\s*$"; "")
-                        | gsub("^\\s*[-–—|/:]\\s*"; "")
+                        | gsub("^[\\s\\-–—|/:]+"; "")
                       ),
                       startTime: .StartTime,
                       endTime: .EndTime,

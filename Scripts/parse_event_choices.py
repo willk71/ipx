@@ -6,8 +6,8 @@ def clean_event_title(title):
     t = re.sub(r'\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)', '', t, flags=re.I)
     t = re.sub(r'\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
     t = re.sub(r'\bPlay\s*(?:til|until|till)\s*1(?::00)?\s*am\b', '', t, flags=re.I)
-    t = re.sub(r'\s*[-–—|/:]\s*$', '', t).strip()
-    t = re.sub(r'^\s*[-–—|/:]\s*', '', t).strip()
+    t = re.sub(r'[\s\-–—|/:]+$', '', t).strip()
+    t = re.sub(r'^[\s\-–—|/:]+', '', t).strip()
     t = re.sub(r'\s{2,}', ' ', t).strip()
     return t
 
