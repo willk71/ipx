@@ -1,7 +1,17 @@
 {
-  "lastUpdated": "2026-10-28T21:51:57Z",
+  "lastUpdated": "2026-10-28T22:00:21Z",
   "date": "2026-10-28",
   "courtHosts": [
+    {
+      "start": "19:30",
+      "end": "22:00",
+      "host": "Kirby E"
+    },
+    {
+      "start": "19:00",
+      "end": "22:30",
+      "host": "Winnie Z"
+    },
     {
       "start": "19:30",
       "end": "22:30",
@@ -11,16 +21,6 @@
       "start": "17:45",
       "end": "19:45",
       "host": "Wendy X"
-    },
-    {
-      "start": "19:00",
-      "end": "22:30",
-      "host": "Winnie Z"
-    },
-    {
-      "start": "19:30",
-      "end": "22:00",
-      "host": "Kirby E"
     },
     {
       "start": "17:45",
@@ -90,6 +90,12 @@
       "holderLabel": "Jalen W.",
       "startTime": "2026-10-29T07:00:00",
       "endTime": "2026-10-29T08:00:00"
+    },
+    {
+      "court": "Court 1 (Livestreaming)",
+      "holderLabel": "",
+      "startTime": "2026-10-29T07:00:00",
+      "endTime": "2026-10-29T09:00:00"
     }
   ],
   "events": [
@@ -434,7 +440,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Katie L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301933,
@@ -676,7 +682,7 @@
         "Court 2"
       ],
       "playerName": "Eric E",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301934,
@@ -1497,7 +1503,7 @@
         "Court 6"
       ],
       "playerName": "Katie L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302616,
@@ -2351,7 +2357,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Eric E",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301822,
@@ -2891,7 +2897,7 @@
         "Court 5"
       ],
       "playerName": "Katie L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301822,
@@ -2902,7 +2908,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Katie L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2337264,
@@ -3649,7 +3655,7 @@
         "Court 5"
       ],
       "playerName": "Dagem S",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": "2338066_int",
