@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-28T23:50:17Z",
+  "lastUpdated": "2026-10-28T23:51:53Z",
   "date": "2026-10-28",
   "courtHosts": [
     {
@@ -13,14 +13,14 @@
       "host": "Nelson C"
     },
     {
-      "start": "17:45",
-      "end": "19:45",
-      "host": "Wendy X"
-    },
-    {
       "start": "19:30",
       "end": "22:30",
       "host": "Stephanie L"
+    },
+    {
+      "start": "17:45",
+      "end": "19:45",
+      "host": "Wendy X"
     },
     {
       "start": "19:00",
@@ -260,7 +260,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Gina H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2340925,
@@ -408,7 +408,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Daisy N",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301933,
@@ -492,7 +492,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Jennifer C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301933,
@@ -632,7 +632,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Jeffrey L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301934,
@@ -893,6 +893,50 @@
       ],
       "playerName": "Evan M",
       "checkedIn": true
+    },
+    {
+      "eventId": "2338063_int",
+      "title": "Open Play - Intermediate",
+      "startTime": "2026-10-28T21:30:00",
+      "endTime": "2026-10-28T23:59:00",
+      "courts": [
+        "Court 3",
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Jennifer N",
+      "checkedIn": false
+    },
+    {
+      "eventId": "2338063_highint",
+      "title": "Open Play - High Intermediate",
+      "startTime": "2026-10-28T21:30:00",
+      "endTime": "2026-10-28T23:59:00",
+      "courts": [
+        "Court 8",
+        "Court 6",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Jericho R",
+      "checkedIn": false
+    },
+    {
+      "eventId": "2338066_int",
+      "title": "Open Play - Intermediate",
+      "startTime": "2026-10-29T22:00:00",
+      "endTime": "2026-10-29T23:59:00",
+      "courts": [
+        "Court 1 (Livestreaming)",
+        "Court 7 (Livestreaming)",
+        "Court 3",
+        "Court 6",
+        "Court 5",
+        "Court 2",
+        "Court 8",
+        "Court 4 (Livestreaming)"
+      ],
+      "playerName": "Zoe H",
+      "checkedIn": false
     },
     {
       "eventId": 2301936,
@@ -2083,7 +2127,7 @@
         "Court 7 (Livestreaming)"
       ],
       "playerName": "Jeffrey L",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2266510,
@@ -2784,7 +2828,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Gina H",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301967,
@@ -3016,7 +3060,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Jennifer C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2266510,
@@ -3866,50 +3910,6 @@
         "Court 5"
       ],
       "playerName": "Jackie L",
-      "checkedIn": false
-    },
-    {
-      "eventId": "2338063_int",
-      "title": "Open Play - Intermediate",
-      "startTime": "2026-10-28T21:30:00",
-      "endTime": "2026-10-28T23:59:00",
-      "courts": [
-        "Court 3",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Jennifer N",
-      "checkedIn": false
-    },
-    {
-      "eventId": "2338063_highint",
-      "title": "Open Play - High Intermediate",
-      "startTime": "2026-10-28T21:30:00",
-      "endTime": "2026-10-28T23:59:00",
-      "courts": [
-        "Court 8",
-        "Court 6",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Jericho R",
-      "checkedIn": false
-    },
-    {
-      "eventId": "2338066_int",
-      "title": "Open Play - Intermediate",
-      "startTime": "2026-10-29T22:00:00",
-      "endTime": "2026-10-29T23:59:00",
-      "courts": [
-        "Court 1 (Livestreaming)",
-        "Court 7 (Livestreaming)",
-        "Court 3",
-        "Court 6",
-        "Court 5",
-        "Court 2",
-        "Court 8",
-        "Court 4 (Livestreaming)"
-      ],
-      "playerName": "Zoe H",
       "checkedIn": false
     }
   ]
