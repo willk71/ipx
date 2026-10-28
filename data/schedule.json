@@ -1,22 +1,7 @@
 {
-  "lastUpdated": "2026-10-28T22:01:56Z",
+  "lastUpdated": "2026-10-28T22:10:19Z",
   "date": "2026-10-28",
   "courtHosts": [
-    {
-      "start": "17:45",
-      "end": "19:45",
-      "host": "Wendy X"
-    },
-    {
-      "start": "19:00",
-      "end": "22:30",
-      "host": "Winnie Z"
-    },
-    {
-      "start": "17:45",
-      "end": "19:45",
-      "host": "Nelson C"
-    },
     {
       "start": "19:30",
       "end": "22:30",
@@ -26,6 +11,26 @@
       "start": "19:30",
       "end": "22:00",
       "host": "Kirby E"
+    },
+    {
+      "start": "19:00",
+      "end": "22:30",
+      "host": "Winnie Z"
+    },
+    {
+      "start": "19:00",
+      "end": "22:00",
+      "host": "Sheila B"
+    },
+    {
+      "start": "17:45",
+      "end": "19:45",
+      "host": "Wendy X"
+    },
+    {
+      "start": "17:45",
+      "end": "19:45",
+      "host": "Nelson C"
     }
   ],
   "courtOverrides": [],
@@ -216,7 +221,7 @@
         "Court 10 (Livestreaming)"
       ],
       "playerName": "Alvin D",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301933,
@@ -575,19 +580,6 @@
       "checkedIn": true
     },
     {
-      "eventId": 2301936,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-28T17:30:00",
-      "endTime": "2026-10-28T19:30:00",
-      "courts": [
-        "Court 3",
-        "Court 6",
-        "Court 2"
-      ],
-      "playerName": "Arushi S",
-      "checkedIn": false
-    },
-    {
       "eventId": 2301934,
       "title": "Drilling Workshop w/ Coach Wally",
       "startTime": "2026-10-28T17:30:00",
@@ -596,7 +588,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Alvin D",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301935,
@@ -1007,6 +999,19 @@
       "checkedIn": false
     },
     {
+      "eventId": 2301936,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-28T17:30:00",
+      "endTime": "2026-10-28T19:30:00",
+      "courts": [
+        "Court 3",
+        "Court 6",
+        "Court 2"
+      ],
+      "playerName": "Arushi S",
+      "checkedIn": true
+    },
+    {
       "eventId": 2301947,
       "title": "3.25-3.75 Gated Open Play",
       "startTime": "2026-10-28T19:30:00",
@@ -1017,18 +1022,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Alvin D",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2301942,
-      "title": "Advanced Beginner+ Open Play",
-      "startTime": "2026-10-28T19:30:00",
-      "endTime": "2026-10-28T21:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
-      ],
-      "playerName": "Giovanni R",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2302616,
@@ -1039,6 +1033,17 @@
         "Court 11",
         "Court 8",
         "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Giovanni R",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2301942,
+      "title": "Advanced Beginner+ Open Play",
+      "startTime": "2026-10-28T19:30:00",
+      "endTime": "2026-10-28T21:30:00",
+      "courts": [
+        "Court 10 (Livestreaming)"
       ],
       "playerName": "Giovanni R",
       "checkedIn": false
@@ -1055,17 +1060,6 @@
       ],
       "playerName": "Lukasz B",
       "checkedIn": false
-    },
-    {
-      "eventId": 2318251,
-      "title": "Drilling Workshop w/ Coach Wally",
-      "startTime": "2026-10-28T18:30:00",
-      "endTime": "2026-10-28T19:30:00",
-      "courts": [
-        "Court 1 (Livestreaming)"
-      ],
-      "playerName": "Derek L",
-      "checkedIn": true
     },
     {
       "eventId": 2301944,
@@ -1167,7 +1161,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Emily C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301947,
@@ -1180,7 +1174,7 @@
         "Court 1 (Livestreaming)"
       ],
       "playerName": "Emily C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301947,
@@ -1339,6 +1333,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2301942,
+      "title": "Advanced Beginner+ Open Play",
+      "startTime": "2026-10-28T19:30:00",
+      "endTime": "2026-10-28T21:30:00",
+      "courts": [
+        "Court 10 (Livestreaming)"
+      ],
+      "playerName": "Jenny T",
+      "checkedIn": true
+    },
+    {
       "eventId": 2302616,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-28T19:30:00",
@@ -1347,17 +1352,6 @@
         "Court 11",
         "Court 8",
         "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Jenny T",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2301942,
-      "title": "Advanced Beginner+ Open Play",
-      "startTime": "2026-10-28T19:30:00",
-      "endTime": "2026-10-28T21:30:00",
-      "courts": [
-        "Court 10 (Livestreaming)"
       ],
       "playerName": "Jenny T",
       "checkedIn": true
@@ -2135,6 +2129,17 @@
       "checkedIn": false
     },
     {
+      "eventId": 2318251,
+      "title": "Drilling Workshop w/ Coach Wally",
+      "startTime": "2026-10-28T18:30:00",
+      "endTime": "2026-10-28T19:30:00",
+      "courts": [
+        "Court 1 (Livestreaming)"
+      ],
+      "playerName": "Derek L",
+      "checkedIn": true
+    },
+    {
       "eventId": 2266510,
       "title": "3.75-4.25 Open Play",
       "startTime": "2026-10-29T20:00:00",
@@ -2331,7 +2336,7 @@
         "Court 5"
       ],
       "playerName": "Emily C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2301967,
@@ -2344,7 +2349,7 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Emily C",
-      "checkedIn": false
+      "checkedIn": true
     },
     {
       "eventId": 2303258,
@@ -3105,19 +3110,6 @@
       "checkedIn": false
     },
     {
-      "eventId": "2338063_int",
-      "title": "Open Play - Intermediate",
-      "startTime": "2026-10-28T21:30:00",
-      "endTime": "2026-10-28T23:59:00",
-      "courts": [
-        "Court 3",
-        "Court 4 (Livestreaming)",
-        "Court 5"
-      ],
-      "playerName": "Kint B",
-      "checkedIn": false
-    },
-    {
       "eventId": 2337256,
       "title": "4.0+ Open Play",
       "startTime": "2026-10-28T21:30:00",
@@ -3433,6 +3425,19 @@
         "Court 4 (Livestreaming)"
       ],
       "playerName": "Toni T",
+      "checkedIn": false
+    },
+    {
+      "eventId": "2338063_int",
+      "title": "Open Play - Intermediate",
+      "startTime": "2026-10-28T21:30:00",
+      "endTime": "2026-10-28T23:59:00",
+      "courts": [
+        "Court 3",
+        "Court 4 (Livestreaming)",
+        "Court 5"
+      ],
+      "playerName": "Kint B",
       "checkedIn": false
     },
     {
