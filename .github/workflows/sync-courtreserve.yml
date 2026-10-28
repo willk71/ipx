@@ -30,6 +30,9 @@ jobs:
         env:
           CR_USER: ${{ secrets.CR_USERNAME }}
           CR_PASS: ${{ secrets.CR_PASSWORD }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
           cat << 'PY_SCRIPT' > /tmp/parse_hosts.py
           import datetime, json, os, pytz, re
@@ -281,6 +284,7 @@ jobs:
               }' > data/schedule.json
 
             python3 Scripts/split_choice_events.py || echo "Warning: split_choice_events failed"
+            python3 Scripts/upload_to_kv.py || echo "Warning: upload_to_kv failed" 
 
             rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
 
