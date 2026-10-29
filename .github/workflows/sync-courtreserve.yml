@@ -160,7 +160,7 @@ jobs:
               TO_10D_UTC=$(date -u -d "+10 days" +%Y-%m-%dT%H:%M:%SZ)
               EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeUserDefinedFields=true"
               curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 35 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_10D_URL" -o data/events_10d.json
-              python3 Scripts/parse_event_choices.py || echo "Warning: parse_event_choices failed"
+              python3 Scripts/parse_event_choices.py && touch data/.choices_fresh || echo "Warning: parse_event_choices failed"
               rm -f data/events_10d.json
             else
               echo "Cadence check (${CURRENT_MIN}m): Skipping 10-day choices (runs every ~9m on :00, :09, :18, :27, :36, :45, :54)."
@@ -280,7 +280,7 @@ jobs:
             python3 Scripts/split_choice_events.py || echo "Warning: split_choice_events failed"
             python3 Scripts/upload_to_kv.py || echo "Warning: upload_to_kv failed" 
 
-            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json data/schedule.json data/event-choices.json data/cr_api_discovery.json
+            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json data/schedule.json data/event-choices.json data/cr_api_discovery.json data/.choices_fresh
             echo "Live schedule synced to Cloudflare KV successfully (0 git commits)."
           }
 

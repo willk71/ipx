@@ -54,7 +54,9 @@ def main():
 
     print("Uploading latest schedule data to Cloudflare KV...")
     upload_key(account_id, namespace_id, api_token, "schedule_latest", "data/schedule.json")
-    upload_key(account_id, namespace_id, api_token, "event_choices_latest", "data/event-choices.json")
+    # Only upload event_choices to KV if freshly generated on this run
+    if os.path.exists("data/.choices_fresh") and os.path.exists("data/event-choices.json"):
+        upload_key(account_id, namespace_id, api_token, "event_choices_latest", "data/event-choices.json")
 
 if __name__ == "__main__":
     main()

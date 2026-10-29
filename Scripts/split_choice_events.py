@@ -141,7 +141,24 @@ def allocate_courts(levels, courts_list):
     return assigned_courts
 
 def process_schedule(schedule_path='data/schedule.json', choices_path='data/event-choices.json'):
-    if not os.path.exists(schedule_path) or not os.path.exists(choices_path):
+    if not os.path.exists(schedule_path):
+        return
+
+    # If event-choices.json not generated in this quick pass, fetch latest from Cloudflare KV
+    if not os.path.exists(choices_path):
+        try:
+            import urllib.request
+            url = "https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices"
+            req = urllib.request.Request(url, headers={'User-Agent': 'IPX-Splitter'})
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                if resp.status == 200:
+                    with open(choices_path, 'wb') as f:
+                        f.write(resp.read())
+                    print("Fetched latest event-choices from Cloudflare KV for splitting.")
+        except Exception as e:
+            print(f"Notice: Could not fetch cached event choices from KV: {e}")
+
+    if not os.path.exists(choices_path):
         return
 
     try:
