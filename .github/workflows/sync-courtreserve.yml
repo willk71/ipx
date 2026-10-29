@@ -141,6 +141,7 @@ jobs:
             git reset --hard origin/main --quiet
 
             mkdir -p data
+            rm -f data/event-choices.json data/.choices_fresh
             TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
             FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
             TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
