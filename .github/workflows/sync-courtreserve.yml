@@ -1,9 +1,6 @@
 name: Auto Sync CourtReserve
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
@@ -16,11 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Configure Git Author
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Install Calendar Dependency
         run: |
@@ -286,19 +278,8 @@ jobs:
             python3 Scripts/split_choice_events.py || echo "Warning: split_choice_events failed"
             python3 Scripts/upload_to_kv.py || echo "Warning: upload_to_kv failed" 
 
-            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json
-
-            git add data/schedule.json
-            [ -f data/event-choices.json ] && git add data/event-choices.json
-            [ -f data/cr_api_discovery.json ] && git add data/cr_api_discovery.json
-            if git diff --staged --quiet; then
-              echo "Pass $pass_num: No schedule changes detected."
-            else
-              git commit -m "Auto-update CourtReserve schedule (Pass $pass_num) [skip ci]"
-              git pull --rebase -X theirs origin main || (git rebase --abort && git pull origin main)
-              git push origin main
-              echo "Pass $pass_num: Changes committed and pushed."
-            fi
+            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json data/schedule.json data/event-choices.json data/cr_api_discovery.json
+            echo "Pass $pass_num: Live schedule and event choices synced to Cloudflare KV successfully (0 git commits)."
           }
 
           sync_pass 1
