@@ -15,6 +15,19 @@ import json
 import os
 import re
 
+# Preferred physical court clusters for IPX facility layout:
+# - Intermediate preferred: Courts 3 & 6 (physically paired)
+# - High Intermediate preferred: Courts 4, 5, 7, 8 (contiguous quad pod)
+# - Advanced Beginner preferred: Courts 1 & 2
+# - Advanced preferred: Courts 8, 7, 10, 11, 12, 13
+PREFERRED_PODS = {
+    'Intermediate': ['3', '6', '1', '2', '9'],
+    'High Intermediate': ['4', '5', '7', '8', '10', '11', '12', '13'],
+    'Advanced': ['8', '7', '10', '11', '12', '13', '4', '5'],
+    'Advanced Beginner': ['1', '2', '3', '6', '9']
+}
+
+
 def clean_court_num(c_name):
     clean = re.sub(r'\s*\([^)]*\)', '', str(c_name))
     clean = re.sub(r'^Court\s*', '', clean, flags=re.I).strip()
@@ -41,7 +54,7 @@ def allocate_courts(levels, courts_list):
 
     adv_count = levels.get('Advanced', 0)
     high_int_count = levels.get('High Intermediate', 0)
-    adv_merged = 0 < adv_count < 4 and high_int_count > 0
+    adv_merged = 0 < adv_count <= 4 and high_int_count > 0
 
     adv_beg_count = levels.get('Advanced Beginner', 0)
     int_count = levels.get('Intermediate', 0)
@@ -70,14 +83,33 @@ def allocate_courts(levels, courts_list):
     for i in range(unallocated):
         floors[remainders[i][1]] += 1
 
-    # Assign court slices
-    court_idx = 0
+    # Assign courts respecting IPX physical pods (Intermediate: 3 & 6; High Intermediate: 4, 5, 7, 8)
+    remaining_courts = [clean_court_num(c) for c in courts_list]
     assigned_courts = {}
-    for lvl in standard_order:
-        cnt = floors.get(lvl, 0)
-        if cnt > 0:
-            assigned_courts[lvl] = courts_list[court_idx:court_idx+cnt]
-            court_idx += cnt
+
+    level_priority = ['Intermediate', 'High Intermediate', 'Advanced Beginner', 'Advanced']
+    active_order = [lvl for lvl in level_priority if floors.get(lvl, 0) > 0]
+    for lvl in floors:
+        if floors.get(lvl, 0) > 0 and lvl not in active_order:
+            active_order.append(lvl)
+
+    for lvl in active_order:
+        needed = floors[lvl]
+        pref_list = PREFERRED_PODS.get(lvl, [])
+        lvl_courts = []
+
+        # 1. Take available courts matching preferred list
+        for c in pref_list:
+            if c in remaining_courts and len(lvl_courts) < needed:
+                lvl_courts.append(c)
+                remaining_courts.remove(c)
+
+        # 2. Fill any remainder from remaining available courts
+        while len(lvl_courts) < needed and remaining_courts:
+            lvl_courts.append(remaining_courts.pop(0))
+
+        lvl_courts.sort(key=lambda x: int(x) if x.isdigit() else 999)
+        assigned_courts[lvl] = lvl_courts
 
     # Link merged tiers to their receiving group's courts
     if adv_merged and 'High Intermediate' in assigned_courts:
@@ -162,7 +194,7 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
             # If Adv merges into High Int, Adv players map to High Int group
             adv_count = level_counts.get('Advanced', 0)
             high_int_count = level_counts.get('High Intermediate', 0)
-            adv_merged = 0 < adv_count < 4 and high_int_count > 0
+            adv_merged = 0 < adv_count <= 4 and high_int_count > 0
 
             adv_beg_count = level_counts.get('Advanced Beginner', 0)
             int_count = level_counts.get('Intermediate', 0)
@@ -238,12 +270,19 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
 
         assigned_court_nums = set(court_alloc.get(assigned_group, []))
 
-        # Filter courts for this sub-session
+        # Build courts for this sub-session matching assigned courts
         orig_courts = item.get('courts', [])
-        new_courts = [c for c in orig_courts if clean_court_num(c) in assigned_court_nums]
-        if not new_courts:
-            # Fallback: create Court N strings
-            new_courts = [f"Court {num}" for num in sorted(assigned_court_nums, key=lambda x: int(x) if x.isdigit() else 999)]
+        new_courts = []
+        found_nums = set()
+        for c in orig_courts:
+            c_num = clean_court_num(c)
+            if c_num in assigned_court_nums and c_num not in found_nums:
+                new_courts.append(c)
+                found_nums.add(c_num)
+        for num in sorted(assigned_court_nums, key=lambda x: int(x) if x.isdigit() else 999):
+            if num not in found_nums:
+                new_courts.append(f"Court {num}")
+        new_courts.sort(key=lambda x: int(clean_court_num(x)) if clean_court_num(x).isdigit() else 999)
 
         slug = group_slugs.get(assigned_group, 'group')
         orig_title = clean_event_title(item.get('title', 'Event'))
