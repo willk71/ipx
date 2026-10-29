@@ -40,11 +40,22 @@
 
   <script src="js/common.js?v=2.3.2"></script>
   <script>
+    async function fetchSchedule() {
+      const cacheBust = `_t=${Date.now()}`;
+      try {
+        const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`);
+        if (res.ok) return await res.json();
+      } catch (err) {
+        console.warn("KV fetch failed, falling back to static:", err);
+      }
+      const fallback = await fetch(`data/schedule.json?${cacheBust}`);
+      if (!fallback.ok) throw new Error("Schedule file not found");
+      return await fallback.json();
+    }
+
     async function refreshDisplay() {
       try {
-        const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
-        if (!res.ok) throw new Error("Schedule file not found");
-        const data = await res.json();
+        const data = await fetchSchedule();
 
         const now = new Date();
         document.getElementById('page-refresh-time').textContent = `Display: ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
