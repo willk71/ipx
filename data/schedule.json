@@ -1,21 +1,11 @@
 {
-  "lastUpdated": "2026-10-29T00:18:44Z",
+  "lastUpdated": "2026-10-29T00:20:18Z",
   "date": "2026-10-28",
   "courtHosts": [
     {
       "start": "19:00",
-      "end": "22:00",
-      "host": "Sheila B"
-    },
-    {
-      "start": "19:00",
       "end": "22:30",
       "host": "Winnie Z"
-    },
-    {
-      "start": "17:45",
-      "end": "19:45",
-      "host": "Nelson C"
     },
     {
       "start": "19:30",
@@ -26,6 +16,16 @@
       "start": "19:30",
       "end": "22:00",
       "host": "Kirby E"
+    },
+    {
+      "start": "17:45",
+      "end": "19:45",
+      "host": "Nelson C"
+    },
+    {
+      "start": "19:00",
+      "end": "22:00",
+      "host": "Sheila B"
     },
     {
       "start": "17:45",
@@ -1465,69 +1465,6 @@
       ],
       "playerName": "Jericho R",
       "checkedIn": false
-    },
-    {
-      "eventId": 2303258,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-29T18:00:00",
-      "endTime": "2026-10-29T20:00:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 8",
-        "Court 7 (Livestreaming)"
-      ],
-      "playerName": "Tony c",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2302033,
-      "title": "Advanced Beginners+ Open Play",
-      "startTime": "2026-10-30T19:30:00",
-      "endTime": "2026-10-30T21:30:00",
-      "courts": [
-        "Court 7 (Livestreaming)",
-        "Court 8"
-      ],
-      "playerName": "Catherine Q",
-      "checkedIn": false
-    },
-    {
-      "eventId": 2337268,
-      "title": "3.5-4.0 Gated Open Play",
-      "startTime": "2026-10-29T22:00:00",
-      "endTime": "2026-10-29T23:59:00",
-      "courts": [
-        "Court 12 (Livestreaming)",
-        "Court 11"
-      ],
-      "playerName": "Esther L",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2301970,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-29T20:00:00",
-      "endTime": "2026-10-29T22:00:00",
-      "courts": [
-        "Court 6",
-        "Court 3",
-        "Court 5"
-      ],
-      "playerName": "Dagem S",
-      "checkedIn": true
-    },
-    {
-      "eventId": 2337330,
-      "title": "3.25+ Open Play",
-      "startTime": "2026-10-30T21:30:00",
-      "endTime": "2026-10-30T23:59:00",
-      "courts": [
-        "Court 4 (Livestreaming)",
-        "Court 5",
-        "Court 2"
-      ],
-      "playerName": "Joanne L",
-      "checkedIn": true
     },
     {
       "eventId": 2301936,
@@ -4690,6 +4627,69 @@
         "Court 2"
       ],
       "playerName": "Marvin M",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2303258,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-29T18:00:00",
+      "endTime": "2026-10-29T20:00:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 8",
+        "Court 7 (Livestreaming)"
+      ],
+      "playerName": "Tony c",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2302033,
+      "title": "Advanced Beginners+ Open Play",
+      "startTime": "2026-10-30T19:30:00",
+      "endTime": "2026-10-30T21:30:00",
+      "courts": [
+        "Court 7 (Livestreaming)",
+        "Court 8"
+      ],
+      "playerName": "Catherine Q",
+      "checkedIn": false
+    },
+    {
+      "eventId": 2337268,
+      "title": "3.5-4.0 Gated Open Play",
+      "startTime": "2026-10-29T22:00:00",
+      "endTime": "2026-10-29T23:59:00",
+      "courts": [
+        "Court 12 (Livestreaming)",
+        "Court 11"
+      ],
+      "playerName": "Esther L",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2301970,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-29T20:00:00",
+      "endTime": "2026-10-29T22:00:00",
+      "courts": [
+        "Court 6",
+        "Court 3",
+        "Court 5"
+      ],
+      "playerName": "Dagem S",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2337330,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-30T21:30:00",
+      "endTime": "2026-10-30T23:59:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5",
+        "Court 2"
+      ],
+      "playerName": "Joanne L",
       "checkedIn": true
     },
     {
