@@ -74,6 +74,27 @@ def allocate_courts(levels, courts_list):
     if total_effective == 0:
         return {}
 
+    # Fixed IPX Facility Pod Setup:
+    # When 6-court Open Play uses courts 3, 4, 5, 6, 7, 8:
+    # Always keep physical pods together:
+    # - Intermediate: Courts 3 and 6 (2-court pod)
+    # - High Intermediate: Courts 4, 5, 7, 8 (4-court pod)
+    clean_set = set(clean_court_num(c) for c in courts_list)
+    if clean_set == {'3', '4', '5', '6', '7', '8'} and 'Intermediate' in active_levels and 'High Intermediate' in active_levels:
+        assigned_courts = {
+            'Intermediate': ['3', '6'],
+            'High Intermediate': ['4', '5', '7', '8']
+        }
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+        elif 'Advanced' in active_levels:
+            # If Advanced has its own full court, place on Court 8 within the 4,5,7,8 pod
+            assigned_courts['High Intermediate'] = ['4', '5', '7']
+            assigned_courts['Advanced'] = ['8']
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+        return assigned_courts
+
     # Hamilton-Hare apportionment
     quotas = {lvl: (effective_counts[lvl] / total_effective) * total_courts for lvl in active_levels}
     floors = {lvl: int(quotas[lvl]) for lvl in active_levels}
