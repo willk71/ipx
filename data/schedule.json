@@ -1,11 +1,26 @@
 {
-  "lastUpdated": "2026-10-29T00:10:16Z",
+  "lastUpdated": "2026-10-29T00:11:51Z",
   "date": "2026-10-28",
   "courtHosts": [
+    {
+      "start": "19:30",
+      "end": "22:00",
+      "host": "Kirby E"
+    },
     {
       "start": "17:45",
       "end": "19:45",
       "host": "Wendy X"
+    },
+    {
+      "start": "19:00",
+      "end": "22:00",
+      "host": "Sheila B"
+    },
+    {
+      "start": "17:45",
+      "end": "19:45",
+      "host": "Nelson C"
     },
     {
       "start": "19:30",
@@ -16,21 +31,6 @@
       "start": "19:00",
       "end": "22:30",
       "host": "Winnie Z"
-    },
-    {
-      "start": "17:45",
-      "end": "19:45",
-      "host": "Nelson C"
-    },
-    {
-      "start": "19:30",
-      "end": "22:00",
-      "host": "Kirby E"
-    },
-    {
-      "start": "19:00",
-      "end": "22:00",
-      "host": "Sheila B"
     }
   ],
   "courtOverrides": [],
@@ -3551,6 +3551,18 @@
         "Court 5",
         "Court 6",
         "Court 3"
+      ],
+      "playerName": "Jordi F",
+      "checkedIn": true
+    },
+    {
+      "eventId": 2302017,
+      "title": "3.25+ Open Play",
+      "startTime": "2026-10-30T17:30:00",
+      "endTime": "2026-10-30T19:30:00",
+      "courts": [
+        "Court 4 (Livestreaming)",
+        "Court 5"
       ],
       "playerName": "Jordi F",
       "checkedIn": true
