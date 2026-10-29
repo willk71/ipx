@@ -135,8 +135,7 @@ jobs:
           PY_SCRIPT
 
           sync_pass() {
-            local pass_num="$1"
-            echo "=== Starting Sync Pass $pass_num ==="
+            echo "=== Starting CourtReserve Schedule Sync ==="
 
             git fetch origin main --quiet
             git reset --hard origin/main --quiet
@@ -154,14 +153,17 @@ jobs:
             EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
             curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
 
-            # Pass 1: Fetch 10-day lookahead for event custom choices & tallies
-            if [ "$pass_num" = "1" ]; then
-              echo "Pass 1: Pulling 10-day event registrations for choice tallies..."
+            # Pull 10-day lookahead on ~9 min cadence (0, 9, 18, 27, 36, 45, 54) to conserve API & KV writes
+            CURRENT_MIN=$(TZ="America/New_York" date +%-M)
+            if [ $(( CURRENT_MIN % 9 )) -eq 0 ] || [ "${FORCE_CHOICES:-false}" = "true" ]; then
+              echo "Cadence check (${CURRENT_MIN}m): Pulling 10-day event registrations for choice tallies..."
               TO_10D_UTC=$(date -u -d "+10 days" +%Y-%m-%dT%H:%M:%SZ)
               EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeUserDefinedFields=true"
               curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 35 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_10D_URL" -o data/events_10d.json
               python3 Scripts/parse_event_choices.py || echo "Warning: parse_event_choices failed"
               rm -f data/events_10d.json
+            else
+              echo "Cadence check (${CURRENT_MIN}m): Skipping 10-day choices (runs every ~9m on :00, :09, :18, :27, :36, :45, :54)."
             fi
 
             CHECKIN_URL="https://api.courtreserve.com/api/v1/attendancereport/checkin?checkInStartDate=${TODAY_NY}&includeCourtBooking=true&includeEvents=true"
@@ -279,10 +281,7 @@ jobs:
             python3 Scripts/upload_to_kv.py || echo "Warning: upload_to_kv failed" 
 
             rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json data/schedule.json data/event-choices.json data/cr_api_discovery.json
-            echo "Pass $pass_num: Live schedule and event choices synced to Cloudflare KV successfully (0 git commits)."
+            echo "Live schedule synced to Cloudflare KV successfully (0 git commits)."
           }
 
-          sync_pass 1
-          echo "Pausing 90s for next sync pass..."
-          sleep 90
-          sync_pass 2
+          sync_pass

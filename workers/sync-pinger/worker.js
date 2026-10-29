@@ -1,5 +1,5 @@
 export default {
-  // Cron Trigger handler: runs reliably on schedule via Cloudflare edge
+  // Cron Trigger handler: runs reliably on schedule via Cloudflare edge (every 3 minutes)
   async scheduled(event, env, ctx) {
     ctx.waitUntil(triggerGitHubSync(env));
   },
@@ -93,7 +93,7 @@ export default {
         JSON.stringify(
           {
             pinger: 'active',
-            schedule: 'Every 10 minutes',
+            schedule: 'Every 3 minutes (Events every ~9-10 min)',
             kv_status: kvStatus,
             schedule_bytes: scheduleSize,
             last_schedule_sync: lastUpdated,
@@ -112,7 +112,7 @@ export default {
     }
 
     return new Response(
-      'IPX CourtReserve Sync Pinger & Edge Cache is active.\nEndpoints:\n- /status\n- /trigger\n- /api/schedule\n- /api/event-choices\n',
+      'IPX CourtReserve Sync Pinger & Edge Cache is active.\nSchedule: Every 3 minutes (Events every ~9-10 min).\nEndpoints:\n- /status\n- /trigger\n- /api/schedule\n- /api/event-choices\n',
       { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
     );
   }
