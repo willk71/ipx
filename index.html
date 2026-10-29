@@ -78,14 +78,25 @@
       return `${first} ${lastInit}.`;
     }
 
+    async function fetchSchedule() {
+      const cacheBust = `_t=${Date.now()}`;
+      try {
+        const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`);
+        if (res.ok) return await res.json();
+      } catch (err) {
+        console.warn("KV fetch failed, falling back to static:", err);
+      }
+      const fallback = await fetch(`data/schedule.json?${cacheBust}`);
+      if (!fallback.ok) throw new Error("Schedule file not found");
+      return await fallback.json();
+    }
+
     async function refreshDisplay() {
       let data = {};
       const now = new Date();
 
       try {
-        const res = await fetch(`data/schedule.json?_t=${Date.now()}`);
-        if (!res.ok) throw new Error("Schedule file not found");
-        data = await res.json();
+        data = await fetchSchedule();
       } catch (err) {
         console.error("Error loading schedule data:", err);
         return;

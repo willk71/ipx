@@ -838,14 +838,35 @@
         return;
       }
 
+      async function fetchEventChoices(dataUrl) {
+        const cacheBust = `_t=${Date.now()}`;
+        try {
+          const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices?${cacheBust}`);
+          if (res.ok) return await res.json();
+        } catch (err) {
+          console.warn("KV fetch failed for event choices:", err);
+        }
+        const fallback = await fetch(`${dataUrl}?${cacheBust}`);
+        if (!fallback.ok) throw new Error('Data file not found. Sync may be in progress.');
+        return await fallback.json();
+      }
+
+      async function fetchScheduleFallback(schedUrl) {
+        const cacheBust = `_t=${Date.now()}`;
+        try {
+          const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`);
+          if (res.ok) return await res.json();
+        } catch (err) {
+          console.warn("KV fetch failed for schedule fallback:", err);
+        }
+        const fallback = await fetch(`${schedUrl}?${cacheBust}`);
+        if (fallback.ok) return await fallback.json();
+        return null;
+      }
+
       try {
         const dataUrl = window.location.pathname.includes('/e') ? '../data/event-choices.json' : 'data/event-choices.json';
-        const res = await fetch(`${dataUrl}?_t=${Date.now()}`);
-        if (!res.ok) {
-          throw new Error('Data file not found. Sync may be in progress.');
-        }
-
-        const data = await res.json();
+        const data = await fetchEventChoices(dataUrl);
         const eventInfoEl = document.getElementById('footer-event-info');
         if (eventInfoEl && eventIdParam) {
           eventInfoEl.textContent = `Event #${eventIdParam}`;
@@ -862,9 +883,8 @@
           // Fallback 1: check schedule.json
           try {
             const schedUrl = window.location.pathname.includes('/e') ? '../data/schedule.json' : 'data/schedule.json';
-            const schedRes = await fetch(`${schedUrl}?_t=${Date.now()}`);
-            if (schedRes.ok) {
-              const schedData = await schedRes.json();
+            const schedData = await fetchScheduleFallback(schedUrl);
+            if (schedData) {
               const matchedEvents = (schedData.events || []).filter(e => {
                 const eIdStr = String(e.eventId || '').split('_')[0].trim();
                 return eIdStr === String(eventIdParam).trim();
