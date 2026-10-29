@@ -208,7 +208,8 @@
         "Carlos",
         "Johnpaul",
         "Kadeem",
-        "Nicole"
+        "Nicole",
+        "Richard"
       ],
       "palette": {
         "Carlos": "#1E5F8A",
@@ -216,17 +217,18 @@
         "Kadeem": "#2E7D32",
         "Nicole": "#7B1FA2",
         "Johnpaul": "#C2185B",
+        "Richard": "#0284C7",
         "Will": "#0D9488",
         "Alex": "#E11D48",
         "Sam": "#4F46E5",
         "Jordan": "#D97706",
         "Chris": "#059669"
       },
-      "total_hours": 131.5,
-      "total_shifts": 22,
+      "total_hours": 161.0,
+      "total_shifts": 26,
       "stats": {
         "Carlos": {
-          "hours": 42.0,
+          "hours": 40.5,
           "shifts": 6,
           "color": "#1E5F8A"
         },
@@ -234,6 +236,11 @@
           "hours": 33.0,
           "shifts": 4,
           "color": "#D96B27"
+        },
+        "Richard": {
+          "hours": 31.0,
+          "shifts": 4,
+          "color": "#0284C7"
         },
         "Kadeem": {
           "hours": 15.0,
@@ -262,9 +269,9 @@
         {
           "name": "Carlos",
           "day": 1,
-          "start": 14.5,
-          "end": 23.0,
-          "label": "2:30 PM - 11:00 PM"
+          "start": 15.5,
+          "end": 22.5,
+          "label": "3:30 PM - 10:30 PM"
         },
         {
           "name": "Carlos",
@@ -276,9 +283,9 @@
         {
           "name": "Carlos",
           "day": 3,
-          "start": 10.0,
-          "end": 18.0,
-          "label": "10:00 AM - 6:00 PM"
+          "start": 12.0,
+          "end": 20.0,
+          "label": "12:00 PM - 8:00 PM"
         },
         {
           "name": "Carlos",
@@ -321,6 +328,34 @@
           "start": 13.5,
           "end": 23.0,
           "label": "1:30 PM - 11:00 PM"
+        },
+        {
+          "name": "Richard",
+          "day": 1,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Richard",
+          "day": 2,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Richard",
+          "day": 4,
+          "start": 11.0,
+          "end": 19.0,
+          "label": "11:00 AM - 7:00 PM"
+        },
+        {
+          "name": "Richard",
+          "day": 5,
+          "start": 9.0,
+          "end": 16.0,
+          "label": "9:00 AM - 4:00 PM"
         },
         {
           "name": "Kadeem",

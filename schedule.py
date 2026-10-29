@@ -27,6 +27,7 @@ DEFAULT_PALETTE = {
     "Kadeem": "#2E7D32",
     "Nicole": "#7B1FA2",
     "Johnpaul": "#C2185B",
+    "Richard": "#0284C7",
     "Will": "#0D9488",
     "Alex": "#E11D48",
     "Sam": "#4F46E5",
