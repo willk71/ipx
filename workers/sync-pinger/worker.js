@@ -4,11 +4,11 @@ export default {
     ctx.waitUntil(triggerGitHubSync(env));
   },
 
-  // HTTP handler: provides health check and manual 1-click trigger URL
+  // HTTP handler: edge data delivery, manual trigger, and health checks
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    // Manual on-demand trigger: https://<worker>.workers.dev/trigger?key=YOUR_SECRET
+    // 1. Manual on-demand trigger: /trigger
     if (url.pathname === '/trigger') {
       const key = url.searchParams.get('key');
       if (env.TRIGGER_KEY && key !== env.TRIGGER_KEY) {
@@ -21,8 +21,98 @@ export default {
       });
     }
 
+    // 2. High-speed KV edge delivery for schedule.json
+    if (url.pathname === '/data/schedule.json' || url.pathname === '/api/schedule') {
+      if (env.IPX_DATA) {
+        try {
+          const liveData = await env.IPX_DATA.get('schedule_latest');
+          if (liveData) {
+            return new Response(liveData, {
+              headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Cache-Control': 'public, max-age=10, s-maxage=10',
+                'Access-Control-Allow-Origin': '*',
+                'X-Data-Source': 'cloudflare-kv'
+              }
+            });
+          }
+        } catch (err) {
+          console.error('KV read error for schedule_latest:', err);
+        }
+      }
+      // Seamless fallback to static file if KV is empty or during transition
+      return fetch(`https://ipxbk.com/data/schedule.json?_t=${Date.now()}`);
+    }
+
+    // 3. High-speed KV edge delivery for event-choices.json
+    if (url.pathname === '/data/event-choices.json' || url.pathname === '/api/event-choices') {
+      if (env.IPX_DATA) {
+        try {
+          const liveData = await env.IPX_DATA.get('event_choices_latest');
+          if (liveData) {
+            return new Response(liveData, {
+              headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Cache-Control': 'public, max-age=10, s-maxage=10',
+                'Access-Control-Allow-Origin': '*',
+                'X-Data-Source': 'cloudflare-kv'
+              }
+            });
+          }
+        } catch (err) {
+          console.error('KV read error for event_choices_latest:', err);
+        }
+      }
+      return fetch(`https://ipxbk.com/data/event-choices.json?_t=${Date.now()}`);
+    }
+
+    // 4. Edge Health Check & KV Status
+    if (url.pathname === '/status') {
+      let kvStatus = 'not_bound';
+      let scheduleSize = 0;
+      let lastUpdated = null;
+
+      if (env.IPX_DATA) {
+        kvStatus = 'bound';
+        try {
+          const sample = await env.IPX_DATA.get('schedule_latest');
+          if (sample) {
+            scheduleSize = sample.length;
+            const parsed = JSON.parse(sample);
+            lastUpdated = parsed.lastUpdated || null;
+            kvStatus = 'active_with_data';
+          } else {
+            kvStatus = 'bound_but_empty';
+          }
+        } catch (e) {
+          kvStatus = `error: ${e.message}`;
+        }
+      }
+
+      return new Response(
+        JSON.stringify(
+          {
+            pinger: 'active',
+            schedule: 'Every 10 minutes',
+            kv_status: kvStatus,
+            schedule_bytes: scheduleSize,
+            last_schedule_sync: lastUpdated,
+            server_time_utc: new Date().toISOString()
+          },
+          null,
+          2
+        ),
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      );
+    }
+
     return new Response(
-      'IPX CourtReserve Sync Pinger is active.\nSchedule: Every 10 minutes.\nStatus: Ready.',
+      'IPX CourtReserve Sync Pinger & Edge Cache is active.\nEndpoints:\n- /status\n- /trigger\n- /api/schedule\n- /api/event-choices\n',
       { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
     );
   }
