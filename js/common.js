@@ -287,6 +287,14 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 10 Paddle Rack';
       }
 
+      // Courts 3, 6, 9 queue at Court 6 Table/Rack
+      if (
+        (courtsSet.has('3') && courtsSet.has('6') && courtsSet.has('9') && courtsSet.size === 3) ||
+        (nums.length === 3 && nums.includes(3) && nums.includes(6) && nums.includes(9))
+      ) {
+        return '📍 - Court 6 Table/Rack';
+      }
+
       // Explicit 2-court pair rules
       if (courtsSet.has('6') && courtsSet.has('9') && courtsSet.size === 2) {
         return '📍 - Court 6 Paddle Rack';

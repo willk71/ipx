@@ -45,7 +45,7 @@
     </div>
   </main>
 
-  <script src="js/common.js?v=2.3.2"></script>
+  <script src="js/common.js?v=2.3.3"></script>
   <script>
     async function fetchSchedule() {
       const cacheBust = `_t=${Date.now()}`;
@@ -167,6 +167,7 @@
           '004': 'court 4',
           '4': 'court 4',
           'rack6': 'court 6 paddle rack',
+          'table6': 'court 6 table/rack',
           'court6': 'court 6',
           'c6': 'court 6',
           'rack7': 'court 7 paddle rack',
@@ -239,6 +240,11 @@
             // Flexible matching for court 4: if tablet is set to court 4 (or rack 4),
             // match any queue location at Court 4 (whether labeled "Table" or "Paddle Rack")
             if (targetFilter.includes('court 4') && queueLoc.includes('court 4')) {
+              matchesQueue = true;
+            }
+
+            // Flexible matching for court 6: match any queue location at Court 6 (whether labeled "Table/Rack", "Paddle Rack", or "Table")
+            if (targetFilter.includes('court 6') && queueLoc.includes('court 6')) {
               matchesQueue = true;
             }
 
