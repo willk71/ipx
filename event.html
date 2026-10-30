@@ -375,7 +375,7 @@
     </footer>
   </div>
 
-  <script src="js/common.js?v=2.3.4"></script>
+  <script src="js/common.js?v=2.3.5"></script>
   <script>
     function cleanEventTitle(rawTitle) {
       if (!rawTitle) return '';
@@ -388,8 +388,8 @@
         .replace(/^\s*[-–—|/:]\s*/g, '')
         .trim();
     }
-    const urlParams = new URLSearchParams(window.location.search);
-    let eventIdParam = urlParams.get('id') || urlParams.get('eventId') || urlParams.get('e');
+    const eventParams = new URLSearchParams(window.location.search);
+    let eventIdParam = eventParams.get('id') || eventParams.get('eventId') || eventParams.get('e');
 
     // If no named param, check if the query string itself is the ID (e.g. ?2160558 or ?2160558&)
     if (!eventIdParam && window.location.search) {
@@ -402,7 +402,7 @@
     let cachedEventData = null;
     let selectedSessionIndex = 0;
 
-    function formatTimeWindow(startIso, endIso) {
+    function formatEventTimeWindow(startIso, endIso) {
       if (!startIso) return { dateStr: 'Upcoming Session', timeStr: 'Time TBD' };
       const s = new Date(startIso);
       let e = endIso ? new Date(endIso) : null;
@@ -434,7 +434,7 @@
 
     function renderSession(session, allSessions) {
       const main = document.getElementById('main-content');
-      const timeInfo = formatTimeWindow(session.startTime, session.endTime);
+      const timeInfo = formatEventTimeWindow(session.startTime, session.endTime);
 
       let dateTabsHtml = '';
       if (allSessions && allSessions.length > 1) {
@@ -443,7 +443,7 @@
             <div class="date-selector-label">Upcoming Dates (Next 10 Days)</div>
             <div class="date-tabs">
               ${allSessions.map((s, idx) => {
-                const dt = formatTimeWindow(s.startTime, s.endTime);
+                const dt = formatEventTimeWindow(s.startTime, s.endTime);
                 const active = idx === selectedSessionIndex ? 'is-active' : '';
                 return `
                   <button class="date-tab-btn ${active}" onclick="switchSession(${idx})">
@@ -934,10 +934,10 @@
         // Fallback 2: If event was not found in either data file (e.g. newly created event in CourtReserve before signups or sync)
         // Synthesize a normally formatted page with event info so the page never displays a broken "Event not found" state.
         if (!eventData || !eventData.sessions || eventData.sessions.length === 0) {
-          const customTitle = urlParams.get('title') || urlParams.get('name') || `Event #${eventIdParam}`;
-          const customStart = urlParams.get('start') || urlParams.get('time') || null;
-          const customEnd = urlParams.get('end') || null;
-          const customCourts = urlParams.get('courts') ? urlParams.get('courts').split(',').map(c => c.trim()) : [];
+          const customTitle = eventParams.get('title') || eventParams.get('name') || `Event #${eventIdParam}`;
+          const customStart = eventParams.get('start') || eventParams.get('time') || null;
+          const customEnd = eventParams.get('end') || null;
+          const customCourts = eventParams.get('courts') ? eventParams.get('courts').split(',').map(c => c.trim()) : [];
 
           eventData = {
             eventId: String(eventIdParam).trim(),
