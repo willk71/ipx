@@ -38,7 +38,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.6"></script>
+  <script src="js/common.js?v=2.3.7"></script>
   <script>
     async function fetchSchedule() {
       const cacheBust = `_t=${Date.now()}`;
@@ -379,7 +379,7 @@
             card.innerHTML = `
               <div class="card-header">
                 <div class="header-titles">
-                  <div class="line-title">${(item.title || '').replace(/^[\s\-–—|/:]+/, '')}</div>
+                  <div class="line-title">${(item.title || '').replace(/^(?:Lunch\s+Break|Afternoon)(?:\s+Open\s+Play)?\s*[-–—|:]\s*/i, '').replace(/^[\s\-–—|/:]+/, '')}</div>
                   <div class="line-courts">${item.courtsLabel}</div>
                 </div>
                 <div class="card-meta">

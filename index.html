@@ -90,7 +90,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.6"></script>
+  <script src="js/common.js?v=2.3.7"></script>
   <script>
     // If accessed via staff.ipxbk.com or schedule.ipxbk.com at root, redirect to schedule
     (function() {
@@ -356,7 +356,7 @@
             card.className = `session-card ${isNow ? 'is-now' : ''}`;
             
             card.innerHTML = `
-              <div class="session-title">${(item.title || '').replace(/^[\s\-–—|/:]+/, '')}</div>
+              <div class="session-title">${(item.title || '').replace(/^(?:Lunch\s+Break|Afternoon)(?:\s+Open\s+Play)?\s*[-–—|:]\s*/i, '').replace(/^[\s\-–—|/:]+/, '')}</div>
               <div class="session-courts">${item.courtsLabel}</div>
               ${item.queueText ? `<div class="paddle-queue">${item.queueText}</div>` : ''}
             `;

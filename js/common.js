@@ -217,6 +217,14 @@ function cleanTitle(rawTitle) {
     .replace(/^[\s\-–—|/:]+/g, '')
     .trim();
 
+  // Strip "Afternoon - " and "Lunch Break - " prefixes on Rosters, Sessions, and Tablets (leaving for Events)
+  const stripPrefix = (str) => {
+    const stripped = str.replace(/^(?:Lunch\s+Break|Afternoon)(?:\s+Open\s+Play)?\s*[-–—|:]\s*/i, '');
+    return (stripped && stripped.replace(/\bOpen\s*Play\b/gi, '').trim()) ? stripped : str;
+  };
+
+  fullStr = stripPrefix(fullStr);
+
   // 1. Explicit Skill Level Matching
   if (/intermediate[\s\-–—]+advanced/i.test(fullStr)) {
     return 'Intermediate – Advanced';
@@ -239,6 +247,8 @@ function cleanTitle(rawTitle) {
       break;
     }
   }
+
+  mainSegment = stripPrefix(mainSegment);
 
   mainSegment = mainSegment.replace(/Pickleball\s+for\s+Parkinson'?s/gi, 'P4P');
   mainSegment = mainSegment.replace(/[()]/g, '');

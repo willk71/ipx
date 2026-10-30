@@ -311,6 +311,7 @@
     function cleanTitle(rawTitle) {
       if (!rawTitle) return '';
       let cleaned = String(rawTitle)
+        .replace(/^(?:Lunch\s+Break|Afternoon)(?:\s+Open\s+Play)?\s*[-–—|:]\s*/i, '')
         .replace(/^\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*[-–—|:]*\s*/gi, '')
         .replace(/\s*\(\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\s*\)/gi, '')
         .replace(/\s*[-–—|/]\s*Play\s*(?:til|until|till)\s*1(?::00)?\s*am\b/gi, '')
