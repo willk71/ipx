@@ -145,7 +145,7 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
         return
 
     # If event-choices.json was not freshly generated on this run, fetch latest cached from Cloudflare KV
-    if not os.path.exists('data/.choices_fresh'):
+    if not os.path.exists(choices_path):
         try:
             import urllib.request
             url = "https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices"

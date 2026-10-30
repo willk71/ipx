@@ -141,7 +141,7 @@ jobs:
             git reset --hard origin/main --quiet
 
             mkdir -p data
-            rm -f data/event-choices.json data/.choices_fresh
+            rm -f data/.choices_fresh
             TODAY_NY=$(TZ="America/New_York" date +%Y-%m-%d)
             FROM_UTC=$(date -u -d "-12 hours" +%Y-%m-%dT%H:%M:%SZ)
             TO_UTC=$(date -u -d "+24 hours" +%Y-%m-%dT%H:%M:%SZ)
@@ -157,9 +157,10 @@ jobs:
             # Pull 10-day lookahead on ~9 min cadence (0, 9, 18, 27, 36, 45, 54) to conserve API & KV writes
             CURRENT_MIN=$(TZ="America/New_York" date +%-M)
             if [ $(( CURRENT_MIN % 9 )) -eq 0 ] || [ "${FORCE_CHOICES:-false}" = "true" ]; then
-              echo "Cadence check (${CURRENT_MIN}m): Pulling 10-day event registrations for choice tallies..."
+              echo "Cadence check (${CURRENT_MIN}m): Pulling 10-day event registrations for choice tallies (including 48h lookback)..."
+              FROM_CHOICES_UTC=$(date -u -d "-48 hours" +%Y-%m-%dT%H:%M:%SZ)
               TO_10D_UTC=$(date -u -d "+10 days" +%Y-%m-%dT%H:%M:%SZ)
-              EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeUserDefinedFields=true"
+              EVENT_10D_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_CHOICES_UTC}&eventDateTo=${TO_10D_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true&includeUserDefinedFields=true"
               curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 35 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_10D_URL" -o data/events_10d.json
               python3 Scripts/parse_event_choices.py && touch data/.choices_fresh || echo "Warning: parse_event_choices failed"
               rm -f data/events_10d.json

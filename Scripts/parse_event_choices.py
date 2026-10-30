@@ -14,7 +14,7 @@ def clean_event_title(title):
 import json
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 IGNORED_QUESTION_TERMS = [
     'emergency', 'contact', 'phone', 'zip', 'postal', 'address',
@@ -296,38 +296,54 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 q_obj['playersByChoice'][norm_a] = []
             q_obj['playersByChoice'][norm_a].append(display_name)
 
-    # 1. Preserve any upcoming sessions from existing output_path that weren't in events_10d
-    if output_path and os.path.exists(output_path):
-        try:
-            with open(output_path, 'r', encoding='utf-8') as prev_f:
-                prev_data = json.load(prev_f)
-                now_iso = datetime.now(timezone.utc).isoformat()
-                for prev_id, prev_ev in prev_data.get('events', {}).items():
-                    for s in prev_ev.get('sessions', []):
-                        s_time = s.get('startTime') or ''
-                        e_time = s.get('endTime') or s_time
-                        if e_time and e_time > now_iso:
-                            s_key = f"{prev_id}_{s_time}"
-                            if s_key not in events_by_id:
-                                events_by_id[s_key] = {
-                                    'eventId': prev_id,
-                                    'title': clean_event_title(prev_ev.get('title') or 'Event'),
-                                    'startTime': s_time,
-                                    'endTime': s.get('endTime') or '',
-                                    'courts': s.get('courts') or [],
-                                    'totalRegistered': s.get('totalRegistered') or 0,
-                                    'questions': {
-                                        q['question']: {
-                                            'question': q['question'],
-                                            'totalResponses': q['totalResponses'],
-                                            'tallies': {c['choice']: c['count'] for c in q.get('choices', [])},
-                                            'playersByChoice': {c['choice']: c.get('players', []) for c in q.get('choices', [])}
-                                        } for q in s.get('questions', [])
-                                    },
-                                    'registrants': s.get('registrants') or []
-                                }
-        except Exception as ex:
-            print(f"Error preserving existing sessions from {output_path}: {ex}")
+    # 1. Preserve recent & upcoming sessions (7-day retention) from existing cache
+    if output_path:
+        # If output_path does not exist locally, fetch from Cloudflare KV
+        if not os.path.exists(output_path):
+            try:
+                import urllib.request
+                url = "https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices"
+                req = urllib.request.Request(url, headers={'User-Agent': 'IPX-Choice-Preserver'})
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    if resp.status == 200:
+                        with open(output_path, 'wb') as f:
+                            f.write(resp.read())
+                        print(f"Fetched existing choices from KV for preservation into {output_path}.")
+            except Exception as e:
+                print(f"Notice: Could not fetch cached choices from KV: {e}")
+
+        if os.path.exists(output_path):
+            try:
+                with open(output_path, 'r', encoding='utf-8') as prev_f:
+                    prev_data = json.load(prev_f)
+                    cutoff_iso = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+                    for prev_id, prev_ev in prev_data.get('events', {}).items():
+                        for s in prev_ev.get('sessions', []):
+                            s_time = s.get('startTime') or ''
+                            e_time = s.get('endTime') or s_time
+                            if e_time and e_time >= cutoff_iso:
+                                s_key = f"{prev_id}_{s_time}"
+                                if s_key not in events_by_id:
+                                    events_by_id[s_key] = {
+                                        'eventId': prev_id,
+                                        'title': clean_event_title(prev_ev.get('title') or 'Event'),
+                                        'startTime': s_time,
+                                        'endTime': s.get('endTime') or '',
+                                        'courts': s.get('courts') or [],
+                                        'totalRegistered': s.get('totalRegistered') or 0,
+                                        'courtAllocations': s.get('courtAllocations'),
+                                        'questions': {
+                                            q['question']: {
+                                                'question': q['question'],
+                                                'totalResponses': q['totalResponses'],
+                                                'tallies': {c['choice']: c['count'] for c in q.get('choices', [])},
+                                                'playersByChoice': {c['choice']: c.get('players', []) for c in q.get('choices', [])}
+                                            } for q in s.get('questions', [])
+                                        },
+                                        'registrants': s.get('registrants') or []
+                                    }
+            except Exception as ex:
+                print(f"Error preserving existing sessions from {output_path}: {ex}")
 
     # 2. Backfill events and registrants from schedule.json
     if schedule_path and os.path.exists(schedule_path):
@@ -335,7 +351,11 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
             with open(schedule_path, 'r', encoding='utf-8') as sf:
                 sched_data = json.load(sf)
                 for e in sched_data.get('events', []):
-                    raw_eid = str(e.get('eventId') or '').split('_')[0].strip()
+                    # Never backfill from split sub-events (e.g. 2338066_int) as they have altered titles and truncated courts
+                    raw_eid_full = str(e.get('eventId') or '').strip()
+                    if '_' in raw_eid_full:
+                        continue
+                    raw_eid = raw_eid_full
                     if not raw_eid:
                         continue
                     s_time = e.get('startTime') or ''
@@ -434,14 +454,17 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
                 'choices': tallies_with_pct
             })
 
-        result['events'][e_id]['sessions'].append({
+        sess_item = {
             'startTime': s_data['startTime'],
             'endTime': s_data['endTime'],
             'courts': s_data['courts'],
             'totalRegistered': s_data['totalRegistered'],
             'questions': q_list,
             'registrants': sorted(s_data.get('registrants', []))
-        })
+        }
+        if s_data.get('courtAllocations'):
+            sess_item['courtAllocations'] = s_data['courtAllocations']
+        result['events'][e_id]['sessions'].append(sess_item)
 
     # Sort sessions by startTime for each event
     for e_id in result['events']:
