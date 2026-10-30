@@ -372,6 +372,138 @@ function resolveQueueLocation(courtsSet, customText) {
   return '📍 - ' + cleanLoc;
 }
 
+// --- Unified IPX Pod Court Allocation Engine ---
+const PREFERRED_PODS = {
+  'Intermediate': ['3', '6', '1', '2', '9'],
+  'High Intermediate': ['4', '5', '7', '8', '10', '11', '12', '13'],
+  'Advanced': ['8', '7', '10', '11', '12', '13', '4', '5'],
+  'Advanced Beginner': ['1', '2', '3', '6', '9']
+};
+
+function cleanCourtNumber(c) {
+  if (!c) return '';
+  return String(c)
+    .replace(/\s*\([^)]*\)/g, '')
+    .replace(/^Court\s*/i, '')
+    .trim();
+}
+
+function allocateCourts(levels, courtsList) {
+  const cleanCourts = (courtsList || []).map(cleanCourtNumber).filter(Boolean);
+  const totalCourts = cleanCourts.length;
+  if (totalCourts === 0) return {};
+
+  const advCount = levels['Advanced'] || 0;
+  const highIntCount = levels['High Intermediate'] || 0;
+  const advMerged = advCount > 0 && advCount <= 4 && highIntCount > 0;
+
+  const advBegCount = levels['Advanced Beginner'] || 0;
+  const intCount = levels['Intermediate'] || 0;
+  const advBegMerged = advBegCount > 0 && advBegCount < 4 && intCount > 0;
+
+  const effectiveCounts = { ...levels };
+  if (advMerged) {
+    effectiveCounts['High Intermediate'] = (effectiveCounts['High Intermediate'] || 0) + advCount;
+    effectiveCounts['Advanced'] = 0;
+  }
+  if (advBegMerged) {
+    effectiveCounts['Intermediate'] = (effectiveCounts['Intermediate'] || 0) + advBegCount;
+    effectiveCounts['Advanced Beginner'] = 0;
+  }
+
+  const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
+  const activeLevels = standardOrder.filter(lvl => (effectiveCounts[lvl] || 0) > 0);
+  const totalEffective = activeLevels.reduce((sum, lvl) => sum + effectiveCounts[lvl], 0);
+  if (totalEffective === 0) return {};
+
+  // Fixed IPX Facility Pod Setup:
+  // When 6-court Open Play uses courts 3, 4, 5, 6, 7, 8:
+  // Always keep physical pods together:
+  // - Intermediate: Courts 3 and 6 (2-court pod)
+  // - High Intermediate: Courts 4, 5, 7, 8 (4-court pod)
+  const cleanSet = new Set(cleanCourts);
+  const isFixed6Court = cleanSet.size === 6 && ['3', '4', '5', '6', '7', '8'].every(c => cleanSet.has(c));
+
+  if (isFixed6Court && activeLevels.includes('Intermediate') && activeLevels.includes('High Intermediate')) {
+    const assignedCourts = {
+      'Intermediate': ['3', '6'],
+      'High Intermediate': ['4', '5', '7', '8']
+    };
+    if (advMerged) {
+      assignedCourts['Advanced'] = assignedCourts['High Intermediate'];
+    } else if (activeLevels.includes('Advanced')) {
+      assignedCourts['High Intermediate'] = ['4', '5', '7'];
+      assignedCourts['Advanced'] = ['8'];
+    }
+    if (advBegMerged) {
+      assignedCourts['Advanced Beginner'] = assignedCourts['Intermediate'];
+    }
+    return assignedCourts;
+  }
+
+  // Hamilton-Hare largest remainder apportionment
+  const quotas = {};
+  const floors = {};
+  activeLevels.forEach(lvl => {
+    quotas[lvl] = (effectiveCounts[lvl] / totalEffective) * totalCourts;
+    floors[lvl] = Math.floor(quotas[lvl]);
+  });
+
+  const assignedSum = activeLevels.reduce((sum, lvl) => sum + floors[lvl], 0);
+  const remainders = activeLevels.map(lvl => ({
+    level: lvl,
+    rem: quotas[lvl] - floors[lvl]
+  })).sort((a, b) => b.rem - a.rem);
+
+  for (let i = 0; i < (totalCourts - assignedSum); i++) {
+    floors[remainders[i].level]++;
+  }
+
+  // Assign courts respecting IPX physical pods
+  const remainingCourts = [...cleanCourts];
+  const assignedCourts = {};
+
+  const levelPriority = ['Intermediate', 'High Intermediate', 'Advanced Beginner', 'Advanced'];
+  const activeOrder = levelPriority.filter(lvl => (floors[lvl] || 0) > 0);
+  Object.keys(floors).forEach(lvl => {
+    if (floors[lvl] > 0 && !activeOrder.includes(lvl)) {
+      activeOrder.push(lvl);
+    }
+  });
+
+  activeOrder.forEach(lvl => {
+    const needed = floors[lvl];
+    const prefList = PREFERRED_PODS[lvl] || [];
+    const lvlCourts = [];
+
+    // 1. Take available courts matching preferred list
+    for (const c of prefList) {
+      const idx = remainingCourts.indexOf(c);
+      if (idx !== -1 && lvlCourts.length < needed) {
+        lvlCourts.push(c);
+        remainingCourts.splice(idx, 1);
+      }
+    }
+
+    // 2. Fill remainder from remaining available courts
+    while (lvlCourts.length < needed && remainingCourts.length > 0) {
+      lvlCourts.push(remainingCourts.shift());
+    }
+
+    lvlCourts.sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+    assignedCourts[lvl] = lvlCourts;
+  });
+
+  if (advMerged && assignedCourts['High Intermediate']) {
+    assignedCourts['Advanced'] = assignedCourts['High Intermediate'];
+  }
+  if (advBegMerged && assignedCourts['Intermediate']) {
+    assignedCourts['Advanced Beginner'] = assignedCourts['Intermediate'];
+  }
+
+  return assignedCourts;
+}
+
 function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   if (!Array.isArray(overridesList) || overridesList.length === 0) return;
 

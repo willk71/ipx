@@ -375,6 +375,7 @@
     </footer>
   </div>
 
+  <script src="js/common.js?v=2.3.4"></script>
   <script>
     function cleanEventTitle(rawTitle) {
       if (!rawTitle) return '';
@@ -518,9 +519,13 @@
           // Re-calculate percentages based on valid choices
           const validTotal = validChoices.reduce((sum, c) => sum + c.count, 0);
 
-          // Proportional Court Allocation & Advanced Merging
+          // Proportional Court Allocation & IPX Pod Rules
+          const cleanCourt = typeof cleanCourtNumber === 'function' 
+            ? cleanCourtNumber 
+            : (c) => String(c).replace(/\s*\([^)]*\)/g, '').replace(/^Court\s*/i, '').trim();
+
           const cleanCourts = (session.courts || [])
-            .map(c => String(c).replace(/\s*\([^)]*\)/g, '').replace(/^Court\s*/i, '').trim())
+            .map(cleanCourt)
             .filter(Boolean)
             .sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0));
 
@@ -531,87 +536,102 @@
 
             const advCount = countByLevel['Advanced'] || 0;
             const highIntCount = countByLevel['High Intermediate'] || 0;
-            const advMerged = advCount > 0 && advCount < 4 && highIntCount > 0;
+            const advMerged = advCount > 0 && advCount <= 4 && highIntCount > 0;
 
             const advBegCount = countByLevel['Advanced Beginner'] || 0;
             const intCount = countByLevel['Intermediate'] || 0;
             const advBegMerged = advBegCount > 0 && advBegCount < 4 && intCount > 0;
 
-            const effectiveCounts = { ...countByLevel };
-            if (advMerged) {
-              effectiveCounts['High Intermediate'] = (effectiveCounts['High Intermediate'] || 0) + advCount;
-              effectiveCounts['Advanced'] = 0;
-            }
-            if (advBegMerged) {
-              effectiveCounts['Intermediate'] = (effectiveCounts['Intermediate'] || 0) + advBegCount;
-              effectiveCounts['Advanced Beginner'] = 0;
+            // 1. Check if server pre-computed courtAllocations are present in session
+            let courtAlloc = session.courtAllocations;
+
+            // 2. Fall back to shared allocateCourts engine if not pre-computed or dynamically modified
+            if (!courtAlloc || Object.keys(courtAlloc).length === 0) {
+              if (typeof allocateCourts === 'function' && cleanCourts.length > 0) {
+                courtAlloc = allocateCourts(countByLevel, cleanCourts);
+              }
             }
 
             const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
-            const activeLevels = standardOrder.filter(lvl => (effectiveCounts[lvl] || 0) > 0);
-            const totalEffective = activeLevels.reduce((sum, lvl) => sum + effectiveCounts[lvl], 0);
 
-            const totalCourtsAvailable = cleanCourts.length > 0 
-              ? cleanCourts.length 
-              : Math.max(1, Math.ceil(totalEffective / 6));
-
-            if (totalEffective > 0 && totalCourtsAvailable > 0) {
-              // Largest Remainder (Hamilton-Hare) apportionment
-              const quotas = {};
-              const floors = {};
-              activeLevels.forEach(lvl => {
-                quotas[lvl] = (effectiveCounts[lvl] / totalEffective) * totalCourtsAvailable;
-                floors[lvl] = Math.floor(quotas[lvl]);
-              });
-
-              let assignedSum = activeLevels.reduce((sum, lvl) => sum + floors[lvl], 0);
-              const remainders = activeLevels.map(lvl => ({
-                level: lvl,
-                rem: quotas[lvl] - floors[lvl]
-              })).sort((a, b) => b.rem - a.rem);
-
-              for (let i = 0; i < (totalCourtsAvailable - assignedSum); i++) {
-                floors[remainders[i].level]++;
-              }
-
-              // Pass 1: Assign actual courts or count to levels that have allocated courts
-              const assignedCourtsByLevel = {};
-              let courtIdx = 0;
+            if (courtAlloc && Object.keys(courtAlloc).length > 0) {
               standardOrder.forEach(lvl => {
-                const numCourts = floors[lvl] || 0;
-                if (numCourts > 0) {
-                  if (cleanCourts.length >= totalCourtsAvailable) {
-                    const assigned = cleanCourts.slice(courtIdx, courtIdx + numCourts);
-                    courtIdx += numCourts;
-                    assignedCourtsByLevel[lvl] = (assigned.length === 1 ? 'Court ' : 'Courts ') + assigned.join(', ');
+                const assigned = courtAlloc[lvl];
+                if (lvl === 'Advanced' && advMerged) {
+                  const targetCourts = courtAlloc['High Intermediate'];
+                  if (targetCourts && targetCourts.length > 0) {
+                    const courtsText = (targetCourts.length === 1 ? 'Court ' : 'Courts ') + targetCourts.join(', ');
+                    courtLabelsByChoice[lvl] = `Merge w/ High Int (${courtsText})`;
                   } else {
-                    assignedCourtsByLevel[lvl] = `${numCourts} ${numCourts === 1 ? 'Court' : 'Courts'}`;
+                    courtLabelsByChoice[lvl] = 'Merge w/ High Int';
                   }
-                }
-              });
-
-              // Pass 2: Set label for each level, including merge notices
-              standardOrder.forEach(lvl => {
-                if (assignedCourtsByLevel[lvl]) {
-                  courtLabelsByChoice[lvl] = assignedCourtsByLevel[lvl];
-                } else if (lvl === 'Advanced' && advMerged) {
-                  const targetCourts = assignedCourtsByLevel['High Intermediate'];
-                  courtLabelsByChoice[lvl] = targetCourts 
-                    ? `Merge w/ High Int (${targetCourts})`
-                    : 'Merge w/ High Int';
                 } else if (lvl === 'Advanced Beginner' && advBegMerged) {
-                  const targetCourts = assignedCourtsByLevel['Intermediate'];
-                  courtLabelsByChoice[lvl] = targetCourts 
-                    ? `Merge w/ Int (${targetCourts})`
-                    : 'Merge w/ Int';
+                  const targetCourts = courtAlloc['Intermediate'];
+                  if (targetCourts && targetCourts.length > 0) {
+                    const courtsText = (targetCourts.length === 1 ? 'Court ' : 'Courts ') + targetCourts.join(', ');
+                    courtLabelsByChoice[lvl] = `Merge w/ Int (${courtsText})`;
+                  } else {
+                    courtLabelsByChoice[lvl] = 'Merge w/ Int';
+                  }
+                } else if (assigned && assigned.length > 0) {
+                  courtLabelsByChoice[lvl] = (assigned.length === 1 ? 'Court ' : 'Courts ') + assigned.join(', ');
                 } else {
                   courtLabelsByChoice[lvl] = '0 Courts';
                 }
               });
             } else {
-              standardOrder.forEach(lvl => {
-                courtLabelsByChoice[lvl] = '0 Courts';
-              });
+              // Fallback when cleanCourts is empty (e.g. courts not yet configured in CourtReserve)
+              const effectiveCounts = { ...countByLevel };
+              if (advMerged) {
+                effectiveCounts['High Intermediate'] = (effectiveCounts['High Intermediate'] || 0) + advCount;
+                effectiveCounts['Advanced'] = 0;
+              }
+              if (advBegMerged) {
+                effectiveCounts['Intermediate'] = (effectiveCounts['Intermediate'] || 0) + advBegCount;
+                effectiveCounts['Advanced Beginner'] = 0;
+              }
+
+              const activeLevels = standardOrder.filter(lvl => (effectiveCounts[lvl] || 0) > 0);
+              const totalEffective = activeLevels.reduce((sum, lvl) => sum + effectiveCounts[lvl], 0);
+              const totalCourtsAvailable = Math.max(1, Math.ceil(totalEffective / 6));
+
+              if (totalEffective > 0 && totalCourtsAvailable > 0) {
+                const quotas = {};
+                const floors = {};
+                activeLevels.forEach(lvl => {
+                  quotas[lvl] = (effectiveCounts[lvl] / totalEffective) * totalCourtsAvailable;
+                  floors[lvl] = Math.floor(quotas[lvl]);
+                });
+
+                let assignedSum = activeLevels.reduce((sum, lvl) => sum + floors[lvl], 0);
+                const remainders = activeLevels.map(lvl => ({
+                  level: lvl,
+                  rem: quotas[lvl] - floors[lvl]
+                })).sort((a, b) => b.rem - a.rem);
+
+                for (let i = 0; i < (totalCourtsAvailable - assignedSum); i++) {
+                  floors[remainders[i].level]++;
+                }
+
+                standardOrder.forEach(lvl => {
+                  const numCourts = floors[lvl] || 0;
+                  if (numCourts > 0) {
+                    courtLabelsByChoice[lvl] = `${numCourts} ${numCourts === 1 ? 'Court' : 'Courts'}`;
+                  } else if (lvl === 'Advanced' && advMerged) {
+                    const hiNum = floors['High Intermediate'] || 0;
+                    courtLabelsByChoice[lvl] = hiNum > 0 ? `Merge w/ High Int (${hiNum} Courts)` : 'Merge w/ High Int';
+                  } else if (lvl === 'Advanced Beginner' && advBegMerged) {
+                    const intNum = floors['Intermediate'] || 0;
+                    courtLabelsByChoice[lvl] = intNum > 0 ? `Merge w/ Int (${intNum} Courts)` : 'Merge w/ Int';
+                  } else {
+                    courtLabelsByChoice[lvl] = '0 Courts';
+                  }
+                });
+              } else {
+                standardOrder.forEach(lvl => {
+                  courtLabelsByChoice[lvl] = '0 Courts';
+                });
+              }
             }
           }
 

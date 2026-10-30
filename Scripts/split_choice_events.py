@@ -228,6 +228,9 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
             if not court_alloc:
                 continue
 
+            # Attach unified courtAllocations directly to choices session for 100% parity across all screens
+            session['courtAllocations'] = court_alloc
+
             # Map players to active sub-session group
             # If Adv merges into High Int, Adv players map to High Int group
             adv_count = level_counts.get('Advanced', 0)
@@ -343,6 +346,13 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
 
     with open(schedule_path, 'w', encoding='utf-8') as out:
         json.dump(schedule, out, indent=2)
+
+    try:
+        with open(choices_path, 'w', encoding='utf-8') as out_c:
+            json.dump(choices, out_c, indent=2)
+        print(f"Updated {choices_path} with unified courtAllocations.")
+    except Exception as e:
+        print(f"Notice: Could not write courtAllocations to {choices_path}: {e}")
 
     print(f"Successfully split choice events: updated {modified_count} registrant records in {schedule_path}.")
 
