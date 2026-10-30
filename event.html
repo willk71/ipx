@@ -375,7 +375,7 @@
     </footer>
   </div>
 
-  <script src="js/common.js?v=2.3.5"></script>
+  <script src="js/common.js?v=2.3.6"></script>
   <script>
     function cleanEventTitle(rawTitle) {
       if (!rawTitle) return '';
@@ -524,9 +524,17 @@
             ? cleanCourtNumber 
             : (c) => String(c).replace(/\s*\([^)]*\)/g, '').replace(/^Court\s*/i, '').trim();
 
+          const isCourtExcluded = typeof isCourtExcludedFromAllocation === 'function'
+            ? isCourtExcludedFromAllocation
+            : (c) => {
+                if (!c) return true;
+                const cl = cleanCourt(c).toLowerCase();
+                return cl === '13' || cl.includes('event space');
+              };
+
           const cleanCourts = (session.courts || [])
             .map(cleanCourt)
-            .filter(Boolean)
+            .filter(c => Boolean(c) && !isCourtExcluded(c))
             .sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0));
 
           const courtLabelsByChoice = {};

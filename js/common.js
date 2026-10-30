@@ -375,8 +375,8 @@ function resolveQueueLocation(courtsSet, customText) {
 // --- Unified IPX Pod Court Allocation Engine ---
 const PREFERRED_PODS = {
   'Intermediate': ['3', '6', '1', '2', '9'],
-  'High Intermediate': ['4', '5', '7', '8', '10', '11', '12', '13'],
-  'Advanced': ['8', '7', '10', '11', '12', '13', '4', '5'],
+  'High Intermediate': ['4', '5', '7', '8', '10', '11', '12'],
+  'Advanced': ['8', '7', '10', '11', '12', '4', '5'],
   'Advanced Beginner': ['1', '2', '3', '6', '9']
 };
 
@@ -388,8 +388,16 @@ function cleanCourtNumber(c) {
     .trim();
 }
 
+function isCourtExcludedFromAllocation(c) {
+  if (!c) return true;
+  const clean = cleanCourtNumber(c).toLowerCase();
+  return clean === '13' || clean.includes('event space');
+}
+
 function allocateCourts(levels, courtsList) {
-  const cleanCourts = (courtsList || []).map(cleanCourtNumber).filter(Boolean);
+  const cleanCourts = (courtsList || [])
+    .map(cleanCourtNumber)
+    .filter(c => Boolean(c) && !isCourtExcludedFromAllocation(c));
   const totalCourts = cleanCourts.length;
   if (totalCourts === 0) return {};
 

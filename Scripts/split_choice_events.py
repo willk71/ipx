@@ -22,8 +22,8 @@ import re
 # - Advanced preferred: Courts 8, 7, 10, 11, 12, 13
 PREFERRED_PODS = {
     'Intermediate': ['3', '6', '1', '2', '9'],
-    'High Intermediate': ['4', '5', '7', '8', '10', '11', '12', '13'],
-    'Advanced': ['8', '7', '10', '11', '12', '13', '4', '5'],
+    'High Intermediate': ['4', '5', '7', '8', '10', '11', '12'],
+    'Advanced': ['8', '7', '10', '11', '12', '4', '5'],
     'Advanced Beginner': ['1', '2', '3', '6', '9']
 }
 
@@ -32,6 +32,12 @@ def clean_court_num(c_name):
     clean = re.sub(r'\s*\([^)]*\)', '', str(c_name))
     clean = re.sub(r'^Court\s*', '', clean, flags=re.I).strip()
     return clean
+
+def is_court_excluded_from_allocation(c_name):
+    if not c_name:
+        return True
+    clean = clean_court_num(c_name).lower()
+    return clean == '13' or 'event space' in clean
 
 def normalize_player_name(raw_name):
     if not raw_name:
@@ -45,10 +51,12 @@ def normalize_player_name(raw_name):
 def allocate_courts(levels, courts_list):
     """
     Allocates courts proportionally across playing levels using Hamilton-Hare apportionment.
-    Merges Advanced < 4 into High Intermediate, and Adv Beg < 4 into Intermediate.
+    Merges Advanced <= 4 into High Intermediate, and Adv Beg < 4 into Intermediate.
+    Excludes Court 13 and Event Space from assignment calculations.
     Returns: dict of level_name -> list_of_court_numbers
     """
-    total_courts = len(courts_list)
+    clean_courts = [clean_court_num(c) for c in courts_list if clean_court_num(c) and not is_court_excluded_from_allocation(c)]
+    total_courts = len(clean_courts)
     if total_courts == 0:
         return {}
 
@@ -79,7 +87,7 @@ def allocate_courts(levels, courts_list):
     # Always keep physical pods together:
     # - Intermediate: Courts 3 and 6 (2-court pod)
     # - High Intermediate: Courts 4, 5, 7, 8 (4-court pod)
-    clean_set = set(clean_court_num(c) for c in courts_list)
+    clean_set = set(clean_courts)
     if clean_set == {'3', '4', '5', '6', '7', '8'} and 'Intermediate' in active_levels and 'High Intermediate' in active_levels:
         assigned_courts = {
             'Intermediate': ['3', '6'],
@@ -105,7 +113,7 @@ def allocate_courts(levels, courts_list):
         floors[remainders[i][1]] += 1
 
     # Assign courts respecting IPX physical pods (Intermediate: 3 & 6; High Intermediate: 4, 5, 7, 8)
-    remaining_courts = [clean_court_num(c) for c in courts_list]
+    remaining_courts = list(clean_courts)
     assigned_courts = {}
 
     level_priority = ['Intermediate', 'High Intermediate', 'Advanced Beginner', 'Advanced']
@@ -218,7 +226,7 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
 
             # Clean and sort available courts
             raw_courts = session.get('courts', [])
-            clean_courts = sorted(list(dict.fromkeys([clean_court_num(c) for c in raw_courts if clean_court_num(c)])),
+            clean_courts = sorted(list(dict.fromkeys([clean_court_num(c) for c in raw_courts if clean_court_num(c) and not is_court_excluded_from_allocation(c)])),
                                   key=lambda x: int(x) if x.isdigit() else 999)
 
             if len(clean_courts) < 2:
