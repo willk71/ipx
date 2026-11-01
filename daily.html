@@ -346,6 +346,7 @@
     }
 
     async function loadSchedule() {
+      if (document.hidden) return;
       try {
         const data = await fetchSchedule();
 
@@ -477,7 +478,10 @@
     }
 
     loadSchedule();
-    setInterval(loadSchedule, 30000);
+    setInterval(loadSchedule, 60000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) loadSchedule();
+    });
   </script>
 </body>
 </html>

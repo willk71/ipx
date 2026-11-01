@@ -45,7 +45,7 @@
     </div>
   </main>
 
-  <script src="js/common.js?v=2.3.8"></script>
+  <script src="js/common.js?v=2.3.9"></script>
   <script>
     async function fetchSchedule() {
       const cacheBust = `_t=${Date.now()}`;
@@ -61,6 +61,7 @@
     }
 
     async function refreshDisplay() {
+      if (document.hidden) return;
       try {
         const data = await fetchSchedule();
 
@@ -440,7 +441,10 @@
     }
 
     refreshDisplay();
-    setInterval(refreshDisplay, 30000);
+    setInterval(refreshDisplay, 60000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) refreshDisplay();
+    });
   </script>
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <script src="js/mqtt-alerts.js?v=1.0.0"></script>

@@ -375,7 +375,7 @@
     </footer>
   </div>
 
-  <script src="js/common.js?v=2.3.8"></script>
+  <script src="js/common.js?v=2.3.9"></script>
   <script>
     function cleanEventTitle(rawTitle) {
       if (!rawTitle) return '';
@@ -855,6 +855,7 @@
     }
 
     async function loadEventData() {
+      if (document.hidden) return;
       const main = document.getElementById('main-content');
       if (!eventIdParam) {
         main.innerHTML = `
@@ -997,8 +998,11 @@
     }
 
     loadEventData();
-    // Auto-refresh every 60 seconds if page stays open
-    setInterval(loadEventData, 60000);
+    // Auto-refresh every 90 seconds if page stays open and visible
+    setInterval(loadEventData, 90000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) loadEventData();
+    });
   </script>
 </body>
 </html>

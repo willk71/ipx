@@ -21,20 +21,29 @@ export default {
       });
     }
 
-    // 2. High-speed KV edge delivery for schedule.json
+    // 2. High-speed KV edge delivery for schedule.json with 25s Edge Cache deduplication
     if (url.pathname === '/data/schedule.json' || url.pathname === '/api/schedule') {
+      const cache = caches.default;
+      const cacheKey = new Request(new URL(url.pathname, url.origin), request);
+      let cachedResp = await cache.match(cacheKey);
+      if (cachedResp) {
+        return cachedResp;
+      }
+
       if (env.IPX_DATA) {
         try {
           const liveData = await env.IPX_DATA.get('schedule_latest');
           if (liveData) {
-            return new Response(liveData, {
+            const resp = new Response(liveData, {
               headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Cache-Control': 'public, max-age=10, s-maxage=10',
+                'Cache-Control': 'public, max-age=25, s-maxage=25',
                 'Access-Control-Allow-Origin': '*',
                 'X-Data-Source': 'cloudflare-kv'
               }
             });
+            ctx.waitUntil(cache.put(cacheKey, resp.clone()));
+            return resp;
           }
         } catch (err) {
           console.error('KV read error for schedule_latest:', err);
@@ -44,20 +53,29 @@ export default {
       return fetch(`https://ipxbk.com/data/schedule.json?_t=${Date.now()}`);
     }
 
-    // 3. High-speed KV edge delivery for event-choices.json
+    // 3. High-speed KV edge delivery for event-choices.json with 25s Edge Cache deduplication
     if (url.pathname === '/data/event-choices.json' || url.pathname === '/api/event-choices') {
+      const cache = caches.default;
+      const cacheKey = new Request(new URL(url.pathname, url.origin), request);
+      let cachedResp = await cache.match(cacheKey);
+      if (cachedResp) {
+        return cachedResp;
+      }
+
       if (env.IPX_DATA) {
         try {
           const liveData = await env.IPX_DATA.get('event_choices_latest');
           if (liveData) {
-            return new Response(liveData, {
+            const resp = new Response(liveData, {
               headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Cache-Control': 'public, max-age=10, s-maxage=10',
+                'Cache-Control': 'public, max-age=25, s-maxage=25',
                 'Access-Control-Allow-Origin': '*',
                 'X-Data-Source': 'cloudflare-kv'
               }
             });
+            ctx.waitUntil(cache.put(cacheKey, resp.clone()));
+            return resp;
           }
         } catch (err) {
           console.error('KV read error for event_choices_latest:', err);
