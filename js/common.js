@@ -384,9 +384,9 @@ function resolveQueueLocation(courtsSet, customText) {
 
 // --- Unified IPX Pod Court Allocation Engine ---
 const PREFERRED_PODS = {
-  'Intermediate': ['3', '6', '1', '2', '9'],
-  'High Intermediate': ['4', '5', '7', '8', '10', '11', '12'],
-  'Advanced': ['8', '7', '10', '11', '12', '4', '5'],
+  'Intermediate': ['4', '5', '7', '8'],
+  'High Intermediate': ['10', '11', '12'],
+  'Advanced': ['10', '11', '12'],
   'Advanced Beginner': ['1', '2', '3', '6', '9']
 };
 
