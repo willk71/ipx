@@ -375,8 +375,17 @@
     </footer>
   </div>
 
-  <script src="js/common.js?v=2.3.9"></script>
+  <script src="js/common.js?v=2.3.10"></script>
   <script>
+    function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
+      if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+        return fetch(url, { ...opts, signal: AbortSignal.timeout(timeoutMs) });
+      }
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(url, { ...opts, signal: controller.signal }).finally(() => clearTimeout(timer));
+    }
+
     function cleanEventTitle(rawTitle) {
       if (!rawTitle) return '';
       return String(rawTitle)
@@ -855,7 +864,6 @@
     }
 
     async function loadEventData() {
-      if (document.hidden) return;
       const main = document.getElementById('main-content');
       if (!eventIdParam) {
         main.innerHTML = `
@@ -870,7 +878,7 @@
       async function fetchEventChoices(dataUrl) {
         const cacheBust = `_t=${Date.now()}`;
         try {
-          const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices?${cacheBust}`);
+          const res = await fetchWithTimeout(`https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices?${cacheBust}`, {}, 6000);
           if (res.ok) return await res.json();
         } catch (err) {
           console.warn("KV fetch failed for event choices:", err);
@@ -883,7 +891,7 @@
       async function fetchScheduleFallback(schedUrl) {
         const cacheBust = `_t=${Date.now()}`;
         try {
-          const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`);
+          const res = await fetchWithTimeout(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`, {}, 6000);
           if (res.ok) return await res.json();
         } catch (err) {
           console.warn("KV fetch failed for schedule fallback:", err);
@@ -999,7 +1007,9 @@
 
     loadEventData();
     // Auto-refresh every 90 seconds if page stays open and visible
-    setInterval(loadEventData, 90000);
+    setInterval(() => {
+      if (!document.hidden) loadEventData();
+    }, 90000);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) loadEventData();
     });

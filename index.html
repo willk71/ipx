@@ -90,8 +90,17 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.9"></script>
+  <script src="js/common.js?v=2.3.10"></script>
   <script>
+    function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
+      if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+        return fetch(url, { ...opts, signal: AbortSignal.timeout(timeoutMs) });
+      }
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(url, { ...opts, signal: controller.signal }).finally(() => clearTimeout(timer));
+    }
+
     // If accessed via staff.ipxbk.com or schedule.ipxbk.com at root, redirect to schedule
     (function() {
       const host = window.location.hostname.toLowerCase();
@@ -127,7 +136,7 @@
     async function fetchSchedule() {
       const cacheBust = `_t=${Date.now()}`;
       try {
-        const res = await fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`);
+        const res = await fetchWithTimeout(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`, {}, 6000);
         if (res.ok) return await res.json();
       } catch (err) {
         console.warn("KV fetch failed, falling back to static:", err);
@@ -138,7 +147,6 @@
     }
 
     async function refreshDisplay() {
-      if (document.hidden) return;
       let data = {};
       const now = new Date();
 
@@ -460,7 +468,9 @@
     }
 
     refreshDisplay();
-    setInterval(refreshDisplay, 60000);
+    setInterval(() => {
+      if (!document.hidden) refreshDisplay();
+    }, 60000);
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) refreshDisplay();
     });
