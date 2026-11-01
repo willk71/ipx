@@ -1,6 +1,18 @@
 export default {
   // Cron Trigger handler: runs reliably on schedule via Cloudflare edge (every 3 minutes)
   async scheduled(event, env, ctx) {
+    const nyTimeStr = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
+    const nyDate = new Date(nyTimeStr);
+    const nyHour = nyDate.getHours();
+    const nyMinute = nyDate.getMinutes();
+
+    // Facility is closed 12:00 AM - 6:00 AM ET.
+    // Run an hourly check at :00 during off-hours, instead of every 3 minutes.
+    if (nyHour >= 0 && nyHour < 6 && nyMinute >= 3) {
+      console.log(`Off-hours (${nyHour}:${nyMinute < 10 ? '0' : ''}${nyMinute} ET): skipping automated sync.`);
+      return;
+    }
+
     ctx.waitUntil(triggerGitHubSync(env));
   },
 
@@ -111,7 +123,7 @@ export default {
         JSON.stringify(
           {
             pinger: 'active',
-            schedule: 'Every 3 minutes (Events every ~9-10 min)',
+            schedule: 'Every 3 minutes (6am-12am ET, hourly overnight; Events every ~9m)',
             kv_status: kvStatus,
             schedule_bytes: scheduleSize,
             last_schedule_sync: lastUpdated,

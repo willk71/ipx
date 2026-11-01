@@ -405,7 +405,7 @@ def process_events(input_path='data/events_10d.json', output_path='data/event-ch
     # Format into a clean output dictionary mapped by eventId
     # Since an eventId may have multiple occurrences across the 10 days, store a list of sessions
     result = {
-        'lastUpdated': datetime.now(timezone.utc).isoformat() + 'Z',
+        'lastUpdated': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         'events': {}
     }
 
