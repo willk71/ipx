@@ -540,7 +540,7 @@
 
   <script>
     const SCHEDULE_DATA = {
-  "current_week": "2026-10-26",
+  "current_week": "2026-11-02",
   "weeks": {
     "2026-10-19": {
       "week_id": "2026-10-19",
@@ -1290,6 +1290,11 @@
       // Update image and action links
       const imgPath = `${week.image}?v=${Date.now()}`;
       chartImg.src = imgPath;
+      chartImg.onerror = function() {
+        if (this.src && !this.src.includes('team_schedule_gantt.png') && activeWeekId === SCHEDULE_DATA.current_week) {
+          this.src = `team_schedule_gantt.png?v=${Date.now()}`;
+        }
+      };
       chartImg.alt = week.title || `Schedule for ${week.label}`;
       btnFullSize.href = week.image;
       btnDownload.href = week.image;

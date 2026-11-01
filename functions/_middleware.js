@@ -15,31 +15,24 @@ export async function onRequest(context) {
     url.searchParams.get('key') === 'ipxstaff' ||
     url.searchParams.get('pin') === 'ipxstaff';
 
-  // 1. Block sensitive staff data completely on the public domain (ipxbk.com)
-  if (!isStaffHost) {
-    if (
-      path.startsWith('/data/staff_') ||
-      path.startsWith('/data/raw_') ||
-      path.startsWith('/schedules/')
-    ) {
-      return new Response('Not Found', {
-        status: 404,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
-    }
-  }
-
-  // 2. On staff.ipxbk.com: Enforce authentication for raw JSON & schedule images at the edge
+  // Protect sensitive staff data: require authentication cookie or query token
   if (
     path.startsWith('/data/staff_') ||
     path.startsWith('/data/raw_') ||
     path.startsWith('/schedules/')
   ) {
     if (!hasAuthCookie && !hasAuthQuery) {
-      return new Response('Access Denied: Please unlock the schedule at https://staff.ipxbk.com first.', {
-        status: 401,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
+      if (isStaffHost) {
+        return new Response('Access Denied: Please unlock the schedule at https://staff.ipxbk.com first.', {
+          status: 401,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        });
+      } else {
+        return new Response('Not Found', {
+          status: 404,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        });
+      }
     }
   }
 

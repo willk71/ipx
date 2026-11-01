@@ -480,21 +480,34 @@ def generate_schedule_html():
         print("No weeks available to generate HTML.")
         return
 
-    # Automatically set current_week based on today's date
+    # Automatically set current_week based on today's date and published weeks
     today = datetime.date.today()
     sorted_ids = sorted(weeks.keys())
-    active_week = sorted_ids[0]
-    for wId in sorted_ids:
-        try:
-            dt_s = datetime.datetime.strptime(wId, "%Y-%m-%d").date()
-            dt_e = dt_s + datetime.timedelta(days=6)
-            if dt_s <= today <= dt_e:
-                active_week = wId
-                break
-            elif dt_s <= today:
-                active_week = wId
-        except Exception:
-            pass
+    active_week = sorted_ids[-1]
+
+    # If today is Friday (4), Saturday (5), or Sunday (6) and next week's schedule is registered, default to next week
+    days_until_monday = (7 - today.weekday()) % 7
+    if days_until_monday == 0 and today.weekday() == 6:
+        days_until_monday = 1
+    next_monday = today + datetime.timedelta(days=days_until_monday if days_until_monday > 0 else 7)
+    next_monday_str = next_monday.strftime("%Y-%m-%d")
+
+    if today.weekday() >= 4 and next_monday_str in weeks:
+        active_week = next_monday_str
+    elif master.get("current_week") and master["current_week"] in weeks:
+        active_week = master["current_week"]
+    else:
+        for wId in sorted_ids:
+            try:
+                dt_s = datetime.datetime.strptime(wId, "%Y-%m-%d").date()
+                dt_e = dt_s + datetime.timedelta(days=6)
+                if dt_s <= today <= dt_e:
+                    active_week = wId
+                    break
+                elif dt_s <= today:
+                    active_week = wId
+            except Exception:
+                pass
     master["current_week"] = active_week
 
     # Embed data JSON directly into HTML so page works instantly without extra fetch latency
@@ -1092,6 +1105,11 @@ def generate_schedule_html():
       // Update image and action links
       const imgPath = `${{week.image}}?v=${{Date.now()}}`;
       chartImg.src = imgPath;
+      chartImg.onerror = function() {{
+        if (this.src && !this.src.includes('team_schedule_gantt.png') && activeWeekId === SCHEDULE_DATA.current_week) {{
+          this.src = `team_schedule_gantt.png?v=${{Date.now()}}`;
+        }}
+      }};
       chartImg.alt = week.title || `Schedule for ${{week.label}}`;
       btnFullSize.href = week.image;
       btnDownload.href = week.image;
