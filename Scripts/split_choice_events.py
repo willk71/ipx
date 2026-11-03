@@ -14,6 +14,8 @@ def clean_event_title(title):
 import json
 import os
 import re
+import urllib.request
+import urllib.error
 
 # Preferred physical court clusters for IPX facility layout:
 # - Advanced Beginner preferred: Courts 3 & 6 (pool)
@@ -129,23 +131,62 @@ def allocate_courts(levels, courts_list):
 
     return assigned_courts
 
+def fetch_cached_choices():
+    account_id = os.environ.get("CF_ACCOUNT_ID", "").strip()
+    namespace_id = os.environ.get("CF_KV_NAMESPACE_ID", "").strip()
+    api_token = os.environ.get("CF_API_TOKEN", "").strip()
+    if account_id and namespace_id and api_token:
+        try:
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/storage/kv/namespaces/{namespace_id}/values/event_choices_latest"
+            req = urllib.request.Request(
+                url,
+                method="GET",
+                headers={
+                    "Authorization": f"Bearer {api_token}",
+                    "User-Agent": "IPX-Splitter"
+                }
+            )
+            with urllib.request.urlopen(req, timeout=12) as resp:
+                if resp.status == 200:
+                    data = resp.read()
+                    print(f"Direct KV GET: successfully retrieved event_choices_latest ({len(data)} bytes).")
+                    return data
+        except Exception as e:
+            print(f"Notice: Direct KV fetch for event_choices_latest failed: {e}")
+
+    # Fallback to worker API
+    try:
+        url = "https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices"
+        req = urllib.request.Request(url, headers={'User-Agent': 'IPX-Splitter'})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status == 200:
+                data = resp.read()
+                print(f"Worker GET: successfully retrieved event-choices fallback ({len(data)} bytes).")
+                return data
+    except Exception as e:
+        print(f"Notice: Worker fallback fetch for event-choices failed: {e}")
+
+    return None
+
 def process_schedule(schedule_path='data/schedule.json', choices_path='data/event-choices.json'):
     if not os.path.exists(schedule_path):
         return
 
-    # If event-choices.json was not freshly generated on this run, fetch latest cached from Cloudflare KV
-    if not os.path.exists(choices_path):
-        try:
-            import urllib.request
-            url = "https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices"
-            req = urllib.request.Request(url, headers={'User-Agent': 'IPX-Splitter'})
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                if resp.status == 200:
-                    with open(choices_path, 'wb') as f:
-                        f.write(resp.read())
-                    print("Fetched latest event-choices from Cloudflare KV for splitting.")
-        except Exception as e:
-            print(f"Notice: Could not fetch cached event choices from KV: {e}")
+    # If event-choices.json was not freshly generated on this run (e.g. data/.choices_fresh does not exist),
+    # fetch the latest cached version directly from Cloudflare KV using authenticated CF API or worker fallback.
+    fresh_marker = os.path.join(os.path.dirname(choices_path) or '.', '.choices_fresh')
+    needs_fetch = not os.path.exists(choices_path) or not os.path.exists(fresh_marker)
+
+    if needs_fetch:
+        raw_choices = fetch_cached_choices()
+        if raw_choices:
+            try:
+                os.makedirs(os.path.dirname(choices_path) or '.', exist_ok=True)
+                with open(choices_path, 'wb') as f:
+                    f.write(raw_choices)
+                print("Fetched latest event-choices from Cloudflare KV for splitting.")
+            except Exception as e:
+                print(f"Notice: Could not write cached event choices from KV: {e}")
 
     if not os.path.exists(choices_path):
         return
