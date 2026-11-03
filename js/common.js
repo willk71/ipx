@@ -392,10 +392,10 @@ function resolveQueueLocation(courtsSet, customText) {
 
 // --- Unified IPX Pod Court Allocation Engine ---
 const PREFERRED_PODS = {
-  'Intermediate': ['4', '5', '7', '8'],
-  'High Intermediate': ['10', '11', '12'],
-  'Advanced': ['10', '11', '12'],
-  'Advanced Beginner': ['1', '2', '3', '6', '9']
+  'Advanced Beginner': ['3', '6', '1', '2', '9'],
+  'Intermediate': ['4', '5', '7', '8', '2', '1'],
+  'High Intermediate': ['10', '8', '9', '11', '12', '7'],
+  'Advanced': ['10', '11', '12', '8', '9', '7']
 };
 
 function cleanCourtNumber(c) {
@@ -442,30 +442,7 @@ function allocateCourts(levels, courtsList) {
   const totalEffective = activeLevels.reduce((sum, lvl) => sum + effectiveCounts[lvl], 0);
   if (totalEffective === 0) return {};
 
-  // Fixed IPX Facility Pod Setup:
-  // When 6-court Open Play uses courts 3, 4, 5, 6, 7, 8:
-  // Always keep physical pods together:
-  // - Intermediate: Courts 3 and 6 (2-court pod)
-  // - High Intermediate: Courts 4, 5, 7, 8 (4-court pod)
-  const cleanSet = new Set(cleanCourts);
-  const isFixed6Court = cleanSet.size === 6 && ['3', '4', '5', '6', '7', '8'].every(c => cleanSet.has(c));
 
-  if (isFixed6Court && activeLevels.includes('Intermediate') && activeLevels.includes('High Intermediate')) {
-    const assignedCourts = {
-      'Intermediate': ['3', '6'],
-      'High Intermediate': ['4', '5', '7', '8']
-    };
-    if (advMerged) {
-      assignedCourts['Advanced'] = assignedCourts['High Intermediate'];
-    } else if (activeLevels.includes('Advanced')) {
-      assignedCourts['High Intermediate'] = ['4', '5', '7'];
-      assignedCourts['Advanced'] = ['8'];
-    }
-    if (advBegMerged) {
-      assignedCourts['Advanced Beginner'] = assignedCourts['Intermediate'];
-    }
-    return assignedCourts;
-  }
 
   // Hamilton-Hare largest remainder apportionment
   const quotas = {};
@@ -489,7 +466,7 @@ function allocateCourts(levels, courtsList) {
   const remainingCourts = [...cleanCourts];
   const assignedCourts = {};
 
-  const levelPriority = ['Intermediate', 'High Intermediate', 'Advanced Beginner', 'Advanced'];
+  const levelPriority = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
   const activeOrder = levelPriority.filter(lvl => (floors[lvl] || 0) > 0);
   Object.keys(floors).forEach(lvl => {
     if (floors[lvl] > 0 && !activeOrder.includes(lvl)) {

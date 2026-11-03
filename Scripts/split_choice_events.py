@@ -16,15 +16,15 @@ import os
 import re
 
 # Preferred physical court clusters for IPX facility layout:
-# - Intermediate preferred: Courts 3 & 6 (physically paired)
-# - High Intermediate preferred: Courts 4, 5, 7, 8 (contiguous quad pod)
-# - Advanced Beginner preferred: Courts 1 & 2
-# - Advanced preferred: Courts 8, 7, 10, 11, 12, 13
+# - Advanced Beginner preferred: Courts 3 & 6 (pool)
+# - Intermediate preferred: Courts 4, 5, 7 (centered around 7, like 4, 5, 7)
+# - High Intermediate preferred: Courts 10, 8, 9 (centered around 10, plus 11, 12)
+# - Advanced preferred: Courts 10, 11, 12, 8, 9
 PREFERRED_PODS = {
-    'Intermediate': ['4', '5', '7', '8', ],
-    'High Intermediate': ['10', '11', '12'],
-    'Advanced': ['10', '11', '12'],
-    'Advanced Beginner': ['1', '2', '3', '6', '9']
+    'Advanced Beginner': ['3', '6', '1', '2', '9'],
+    'Intermediate': ['4', '5', '7', '8', '2', '1'],
+    'High Intermediate': ['10', '8', '9', '11', '12', '7'],
+    'Advanced': ['10', '11', '12', '8', '9', '7']
 }
 
 
@@ -82,26 +82,7 @@ def allocate_courts(levels, courts_list):
     if total_effective == 0:
         return {}
 
-    # Fixed IPX Facility Pod Setup:
-    # When 6-court Open Play uses courts 3, 4, 5, 6, 7, 8:
-    # Always keep physical pods together:
-    # - Intermediate: Courts 3 and 6 (2-court pod)
-    # - High Intermediate: Courts 4, 5, 7, 8 (4-court pod)
-    clean_set = set(clean_courts)
-    if clean_set == {'3', '4', '5', '6', '7', '8'} and 'Intermediate' in active_levels and 'High Intermediate' in active_levels:
-        assigned_courts = {
-            'Intermediate': ['3', '6'],
-            'High Intermediate': ['4', '5', '7', '8']
-        }
-        if adv_merged and 'High Intermediate' in assigned_courts:
-            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
-        elif 'Advanced' in active_levels:
-            # If Advanced has its own full court, place on Court 8 within the 4,5,7,8 pod
-            assigned_courts['High Intermediate'] = ['4', '5', '7']
-            assigned_courts['Advanced'] = ['8']
-        if adv_beg_merged and 'Intermediate' in assigned_courts:
-            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
-        return assigned_courts
+
 
     # Hamilton-Hare apportionment
     quotas = {lvl: (effective_counts[lvl] / total_effective) * total_courts for lvl in active_levels}
@@ -116,7 +97,7 @@ def allocate_courts(levels, courts_list):
     remaining_courts = list(clean_courts)
     assigned_courts = {}
 
-    level_priority = ['Intermediate', 'High Intermediate', 'Advanced Beginner', 'Advanced']
+    level_priority = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']
     active_order = [lvl for lvl in level_priority if floors.get(lvl, 0) > 0]
     for lvl in floors:
         if floors.get(lvl, 0) > 0 and lvl not in active_order:
