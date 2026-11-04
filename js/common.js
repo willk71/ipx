@@ -420,6 +420,7 @@ function allocateCourts(levels, courtsList) {
   if (totalCourts === 0) return {};
 
   const cleanSet = new Set(cleanCourts);
+  const is14781012Pod = cleanSet.size === 6 && ['1', '4', '7', '8', '10', '12'].every(c => cleanSet.has(c));
   const has14781012 = ['1', '4', '7', '8', '10', '12'].every(c => cleanSet.has(c));
 
   const safeLevels = levels || {};
@@ -429,7 +430,8 @@ function allocateCourts(levels, courtsList) {
 
   const advBegCount = safeLevels['Advanced Beginner'] || 0;
   const intCount = safeLevels['Intermediate'] || 0;
-  const advBegMerged = advBegCount > 0 && advBegCount < 4 && intCount > 0;
+  // In 1, 4, 7, 8, 10, 12 layout, force Court 1 as AdvBeg+ even if short on players (< 4).
+  const advBegMerged = !is14781012Pod && (advBegCount > 0 && advBegCount < 4 && intCount > 0);
 
   const effectiveCounts = { ...safeLevels };
   if (advMerged) {
@@ -459,50 +461,25 @@ function allocateCourts(levels, courtsList) {
   }
 
   // Daytime 1, 4, 7, 8, 10, 12 setup rule:
-  // If court group is 1, 4, 7, 8, 10, 12, assign:
-  // - Court 1 for AdvBeg
-  // - Courts 4, 7, 8 for Intermediate / Intermediate+
-  // - Courts 10, 12 for High Intermediate / High Intermediate+
-  if (cleanSet.size === 6 && has14781012) {
-    const assigned = {};
-    if (activeLevels.includes('Advanced Beginner') && !advBegMerged) {
-      assigned['Advanced Beginner'] = ['1'];
-    }
+  // Always force Court 1 as AdvBeg+ (even if short on players),
+  // Courts 4, 7, 8 for Intermediate / Intermediate+,
+  // and Courts 10, 12 for High Intermediate / High Intermediate+.
+  if (is14781012Pod) {
+    const assigned = {
+      'Advanced Beginner': ['1'],
+      'Intermediate': ['4', '7', '8'],
+      'High Intermediate': ['10', '12']
+    };
 
-    if (activeLevels.includes('Intermediate') || advBegMerged) {
-      if (!activeLevels.includes('Advanced Beginner') || advBegMerged) {
-        assigned['Intermediate'] = ['1', '4', '7', '8'];
-      } else {
-        assigned['Intermediate'] = ['4', '7', '8'];
-      }
-    }
-
-    if (activeLevels.includes('High Intermediate') || activeLevels.includes('Advanced')) {
-      if (activeLevels.includes('Advanced') && !advMerged && activeLevels.includes('High Intermediate')) {
+    if (activeLevels.includes('Advanced')) {
+      if (!advMerged && activeLevels.includes('High Intermediate')) {
         assigned['High Intermediate'] = ['10'];
         assigned['Advanced'] = ['12'];
       } else {
-        assigned['High Intermediate'] = ['10', '12'];
+        assigned['Advanced'] = ['10', '12'];
       }
-    }
-
-    if (advMerged && assigned['High Intermediate']) {
-      assigned['Advanced'] = [...assigned['High Intermediate']];
-    }
-    if (advBegMerged && assigned['Intermediate']) {
-      assigned['Advanced Beginner'] = [...assigned['Intermediate']];
-    }
-
-    // Fallback if unassigned courts remain
-    const assignedFlat = new Set();
-    Object.values(assigned).forEach(clist => clist.forEach(c => assignedFlat.add(c)));
-    const unassigned = cleanCourts.filter(c => !assignedFlat.has(c));
-    if (unassigned.length > 0) {
-      const targetLvl = assigned['Intermediate'] ? 'Intermediate' : Object.keys(assigned)[0];
-      if (targetLvl && assigned[targetLvl]) {
-        assigned[targetLvl] = Array.from(new Set([...assigned[targetLvl], ...unassigned]))
-          .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
-      }
+    } else if (advMerged) {
+      assigned['Advanced'] = ['10', '12'];
     }
 
     return assigned;

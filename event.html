@@ -375,7 +375,7 @@
     </footer>
   </div>
 
-  <script src="js/common.js?v=2.3.14"></script>
+  <script src="js/common.js?v=2.3.15"></script>
   <script>
     function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
       if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
@@ -557,7 +557,9 @@
 
             const advBegCount = countByLevel['Advanced Beginner'] || 0;
             const intCount = countByLevel['Intermediate'] || 0;
-            const advBegMerged = advBegCount > 0 && advBegCount < 4 && intCount > 0;
+            const cleanSet = new Set(cleanCourts);
+            const is14781012Pod = cleanSet.size === 6 && ['1', '4', '7', '8', '10', '12'].every(c => cleanSet.has(c));
+            const advBegMerged = !is14781012Pod && (advBegCount > 0 && advBegCount < 4 && intCount > 0);
 
             // 1. Check if server pre-computed courtAllocations are present in session
             let courtAlloc = session.courtAllocations;

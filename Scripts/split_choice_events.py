@@ -64,6 +64,7 @@ def allocate_courts(levels, courts_list):
 
     clean_set = set(clean_courts)
     has_1_4_7_8_10_12 = {'1', '4', '7', '8', '10', '12'}.issubset(clean_set)
+    is_14781012_pod = clean_set == {'1', '4', '7', '8', '10', '12'}
 
     adv_count = (levels or {}).get('Advanced', 0)
     high_int_count = (levels or {}).get('High Intermediate', 0)
@@ -71,7 +72,8 @@ def allocate_courts(levels, courts_list):
 
     adv_beg_count = (levels or {}).get('Advanced Beginner', 0)
     int_count = (levels or {}).get('Intermediate', 0)
-    adv_beg_merged = 0 < adv_beg_count < 4 and int_count > 0
+    # In 1, 4, 7, 8, 10, 12 layout, force Court 1 as AdvBeg+ even if short on players (< 4).
+    adv_beg_merged = (not is_14781012_pod) and (0 < adv_beg_count < 4 and int_count > 0)
 
     effective_counts = dict(levels or {})
     if adv_merged:
@@ -97,41 +99,24 @@ def allocate_courts(levels, courts_list):
         return {}
 
     # Daytime 1, 4, 7, 8, 10, 12 setup rule:
-    # If court group is 1, 4, 7, 8, 10, 12, assign:
-    # - Court 1 for AdvBeg
-    # - Courts 4, 7, 8 for Intermediate / Intermediate+
-    # - Courts 10, 12 for High Intermediate / High Intermediate+
-    if clean_set == {'1', '4', '7', '8', '10', '12'}:
-        assigned_courts = {}
-        if 'Advanced Beginner' in active_levels and not adv_beg_merged:
-            assigned_courts['Advanced Beginner'] = ['1']
+    # Always force Court 1 as AdvBeg+ (even if short on players),
+    # Courts 4, 7, 8 for Intermediate / Intermediate+,
+    # and Courts 10, 12 for High Intermediate / High Intermediate+.
+    if is_14781012_pod:
+        assigned_courts = {
+            'Advanced Beginner': ['1'],
+            'Intermediate': ['4', '7', '8'],
+            'High Intermediate': ['10', '12']
+        }
 
-        if 'Intermediate' in active_levels or adv_beg_merged:
-            if 'Advanced Beginner' not in active_levels or adv_beg_merged:
-                assigned_courts['Intermediate'] = ['1', '4', '7', '8']
-            else:
-                assigned_courts['Intermediate'] = ['4', '7', '8']
-
-        if 'High Intermediate' in active_levels or 'Advanced' in active_levels:
-            if 'Advanced' in active_levels and not adv_merged and 'High Intermediate' in active_levels:
+        if 'Advanced' in active_levels:
+            if not adv_merged and 'High Intermediate' in active_levels:
                 assigned_courts['High Intermediate'] = ['10']
                 assigned_courts['Advanced'] = ['12']
             else:
-                assigned_courts['High Intermediate'] = ['10', '12']
-
-        if adv_merged and 'High Intermediate' in assigned_courts:
-            assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
-        if adv_beg_merged and 'Intermediate' in assigned_courts:
-            assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
-
-        # Fallback if any unassigned courts remain
-        assigned_flat = set()
-        for clist in assigned_courts.values():
-            assigned_flat.update(clist)
-        unassigned = [c for c in clean_courts if c not in assigned_flat]
-        if unassigned:
-            target_lvl = 'Intermediate' if 'Intermediate' in assigned_courts else list(assigned_courts.keys())[0]
-            assigned_courts[target_lvl] = sorted(list(set(assigned_courts[target_lvl] + unassigned)), key=lambda x: int(x) if x.isdigit() else 999)
+                assigned_courts['Advanced'] = ['10', '12']
+        elif adv_merged:
+            assigned_courts['Advanced'] = ['10', '12']
 
         return assigned_courts
 
@@ -320,7 +305,10 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
 
             adv_beg_count = level_counts.get('Advanced Beginner', 0)
             int_count = level_counts.get('Intermediate', 0)
-            adv_beg_merged = 0 < adv_beg_count < 4 and int_count > 0
+            # In 1, 4, 7, 8, 10, 12 layout, force Court 1 as AdvBeg+ even if short on players (< 4).
+            clean_set_sess = set(clean_courts)
+            is_14781012_pod_sess = clean_set_sess == {'1', '4', '7', '8', '10', '12'}
+            adv_beg_merged = (not is_14781012_pod_sess) and (0 < adv_beg_count < 4 and int_count > 0)
 
             group_for_level = {}
             for lvl in ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']:
