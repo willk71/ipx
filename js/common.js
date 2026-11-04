@@ -338,6 +338,11 @@ function resolveQueueLocation(courtsSet, customText) {
         return '📍 - Court 7 Paddle Rack';
       }
 
+      // Courts 4, 7, 8 group queues at Court 7 Paddle Rack
+      if (nums.includes(4) && nums.includes(7) && nums.includes(8)) {
+        return '📍 - Court 7 Paddle Rack';
+      }
+
       // Both Court 4 and Court 7 are present:
       if (courtsSet.has('4') && courtsSet.has('7')) {
         if (courtsSet.has('10') || courtsSet.has('11') || courtsSet.has('12')) {
