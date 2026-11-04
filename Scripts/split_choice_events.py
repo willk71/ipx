@@ -20,12 +20,12 @@ import urllib.error
 # Preferred physical court clusters for IPX facility layout:
 # - Advanced Beginner preferred: Courts 3 & 6 (pool)
 # - Intermediate preferred: Courts 4, 5, 7 (centered around 7, like 4, 5, 7)
-# - High Intermediate preferred: Courts 10, 8, 9 (centered around 10, plus 11, 12)
+# - High Intermediate preferred: Courts 10, 12 (back pod), then 11, 8, 9, 7
 # - Advanced preferred: Courts 10, 11, 12, 8, 9
 PREFERRED_PODS = {
     'Advanced Beginner': ['3', '6', '1', '2', '9'],
     'Intermediate': ['4', '5', '7', '8', '2', '1'],
-    'High Intermediate': ['10', '8', '9', '11', '12', '7'],
+    'High Intermediate': ['10', '12', '11', '8', '9', '7'],
     'Advanced': ['10', '11', '12', '8', '9', '7']
 }
 
@@ -62,15 +62,18 @@ def allocate_courts(levels, courts_list):
     if total_courts == 0:
         return {}
 
-    adv_count = levels.get('Advanced', 0)
-    high_int_count = levels.get('High Intermediate', 0)
+    clean_set = set(clean_courts)
+    has_1_4_7_8_10_12 = {'1', '4', '7', '8', '10', '12'}.issubset(clean_set)
+
+    adv_count = (levels or {}).get('Advanced', 0)
+    high_int_count = (levels or {}).get('High Intermediate', 0)
     adv_merged = 0 < adv_count <= 4 and high_int_count > 0
 
-    adv_beg_count = levels.get('Advanced Beginner', 0)
-    int_count = levels.get('Intermediate', 0)
+    adv_beg_count = (levels or {}).get('Advanced Beginner', 0)
+    int_count = (levels or {}).get('Intermediate', 0)
     adv_beg_merged = 0 < adv_beg_count < 4 and int_count > 0
 
-    effective_counts = dict(levels)
+    effective_counts = dict(levels or {})
     if adv_merged:
         effective_counts['High Intermediate'] = effective_counts.get('High Intermediate', 0) + adv_count
         effective_counts['Advanced'] = 0
@@ -81,8 +84,56 @@ def allocate_courts(levels, courts_list):
     standard_order = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']
     active_levels = [lvl for lvl in standard_order if effective_counts.get(lvl, 0) > 0]
     total_effective = sum(effective_counts[lvl] for lvl in active_levels)
+
+    # Default allocation if no player choices are present and courts include 1, 4, 7, 8, 10, 12
     if total_effective == 0:
+        if has_1_4_7_8_10_12:
+            return {
+                'Advanced Beginner': ['1'],
+                'Intermediate': ['4', '7', '8'],
+                'High Intermediate': ['10', '12'],
+                'Advanced': ['10', '12']
+            }
         return {}
+
+    # Daytime 1, 4, 7, 8, 10, 12 setup rule:
+    # If court group is 1, 4, 7, 8, 10, 12, assign:
+    # - Court 1 for AdvBeg
+    # - Courts 4, 7, 8 for Intermediate / Intermediate+
+    # - Courts 10, 12 for High Intermediate / High Intermediate+
+    if clean_set == {'1', '4', '7', '8', '10', '12'}:
+        assigned_courts = {}
+        if 'Advanced Beginner' in active_levels and not adv_beg_merged:
+            assigned_courts['Advanced Beginner'] = ['1']
+
+        if 'Intermediate' in active_levels or adv_beg_merged:
+            if 'Advanced Beginner' not in active_levels or adv_beg_merged:
+                assigned_courts['Intermediate'] = ['1', '4', '7', '8']
+            else:
+                assigned_courts['Intermediate'] = ['4', '7', '8']
+
+        if 'High Intermediate' in active_levels or 'Advanced' in active_levels:
+            if 'Advanced' in active_levels and not adv_merged and 'High Intermediate' in active_levels:
+                assigned_courts['High Intermediate'] = ['10']
+                assigned_courts['Advanced'] = ['12']
+            else:
+                assigned_courts['High Intermediate'] = ['10', '12']
+
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
+
+        # Fallback if any unassigned courts remain
+        assigned_flat = set()
+        for clist in assigned_courts.values():
+            assigned_flat.update(clist)
+        unassigned = [c for c in clean_courts if c not in assigned_flat]
+        if unassigned:
+            target_lvl = 'Intermediate' if 'Intermediate' in assigned_courts else list(assigned_courts.keys())[0]
+            assigned_courts[target_lvl] = sorted(list(set(assigned_courts[target_lvl] + unassigned)), key=lambda x: int(x) if x.isdigit() else 999)
+
+        return assigned_courts
 
 
 

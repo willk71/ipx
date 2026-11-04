@@ -394,7 +394,7 @@ function resolveQueueLocation(courtsSet, customText) {
 const PREFERRED_PODS = {
   'Advanced Beginner': ['3', '6', '1', '2', '9'],
   'Intermediate': ['4', '5', '7', '8', '2', '1'],
-  'High Intermediate': ['10', '8', '9', '11', '12', '7'],
+  'High Intermediate': ['10', '12', '11', '8', '9', '7'],
   'Advanced': ['10', '11', '12', '8', '9', '7']
 };
 
@@ -419,15 +419,19 @@ function allocateCourts(levels, courtsList) {
   const totalCourts = cleanCourts.length;
   if (totalCourts === 0) return {};
 
-  const advCount = levels['Advanced'] || 0;
-  const highIntCount = levels['High Intermediate'] || 0;
+  const cleanSet = new Set(cleanCourts);
+  const has14781012 = ['1', '4', '7', '8', '10', '12'].every(c => cleanSet.has(c));
+
+  const safeLevels = levels || {};
+  const advCount = safeLevels['Advanced'] || 0;
+  const highIntCount = safeLevels['High Intermediate'] || 0;
   const advMerged = advCount > 0 && advCount <= 4 && highIntCount > 0;
 
-  const advBegCount = levels['Advanced Beginner'] || 0;
-  const intCount = levels['Intermediate'] || 0;
+  const advBegCount = safeLevels['Advanced Beginner'] || 0;
+  const intCount = safeLevels['Intermediate'] || 0;
   const advBegMerged = advBegCount > 0 && advBegCount < 4 && intCount > 0;
 
-  const effectiveCounts = { ...levels };
+  const effectiveCounts = { ...safeLevels };
   if (advMerged) {
     effectiveCounts['High Intermediate'] = (effectiveCounts['High Intermediate'] || 0) + advCount;
     effectiveCounts['Advanced'] = 0;
@@ -440,7 +444,69 @@ function allocateCourts(levels, courtsList) {
   const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
   const activeLevels = standardOrder.filter(lvl => (effectiveCounts[lvl] || 0) > 0);
   const totalEffective = activeLevels.reduce((sum, lvl) => sum + effectiveCounts[lvl], 0);
-  if (totalEffective === 0) return {};
+
+  // Default allocation if no player choices are present and courts include 1, 4, 7, 8, 10, 12
+  if (totalEffective === 0) {
+    if (has14781012) {
+      return {
+        'Advanced Beginner': ['1'],
+        'Intermediate': ['4', '7', '8'],
+        'High Intermediate': ['10', '12'],
+        'Advanced': ['10', '12']
+      };
+    }
+    return {};
+  }
+
+  // Daytime 1, 4, 7, 8, 10, 12 setup rule:
+  // If court group is 1, 4, 7, 8, 10, 12, assign:
+  // - Court 1 for AdvBeg
+  // - Courts 4, 7, 8 for Intermediate / Intermediate+
+  // - Courts 10, 12 for High Intermediate / High Intermediate+
+  if (cleanSet.size === 6 && has14781012) {
+    const assigned = {};
+    if (activeLevels.includes('Advanced Beginner') && !advBegMerged) {
+      assigned['Advanced Beginner'] = ['1'];
+    }
+
+    if (activeLevels.includes('Intermediate') || advBegMerged) {
+      if (!activeLevels.includes('Advanced Beginner') || advBegMerged) {
+        assigned['Intermediate'] = ['1', '4', '7', '8'];
+      } else {
+        assigned['Intermediate'] = ['4', '7', '8'];
+      }
+    }
+
+    if (activeLevels.includes('High Intermediate') || activeLevels.includes('Advanced')) {
+      if (activeLevels.includes('Advanced') && !advMerged && activeLevels.includes('High Intermediate')) {
+        assigned['High Intermediate'] = ['10'];
+        assigned['Advanced'] = ['12'];
+      } else {
+        assigned['High Intermediate'] = ['10', '12'];
+      }
+    }
+
+    if (advMerged && assigned['High Intermediate']) {
+      assigned['Advanced'] = [...assigned['High Intermediate']];
+    }
+    if (advBegMerged && assigned['Intermediate']) {
+      assigned['Advanced Beginner'] = [...assigned['Intermediate']];
+    }
+
+    // Fallback if unassigned courts remain
+    const assignedFlat = new Set();
+    Object.values(assigned).forEach(clist => clist.forEach(c => assignedFlat.add(c)));
+    const unassigned = cleanCourts.filter(c => !assignedFlat.has(c));
+    if (unassigned.length > 0) {
+      const targetLvl = assigned['Intermediate'] ? 'Intermediate' : Object.keys(assigned)[0];
+      if (targetLvl && assigned[targetLvl]) {
+        assigned[targetLvl] = Array.from(new Set([...assigned[targetLvl], ...unassigned]))
+          .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+      }
+    }
+
+    return assigned;
+  }
 
 
 
