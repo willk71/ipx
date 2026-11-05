@@ -143,6 +143,39 @@ def allocate_courts(levels, courts_list):
 
         return assigned_courts
 
+    # Evening 3, 4, 5, 6, 7, 8, 10 setup rule:
+    # High Intermediate on 7, 8, 10, 11 (6, 7, 8, 10 is NEVER allowed)
+    # Intermediate on 4, 5
+    # Advanced Beginner on 3, 6
+    has_3_4_5_6_7_8_10 = {'3', '4', '5', '6', '7', '8', '10'}.issubset(clean_set)
+    if has_3_4_5_6_7_8_10:
+        assigned_courts = {
+            'Advanced Beginner': ['3', '6'],
+            'Intermediate': ['4', '5'],
+            'High Intermediate': ['7', '8', '10', '11'],
+            'Advanced': ['7', '8', '10', '11']
+        }
+
+        # Distribute any unassigned extra courts (e.g. 1, 2, 9, 12)
+        assigned_flat = set()
+        for clist in assigned_courts.values():
+            assigned_flat.update(clist)
+        unassigned = [c for c in clean_courts if c not in assigned_flat]
+        for extra in unassigned:
+            if extra in ['1', '2'] and effective_counts.get('Intermediate', 0) > len(assigned_courts['Intermediate']) * 4:
+                assigned_courts['Intermediate'].append(extra)
+            elif extra in ['9', '12'] and effective_counts.get('High Intermediate', 0) > len(assigned_courts['High Intermediate']) * 4:
+                assigned_courts['High Intermediate'].append(extra)
+            elif extra in ['1', '2']:
+                assigned_courts['Advanced Beginner'].append(extra)
+            else:
+                assigned_courts['High Intermediate'].append(extra)
+
+        for lvl in assigned_courts:
+            assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
+
+        return assigned_courts
+
 
 
     # Hamilton-Hare apportionment
@@ -181,6 +214,23 @@ def allocate_courts(levels, courts_list):
 
         lvl_courts.sort(key=lambda x: int(x) if x.isdigit() else 999)
         assigned_courts[lvl] = lvl_courts
+
+    # Universal IPX rule: 6, 7, 8, 10 group should NEVER be allowed!
+    # Court 6 is in the front pod (near Court 3) and must never be grouped with back pod courts 7, 8, 10.
+    for lvl, clist in list(assigned_courts.items()):
+        c_set = set(clist)
+        if {'6', '7', '8', '10'}.issubset(c_set) or ('6' in c_set and '10' in c_set and ('7' in c_set or '8' in c_set)):
+            clist.remove('6')
+            if '11' not in clist:
+                clist.append('11')
+            if 'Advanced Beginner' in assigned_courts and '6' not in assigned_courts['Advanced Beginner']:
+                assigned_courts['Advanced Beginner'].append('6')
+            elif 'Intermediate' in assigned_courts and '6' not in assigned_courts['Intermediate']:
+                assigned_courts['Intermediate'].append('6')
+            assigned_courts[lvl] = sorted(list(set(clist)), key=lambda x: int(x) if x.isdigit() else 999)
+
+    for lvl in assigned_courts:
+        assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
 
     # Link merged tiers to their receiving group's courts
     if adv_merged and 'High Intermediate' in assigned_courts:
@@ -319,6 +369,16 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
 
             # Attach unified courtAllocations directly to choices session for 100% parity across all screens
             session['courtAllocations'] = court_alloc
+
+            # Ensure session courts list includes all allocated courts (e.g. Court 11)
+            all_allocated_nums = set()
+            for clist in court_alloc.values():
+                all_allocated_nums.update(clist)
+            existing_clean = [clean_court_num(c) for c in session.get('courts', [])]
+            for num in sorted(all_allocated_nums, key=lambda x: int(x) if x.isdigit() else 999):
+                if num not in existing_clean:
+                    session['courts'].append(num)
+            session['courts'] = sorted(list(dict.fromkeys(session['courts'])), key=lambda x: int(clean_court_num(x)) if clean_court_num(x).isdigit() else 999)
 
             # Map players to active sub-session group
             # If Adv merges into High Int, Adv players map to High Int group

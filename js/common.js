@@ -518,6 +518,43 @@ function allocateCourts(levels, courtsList) {
     return assigned;
   }
 
+  // Evening 3, 4, 5, 6, 7, 8, 10 setup rule:
+  // High Intermediate on 7, 8, 10, 11 (6, 7, 8, 10 is NEVER allowed)
+  // Intermediate on 4, 5
+  // Advanced Beginner on 3, 6
+  const has34567810 = ['3', '4', '5', '6', '7', '8', '10'].every(c => cleanSet.has(c));
+  if (has34567810) {
+    const assigned = {
+      'Advanced Beginner': ['3', '6'],
+      'Intermediate': ['4', '5'],
+      'High Intermediate': ['7', '8', '10', '11'],
+      'Advanced': ['7', '8', '10', '11']
+    };
+
+    // Distribute any unassigned extra courts (e.g. 1, 2, 9, 12)
+    const assignedFlat = new Set();
+    Object.values(assigned).forEach(clist => clist.forEach(c => assignedFlat.add(c)));
+    const unassigned = cleanCourts.filter(c => !assignedFlat.has(c));
+    for (const extra of unassigned) {
+      if (['1', '2'].includes(extra) && (effectiveCounts['Intermediate'] || 0) > assigned['Intermediate'].length * 4) {
+        assigned['Intermediate'].push(extra);
+      } else if (['9', '12'].includes(extra) && (effectiveCounts['High Intermediate'] || 0) > assigned['High Intermediate'].length * 4) {
+        assigned['High Intermediate'].push(extra);
+      } else if (['1', '2'].includes(extra)) {
+        assigned['Advanced Beginner'].push(extra);
+      } else {
+        assigned['High Intermediate'].push(extra);
+      }
+    }
+
+    Object.keys(assigned).forEach(lvl => {
+      assigned[lvl] = Array.from(new Set(assigned[lvl]))
+        .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+    });
+
+    return assigned;
+  }
+
 
 
   // Hamilton-Hare largest remainder apportionment
@@ -571,6 +608,29 @@ function allocateCourts(levels, courtsList) {
 
     lvlCourts.sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
     assignedCourts[lvl] = lvlCourts;
+  });
+
+  // Universal IPX rule: 6, 7, 8, 10 group should NEVER be allowed!
+  // Court 6 is in the front pod (near Court 3) and must never be grouped with back pod courts 7, 8, 10.
+  Object.keys(assignedCourts).forEach(lvl => {
+    const clist = assignedCourts[lvl] || [];
+    const cSet = new Set(clist);
+    if (['6', '7', '8', '10'].every(c => cSet.has(c)) || (cSet.has('6') && cSet.has('10') && (cSet.has('7') || cSet.has('8')))) {
+      assignedCourts[lvl] = clist.filter(c => c !== '6');
+      if (!assignedCourts[lvl].includes('11')) {
+        assignedCourts[lvl].push('11');
+      }
+      if (assignedCourts['Advanced Beginner'] && !assignedCourts['Advanced Beginner'].includes('6')) {
+        assignedCourts['Advanced Beginner'].push('6');
+      } else if (assignedCourts['Intermediate'] && !assignedCourts['Intermediate'].includes('6')) {
+        assignedCourts['Intermediate'].push('6');
+      }
+    }
+  });
+
+  Object.keys(assignedCourts).forEach(lvl => {
+    assignedCourts[lvl] = Array.from(new Set(assignedCourts[lvl]))
+      .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
   });
 
   if (advMerged && assignedCourts['High Intermediate']) {
