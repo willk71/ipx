@@ -266,6 +266,18 @@ function cleanTitle(rawTitle) {
   return result.replace(/^[\s\-–—|/:]+/, '').replace(/[\s\-–—|/:]+$/, '').trim();
 }
 
+function isExcludedSession(title, courts) {
+  const titleStr = String(title || '');
+  if (/\b(road|assessment|skill|clinic|foundation|hosts?|guests?)s?\b/i.test(titleStr)) return true;
+  if (/\bhosts?\s*\/\s*guests?\b/i.test(titleStr)) return true;
+  if (/\b(?:pb|pickleball)\s*(?:\d{2,4}|xxx)\b/i.test(titleStr)) return true;
+  if (courts) {
+    const courtsArr = Array.isArray(courts) ? courts : Array.from(courts);
+    if (courtsArr.some(c => /\b(hosts?|guests?)\b/i.test(String(c && c.CourtName ? c.CourtName : c)))) return true;
+  }
+  return false;
+}
+
 function resolveQueueLocation(courtsSet, customText) {
   let location = '';
 
