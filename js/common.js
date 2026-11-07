@@ -324,6 +324,11 @@ function resolveQueueLocation(courtsSet, customText, context) {
     const nums = Array.from(courtsSet).map(n => parseInt(cleanCourtName(n), 10)).filter(n => !isNaN(n));
 
     if (nums.length > 0) {
+      // If only Court 3, queue at Court 3 Table
+      if (nums.length === 1 && nums[0] === 3) {
+        return '📍 - Court 3 Table';
+      }
+
       // Courts 2, 3, 5, 6 queue at Court 6 Paddle Rack
       const court6Group = [2, 3, 5, 6];
       if (nums.every(n => court6Group.includes(n))) {
@@ -416,7 +421,9 @@ function resolveQueueLocation(courtsSet, customText, context) {
       }
       // Exact single court assignment
       else if (nums.length === 1) {
-        if ([2, 3, 5, 6].includes(nums[0])) {
+        if (nums[0] === 3) {
+          location = 'Court 3 Table';
+        } else if ([2, 5, 6].includes(nums[0])) {
           location = 'Court 6 Paddle Rack';
         } else if ([1, 4, 7, 9, 12].includes(nums[0])) {
           location = 'Court ' + nums[0] + ' Table';
