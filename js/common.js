@@ -523,6 +523,24 @@ function allocateCourts(levels, courtsList) {
     return {};
   }
 
+  // 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
+  // - High Intermediate: Courts 1, 2, 5 (Bay 1 + Court 5 combo)
+  // - Advanced: Court 4 (Bay 2)
+  // - Intermediate: Court 3 (Bay 3 front)
+  // - Advanced Beginner: Courts 6, 9 (Bay 3 back + Court 9)
+  const has1234569 = cleanSet.size === 7 && ['1', '2', '3', '4', '5', '6', '9'].every(c => cleanSet.has(c));
+  if (has1234569) {
+    const assigned = {
+      'Advanced Beginner': ['6', '9'],
+      'Intermediate': ['3'],
+      'High Intermediate': ['1', '2', '5'],
+      'Advanced': ['4']
+    };
+    if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
+    if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
+    return assigned;
+  }
+
   // Daytime 1, 4, 7, 8, 10, 12 setup rule:
   // Always force Court 1 as AdvBeg+ (even if short on players),
   // Courts 4, 7, 8 for Intermediate / Intermediate+,

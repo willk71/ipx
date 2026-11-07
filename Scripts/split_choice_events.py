@@ -50,7 +50,19 @@ def normalize_player_name(raw_name):
     name = re.sub(r'\.', '', name)
     return re.sub(r'\s+', ' ', name)
 
-def allocate_courts(levels, courts_list):
+def load_court_rules():
+    rules_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'court_rules.json')
+    if not os.path.exists(rules_path):
+        rules_path = 'data/court_rules.json'
+    if os.path.exists(rules_path):
+        try:
+            with open(rules_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Notice: Failed to load {rules_path}: {e}")
+    return []
+
+def allocate_courts(levels, courts_list, event_title='', start_time=''):
     """
     Allocates courts proportionally across playing levels using Hamilton-Hare apportionment.
     Merges Advanced <= 4 into High Intermediate, and Adv Beg < 4 into Intermediate.
@@ -85,6 +97,46 @@ def allocate_courts(levels, courts_list):
     standard_order = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']
     active_levels = [lvl for lvl in standard_order if effective_counts.get(lvl, 0) > 0]
     total_effective = sum(effective_counts[lvl] for lvl in active_levels)
+
+    # 0. Custom rules from data/court_rules.json
+    rules = load_court_rules()
+    for rule in rules:
+        rule_courts = set(clean_court_num(c) for c in rule.get('courts', []))
+        if rule_courts and rule_courts == clean_set:
+            match_title = rule.get('match', '')
+            match_time = rule.get('startTime', '')
+            if match_title and not re.search(match_title, event_title or '', re.I):
+                continue
+            if match_time and match_time not in (start_time or ''):
+                continue
+
+            assigned_courts = {}
+            for lvl, clist in rule.get('allocations', {}).items():
+                assigned_courts[lvl] = sorted([clean_court_num(c) for c in clist], key=lambda x: int(x) if x.isdigit() else 999)
+
+            if adv_merged and 'High Intermediate' in assigned_courts:
+                assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+            if adv_beg_merged and 'Intermediate' in assigned_courts:
+                assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+            return assigned_courts
+
+    # 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
+    # - High Intermediate: Courts 1, 2, 5 (Bay 1 + Court 5 combo)
+    # - Advanced: Court 4 (Bay 2)
+    # - Intermediate: Court 3 (Bay 3 front)
+    # - Advanced Beginner: Courts 6, 9 (Bay 3 back + Court 9)
+    if clean_set == {'1', '2', '3', '4', '5', '6', '9'}:
+        assigned_courts = {
+            'Advanced Beginner': ['6', '9'],
+            'Intermediate': ['3'],
+            'High Intermediate': ['1', '2', '5'],
+            'Advanced': ['4']
+        }
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+        return assigned_courts
 
     # Default allocation if no player choices are present and courts include 1, 4, 7, 8, 10, 12
     if total_effective == 0:
@@ -521,7 +573,7 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
             if len(clean_courts) < 2:
                 continue
 
-            court_alloc = allocate_courts(level_counts, clean_courts)
+            court_alloc = allocate_courts(level_counts, clean_courts, event_title=e_info.get('title', ''), start_time=start_time)
             if not court_alloc:
                 continue
 
