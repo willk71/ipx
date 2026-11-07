@@ -278,7 +278,43 @@ function isExcludedSession(title, courts) {
   return false;
 }
 
-function resolveQueueLocation(courtsSet, customText) {
+function is457Grouped(context) {
+  const checkSet = (s) => {
+    if (!s) return false;
+    const cleanS = s instanceof Set ? s : new Set(Array.from(s || []).map(cleanCourtName));
+    const nums = Array.from(cleanS).map(n => parseInt(cleanCourtName(n), 10)).filter(n => !isNaN(n));
+    return nums.includes(4) && nums.includes(5) && nums.includes(7);
+  };
+
+  if (context) {
+    if (Array.isArray(context)) {
+      for (const item of context) {
+        if (checkSet(item instanceof Set ? item : (item && item.courts))) return true;
+      }
+    } else if (typeof context === 'object') {
+      for (const item of Object.values(context)) {
+        if (checkSet(item instanceof Set ? item : (item && item.courts))) return true;
+      }
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    if (window.allActiveCourtSets && Array.isArray(window.allActiveCourtSets)) {
+      for (const s of window.allActiveCourtSets) {
+        if (checkSet(s)) return true;
+      }
+    }
+    if (window.currentEventMap && typeof window.currentEventMap === 'object') {
+      for (const ev of Object.values(window.currentEventMap)) {
+        if (checkSet(ev && ev.courts)) return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function resolveQueueLocation(courtsSet, customText, context) {
   let location = '';
 
   if (customText) {
@@ -337,7 +373,17 @@ function resolveQueueLocation(courtsSet, customText) {
       }
       if (
         (courtsSet.has('8') && courtsSet.has('9') && courtsSet.size === 2) ||
-        (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2)
+        (nums.length === 2 && nums.includes(8) && nums.includes(9))
+      ) {
+        // If 4, 5, 7 is grouped, Court 4, 5, 7 queues at Court 4 Table, leaving Court 7 Paddle Rack for 8, 9
+        if (is457Grouped(context)) {
+          return '📍 - Court 7 Paddle Rack';
+        }
+        return '📍 - Court 10 Table - Left';
+      }
+      if (
+        (courtsSet.has('9') && courtsSet.has('10') && courtsSet.size === 2) ||
+        (nums.length === 2 && nums.includes(9) && nums.includes(10))
       ) {
         return '📍 - Court 10 Table - Left';
       }

@@ -90,7 +90,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.19"></script>
+  <script src="js/common.js?v=2.3.20"></script>
   <script>
     function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
       if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
@@ -270,9 +270,15 @@
 
         applyCourtOverrides(eventMap, data.courtOverrides || [], currentMinutes);
 
+        const allCourtSets = Object.values(eventMap).map(ev => ev.courts);
+        if (typeof window !== 'undefined') {
+          window.allActiveCourtSets = allCourtSets;
+          window.currentEventMap = eventMap;
+        }
+
         const sessions = [];
         Object.values(eventMap).forEach(ev => {
-          const resolvedQueue = resolveQueueLocation(ev.courts, ev.queueText);
+          const resolvedQueue = resolveQueueLocation(ev.courts, ev.queueText, allCourtSets);
           sessions.push({
             title: ev.title,
             courtsLabel: formatCourtsLabel(ev.courts, 'index'),
@@ -299,7 +305,7 @@
               courtCount: cSet.size,
               startTime: ah.startTimeIso || new Date().toISOString(),
               endTime: ah.endTimeIso || new Date().toISOString(),
-              queueText: resolveQueueLocation(cSet, '')
+              queueText: resolveQueueLocation(cSet, '', allCourtSets)
             });
           }
         });
