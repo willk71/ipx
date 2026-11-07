@@ -456,7 +456,7 @@ function resolveQueueLocation(courtsSet, customText, context) {
 
 // --- Unified IPX Pod Court Allocation Engine ---
 const PREFERRED_PODS = {
-  'Advanced Beginner': ['3', '6', '1', '2', '9'],
+  'Advanced Beginner': ['3', '6', '2', '1', '9'],
   'Intermediate': ['4', '5', '7', '8', '2', '1'],
   'High Intermediate': ['10', '12', '11', '8', '9', '7'],
   'Advanced': ['10', '11', '12', '8', '9', '7']
@@ -560,10 +560,17 @@ function allocateCourts(levels, courtsList) {
     Object.values(assigned).forEach(clist => clist.forEach(c => assignedFlat.add(c)));
     const unassigned = cleanCourts.filter(c => !assignedFlat.has(c));
     for (const extra of unassigned) {
-      if (['2', '3', '6', '9'].includes(extra) && (effectiveCounts['Advanced Beginner'] || 0) > assigned['Advanced Beginner'].length * 4) {
+      if (['2', '3', '9'].includes(extra) && (effectiveCounts['Advanced Beginner'] || 0) > assigned['Advanced Beginner'].length * 4) {
         assigned['Advanced Beginner'].push(extra);
       } else if (['5', '2'].includes(extra) && (effectiveCounts['Intermediate'] || 0) > assigned['Intermediate'].length * 4) {
         assigned['Intermediate'].push(extra);
+      } else if (extra === '6') {
+        // NEVER give Court 6 to AdvBeg since AdvBeg has Court 1!
+        if (assigned['Intermediate'] && !assigned['Intermediate'].includes('1')) {
+          assigned['Intermediate'].push('6');
+        } else {
+          assigned['High Intermediate'].push('6');
+        }
       } else {
         assigned['High Intermediate'].push(extra);
       }
@@ -599,8 +606,11 @@ function allocateCourts(levels, courtsList) {
         assigned['Intermediate'].push(extra);
       } else if (['9', '12'].includes(extra) && (effectiveCounts['High Intermediate'] || 0) > assigned['High Intermediate'].length * 4) {
         assigned['High Intermediate'].push(extra);
-      } else if (['1', '2'].includes(extra)) {
-        assigned['Advanced Beginner'].push(extra);
+      } else if (extra === '2' && !assigned['Advanced Beginner'].includes('1')) {
+        assigned['Advanced Beginner'].push('2');
+      } else if (extra === '1') {
+        // NEVER give Court 1 to Advanced Beginner because AdvBeg has Court 6!
+        assigned['Intermediate'].push('1');
       } else {
         assigned['High Intermediate'].push(extra);
       }
@@ -634,7 +644,7 @@ function allocateCourts(levels, courtsList) {
     floors[remainders[i].level]++;
   }
 
-  // Assign courts respecting IPX physical pods
+  // Pod-aware court allocation
   const remainingCourts = [...cleanCourts];
   const assignedCourts = {};
 
@@ -648,19 +658,107 @@ function allocateCourts(levels, courtsList) {
 
   activeOrder.forEach(lvl => {
     const needed = floors[lvl];
-    const prefList = PREFERRED_PODS[lvl] || [];
     const lvlCourts = [];
+    const remSet = new Set(remainingCourts);
 
-    // 1. Take available courts matching preferred list
+    // Level-specific preferred pods:
+    // Advanced Beginner:
+    // 1. Bay 3 pair: 3 & 6 ("try to put 3&6 together")
+    // 2. Bay 1 pair: 1 & 2
+    if (lvl === 'Advanced Beginner') {
+      if (needed >= 2 && remSet.has('3') && remSet.has('6')) {
+        lvlCourts.push('3', '6');
+        ['3', '6'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2 && remSet.has('1') && remSet.has('2')) {
+        lvlCourts.push('1', '2');
+        ['1', '2'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed === 1) {
+        if (remainingCourts.includes('1')) {
+          lvlCourts.push('1');
+          remainingCourts.splice(remainingCourts.indexOf('1'), 1);
+        } else if (remainingCourts.includes('2') && remainingCourts.includes('6')) {
+          // Prefer 2 so 3 & 6 can remain together for a 2-court tier
+          lvlCourts.push('2');
+          remainingCourts.splice(remainingCourts.indexOf('2'), 1);
+        } else if (remainingCourts.includes('3')) {
+          lvlCourts.push('3');
+          remainingCourts.splice(remainingCourts.indexOf('3'), 1);
+        } else if (remainingCourts.includes('2')) {
+          lvlCourts.push('2');
+          remainingCourts.splice(remainingCourts.indexOf('2'), 1);
+        }
+      }
+    } else if (lvl === 'Intermediate') {
+      // 1. 1, 2, 5 trio ("1,2,5 is another preferred combo")
+      // 2. 4 & 5 pair ("4&5 together is good")
+      // 3. 3 & 6 pair (if available and not taken)
+      // 4. 1 & 2 pair
+      if (needed >= 3 && remSet.has('1') && remSet.has('2') && remSet.has('5')) {
+        lvlCourts.push('1', '2', '5');
+        ['1', '2', '5'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2 && remSet.has('4') && remSet.has('5')) {
+        lvlCourts.push('4', '5');
+        ['4', '5'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2 && remSet.has('3') && remSet.has('6')) {
+        lvlCourts.push('3', '6');
+        ['3', '6'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2 && remSet.has('1') && remSet.has('2')) {
+        lvlCourts.push('1', '2');
+        ['1', '2'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2 && remSet.has('7') && remSet.has('8')) {
+        lvlCourts.push('7', '8');
+        ['7', '8'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      }
+    } else if (lvl === 'High Intermediate' || lvl === 'Advanced') {
+      // 1. 7, 8, 10, 11 (back pod)
+      // 2. 10, 11, 12 (back pod trio)
+      // 3. 10, 12 or 10, 11 or 7, 8 (back pod pairs)
+      if (needed >= 4 && ['7', '8', '10', '11'].every(c => remSet.has(c))) {
+        lvlCourts.push('7', '8', '10', '11');
+        ['7', '8', '10', '11'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 3 && ['10', '11', '12'].every(c => remSet.has(c))) {
+        lvlCourts.push('10', '11', '12');
+        ['10', '11', '12'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2) {
+        if (remSet.has('10') && remSet.has('12')) {
+          lvlCourts.push('10', '12');
+          ['10', '12'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+        } else if (remSet.has('10') && remSet.has('11')) {
+          lvlCourts.push('10', '11');
+          ['10', '11'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+        } else if (remSet.has('7') && remSet.has('8')) {
+          lvlCourts.push('7', '8');
+          ['7', '8'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+        }
+      }
+    }
+
+    // Fill any remainder from preferred list (with hard 1 & 6 disallowance)
+    const prefList = PREFERRED_PODS[lvl] || [];
     for (const c of prefList) {
       const idx = remainingCourts.indexOf(c);
       if (idx !== -1 && lvlCourts.length < needed) {
+        if ((c === '6' && lvlCourts.includes('1')) || (c === '1' && lvlCourts.includes('6'))) {
+          continue;
+        }
         lvlCourts.push(c);
         remainingCourts.splice(idx, 1);
       }
     }
 
-    // 2. Fill remainder from remaining available courts
+    // Fill remaining slots from any available court (still obeying definitely not 1 & 6)
+    let i = 0;
+    while (lvlCourts.length < needed && i < remainingCourts.length) {
+      const c = remainingCourts[i];
+      if ((c === '6' && lvlCourts.includes('1')) || (c === '1' && lvlCourts.includes('6'))) {
+        i++;
+        continue;
+      }
+      lvlCourts.push(c);
+      remainingCourts.splice(i, 1);
+    }
+
+    // If still short (only conflicting court remained), take whatever is left; post-processor will swap
     while (lvlCourts.length < needed && remainingCourts.length > 0) {
       lvlCourts.push(remainingCourts.shift());
     }
@@ -669,7 +767,93 @@ function allocateCourts(levels, courtsList) {
     assignedCourts[lvl] = lvlCourts;
   });
 
-  // Universal IPX rule: 6, 7, 8, 10 group should NEVER be allowed!
+  // Universal IPX rule 1: "definitely not 1&6"
+  // Court 1 and Court 6 are at opposite ends of the facility. Break any 1&6 pairing by swapping.
+  Object.keys(assignedCourts).forEach(lvl => {
+    const clist = assignedCourts[lvl] || [];
+    if (clist.includes('1') && clist.includes('6')) {
+      let swapped = false;
+      // Priority A: swap '6' to another group that has '3' so 3 & 6 are together
+      for (const otherLvl of Object.keys(assignedCourts)) {
+        const otherClist = assignedCourts[otherLvl];
+        if (otherLvl !== lvl && otherClist.includes('3') && !otherClist.includes('1')) {
+          const cand = otherClist.find(c => c !== '3');
+          if (cand) {
+            clist.splice(clist.indexOf('6'), 1);
+            clist.push(cand);
+            otherClist.splice(otherClist.indexOf(cand), 1);
+            otherClist.push('6');
+            swapped = true;
+            break;
+          }
+        }
+      }
+      // Priority B: swap '6' with any other group not containing '1'
+      if (!swapped) {
+        for (const otherLvl of Object.keys(assignedCourts)) {
+          const otherClist = assignedCourts[otherLvl];
+          if (otherLvl !== lvl && !otherClist.includes('1')) {
+            const sortedOther = [...otherClist].sort((a, b) => (a === '2' ? -1 : b === '2' ? 1 : ['4', '5'].includes(a) ? -1 : 1));
+            if (sortedOther.length > 0) {
+              const cand = sortedOther[0];
+              clist.splice(clist.indexOf('6'), 1);
+              clist.push(cand);
+              otherClist.splice(otherClist.indexOf(cand), 1);
+              otherClist.push('6');
+              swapped = true;
+              break;
+            }
+          }
+        }
+      }
+      // Priority C: swap '1' with any other group not containing '6'
+      if (!swapped) {
+        for (const otherLvl of Object.keys(assignedCourts)) {
+          const otherClist = assignedCourts[otherLvl];
+          if (otherLvl !== lvl && !otherClist.includes('6')) {
+            const sortedOther = [...otherClist].sort((a, b) => (a === '2' ? -1 : b === '2' ? 1 : ['4', '5'].includes(a) ? -1 : 1));
+            if (sortedOther.length > 0) {
+              const cand = sortedOther[0];
+              clist.splice(clist.indexOf('1'), 1);
+              clist.push(cand);
+              otherClist.splice(otherClist.indexOf(cand), 1);
+              otherClist.push('1');
+              swapped = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Universal IPX rule 2: "try to put 3&6 together"
+  // If Court 3 and Court 6 are separated across different groups, unite them if valid.
+  const lvl3 = Object.keys(assignedCourts).find(lvl => (assignedCourts[lvl] || []).includes('3'));
+  const lvl6 = Object.keys(assignedCourts).find(lvl => (assignedCourts[lvl] || []).includes('6'));
+  if (lvl3 && lvl6 && lvl3 !== lvl6) {
+    const c3List = assignedCourts[lvl3];
+    const c6List = assignedCourts[lvl6];
+    if (!c3List.includes('1') && c3List.length >= 2) {
+      const cand = c3List.find(c => c !== '3' && !(c === '1' && c6List.includes('6')));
+      if (cand) {
+        c6List.splice(c6List.indexOf('6'), 1);
+        c6List.push(cand);
+        c3List.splice(c3List.indexOf(cand), 1);
+        c3List.push('6');
+      }
+    } else if (!c6List.includes('1') && c6List.length >= 2) {
+      const cand = c6List.find(c => c !== '6');
+      if (cand) {
+        c3List.splice(c3List.indexOf('3'), 1);
+        c3List.push(cand);
+        c6List.splice(c6List.indexOf(cand), 1);
+        c6List.push('3');
+      }
+    }
+  }
+
+  // Universal IPX rule 3: 6, 7, 8, 10 group should NEVER be allowed!
   // Court 6 is in the front pod (near Court 3) and must never be grouped with back pod courts 7, 8, 10.
   Object.keys(assignedCourts).forEach(lvl => {
     const clist = assignedCourts[lvl] || [];
@@ -679,9 +863,9 @@ function allocateCourts(levels, courtsList) {
       if (!assignedCourts[lvl].includes('11')) {
         assignedCourts[lvl].push('11');
       }
-      if (assignedCourts['Advanced Beginner'] && !assignedCourts['Advanced Beginner'].includes('6')) {
+      if (assignedCourts['Advanced Beginner'] && !assignedCourts['Advanced Beginner'].includes('1') && !assignedCourts['Advanced Beginner'].includes('6')) {
         assignedCourts['Advanced Beginner'].push('6');
-      } else if (assignedCourts['Intermediate'] && !assignedCourts['Intermediate'].includes('6')) {
+      } else if (assignedCourts['Intermediate'] && !assignedCourts['Intermediate'].includes('1') && !assignedCourts['Intermediate'].includes('6')) {
         assignedCourts['Intermediate'].push('6');
       }
     }

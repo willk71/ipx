@@ -23,7 +23,7 @@ import urllib.error
 # - High Intermediate preferred: Courts 10, 12 (back pod), then 11, 8, 9, 7
 # - Advanced preferred: Courts 10, 11, 12, 8, 9
 PREFERRED_PODS = {
-    'Advanced Beginner': ['3', '6', '1', '2', '9'],
+    'Advanced Beginner': ['3', '6', '2', '1', '9'],
     'Intermediate': ['4', '5', '7', '8', '2', '1'],
     'High Intermediate': ['10', '12', '11', '8', '9', '7'],
     'Advanced': ['10', '11', '12', '8', '9', '7']
@@ -131,10 +131,16 @@ def allocate_courts(levels, courts_list):
             assigned_flat.update(clist)
         unassigned = [c for c in clean_courts if c not in assigned_flat]
         for extra in unassigned:
-            if extra in ['2', '3', '6', '9'] and effective_counts.get('Advanced Beginner', 0) > len(assigned_courts['Advanced Beginner']) * 4:
+            if extra in ['2', '3', '9'] and effective_counts.get('Advanced Beginner', 0) > len(assigned_courts['Advanced Beginner']) * 4:
                 assigned_courts['Advanced Beginner'].append(extra)
             elif extra in ['5', '2'] and effective_counts.get('Intermediate', 0) > len(assigned_courts['Intermediate']) * 4:
                 assigned_courts['Intermediate'].append(extra)
+            elif extra == '6':
+                # NEVER give Court 6 to AdvBeg since AdvBeg has Court 1!
+                if 'Intermediate' in assigned_courts and '1' not in assigned_courts['Intermediate']:
+                    assigned_courts['Intermediate'].append('6')
+                else:
+                    assigned_courts['High Intermediate'].append('6')
             else:
                 assigned_courts['High Intermediate'].append(extra)
 
@@ -166,8 +172,11 @@ def allocate_courts(levels, courts_list):
                 assigned_courts['Intermediate'].append(extra)
             elif extra in ['9', '12'] and effective_counts.get('High Intermediate', 0) > len(assigned_courts['High Intermediate']) * 4:
                 assigned_courts['High Intermediate'].append(extra)
-            elif extra in ['1', '2']:
-                assigned_courts['Advanced Beginner'].append(extra)
+            elif extra == '2' and '1' not in assigned_courts['Advanced Beginner']:
+                assigned_courts['Advanced Beginner'].append('2')
+            elif extra == '1':
+                # NEVER give Court 1 to Advanced Beginner because AdvBeg has Court 6!
+                assigned_courts['Intermediate'].append('1')
             else:
                 assigned_courts['High Intermediate'].append(extra)
 
@@ -175,8 +184,6 @@ def allocate_courts(levels, courts_list):
             assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
 
         return assigned_courts
-
-
 
     # Hamilton-Hare apportionment
     quotas = {lvl: (effective_counts[lvl] / total_effective) * total_courts for lvl in active_levels}
@@ -187,7 +194,7 @@ def allocate_courts(levels, courts_list):
     for i in range(unallocated):
         floors[remainders[i][1]] += 1
 
-    # Assign courts respecting IPX physical pods (Intermediate: 3 & 6; High Intermediate: 4, 5, 7, 8)
+    # Pod-aware court allocation
     remaining_courts = list(clean_courts)
     assigned_courts = {}
 
@@ -199,33 +206,184 @@ def allocate_courts(levels, courts_list):
 
     for lvl in active_order:
         needed = floors[lvl]
-        pref_list = PREFERRED_PODS.get(lvl, [])
         lvl_courts = []
+        rem_set = set(remaining_courts)
 
-        # 1. Take available courts matching preferred list
+        # Level-specific preferred pods:
+        # Advanced Beginner:
+        # 1. Bay 3 pair: 3 & 6 ("try to put 3&6 together")
+        # 2. Bay 1 pair: 1 & 2
+        if lvl == 'Advanced Beginner':
+            if needed >= 2 and {'3', '6'}.issubset(rem_set):
+                lvl_courts.extend(['3', '6'])
+                for c in ['3', '6']: remaining_courts.remove(c)
+            elif needed >= 2 and {'1', '2'}.issubset(rem_set):
+                lvl_courts.extend(['1', '2'])
+                for c in ['1', '2']: remaining_courts.remove(c)
+            elif needed == 1:
+                if '1' in remaining_courts:
+                    lvl_courts.append('1')
+                    remaining_courts.remove('1')
+                elif '2' in remaining_courts and '6' in remaining_courts:
+                    # Prefer 2 so 3 & 6 can remain together for a 2-court tier
+                    lvl_courts.append('2')
+                    remaining_courts.remove('2')
+                elif '3' in remaining_courts:
+                    lvl_courts.append('3')
+                    remaining_courts.remove('3')
+                elif '2' in remaining_courts:
+                    lvl_courts.append('2')
+                    remaining_courts.remove('2')
+
+        # Intermediate:
+        # 1. 1, 2, 5 trio ("1,2,5 is another preferred combo")
+        # 2. 4 & 5 pair ("4&5 together is good")
+        # 3. 3 & 6 pair (if available and not taken)
+        # 4. 1 & 2 pair
+        elif lvl == 'Intermediate':
+            if needed >= 3 and {'1', '2', '5'}.issubset(rem_set):
+                lvl_courts.extend(['1', '2', '5'])
+                for c in ['1', '2', '5']: remaining_courts.remove(c)
+            elif needed >= 2 and {'4', '5'}.issubset(rem_set):
+                lvl_courts.extend(['4', '5'])
+                for c in ['4', '5']: remaining_courts.remove(c)
+            elif needed >= 2 and {'3', '6'}.issubset(rem_set):
+                lvl_courts.extend(['3', '6'])
+                for c in ['3', '6']: remaining_courts.remove(c)
+            elif needed >= 2 and {'1', '2'}.issubset(rem_set):
+                lvl_courts.extend(['1', '2'])
+                for c in ['1', '2']: remaining_courts.remove(c)
+            elif needed >= 2 and {'7', '8'}.issubset(rem_set):
+                lvl_courts.extend(['7', '8'])
+                for c in ['7', '8']: remaining_courts.remove(c)
+
+        # High Intermediate / Advanced:
+        # 1. 7, 8, 10, 11 (back pod)
+        # 2. 10, 11, 12 (back pod trio)
+        # 3. 10, 12 or 10, 11 or 7, 8 (back pod pairs)
+        elif lvl in ['High Intermediate', 'Advanced']:
+            if needed >= 4 and {'7', '8', '10', '11'}.issubset(rem_set):
+                lvl_courts.extend(['7', '8', '10', '11'])
+                for c in ['7', '8', '10', '11']: remaining_courts.remove(c)
+            elif needed >= 3 and {'10', '11', '12'}.issubset(rem_set):
+                lvl_courts.extend(['10', '11', '12'])
+                for c in ['10', '11', '12']: remaining_courts.remove(c)
+            elif needed >= 2:
+                if {'10', '12'}.issubset(rem_set):
+                    lvl_courts.extend(['10', '12'])
+                    for c in ['10', '12']: remaining_courts.remove(c)
+                elif {'10', '11'}.issubset(rem_set):
+                    lvl_courts.extend(['10', '11'])
+                    for c in ['10', '11']: remaining_courts.remove(c)
+                elif {'7', '8'}.issubset(rem_set):
+                    lvl_courts.extend(['7', '8'])
+                    for c in ['7', '8']: remaining_courts.remove(c)
+
+        # Fill any remainder from preferred list (with hard 1 & 6 disallowance)
+        pref_list = PREFERRED_PODS.get(lvl, [])
         for c in pref_list:
             if c in remaining_courts and len(lvl_courts) < needed:
+                # Definitely NOT 1 & 6 in the same group!
+                if (c == '6' and '1' in lvl_courts) or (c == '1' and '6' in lvl_courts):
+                    continue
                 lvl_courts.append(c)
                 remaining_courts.remove(c)
 
-        # 2. Fill any remainder from remaining available courts
+        # Fill remaining slots from any available court (still obeying definitely not 1 & 6)
+        i = 0
+        while len(lvl_courts) < needed and i < len(remaining_courts):
+            c = remaining_courts[i]
+            if (c == '6' and '1' in lvl_courts) or (c == '1' and '6' in lvl_courts):
+                i += 1
+                continue
+            lvl_courts.append(remaining_courts.pop(i))
+
+        # If still short (only conflicting court remained), take whatever is left; post-processor will swap
         while len(lvl_courts) < needed and remaining_courts:
             lvl_courts.append(remaining_courts.pop(0))
 
         lvl_courts.sort(key=lambda x: int(x) if x.isdigit() else 999)
         assigned_courts[lvl] = lvl_courts
 
-    # Universal IPX rule: 6, 7, 8, 10 group should NEVER be allowed!
-    # Court 6 is in the front pod (near Court 3) and must never be grouped with back pod courts 7, 8, 10.
+    # Universal IPX rule 1: "definitely not 1&6"
+    # Court 1 and Court 6 are at opposite ends of the facility. Break any 1&6 pairing by swapping.
+    for lvl, clist in list(assigned_courts.items()):
+        if '1' in clist and '6' in clist:
+            swapped = False
+            # Priority A: swap '6' to another group that has '3' so 3 & 6 are together
+            for other_lvl, other_clist in assigned_courts.items():
+                if other_lvl != lvl and '3' in other_clist and '1' not in other_clist:
+                    cand_courts = [c for c in other_clist if c != '3']
+                    if cand_courts:
+                        take_c = cand_courts[0]
+                        clist.remove('6')
+                        clist.append(take_c)
+                        other_clist.remove(take_c)
+                        other_clist.append('6')
+                        swapped = True
+                        break
+            # Priority B: swap '6' with any other group not containing '1'
+            if not swapped:
+                for other_lvl, other_clist in assigned_courts.items():
+                    if other_lvl != lvl and '1' not in other_clist:
+                        cands = sorted(other_clist, key=lambda c: (0 if c == '2' else 1 if c in ['4', '5'] else 2))
+                        if cands:
+                            take_c = cands[0]
+                            clist.remove('6')
+                            clist.append(take_c)
+                            other_clist.remove(take_c)
+                            other_clist.append('6')
+                            swapped = True
+                            break
+            # Priority C: swap '1' with any other group not containing '6'
+            if not swapped:
+                for other_lvl, other_clist in assigned_courts.items():
+                    if other_lvl != lvl and '6' not in other_clist:
+                        cands = sorted(other_clist, key=lambda c: (0 if c == '2' else 1 if c in ['4', '5'] else 2))
+                        if cands:
+                            take_c = cands[0]
+                            clist.remove('1')
+                            clist.append(take_c)
+                            other_clist.remove(take_c)
+                            other_clist.append('1')
+                            swapped = True
+                            break
+
+    # Universal IPX rule 2: "try to put 3&6 together"
+    # If Court 3 and Court 6 are separated across different groups, unite them if valid.
+    lvl_3 = next((lvl for lvl, cl in assigned_courts.items() if '3' in cl), None)
+    lvl_6 = next((lvl for lvl, cl in assigned_courts.items() if '6' in cl), None)
+    if lvl_3 and lvl_6 and lvl_3 != lvl_6:
+        c3_list = assigned_courts[lvl_3]
+        c6_list = assigned_courts[lvl_6]
+        if '1' not in c3_list and len(c3_list) >= 2:
+            cands = [c for c in c3_list if c != '3' and not (c == '1' and '6' in c6_list)]
+            if cands:
+                take_c = cands[0]
+                c6_list.remove('6')
+                c6_list.append(take_c)
+                c3_list.remove(take_c)
+                c3_list.append('6')
+        elif '1' not in c6_list and len(c6_list) >= 2:
+            cands = [c for c in c6_list if c != '6']
+            if cands:
+                take_c = cands[0]
+                c3_list.remove('3')
+                c3_list.append(take_c)
+                c6_list.remove(take_c)
+                c6_list.append('3')
+
+    # Universal IPX rule 3: 6, 7, 8, 10 group should NEVER be allowed!
+    # Court 6 is in front pod and must never be grouped with back pod 7, 8, 10.
     for lvl, clist in list(assigned_courts.items()):
         c_set = set(clist)
         if {'6', '7', '8', '10'}.issubset(c_set) or ('6' in c_set and '10' in c_set and ('7' in c_set or '8' in c_set)):
             clist.remove('6')
             if '11' not in clist:
                 clist.append('11')
-            if 'Advanced Beginner' in assigned_courts and '6' not in assigned_courts['Advanced Beginner']:
+            if 'Advanced Beginner' in assigned_courts and '1' not in assigned_courts['Advanced Beginner'] and '6' not in assigned_courts['Advanced Beginner']:
                 assigned_courts['Advanced Beginner'].append('6')
-            elif 'Intermediate' in assigned_courts and '6' not in assigned_courts['Intermediate']:
+            elif 'Intermediate' in assigned_courts and '1' not in assigned_courts['Intermediate'] and '6' not in assigned_courts['Intermediate']:
                 assigned_courts['Intermediate'].append('6')
             assigned_courts[lvl] = sorted(list(set(clist)), key=lambda x: int(x) if x.isdigit() else 999)
 
