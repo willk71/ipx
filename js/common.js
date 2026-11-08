@@ -564,6 +564,23 @@ function allocateCourts(levels, courtsList) {
     return assigned;
   }
 
+  // 9-Court Sunday Afternoon Layout (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12):
+  // - Advanced Beginner: Court 1
+  // - Intermediate: Courts 4, 5, 7, 8, 9
+  // - High Intermediate & Advanced: Courts 10, 11, 12
+  const has145789101112 = cleanSet.size === 9 && ['1', '4', '5', '7', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
+  if (has145789101112) {
+    const assigned = {
+      'Advanced Beginner': ['1'],
+      'Intermediate': ['4', '5', '7', '8', '9'],
+      'High Intermediate': ['10', '11', '12'],
+      'Advanced': ['10', '11', '12']
+    };
+    if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
+    if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
+    return assigned;
+  }
+
   // 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
   // - High Intermediate: Courts 1, 2, 4
   // - Intermediate: Courts 3, 5
@@ -619,9 +636,17 @@ function allocateCourts(levels, courtsList) {
     Object.values(assigned).forEach(clist => clist.forEach(c => assignedFlat.add(c)));
     const unassigned = cleanCourts.filter(c => !assignedFlat.has(c));
     for (const extra of unassigned) {
-      if (['2', '3', '9'].includes(extra) && (effectiveCounts['Advanced Beginner'] || 0) > assigned['Advanced Beginner'].length * 4) {
+      const advBegCount = effectiveCounts['Advanced Beginner'] || 0;
+      const advBegCourtsLen = assigned['Advanced Beginner'] ? assigned['Advanced Beginner'].length : 0;
+      const intCount = effectiveCounts['Intermediate'] || 0;
+      const intCourtsLen = assigned['Intermediate'] ? assigned['Intermediate'].length : 0;
+      const advBegRatio = advBegCount / Math.max(1, advBegCourtsLen);
+      const intRatio = intCount / Math.max(1, intCourtsLen);
+
+      // AdvBeg only gets a 2nd court if they have at least 8 players and higher pressure than Intermediate
+      if (['2', '3'].includes(extra) && advBegCount >= 8 && advBegRatio > intRatio) {
         assigned['Advanced Beginner'].push(extra);
-      } else if (['5', '2'].includes(extra) && (effectiveCounts['Intermediate'] || 0) > assigned['Intermediate'].length * 4) {
+      } else if (['5', '2', '9'].includes(extra) && intRatio >= advBegRatio) {
         assigned['Intermediate'].push(extra);
       } else if (extra === '6') {
         // NEVER give Court 6 to AdvBeg since AdvBeg has Court 1!

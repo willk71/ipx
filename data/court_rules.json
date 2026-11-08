@@ -1,5 +1,15 @@
 [
   {
+    "description": "9-Court Open Play (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12): AdvBeg on 1; Int on 4,5,7,8,9; High on 10,11,12",
+    "courts": ["1", "4", "5", "7", "8", "9", "10", "11", "12"],
+    "allocations": {
+      "Advanced Beginner": ["1"],
+      "Intermediate": ["4", "5", "7", "8", "9"],
+      "High Intermediate": ["10", "11", "12"],
+      "Advanced": ["10", "11", "12"]
+    }
+  },
+  {
     "description": "12-Court layout: AdvBeg on 3,5,6,9; Int on 1,2,4; High on 7,8,10,11,12",
     "courts": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
     "allocations": {

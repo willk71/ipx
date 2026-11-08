@@ -160,6 +160,23 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
         return assigned_courts
 
+    # 9-Court Sunday Afternoon Layout (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12):
+    # - Advanced Beginner: Court 1
+    # - Intermediate: Courts 4, 5, 7, 8, 9
+    # - High Intermediate & Advanced: Courts 10, 11, 12
+    if clean_set == {'1', '4', '5', '7', '8', '9', '10', '11', '12'}:
+        assigned_courts = {
+            'Advanced Beginner': ['1'],
+            'Intermediate': ['4', '5', '7', '8', '9'],
+            'High Intermediate': ['10', '11', '12'],
+            'Advanced': ['10', '11', '12']
+        }
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+        return assigned_courts
+
     # 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
     # - High Intermediate: Courts 1, 2, 4
     # - Intermediate: Courts 3, 5
@@ -223,9 +240,17 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             assigned_flat.update(clist)
         unassigned = [c for c in clean_courts if c not in assigned_flat]
         for extra in unassigned:
-            if extra in ['2', '3', '9'] and effective_counts.get('Advanced Beginner', 0) > len(assigned_courts['Advanced Beginner']) * 4:
+            adv_beg_count = effective_counts.get('Advanced Beginner', 0)
+            adv_beg_courts_len = len(assigned_courts.get('Advanced Beginner', []))
+            int_count = effective_counts.get('Intermediate', 0)
+            int_courts_len = len(assigned_courts.get('Intermediate', []))
+            adv_beg_ratio = adv_beg_count / max(1, adv_beg_courts_len)
+            int_ratio = int_count / max(1, int_courts_len)
+
+            # AdvBeg only gets a 2nd court if they have at least 8 players and higher pressure than Intermediate
+            if extra in ['2', '3'] and adv_beg_count >= 8 and adv_beg_ratio > int_ratio:
                 assigned_courts['Advanced Beginner'].append(extra)
-            elif extra in ['5', '2'] and effective_counts.get('Intermediate', 0) > len(assigned_courts['Intermediate']) * 4:
+            elif extra in ['5', '2', '9'] and int_ratio >= adv_beg_ratio:
                 assigned_courts['Intermediate'].append(extra)
             elif extra == '6':
                 # NEVER give Court 6 to AdvBeg since AdvBeg has Court 1!
