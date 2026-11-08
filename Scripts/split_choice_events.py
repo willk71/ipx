@@ -126,6 +126,40 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
                 assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
             return assigned_courts
 
+    # 12-Court Facility Layout:
+    # - Advanced Beginner: Courts 3, 5, 6, 9
+    # - Intermediate: Courts 1, 2, 4
+    # - High Intermediate & Advanced: Courts 7, 8, 10, 11, 12
+    if clean_set == {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
+        assigned_courts = {
+            'Advanced Beginner': ['3', '5', '6', '9'],
+            'Intermediate': ['1', '2', '4'],
+            'High Intermediate': ['7', '8', '10', '11', '12'],
+            'Advanced': ['7', '8', '10', '11', '12']
+        }
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+        return assigned_courts
+
+    # 9-Court Facility Layout (Courts 1, 2, 3, 4, 5, 6, 7, 9, 10):
+    # - Advanced Beginner: Courts 3, 5, 6, 9
+    # - Intermediate: Courts 1, 2, 4
+    # - High Intermediate & Advanced: Courts 7, 10
+    if clean_set == {'1', '2', '3', '4', '5', '6', '7', '9', '10'}:
+        assigned_courts = {
+            'Advanced Beginner': ['3', '5', '6', '9'],
+            'Intermediate': ['1', '2', '4'],
+            'High Intermediate': ['7', '10'],
+            'Advanced': ['7', '10']
+        }
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+        return assigned_courts
+
     # 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
     # - High Intermediate: Courts 1, 2, 4
     # - Intermediate: Courts 3, 5

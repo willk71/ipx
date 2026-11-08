@@ -530,6 +530,40 @@ function allocateCourts(levels, courtsList) {
     return {};
   }
 
+  // 12-Court Facility Layout:
+  // - Advanced Beginner: Courts 3, 5, 6, 9
+  // - Intermediate: Courts 1, 2, 4
+  // - High Intermediate & Advanced: Courts 7, 8, 10, 11, 12
+  const has12Courts = cleanSet.size === 12 && ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
+  if (has12Courts) {
+    const assigned = {
+      'Advanced Beginner': ['3', '5', '6', '9'],
+      'Intermediate': ['1', '2', '4'],
+      'High Intermediate': ['7', '8', '10', '11', '12'],
+      'Advanced': ['7', '8', '10', '11', '12']
+    };
+    if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
+    if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
+    return assigned;
+  }
+
+  // 9-Court Facility Layout (Courts 1, 2, 3, 4, 5, 6, 7, 9, 10):
+  // - Advanced Beginner: Courts 3, 5, 6, 9
+  // - Intermediate: Courts 1, 2, 4
+  // - High Intermediate & Advanced: Courts 7, 10
+  const has9Courts1234567910 = cleanSet.size === 9 && ['1', '2', '3', '4', '5', '6', '7', '9', '10'].every(c => cleanSet.has(c));
+  if (has9Courts1234567910) {
+    const assigned = {
+      'Advanced Beginner': ['3', '5', '6', '9'],
+      'Intermediate': ['1', '2', '4'],
+      'High Intermediate': ['7', '10'],
+      'Advanced': ['7', '10']
+    };
+    if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
+    if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
+    return assigned;
+  }
+
   // 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
   // - High Intermediate: Courts 1, 2, 4
   // - Intermediate: Courts 3, 5
