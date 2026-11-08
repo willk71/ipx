@@ -758,6 +758,12 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
     try:
         with open(choices_path, 'w', encoding='utf-8') as out_c:
             json.dump(choices, out_c, indent=2)
+        fresh_marker = os.path.join(os.path.dirname(choices_path) or '.', '.choices_fresh')
+        try:
+            with open(fresh_marker, 'w') as mf:
+                mf.write('1')
+        except Exception:
+            pass
         print(f"Updated {choices_path} with unified courtAllocations.")
     except Exception as e:
         print(f"Notice: Could not write courtAllocations to {choices_path}: {e}")
