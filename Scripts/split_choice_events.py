@@ -115,22 +115,28 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
                 assigned_courts[lvl] = sorted([clean_court_num(c) for c in clist], key=lambda x: int(x) if x.isdigit() else 999)
 
             if adv_merged and 'High Intermediate' in assigned_courts:
-                assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+                adv_courts = [c for c in assigned_courts.get('Advanced', []) if c not in assigned_courts['High Intermediate']]
+                if adv_courts:
+                    assigned_courts['High Intermediate'] = sorted(list(set(assigned_courts['High Intermediate'] + adv_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+                assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
             if adv_beg_merged and 'Intermediate' in assigned_courts:
-                assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+                adv_beg_courts = [c for c in assigned_courts.get('Advanced Beginner', []) if c not in assigned_courts['Intermediate']]
+                if adv_beg_courts:
+                    assigned_courts['Intermediate'] = sorted(list(set(assigned_courts['Intermediate'] + adv_beg_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+                assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
             return assigned_courts
 
     # 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
-    # - High Intermediate: Courts 1, 2, 5 (Bay 1 + Court 5 combo)
-    # - Advanced: Court 4 (Bay 2)
-    # - Intermediate: Court 3 (Bay 3 front)
-    # - Advanced Beginner: Courts 6, 9 (Bay 3 back + Court 9)
+    # - High Intermediate: Courts 1, 2, 4
+    # - Intermediate: Courts 3, 5
+    # - Advanced Beginner: Courts 6, 9
+    # - Advanced: merged with High Intermediate (1, 2, 4)
     if clean_set == {'1', '2', '3', '4', '5', '6', '9'}:
         assigned_courts = {
             'Advanced Beginner': ['6', '9'],
-            'Intermediate': ['3'],
-            'High Intermediate': ['1', '2', '5'],
-            'Advanced': ['4']
+            'Intermediate': ['3', '5'],
+            'High Intermediate': ['1', '2', '4'],
+            'Advanced': ['1', '2', '4']
         }
         if adv_merged and 'High Intermediate' in assigned_courts:
             assigned_courts['Advanced'] = assigned_courts['High Intermediate']
@@ -444,9 +450,15 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
 
     # Link merged tiers to their receiving group's courts
     if adv_merged and 'High Intermediate' in assigned_courts:
-        assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+        adv_courts = [c for c in assigned_courts.get('Advanced', []) if c not in assigned_courts['High Intermediate']]
+        if adv_courts:
+            assigned_courts['High Intermediate'] = sorted(list(set(assigned_courts['High Intermediate'] + adv_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+        assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
     if adv_beg_merged and 'Intermediate' in assigned_courts:
-        assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+        adv_beg_courts = [c for c in assigned_courts.get('Advanced Beginner', []) if c not in assigned_courts['Intermediate']]
+        if adv_beg_courts:
+            assigned_courts['Intermediate'] = sorted(list(set(assigned_courts['Intermediate'] + adv_beg_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+        assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
 
     return assigned_courts
 

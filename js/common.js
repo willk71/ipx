@@ -531,17 +531,17 @@ function allocateCourts(levels, courtsList) {
   }
 
   // 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
-  // - High Intermediate: Courts 1, 2, 5 (Bay 1 + Court 5 combo)
-  // - Advanced: Court 4 (Bay 2)
-  // - Intermediate: Court 3 (Bay 3 front)
-  // - Advanced Beginner: Courts 6, 9 (Bay 3 back + Court 9)
+  // - High Intermediate: Courts 1, 2, 4
+  // - Intermediate: Courts 3, 5
+  // - Advanced Beginner: Courts 6, 9
+  // - Advanced: merged with High Intermediate (1, 2, 4)
   const has1234569 = cleanSet.size === 7 && ['1', '2', '3', '4', '5', '6', '9'].every(c => cleanSet.has(c));
   if (has1234569) {
     const assigned = {
       'Advanced Beginner': ['6', '9'],
-      'Intermediate': ['3'],
-      'High Intermediate': ['1', '2', '5'],
-      'Advanced': ['4']
+      'Intermediate': ['3', '5'],
+      'High Intermediate': ['1', '2', '4'],
+      'Advanced': ['1', '2', '4']
     };
     if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
     if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
@@ -902,10 +902,20 @@ function allocateCourts(levels, courtsList) {
   });
 
   if (advMerged && assignedCourts['High Intermediate']) {
-    assignedCourts['Advanced'] = assignedCourts['High Intermediate'];
+    const advCourts = (assignedCourts['Advanced'] || []).filter(c => !assignedCourts['High Intermediate'].includes(c));
+    if (advCourts.length > 0) {
+      assignedCourts['High Intermediate'] = Array.from(new Set([...assignedCourts['High Intermediate'], ...advCourts]))
+        .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+    }
+    assignedCourts['Advanced'] = [...assignedCourts['High Intermediate']];
   }
   if (advBegMerged && assignedCourts['Intermediate']) {
-    assignedCourts['Advanced Beginner'] = assignedCourts['Intermediate'];
+    const advBegCourts = (assignedCourts['Advanced Beginner'] || []).filter(c => !assignedCourts['Intermediate'].includes(c));
+    if (advBegCourts.length > 0) {
+      assignedCourts['Intermediate'] = Array.from(new Set([...assignedCourts['Intermediate'], ...advBegCourts]))
+        .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+    }
+    assignedCourts['Advanced Beginner'] = [...assignedCourts['Intermediate']];
   }
 
   return assignedCourts;
