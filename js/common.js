@@ -329,6 +329,15 @@ function resolveQueueLocation(courtsSet, customText, context) {
         return '📍 - Court 3 Table';
       }
 
+      // Courts 3, 5, 6, 9 queue at Court 6 Paddle Rack
+      if (
+        (courtsSet.has('3') && courtsSet.has('5') && courtsSet.has('6') && courtsSet.has('9')) ||
+        (nums.includes(3) && nums.includes(5) && nums.includes(6) && nums.includes(9)) ||
+        (nums.every(n => [3, 5, 6, 9].includes(n)) && nums.length >= 3)
+      ) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+
       // Courts 2, 3, 5, 6 queue at Court 6 Paddle Rack
       const court6Group = [2, 3, 5, 6];
       if (nums.every(n => court6Group.includes(n))) {
