@@ -90,7 +90,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.28"></script>
+  <script src="js/common.js?v=2.3.29"></script>
   <script>
     function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
       if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
@@ -191,6 +191,7 @@
         if (/\bhosts?\s*\/\s*guests?\b/i.test(titleStr)) return true;
         if (/\b(?:pb|pickleball)\s*(?:\d{2,4}|xxx)\b/i.test(titleStr)) return true;
         if (/\b(part(?:y|ies)|birthday|private\s*event)\b/i.test(titleStr)) return true;
+        if (/\b(rfx|bounce)\b/i.test(titleStr)) return true;
         if (courts) {
           const courtsArr = Array.isArray(courts) ? courts : Array.from(courts);
           if (courtsArr.some(c => /\b(hosts?|guests?)\b/i.test(String(c && c.CourtName ? c.CourtName : c)))) return true;

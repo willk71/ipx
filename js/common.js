@@ -260,9 +260,8 @@ function cleanTitle(rawTitle) {
   mainSegment = mainSegment.replace(/^[\-–—/,\s]+/, '').replace(/[\-–—/,\s]+$/, '').replace(/\s{2,}/g, ' ').trim();
   mainSegment = mainSegment.replace(/(\d+(?:\.\d+)?)\s*[\-–—]\s*(\d+(?:\.\d+)?)/g, '$1 – $2');
 
-  let formatted = toSentenceCase(mainSegment);
-  formatted = formatted.replace(/\bP4p\b/gi, 'P4P');
-  let result = formatted || toSentenceCase(fullStr);
+  let formatted = mainSegment;
+  let result = formatted || fullStr;
   return result.replace(/^[\s\-–—|/:]+/, '').replace(/[\s\-–—|/:]+$/, '').trim();
 }
 
@@ -272,6 +271,7 @@ function isExcludedSession(title, courts) {
   if (/\bhosts?\s*\/\s*guests?\b/i.test(titleStr)) return true;
   if (/\b(?:pb|pickleball)\s*(?:\d{2,4}|xxx)\b/i.test(titleStr)) return true;
   if (/\b(part(?:y|ies)|birthday|private\s*event)\b/i.test(titleStr)) return true;
+  if (/\b(rfx|bounce)\b/i.test(titleStr)) return true;
   if (courts) {
     const courtsArr = Array.isArray(courts) ? courts : Array.from(courts);
     if (courtsArr.some(c => /\b(hosts?|guests?)\b/i.test(String(c && c.CourtName ? c.CourtName : c)))) return true;
