@@ -161,6 +161,32 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
         return assigned_courts
 
+    # Daytime 10-Court Layout without 1 (Courts 3, 4, 5, 6, 7, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 7, 8, 9, 10
+    # - Intermediate: Courts 3, 4, 5, 6
+    # - Advanced Beginner: Courts 3, 6
+    if clean_set == {'3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
+        return {
+            'Advanced Beginner': ['3', '6'],
+            'Intermediate': ['3', '4', '5', '6'],
+            'High Intermediate': ['7', '8', '9', '10'],
+            'Advanced': ['11', '12']
+        }
+
+    # Daytime 9-Court Layout without 1, 7 (Courts 3, 4, 5, 6, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 8, 9, 10
+    # - Intermediate: Courts 3, 4, 5, 6
+    # - Advanced Beginner: Courts 3, 6
+    if clean_set == {'3', '4', '5', '6', '8', '9', '10', '11', '12'}:
+        return {
+            'Advanced Beginner': ['3', '6'],
+            'Intermediate': ['3', '4', '5', '6'],
+            'High Intermediate': ['8', '9', '10'],
+            'Advanced': ['11', '12']
+        }
+
     # Daytime 10-Court Layout (Courts 1, 3, 4, 5, 6, 8, 9, 10, 11, 12):
     # - Advanced: Courts 11, 12
     # - High Intermediate: Courts 8, 9, 10
