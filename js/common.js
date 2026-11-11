@@ -267,7 +267,8 @@ function cleanTitle(rawTitle) {
 
 function isExcludedSession(title, courts) {
   const titleStr = String(title || '');
-  if (/\b(road|assessment|skill|clinic|foundation|hosts?|guests?)s?\b/i.test(titleStr)) return true;
+  if (/^\s*clinic\s*$/i.test(titleStr) || /^\s*drilling\s*$/i.test(titleStr)) return false;
+  if (/\b(road|assessment|skill|foundation|hosts?|guests?)s?\b/i.test(titleStr)) return true;
   if (/\bhosts?\s*\/\s*guests?\b/i.test(titleStr)) return true;
   if (/\b(?:pb|pickleball)\s*(?:\d{2,4}|xxx)\b/i.test(titleStr)) return true;
   if (/\b(part(?:y|ies)|birthday|private\s*event)\b/i.test(titleStr)) return true;
@@ -1082,19 +1083,64 @@ function matchesTierStrict(title, matchStr) {
   const t = String(title || '').toLowerCase();
   const m = String(matchStr).toLowerCase().trim();
 
-  if (m === 'high intermediate' || m === 'high int') {
+  if (m === 'high intermediate' || m === 'high int' || m === 'high intermediate+' || m === 'high int+') {
     return /\bhigh\s*intermediate\b/.test(t) || /\bhigh\s*int\b/.test(t) || /\bhigh\b/.test(t);
   }
-  if (m === 'intermediate' || m === 'int') {
+  if (m === 'intermediate' || m === 'int' || m === 'intermediate+' || m === 'int+') {
     return (/\bintermediate\b/.test(t) || /\bint\b/.test(t)) && !/\bhigh\b/.test(t);
   }
   if (m === 'advanced beginner' || m === 'adv beg' || m === 'advbeg') {
     return /\b(advanced|adv)\s*beginner\b/.test(t) || /\badvbeg\b/.test(t);
   }
+  if (m === 'novice / beginner' || m === 'novice/beginner' || m === 'novice' || m === 'beginner') {
+    return /\bnovice\b/.test(t) || (/\bbeginner\b/.test(t) && !/\badv(?:anced)?\b/.test(t));
+  }
+  if (m === 'drilling' || m === 'drill') {
+    return /\bdrill(?:ing)?\b/.test(t);
+  }
+  if (m === 'clinic' || m === 'clinics') {
+    return /\bclinic[s]?\b/.test(t);
+  }
   if (m === 'advanced' || m === 'adv') {
     return (/\badvanced\b/.test(t) || /\badv\b/.test(t)) && !/\bbeginner\b/.test(t) && !/\bbeg\b/.test(t);
   }
-  return new RegExp('\\b' + m + '\\b', 'i').test(t);
+  return new RegExp('\\b' + m.replace(/[+*?^$(){}|[\]\\]/g, '\\$&') + '\\b', 'i').test(t);
+}
+
+// Dynamic Tier Suffix Rules:
+// - If there is no Advanced, then High Intermediate becomes High Intermediate+
+// - If there is no Advanced nor High Intermediate, then Intermediate becomes Intermediate+
+function adjustTierTitlesWithPlus(sessionList) {
+  if (!Array.isArray(sessionList) || sessionList.length === 0) return sessionList;
+
+  const hasAdvanced = sessionList.some(s => {
+    const t = String(s.title || '').toLowerCase();
+    return /\badvanced\b/.test(t) && !/\bbeginner\b/.test(t) && !/\bbeg\b/.test(t);
+  });
+
+  const hasHighInt = sessionList.some(s => {
+    const t = String(s.title || '').toLowerCase();
+    return /\bhigh\s*intermediate\b/.test(t) || /\bhigh\s*int\b/.test(t);
+  });
+
+  return sessionList.map(s => {
+    let title = s.title || '';
+
+    // Rule 1: If there is no Advanced, High Intermediate becomes High Intermediate+
+    if (!hasAdvanced && (/\bhigh\s*intermediate\b/i.test(title) || /\bhigh\s*int\b/i.test(title))) {
+      if (!title.includes('+')) {
+        title = title.replace(/\b(High\s*Intermediate|High\s*Int)\b/i, m => m + '+');
+      }
+    }
+    // Rule 2: If there is no Advanced nor High Intermediate, Intermediate becomes Intermediate+
+    else if (!hasAdvanced && !hasHighInt && /\bintermediate\b/i.test(title) && !/\bhigh\b/i.test(title)) {
+      if (!title.includes('+')) {
+        title = title.replace(/\b(Intermediate|Int)\b/i, m => m + '+');
+      }
+    }
+
+    return { ...s, title };
+  });
 }
 
 function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
@@ -1115,11 +1161,38 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
 
   activeOverrides.forEach(ov => {
     if (Array.isArray(ov.courts) && ov.courts.length > 0) {
+      let matchedAny = false;
       Object.values(eventMap).forEach(ev => {
         if (!ov.match || matchesTierStrict(ev.title, ov.match)) {
           ev.courts = new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)));
+          matchedAny = true;
         }
       });
+
+      // If this is a standalone manual tier (e.g. Drilling, Clinic, Novice/Beginner) and no existing event matched it,
+      // dynamically create a session entry in eventMap so it displays on the screens!
+      if (!matchedAny && ov.match) {
+        const cleanMatch = ov.match.toLowerCase().trim();
+        if (['drilling', 'clinic', 'novice / beginner', 'novice/beginner', 'novice', 'beginner'].includes(cleanMatch)) {
+          let displayTitle = ov.match.trim();
+          if (cleanMatch === 'novice/beginner' || cleanMatch === 'novice / beginner' || cleanMatch === 'novice' || cleanMatch === 'beginner') {
+            displayTitle = 'Novice / Beginner';
+          } else if (cleanMatch === 'drilling') {
+            displayTitle = 'Drilling';
+          } else if (cleanMatch === 'clinic') {
+            displayTitle = 'Clinic';
+          }
+
+          const key = `override_${cleanMatch.replace(/[^a-z0-9]/g, '_')}`;
+          eventMap[key] = {
+            title: displayTitle,
+            courts: new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10))),
+            startTime: new Date().toISOString(),
+            endTime: new Date(Date.now() + 2 * 3600 * 1000).toISOString(),
+            queueText: ''
+          };
+        }
+      }
     }
   });
 }

@@ -825,8 +825,14 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
     group_slugs = {
         'Advanced Beginner': 'advbeg',
         'Intermediate': 'int',
+        'Intermediate+': 'int',
         'High Intermediate': 'highint',
-        'Advanced': 'adv'
+        'High Intermediate+': 'highint',
+        'Advanced': 'adv',
+        'Novice / Beginner': 'novice',
+        'Novice/Beginner': 'novice',
+        'Drilling': 'drilling',
+        'Clinic': 'clinic'
     }
 
     for item in schedule.get('events', []):
@@ -875,15 +881,27 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
                 new_courts.append(f"Court {num}")
         new_courts.sort(key=lambda x: int(clean_court_num(x)) if clean_court_num(x).isdigit() else 999)
 
+        # Dynamic naming rules:
+        # If there is no Advanced, High Intermediate becomes High Intermediate+
+        # If there is no Advanced nor High Intermediate, Intermediate becomes Intermediate+
+        has_adv = bool(court_alloc.get('Advanced')) and len(court_alloc['Advanced']) > 0
+        has_high_int = bool(court_alloc.get('High Intermediate')) and len(court_alloc['High Intermediate']) > 0
+
+        display_group = assigned_group
+        if not has_adv and assigned_group == 'High Intermediate':
+            display_group = 'High Intermediate+'
+        elif not has_adv and not has_high_int and assigned_group == 'Intermediate':
+            display_group = 'Intermediate+'
+
         slug = group_slugs.get(assigned_group, 'group')
         orig_title = clean_event_title(item.get('title', 'Event'))
-        base_title = re.sub(r'\s*[-–—]\s*(Intermediate|High Intermediate|Advanced|Adv Beg).*', '', orig_title, flags=re.I).strip()
+        base_title = re.sub(r'\s*[-–—]\s*(Intermediate\+?|High Intermediate\+?|Advanced|Adv Beg).*', '', orig_title, flags=re.I).strip()
         base_title = re.sub(r'^[\s\-–—|/:]+', '', base_title).strip()
         base_title = re.sub(r'[\s\-–—|/:]+$', '', base_title).strip()
         if base_title:
-            new_title = f"{base_title} - {assigned_group}"
+            new_title = f"{base_title} - {display_group}"
         else:
-            new_title = assigned_group
+            new_title = display_group
 
         new_item = dict(item)
         new_item['eventId'] = f"{base_id}_{slug}"

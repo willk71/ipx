@@ -198,27 +198,42 @@ export default {
                   const groupSlugs = {
                     'Advanced Beginner': 'advbeg',
                     'Intermediate': 'int',
+                    'Intermediate+': 'int',
                     'High Intermediate': 'highint',
-                    'Advanced': 'adv'
+                    'High Intermediate+': 'highint',
+                    'Advanced': 'adv',
+                    'Novice / Beginner': 'novice',
+                    'Novice/Beginner': 'novice',
+                    'Drilling': 'drilling',
+                    'Clinic': 'clinic'
                   };
 
                   const matchesTierStrict = (title, matchStr) => {
                     if (!matchStr) return true;
                     const t = String(title || '').toLowerCase();
                     const m = String(matchStr).toLowerCase().trim();
-                    if (m === 'high intermediate' || m === 'high int') {
+                    if (m === 'high intermediate' || m === 'high int' || m === 'high intermediate+' || m === 'high int+') {
                       return /\bhigh\s*intermediate\b/.test(t) || /\bhigh\s*int\b/.test(t) || /\bhigh\b/.test(t);
                     }
-                    if (m === 'intermediate' || m === 'int') {
+                    if (m === 'intermediate' || m === 'int' || m === 'intermediate+' || m === 'int+') {
                       return (/\bintermediate\b/.test(t) || /\bint\b/.test(t)) && !/\bhigh\b/.test(t);
                     }
                     if (m === 'advanced beginner' || m === 'adv beg' || m === 'advbeg') {
                       return /\b(advanced|adv)\s*beginner\b/.test(t) || /\badvbeg\b/.test(t);
                     }
+                    if (m === 'novice / beginner' || m === 'novice/beginner' || m === 'novice' || m === 'beginner') {
+                      return /\bnovice\b/.test(t) || (/\bbeginner\b/.test(t) && !/\badv(?:anced)?\b/.test(t));
+                    }
+                    if (m === 'drilling' || m === 'drill') {
+                      return /\bdrill(?:ing)?\b/.test(t);
+                    }
+                    if (m === 'clinic' || m === 'clinics') {
+                      return /\bclinic[s]?\b/.test(t);
+                    }
                     if (m === 'advanced' || m === 'adv') {
                       return (/\badvanced\b/.test(t) || /\badv\b/.test(t)) && !/\bbeginner\b/.test(t) && !/\bbeg\b/.test(t);
                     }
-                    return new RegExp('\\b' + m + '\\b', 'i').test(t);
+                    return new RegExp('\\b' + m.replace(/[+*?^$(){}|[\]\\]/g, '\\$&') + '\\b', 'i').test(t);
                   };
 
                   Object.values(manualSessions).forEach(man => {

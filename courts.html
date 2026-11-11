@@ -23,6 +23,18 @@
       --tier-beg-bg: rgba(16, 185, 129, 0.16);
       --tier-beg-border: rgba(16, 185, 129, 0.6);
 
+      --tier-novice: #14b8a6;
+      --tier-novice-bg: rgba(20, 184, 166, 0.16);
+      --tier-novice-border: rgba(20, 184, 166, 0.6);
+
+      --tier-drilling: #f97316;
+      --tier-drilling-bg: rgba(249, 115, 22, 0.16);
+      --tier-drilling-border: rgba(249, 115, 22, 0.6);
+
+      --tier-clinic: #818cf8;
+      --tier-clinic-bg: rgba(129, 140, 248, 0.18);
+      --tier-clinic-border: rgba(129, 140, 248, 0.6);
+
       --tier-private: #64748b;
       --tier-private-bg: rgba(100, 116, 139, 0.16);
       --tier-private-border: rgba(100, 116, 139, 0.5);
@@ -519,6 +531,21 @@
       border-color: var(--tier-beg-border);
       box-shadow: 0 2px 10px rgba(16, 185, 129, 0.15);
     }
+    .court-card.assigned-novice {
+      background: var(--tier-novice-bg);
+      border-color: var(--tier-novice-border);
+      box-shadow: 0 2px 10px rgba(20, 184, 166, 0.15);
+    }
+    .court-card.assigned-drilling {
+      background: var(--tier-drilling-bg);
+      border-color: var(--tier-drilling-border);
+      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.15);
+    }
+    .court-card.assigned-clinic {
+      background: var(--tier-clinic-bg);
+      border-color: var(--tier-clinic-border);
+      box-shadow: 0 2px 10px rgba(129, 140, 248, 0.15);
+    }
     .court-card.assigned-private {
       background: var(--tier-private-bg);
       border-color: var(--tier-private-border);
@@ -935,7 +962,7 @@
   <!-- Toast Notification -->
   <div class="toast-container" id="toast-container"></div>
 
-  <script src="js/common.js?v=2.3.32"></script>
+  <script src="js/common.js?v=2.3.33"></script>
   <script>
     const TARGET_HASH = 'c55f0253dcb8aa5fccdb111785e5e38158cad6568778efb0d06b46c40e3d781a';
     const ALL_COURT_NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
@@ -951,6 +978,9 @@
       { id: 'High Intermediate', label: '🟣 High Intermediate', className: 'assigned-high' },
       { id: 'Intermediate', label: '🔵 Intermediate', className: 'assigned-int' },
       { id: 'Advanced Beginner', label: '🟢 Adv Beginner', className: 'assigned-beg' },
+      { id: 'Novice / Beginner', label: '🌱 Novice / Beginner', className: 'assigned-novice' },
+      { id: 'Drilling', label: '🎯 Drilling', className: 'assigned-drilling' },
+      { id: 'Clinic', label: '🎓 Clinic', className: 'assigned-clinic' },
       { id: 'Private / Reserved', label: '⚪ Private', className: 'assigned-private' },
       { id: 'Closed', label: '⚫ Closed', className: 'assigned-closed' }
     ];
@@ -1380,9 +1410,12 @@
       const effectiveTier = selectedTier === 'AUTO' ? dynamicTier : selectedTier;
       if (!effectiveTier) return 'assigned-auto';
       if (effectiveTier === 'Advanced') return 'assigned-adv';
-      if (effectiveTier === 'High Intermediate') return 'assigned-high';
-      if (effectiveTier === 'Intermediate') return 'assigned-int';
-      if (effectiveTier === 'Advanced Beginner') return 'assigned-beg';
+      if (effectiveTier.includes('High Intermediate')) return 'assigned-high';
+      if (effectiveTier.includes('Intermediate') && !effectiveTier.includes('High') && !effectiveTier.includes('Beginner') && !effectiveTier.includes('Adv')) return 'assigned-int';
+      if (effectiveTier.includes('Advanced Beginner') || effectiveTier.includes('Adv Beg')) return 'assigned-beg';
+      if (effectiveTier.includes('Novice') || effectiveTier === 'Beginner') return 'assigned-novice';
+      if (effectiveTier.includes('Drilling')) return 'assigned-drilling';
+      if (effectiveTier.includes('Clinic')) return 'assigned-clinic';
       if (effectiveTier.includes('Private') || effectiveTier.includes('Reserved')) return 'assigned-private';
       if (effectiveTier.includes('Closed') || effectiveTier.includes('Off')) return 'assigned-closed';
       return 'assigned-auto';
@@ -1417,6 +1450,9 @@
         'High Intermediate': 0,
         'Intermediate': 0,
         'Advanced Beginner': 0,
+        'Novice / Beginner': 0,
+        'Drilling': 0,
+        'Clinic': 0,
         'Other': 0
       };
 
@@ -1441,12 +1477,30 @@
         choicesQ.choices.forEach(c => { playerCounts[c.choice] = c.count || 0; });
       }
 
+      // Dynamic naming rules:
+      // - If no Advanced, High Intermediate becomes High Intermediate+
+      // - If no Advanced nor High Intermediate, Intermediate becomes Intermediate+
+      const hasAdv = counts['Advanced'] > 0;
+      const hasHighInt = counts['High Intermediate'] > 0;
+      const highIntLabel = !hasAdv && hasHighInt ? 'High Intermediate+' : 'High Intermediate';
+      const intLabel = !hasAdv && !hasHighInt && counts['Intermediate'] > 0 ? 'Intermediate+' : 'Intermediate';
+
       const tiersConfig = [
         { name: 'Advanced', color: 'var(--tier-adv)', courts: counts['Advanced'], players: playerCounts['Advanced'] || 0 },
-        { name: 'High Intermediate', color: 'var(--tier-high)', courts: counts['High Intermediate'], players: playerCounts['High Intermediate'] || 0 },
-        { name: 'Intermediate', color: 'var(--tier-int)', courts: counts['Intermediate'], players: playerCounts['Intermediate'] || 0 },
+        { name: highIntLabel, color: 'var(--tier-high)', courts: counts['High Intermediate'], players: playerCounts['High Intermediate'] || 0 },
+        { name: intLabel, color: 'var(--tier-int)', courts: counts['Intermediate'], players: playerCounts['Intermediate'] || 0 },
         { name: 'Advanced Beginner', color: 'var(--tier-beg)', courts: counts['Advanced Beginner'], players: playerCounts['Advanced Beginner'] || 0 }
       ];
+
+      if (counts['Novice / Beginner'] > 0) {
+        tiersConfig.push({ name: 'Novice/Beginner', color: 'var(--tier-novice)', courts: counts['Novice / Beginner'], players: playerCounts['Novice / Beginner'] || playerCounts['Beginner'] || 0 });
+      }
+      if (counts['Drilling'] > 0) {
+        tiersConfig.push({ name: 'Drilling', color: 'var(--tier-drilling)', courts: counts['Drilling'], players: 0 });
+      }
+      if (counts['Clinic'] > 0) {
+        tiersConfig.push({ name: 'Clinic', color: 'var(--tier-clinic)', courts: counts['Clinic'], players: 0 });
+      }
 
       tiersConfig.forEach(t => {
         const ratio = t.courts > 0 ? (t.players / t.courts).toFixed(1) : (t.players > 0 ? '⚠️ 0' : '0');
@@ -1519,7 +1573,10 @@
         'Advanced': [],
         'High Intermediate': [],
         'Intermediate': [],
-        'Advanced Beginner': []
+        'Advanced Beginner': [],
+        'Novice / Beginner': [],
+        'Drilling': [],
+        'Clinic': []
       };
 
       const hasManualOverride = Object.values(courtSelectionState).some(t => t !== 'AUTO');

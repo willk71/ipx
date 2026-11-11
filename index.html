@@ -90,7 +90,7 @@
     </div>
   </footer>
 
-  <script src="js/common.js?v=2.3.32"></script>
+  <script src="js/common.js?v=2.3.33"></script>
   <script>
     function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
       if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
@@ -187,7 +187,8 @@
 
       const isExcludedSession = (title, courts) => {
         const titleStr = String(title || '');
-        if (/\b(road|assessment|skill|clinic|foundation|hosts?|guests?)s?\b/i.test(titleStr)) return true;
+        if (/^\s*clinic\s*$/i.test(titleStr) || /^\s*drilling\s*$/i.test(titleStr)) return false;
+        if (/\b(road|assessment|skill|foundation|hosts?|guests?)s?\b/i.test(titleStr)) return true;
         if (/\bhosts?\s*\/\s*guests?\b/i.test(titleStr)) return true;
         if (/\b(?:pb|pickleball)\s*(?:\d{2,4}|xxx)\b/i.test(titleStr)) return true;
         if (/\b(part(?:y|ies)|birthday|private\s*event)\b/i.test(titleStr)) return true;
@@ -312,10 +313,17 @@
           }
         });
 
+        // Apply Dynamic Tier Suffix Rules:
+        // - If there is no Advanced, then High Intermediate becomes High Intermediate+
+        // - If there is no Advanced nor High Intermediate, then Intermediate becomes Intermediate+
+        const activeSessions = (typeof adjustTierTitlesWithPlus === 'function')
+          ? adjustTierTitlesWithPlus(sessions)
+          : sessions;
+
         let bestWindowTag = '';
-        if (sessions.length > 0) {
+        if (activeSessions.length > 0) {
           const windowCounts = {};
-          sessions.forEach(item => {
+          activeSessions.forEach(item => {
             const w = formatTimeWindow(item.startTime, item.endTime);
             windowCounts[w] = (windowCounts[w] || 0) + 1;
           });
@@ -333,7 +341,7 @@
         const container = document.getElementById('session-container');
         container.innerHTML = '';
 
-        if (sessions.length === 0) {
+        if (activeSessions.length === 0) {
           container.className = '';
           container.innerHTML = `
             <div class="no-sessions">
@@ -341,7 +349,7 @@
             </div>
           `;
         } else {
-          sessions.sort((a, b) => {
+          activeSessions.sort((a, b) => {
             const keyA = (a.title || '').trim().substring(0, 3);
             const keyB = (b.title || '').trim().substring(0, 3);
             const numA = parseFloat(keyA);
@@ -357,12 +365,12 @@
             return new Date(a.startTime) - new Date(b.startTime);
           });
 
-          const totalSessions = Math.min(sessions.length, 6);
+          const totalSessions = Math.min(activeSessions.length, 6);
           container.className = `count-${totalSessions}`;
           container.style.gridTemplateColumns = '';
           container.style.gridTemplateRows = '';
 
-          sessions.forEach(item => {
+          activeSessions.forEach(item => {
             let s = new Date(item.startTime);
             let e = new Date(item.endTime);
             if (e.getHours() === 23 && e.getMinutes() === 59) {
