@@ -573,21 +573,79 @@ function allocateCourts(levels, courtsList) {
     return assigned;
   }
 
-  // 9-Court Sunday Afternoon Layout (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12):
+  // Daytime 10-Court Layout (Courts 1, 3, 4, 5, 6, 8, 9, 10, 11, 12):
+  // - Advanced: Courts 11, 12
+  // - High Intermediate: Courts 8, 9, 10
+  // - Intermediate: Courts 1, 3, 4, 5, 6
   // - Advanced Beginner: Court 1
-  // - Intermediate: Courts 4, 5, 7, 8, 9
-  // - High Intermediate & Advanced: Courts 10, 11, 12
+  const has1345689101112 = cleanSet.size === 10 && ['1', '3', '4', '5', '6', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
+  if (has1345689101112) {
+    return {
+      'Advanced Beginner': ['1'],
+      'Intermediate': ['1', '3', '4', '5', '6'],
+      'High Intermediate': ['8', '9', '10'],
+      'Advanced': ['11', '12']
+    };
+  }
+
+  // Daytime 11-Court Layout (Courts 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12):
+  // - Advanced: Courts 11, 12
+  // - High Intermediate: Courts 7, 8, 9, 10
+  // - Intermediate: Courts 1, 3, 4, 5, 6
+  // - Advanced Beginner: Court 1
+  const has13456789101112 = cleanSet.size === 11 && ['1', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
+  if (has13456789101112) {
+    return {
+      'Advanced Beginner': ['1'],
+      'Intermediate': ['1', '3', '4', '5', '6'],
+      'High Intermediate': ['7', '8', '9', '10'],
+      'Advanced': ['11', '12']
+    };
+  }
+
+  // Daytime 10-Court Layout with 6 & 7 (Courts 1, 4, 5, 6, 7, 8, 9, 10, 11, 12):
+  // - Advanced: Courts 11, 12
+  // - High Intermediate: Courts 7, 8, 9, 10
+  // - Intermediate: Courts 1, 4, 5, 6
+  // - Advanced Beginner: Court 1
+  const has1456789101112 = cleanSet.size === 10 && ['1', '4', '5', '6', '7', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
+  if (has1456789101112) {
+    return {
+      'Advanced Beginner': ['1'],
+      'Intermediate': ['1', '4', '5', '6'],
+      'High Intermediate': ['7', '8', '9', '10'],
+      'Advanced': ['11', '12']
+    };
+  }
+
+  // Daytime 9-Court Layout (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12):
+  // - Advanced: Courts 11, 12
+  // - High Intermediate: Courts 8, 9, 10
+  // - Intermediate: Courts 1, 4, 5, 7
+  // - Advanced Beginner: Court 1
   const has145789101112 = cleanSet.size === 9 && ['1', '4', '5', '7', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
   if (has145789101112) {
-    const assigned = {
+    return {
       'Advanced Beginner': ['1'],
-      'Intermediate': ['4', '5', '7', '8', '9'],
-      'High Intermediate': ['10', '11', '12'],
-      'Advanced': ['10', '11', '12']
+      'Intermediate': ['1', '4', '5', '7'],
+      'High Intermediate': ['8', '9', '10'],
+      'Advanced': ['11', '12']
     };
-    if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
-    if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
-    return assigned;
+  }
+
+  // Daytime 8-Court Layout (Courts 1, 4, 5, 8, 9, 10, 11, 12):
+  // - Advanced: Courts 11, 12
+  // - High Intermediate: Courts 8, 9, 10
+  // - Intermediate: Courts 1, 4, 5
+  // - Advanced Beginner: Court 1
+  const has14589101112 = cleanSet.size === 8 && ['1', '4', '5', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
+  if (has14589101112) {
+    return {
+      'Advanced Beginner': ['1'],
+      'Intermediate': ['1', '4', '5'],
+      'High Intermediate': ['8', '9', '10'],
+      'Advanced': ['11', '12']
+    };
   }
 
   // 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9

@@ -375,7 +375,7 @@
     </footer>
   </div>
 
-  <script src="js/common.js?v=2.3.29"></script>
+  <script src="js/common.js?v=2.3.30"></script>
   <script>
     function fetchWithTimeout(url, opts = {}, timeoutMs = 6000) {
       if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
@@ -574,9 +574,12 @@
             const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
 
             if (courtAlloc && Object.keys(courtAlloc).length > 0) {
+              const advIsMerged = advMerged && (!courtAlloc['Advanced'] || JSON.stringify(courtAlloc['Advanced']) === JSON.stringify(courtAlloc['High Intermediate']));
+              const advBegIsMerged = advBegMerged && (!courtAlloc['Advanced Beginner'] || JSON.stringify(courtAlloc['Advanced Beginner']) === JSON.stringify(courtAlloc['Intermediate']));
+
               standardOrder.forEach(lvl => {
                 const assigned = courtAlloc[lvl];
-                if (lvl === 'Advanced' && advMerged) {
+                if (lvl === 'Advanced' && advIsMerged) {
                   const targetCourts = courtAlloc['High Intermediate'];
                   if (targetCourts && targetCourts.length > 0) {
                     const courtsText = (targetCourts.length === 1 ? 'Court ' : 'Courts ') + targetCourts.join(', ');
@@ -584,7 +587,7 @@
                   } else {
                     courtLabelsByChoice[lvl] = 'Merge w/ High Int';
                   }
-                } else if (lvl === 'Advanced Beginner' && advBegMerged) {
+                } else if (lvl === 'Advanced Beginner' && advBegIsMerged) {
                   const targetCourts = courtAlloc['Intermediate'];
                   if (targetCourts && targetCourts.length > 0) {
                     const courtsText = (targetCourts.length === 1 ? 'Court ' : 'Courts ') + targetCourts.join(', ');

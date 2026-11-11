@@ -114,16 +114,17 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             for lvl, clist in rule.get('allocations', {}).items():
                 assigned_courts[lvl] = sorted([clean_court_num(c) for c in clist], key=lambda x: int(x) if x.isdigit() else 999)
 
-            if adv_merged and 'High Intermediate' in assigned_courts:
-                adv_courts = [c for c in assigned_courts.get('Advanced', []) if c not in assigned_courts['High Intermediate']]
-                if adv_courts:
-                    assigned_courts['High Intermediate'] = sorted(list(set(assigned_courts['High Intermediate'] + adv_courts)), key=lambda x: int(x) if x.isdigit() else 999)
-                assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
-            if adv_beg_merged and 'Intermediate' in assigned_courts:
-                adv_beg_courts = [c for c in assigned_courts.get('Advanced Beginner', []) if c not in assigned_courts['Intermediate']]
-                if adv_beg_courts:
-                    assigned_courts['Intermediate'] = sorted(list(set(assigned_courts['Intermediate'] + adv_beg_courts)), key=lambda x: int(x) if x.isdigit() else 999)
-                assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
+            if not rule.get('no_merge'):
+                if adv_merged and 'High Intermediate' in assigned_courts:
+                    adv_courts = [c for c in assigned_courts.get('Advanced', []) if c not in assigned_courts['High Intermediate']]
+                    if adv_courts:
+                        assigned_courts['High Intermediate'] = sorted(list(set(assigned_courts['High Intermediate'] + adv_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+                    assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
+                if adv_beg_merged and 'Intermediate' in assigned_courts:
+                    adv_beg_courts = [c for c in assigned_courts.get('Advanced Beginner', []) if c not in assigned_courts['Intermediate']]
+                    if adv_beg_courts:
+                        assigned_courts['Intermediate'] = sorted(list(set(assigned_courts['Intermediate'] + adv_beg_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+                    assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
             return assigned_courts
 
     # 12-Court Facility Layout:
@@ -160,22 +161,70 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
         return assigned_courts
 
-    # 9-Court Sunday Afternoon Layout (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12):
+    # Daytime 10-Court Layout (Courts 1, 3, 4, 5, 6, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 8, 9, 10
+    # - Intermediate: Courts 1, 3, 4, 5, 6
     # - Advanced Beginner: Court 1
-    # - Intermediate: Courts 4, 5, 7, 8, 9
-    # - High Intermediate & Advanced: Courts 10, 11, 12
-    if clean_set == {'1', '4', '5', '7', '8', '9', '10', '11', '12'}:
-        assigned_courts = {
+    if clean_set == {'1', '3', '4', '5', '6', '8', '9', '10', '11', '12'}:
+        return {
             'Advanced Beginner': ['1'],
-            'Intermediate': ['4', '5', '7', '8', '9'],
-            'High Intermediate': ['10', '11', '12'],
-            'Advanced': ['10', '11', '12']
+            'Intermediate': ['1', '3', '4', '5', '6'],
+            'High Intermediate': ['8', '9', '10'],
+            'Advanced': ['11', '12']
         }
-        if adv_merged and 'High Intermediate' in assigned_courts:
-            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
-        if adv_beg_merged and 'Intermediate' in assigned_courts:
-            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
-        return assigned_courts
+
+    # Daytime 11-Court Layout (Courts 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 7, 8, 9, 10
+    # - Intermediate: Courts 1, 3, 4, 5, 6
+    # - Advanced Beginner: Court 1
+    if clean_set == {'1', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
+        return {
+            'Advanced Beginner': ['1'],
+            'Intermediate': ['1', '3', '4', '5', '6'],
+            'High Intermediate': ['7', '8', '9', '10'],
+            'Advanced': ['11', '12']
+        }
+
+    # Daytime 10-Court Layout with 6 & 7 (Courts 1, 4, 5, 6, 7, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 7, 8, 9, 10
+    # - Intermediate: Courts 1, 4, 5, 6
+    # - Advanced Beginner: Court 1
+    if clean_set == {'1', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
+        return {
+            'Advanced Beginner': ['1'],
+            'Intermediate': ['1', '4', '5', '6'],
+            'High Intermediate': ['7', '8', '9', '10'],
+            'Advanced': ['11', '12']
+        }
+
+    # Daytime 9-Court Layout (Courts 1, 4, 5, 7, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 8, 9, 10
+    # - Intermediate: Courts 1, 4, 5, 7
+    # - Advanced Beginner: Court 1
+    if clean_set == {'1', '4', '5', '7', '8', '9', '10', '11', '12'}:
+        return {
+            'Advanced Beginner': ['1'],
+            'Intermediate': ['1', '4', '5', '7'],
+            'High Intermediate': ['8', '9', '10'],
+            'Advanced': ['11', '12']
+        }
+
+    # Daytime 8-Court Layout (Courts 1, 4, 5, 8, 9, 10, 11, 12):
+    # - Advanced: Courts 11, 12
+    # - High Intermediate: Courts 8, 9, 10
+    # - Intermediate: Courts 1, 4, 5
+    # - Advanced Beginner: Court 1
+    if clean_set == {'1', '4', '5', '8', '9', '10', '11', '12'}:
+        return {
+            'Advanced Beginner': ['1'],
+            'Intermediate': ['1', '4', '5'],
+            'High Intermediate': ['8', '9', '10'],
+            'Advanced': ['11', '12']
+        }
 
     # 7-Court Facility Pod Layout: Courts 1, 2, 3, 4, 5, 6, 9
     # - High Intermediate: Courts 1, 2, 4
@@ -674,11 +723,14 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
             has_1_4_7_8_10_12_sess = {'1', '4', '7', '8', '10', '12'}.issubset(clean_set_sess)
             adv_beg_merged = (not has_1_4_7_8_10_12_sess) and (0 < adv_beg_count < 4 and int_count > 0)
 
+            adv_has_own_courts = bool(court_alloc.get('Advanced')) and (court_alloc.get('Advanced') != court_alloc.get('High Intermediate'))
+            adv_beg_has_own_courts = bool(court_alloc.get('Advanced Beginner')) and (court_alloc.get('Advanced Beginner') != court_alloc.get('Intermediate'))
+
             group_for_level = {}
             for lvl in ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced']:
-                if lvl == 'Advanced' and adv_merged:
+                if lvl == 'Advanced' and adv_merged and not adv_has_own_courts:
                     group_for_level[lvl] = 'High Intermediate'
-                elif lvl == 'Advanced Beginner' and adv_beg_merged:
+                elif lvl == 'Advanced Beginner' and adv_beg_merged and not adv_beg_has_own_courts:
                     group_for_level[lvl] = 'Intermediate'
                 else:
                     group_for_level[lvl] = lvl
