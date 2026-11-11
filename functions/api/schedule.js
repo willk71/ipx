@@ -83,6 +83,27 @@ export async function onRequest(context) {
                   }
                 });
 
+                // Determine session end time to prevent overrides from persisting beyond their session window
+                let endStr = '';
+                if (man.endTime && man.endTime.includes('T')) {
+                  endStr = man.endTime.split('T')[1].substring(0, 5);
+                } else {
+                  const matchEv = (scheduleObj.events || []).find(ev => {
+                    const evId = String(ev.eventId || '').trim();
+                    const evStart = String(ev.startTime || '').trim();
+                    return eId && (evId === eId || evId.startsWith(`${eId}_`)) && (!sTime || evStart === sTime);
+                  });
+                  if (matchEv && matchEv.endTime && matchEv.endTime.includes('T')) {
+                    endStr = matchEv.endTime.split('T')[1].substring(0, 5);
+                  } else if (sTime && sTime.includes('T')) {
+                    const parts = sTime.split('T')[1].substring(0, 5).split(':').map(Number);
+                    const endMin = (parts[0] || 0) * 60 + (parts[1] || 0) + 120;
+                    const h = Math.floor(endMin / 60) % 24;
+                    const m = endMin % 60;
+                    endStr = `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
+                  }
+                }
+
                 if (!Array.isArray(scheduleObj.courtOverrides)) {
                   scheduleObj.courtOverrides = [];
                 }
@@ -91,7 +112,7 @@ export async function onRequest(context) {
                     scheduleObj.courtOverrides.push({
                       match: tier,
                       start: sTime && sTime.includes('T') ? sTime.split('T')[1].substring(0, 5) : '',
-                      end: '',
+                      end: endStr,
                       courts: courts
                     });
                   }

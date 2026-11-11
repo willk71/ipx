@@ -1155,7 +1155,8 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   const activeOverrides = overridesList.filter(ov => {
     const sMin = parseMinutes(ov.start);
     let eMin = parseMinutes(ov.end);
-    if (eMin === 0) eMin = 24 * 60;
+    // If end time is not provided, default to at most 2 hours after start, NEVER entire day!
+    if (eMin === 0) eMin = sMin > 0 ? (sMin + 120) : (24 * 60);
     return currentMinutes >= sMin && currentMinutes < eMin;
   });
 
@@ -1183,12 +1184,24 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
             displayTitle = 'Clinic';
           }
 
+          const sMin = parseMinutes(ov.start);
+          let eMin = parseMinutes(ov.end);
+          if (eMin === 0) eMin = sMin > 0 ? (sMin + 120) : (24 * 60);
+
+          const todayIso = new Date().toISOString().substring(0, 10);
+          const sHour = Math.floor(sMin / 60);
+          const sMinute = sMin % 60;
+          const eHour = Math.floor(eMin / 60) % 24;
+          const eMinute = eMin % 60;
+          const startIso = `${todayIso}T${sHour < 10 ? '0' : ''}${sHour}:${sMinute < 10 ? '0' : ''}${sMinute}:00`;
+          const endIso = `${todayIso}T${eHour < 10 ? '0' : ''}${eHour}:${eMinute < 10 ? '0' : ''}${eMinute}:00`;
+
           const key = `override_${cleanMatch.replace(/[^a-z0-9]/g, '_')}`;
           eventMap[key] = {
             title: displayTitle,
             courts: new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10))),
-            startTime: new Date().toISOString(),
-            endTime: new Date(Date.now() + 2 * 3600 * 1000).toISOString(),
+            startTime: startIso,
+            endTime: endIso,
             queueText: ''
           };
         }
