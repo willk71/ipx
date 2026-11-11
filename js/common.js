@@ -1077,6 +1077,26 @@ function allocateCourts(levels, courtsList) {
   return assignedCourts;
 }
 
+function matchesTierStrict(title, matchStr) {
+  if (!matchStr) return true;
+  const t = String(title || '').toLowerCase();
+  const m = String(matchStr).toLowerCase().trim();
+
+  if (m === 'high intermediate' || m === 'high int') {
+    return /\bhigh\s*intermediate\b/.test(t) || /\bhigh\s*int\b/.test(t) || /\bhigh\b/.test(t);
+  }
+  if (m === 'intermediate' || m === 'int') {
+    return (/\bintermediate\b/.test(t) || /\bint\b/.test(t)) && !/\bhigh\b/.test(t);
+  }
+  if (m === 'advanced beginner' || m === 'adv beg' || m === 'advbeg') {
+    return /\b(advanced|adv)\s*beginner\b/.test(t) || /\badvbeg\b/.test(t);
+  }
+  if (m === 'advanced' || m === 'adv') {
+    return (/\badvanced\b/.test(t) || /\badv\b/.test(t)) && !/\bbeginner\b/.test(t) && !/\bbeg\b/.test(t);
+  }
+  return new RegExp('\\b' + m + '\\b', 'i').test(t);
+}
+
 function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   if (!Array.isArray(overridesList) || overridesList.length === 0) return;
 
@@ -1096,7 +1116,7 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   activeOverrides.forEach(ov => {
     if (Array.isArray(ov.courts) && ov.courts.length > 0) {
       Object.values(eventMap).forEach(ev => {
-        if (!ov.match || new RegExp(ov.match.trim(), 'i').test(ev.title)) {
+        if (!ov.match || matchesTierStrict(ev.title, ov.match)) {
           ev.courts = new Set(ov.courts.map(String).sort((a, b) => parseInt(a, 10) - parseInt(b, 10)));
         }
       });
