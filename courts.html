@@ -852,19 +852,37 @@
       }
     }
 
+    const EDGE_BASE = 'https://ipx-sync-pinger.willkang71.workers.dev';
+
+    async function safeFetchJson(path) {
+      const cacheBust = `_t=${Date.now()}`;
+      const urls = [
+        `${EDGE_BASE}${path}?${cacheBust}`,
+        `${path}?${cacheBust}`
+      ];
+      for (const u of urls) {
+        try {
+          const res = await fetch(u);
+          if (res.ok) {
+            return await res.json();
+          }
+        } catch (_) {}
+      }
+      return null;
+    }
+
     // --- Live Data Fetching ---
     async function fetchLiveData(showToastNotice = false) {
       try {
-        const cacheBust = `_t=${Date.now()}`;
-        const [schedRes, choicesRes, overridesRes] = await Promise.all([
-          fetch(`/api/schedule?${cacheBust}`).catch(() => fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`)),
-          fetch(`/api/event-choices?${cacheBust}`).catch(() => fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices?${cacheBust}`)),
-          fetch(`/api/court-assignments?${cacheBust}`).catch(() => fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/court-assignments?${cacheBust}`))
+        const [sched, choices, overrides] = await Promise.all([
+          safeFetchJson('/api/schedule'),
+          safeFetchJson('/api/event-choices'),
+          safeFetchJson('/api/court-assignments')
         ]);
 
-        if (schedRes && schedRes.ok) cachedSchedule = await schedRes.json();
-        if (choicesRes && choicesRes.ok) cachedChoices = await choicesRes.json();
-        if (overridesRes && overridesRes.ok) cachedManualOverrides = await overridesRes.json();
+        if (sched) cachedSchedule = sched;
+        if (choices) cachedChoices = choices;
+        if (overrides) cachedManualOverrides = overrides;
 
         parseTodaySessions();
         if (showToastNotice) showToast('Live data refreshed from Cloudflare KV');
@@ -880,7 +898,7 @@
       dropdown.innerHTML = '';
 
       const sessionsMap = {};
-      const todayIso = new Date().toISOString().substring(0, 10);
+      const todayIso = (cachedSchedule && cachedSchedule.date) || new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
       // Extract sessions from event-choices
       const events = (cachedChoices && cachedChoices.events) || {};
@@ -1259,17 +1277,24 @@
       };
 
       try {
-        const res = await fetch('/api/court-assignments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).catch(() => {
-          return fetch('https://ipx-sync-pinger.willkang71.workers.dev/api/court-assignments', {
+        let res = null;
+        try {
+          res = await fetch(`${EDGE_BASE}/api/court-assignments`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-        });
+        } catch (_) {}
+
+        if (!res || !res.ok) {
+          try {
+            res = await fetch('/api/court-assignments', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+          } catch (_) {}
+        }
 
         if (res && res.ok) {
           hasUnsavedChanges = false;

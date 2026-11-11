@@ -1,0 +1,34 @@
+name: Deploy Cloudflare Worker
+
+on:
+  push:
+    paths:
+      - 'workers/sync-pinger/**'
+      - '.github/workflows/deploy-worker.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Wrangler Config
+        run: |
+          if [ -n "${{ secrets.CF_KV_NAMESPACE_ID }}" ]; then
+            echo "" >> workers/sync-pinger/wrangler.toml
+            echo "[[kv_namespaces]]" >> workers/sync-pinger/wrangler.toml
+            echo "binding = \"IPX_DATA\"" >> workers/sync-pinger/wrangler.toml
+            echo "id = \"${{ secrets.CF_KV_NAMESPACE_ID }}\"" >> workers/sync-pinger/wrangler.toml
+          fi
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: 'workers/sync-pinger'
