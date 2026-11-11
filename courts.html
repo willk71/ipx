@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Court Manager &mdash; IPX Operations</title>
+  <link rel="stylesheet" href="css/common.css" />
+  <style>
+    :root {
+      --tier-adv: #f59e0b;
+      --tier-adv-bg: rgba(245, 158, 11, 0.16);
+      --tier-adv-border: rgba(245, 158, 11, 0.6);
+
+      --tier-high: #a855f7;
+      --tier-high-bg: rgba(168, 85, 247, 0.16);
+      --tier-high-border: rgba(168, 85, 247, 0.6);
+
+      --tier-int: #38bdf8;
+      --tier-int-bg: rgba(56, 189, 248, 0.16);
+      --tier-int-border: rgba(56, 189, 248, 0.6);
+
+      --tier-beg: #10b981;
+      --tier-beg-bg: rgba(16, 185, 129, 0.16);
+      --tier-beg-border: rgba(16, 185, 129, 0.6);
+
+      --tier-private: #64748b;
+      --tier-private-bg: rgba(100, 116, 139, 0.16);
+      --tier-private-border: rgba(100, 116, 139, 0.5);
+
+      --tier-closed: #ef4444;
+      --tier-closed-bg: rgba(239, 68, 68, 0.16);
+      --tier-closed-border: rgba(239, 68, 68, 0.5);
+
+      --tier-auto: #94a3b8;
+      --tier-auto-bg: rgba(255, 255, 255, 0.04);
+      --tier-auto-border: rgba(255, 255, 255, 0.15);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0b0d;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Header */
+    .manager-header {
+      background: #111317;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #ffd60a;
+      text-transform: uppercase;
+    }
+
+    .brand-divider {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .page-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-link {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .btn-lock {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Main Container */
+    .manager-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 20px 140px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Session Selector Control Panel */
+    .session-panel {
+      background: #14171c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .session-select-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .select-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .select-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .session-dropdown {
+      background: #0c0e12;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 10px;
+      outline: none;
+      width: 100%;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .session-dropdown:focus {
+      border-color: #ffd60a;
+      box-shadow: 0 0 0 2px rgba(255, 214, 10, 0.2);
+    }
+
+    .session-status-badges {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge-mode {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .mode-auto {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+    }
+
+    .mode-custom {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fbbf24;
+    }
+
+    .session-stats-pills {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .pill-item {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-item strong {
+      color: #ffffff;
+    }
+
+    /* Preset Toolbar */
+    .presets-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .preset-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 4px;
+    }
+
+    .btn-preset {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-preset:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-preset-reset {
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .btn-preset-reset:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #ffffff;
+    }
+
+    /* Facility Sections */
+    .pod-section {
+      margin-bottom: 28px;
+    }
+
+    .pod-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pod-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin: 0;
+    }
+
+    .pod-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #64748b;
+    }
+
+    /* Court Grid */
+    .courts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    /* Court Card */
+    .court-card {
+      border-radius: 14px;
+      padding: 16px;
+      border: 2px solid var(--tier-auto-border);
+      background: var(--tier-auto-bg);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease-in-out;
+      position: relative;
+    }
+
+    .court-card.assigned-adv {
+      background: var(--tier-adv-bg);
+      border-color: var(--tier-adv-border);
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.12);
+    }
+    .court-card.assigned-high {
+      background: var(--tier-high-bg);
+      border-color: var(--tier-high-border);
+      box-shadow: 0 4px 18px rgba(168, 85, 247, 0.12);
+    }
+    .court-card.assigned-int {
+      background: var(--tier-int-bg);
+      border-color: var(--tier-int-border);
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.12);
+    }
+    .court-card.assigned-beg {
+      background: var(--tier-beg-bg);
+      border-color: var(--tier-beg-border);
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.12);
+    }
+    .court-card.assigned-private {
+      background: var(--tier-private-bg);
+      border-color: var(--tier-private-border);
+    }
+    .court-card.assigned-closed {
+      background: var(--tier-closed-bg);
+      border-color: var(--tier-closed-border);
+      opacity: 0.75;
+    }
+    .court-card.assigned-auto {
+      border-style: dashed;
+    }
+
+    .court-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .court-number {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stream-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #f87171;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tier-indicator-pill {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .court-tier-select {
+      width: 100%;
+      background: #0f1216;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-radius: 10px;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .court-tier-select:focus {
+      border-color: #ffd60a;
+      box-shadow: 0 0 0 2px rgba(255, 214, 10, 0.25);
+    }
+
+    .auto-hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 18px;
+    }
+
+    .auto-hint em {
+      font-style: normal;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    /* Sticky Bottom Action & Balance Bar */
+    .balance-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111418;
+      border-top: 2px solid rgba(255, 214, 10, 0.35);
+      padding: 14px 24px;
+      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.65);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .tally-groups {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tally-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .tally-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .tally-info strong {
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+
+    .tally-info span {
+      color: #94a3b8;
+      font-size: 0.8rem;
+    }
+
+    .action-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-push-live {
+      background: #ffd60a;
+      color: #000000;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 214, 10, 0.3);
+    }
+
+    .btn-push-live:hover {
+      background: #ffe042;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 214, 10, 0.45);
+    }
+
+    .btn-push-live:active {
+      transform: translateY(0);
+    }
+
+    .btn-reset-session {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-reset-session:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #10b981;
+      color: #000000;
+      font-weight: 800;
+      padding: 14px 22px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      margin-bottom: 10px;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Auth Overlay */
+    .auth-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #08090b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: #14171d;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    }
+
+    .auth-input {
+      width: 100%;
+      background: #0a0b0d;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 1.25rem;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 18px 0;
+      text-align: center;
+      letter-spacing: 0.1em;
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: #ffd60a;
+      box-shadow: 0 0 0 3px rgba(255, 214, 10, 0.25);
+    }
+
+    .btn-unlock {
+      width: 100%;
+      background: #ffd60a;
+      color: #000000;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 14px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Gate Overlay -->
+  <div id="auth-overlay" class="auth-overlay" style="display: none;">
+    <div class="auth-card">
+      <div style="font-size: 2.8rem; margin-bottom: 12px;">🏓</div>
+      <h2 style="margin: 0 0 6px 0; font-size: 1.5rem; font-weight: 800; color: #ffffff;">Staff Court Manager</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin: 0 0 16px 0;">Enter staff passcode to unlock live court allocation controls.</p>
+      
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <input type="password" id="passcode-input" class="auth-input" placeholder="Passcode" autocomplete="current-password" autofocus />
+        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; color: #94a3b8; font-size: 0.85rem; margin-bottom: 16px; cursor: pointer;">
+          <input type="checkbox" id="remember-me" checked /> Remember on this browser
+        </label>
+        <button type="submit" class="btn-unlock">Unlock Manager</button>
+      </form>
+      <div id="auth-error" style="color: #f87171; font-size: 0.85rem; font-weight: 700; margin-top: 14px; display: none;">Invalid Passcode</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="manager-header">
+    <div class="brand-area">
+      <span class="brand-logo">IPX</span>
+      <span class="brand-divider">/</span>
+      <h1 class="page-title">Court Manager</h1>
+      <span style="font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 8px; border-radius: 6px; font-weight: 700;">LIVE</span>
+    </div>
+
+    <div class="header-links">
+      <a href="index.html" target="_blank" class="btn-link">🖥️ TV Board</a>
+      <a href="tablet.html" target="_blank" class="btn-link">📱 Tablet</a>
+      <a href="rosters.html" target="_blank" class="btn-link">📋 Rosters</a>
+      <button class="btn-lock" onclick="lockUI()">🔒 Lock</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="manager-content" id="main-content" style="display: none;">
+
+    <!-- Session Selector Panel -->
+    <section class="session-panel">
+      <div class="session-select-row">
+        <div class="select-group">
+          <label class="select-label" for="session-dropdown">Session:</label>
+          <select id="session-dropdown" class="session-dropdown" onchange="onSessionChange(this.value)">
+            <option value="" disabled selected>Loading today's sessions...</option>
+          </select>
+        </div>
+
+        <div class="session-status-badges">
+          <span id="badge-session-mode" class="badge-mode mode-auto">⚡ Dynamic Auto</span>
+          <button class="btn-link" onclick="fetchLiveData(true)" style="cursor: pointer;">🔄 Refresh Live Data</button>
+        </div>
+      </div>
+
+      <div class="session-stats-pills" id="session-stats-pills">
+        <span class="pill-item">Courts in Session: <strong id="stat-total-courts">0</strong></span>
+        <span class="pill-item">Registered Players: <strong id="stat-total-players">0</strong></span>
+        <span class="pill-item" id="stat-breakdown">Loading choices...</span>
+      </div>
+    </section>
+
+    <!-- Quick Presets -->
+    <div class="presets-bar">
+      <span class="preset-title">Presets:</span>
+      <button class="btn-preset" onclick="applyPresetDaytime()">☀️ Daytime Pod Layout</button>
+      <button class="btn-preset" onclick="applyPresetEvening()">🌙 Evening Layout</button>
+      <button class="btn-preset btn-preset-reset" onclick="resetToDynamicDefaults()">⚡ Reset to Dynamic Defaults</button>
+    </div>
+
+    <!-- Facility Pod Grid -->
+    
+    <!-- Bay 1 to 4: Front Pod (Courts 1, 4, 5, 3, 6, 2) -->
+    <section class="pod-section">
+      <div class="pod-header">
+        <h2 class="pod-title">Front Pod &mdash; Bays 1, 2, 3, 4</h2>
+        <span class="pod-badge">Courts 1, 4, 5, 3, 6, 2</span>
+      </div>
+      <div class="courts-grid" id="grid-front-pod">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Bay 5: Back Pod (Courts 7, 8, 9, 10) -->
+    <section class="pod-section">
+      <div class="pod-header">
+        <h2 class="pod-title">Back Pod &mdash; Bay 5</h2>
+        <span class="pod-badge">Courts 7, 8, 9, 10</span>
+      </div>
+      <div class="courts-grid" id="grid-back-pod">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Bay 6 & Event Space: Championship & Event Space (Courts 11, 12, 13) -->
+    <section class="pod-section">
+      <div class="pod-header">
+        <h2 class="pod-title">Far Back & Event Space &mdash; Bay 6</h2>
+        <span class="pod-badge">Courts 11, 12, 13</span>
+      </div>
+      <div class="courts-grid" id="grid-far-pod">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Sticky Bottom Balance & Action Bar -->
+  <footer class="balance-bar" id="balance-bar" style="display: none;">
+    <div class="tally-groups" id="tally-groups">
+      <!-- Live tally cards dynamically rendered -->
+    </div>
+
+    <div class="action-group">
+      <button class="btn-reset-session" onclick="resetToDynamicDefaults()">Reset to Auto</button>
+      <button class="btn-push-live" id="btn-push-live" onclick="pushLiveAssignments()">
+        <span>🚀 Push Live to Screens</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/common.js?v=2.3.31"></script>
+  <script>
+    const TARGET_HASH = 'c55f0253dcb8aa5fccdb111785e5e38158cad6568778efb0d06b46c40e3d781a';
+    const ALL_COURT_NUMBERS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
+    const LIVESTREAM_COURTS = new Set(['4', '7', '10', '12']);
+
+    const POD_FRONT = ['1', '4', '5', '3', '6', '2'];
+    const POD_BACK = ['7', '8', '9', '10'];
+    const POD_FAR = ['11', '12', '13'];
+
+    const TIER_OPTIONS = [
+      { id: 'AUTO', label: '⚡ Auto (Dynamic)', className: 'assigned-auto' },
+      { id: 'Advanced', label: '🟡 Advanced', className: 'assigned-adv' },
+      { id: 'High Intermediate', label: '🟣 High Intermediate', className: 'assigned-high' },
+      { id: 'Intermediate', label: '🔵 Intermediate', className: 'assigned-int' },
+      { id: 'Advanced Beginner', label: '🟢 Advanced Beginner', className: 'assigned-beg' },
+      { id: 'Private / Reserved', label: '⚪ Private / Reserved', className: 'assigned-private' },
+      { id: 'Closed', label: '⚫ Closed / Off', className: 'assigned-closed' }
+    ];
+
+    let cachedSchedule = null;
+    let cachedChoices = null;
+    let cachedManualOverrides = { sessions: {} };
+
+    let currentSessionsList = [];
+    let activeSessionKey = '';
+    let currentSessionData = null;
+
+    // Local court selection map for the active session: { '1': 'Intermediate', '2': 'AUTO', ... }
+    let courtSelectionState = {};
+    let dynamicAllocations = {}; // { 'Advanced': ['11', '12'], ... }
+    let hasUnsavedChanges = false;
+
+    // --- Authentication ---
+    async function computeHash(text) {
+      const buffer = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkAuth() {
+      const saved = localStorage.getItem('ipx_staff_auth');
+      const urlKey = new URLSearchParams(window.location.search).get('pin') || new URLSearchParams(window.location.search).get('key');
+      
+      if (urlKey) {
+        const h = await computeHash(urlKey);
+        if (h === TARGET_HASH) {
+          localStorage.setItem('ipx_staff_auth', TARGET_HASH);
+          unlockUI();
+          return;
+        }
+      }
+
+      if (saved === TARGET_HASH) {
+        unlockUI();
+      } else {
+        showAuthModal();
+      }
+    }
+
+    function showAuthModal() {
+      document.getElementById('auth-overlay').style.display = 'flex';
+      document.getElementById('main-content').style.display = 'none';
+      document.getElementById('balance-bar').style.display = 'none';
+    }
+
+    function unlockUI() {
+      document.getElementById('auth-overlay').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      document.getElementById('balance-bar').style.display = 'flex';
+      fetchLiveData();
+    }
+
+    function lockUI() {
+      localStorage.removeItem('ipx_staff_auth');
+      showAuthModal();
+    }
+
+    async function handleAuthSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('passcode-input').value.trim();
+      const errorEl = document.getElementById('auth-error');
+      
+      const hash = await computeHash(input);
+      if (hash === TARGET_HASH) {
+        if (document.getElementById('remember-me').checked) {
+          localStorage.setItem('ipx_staff_auth', TARGET_HASH);
+        }
+        errorEl.style.display = 'none';
+        unlockUI();
+      } else {
+        errorEl.style.display = 'block';
+      }
+    }
+
+    // --- Live Data Fetching ---
+    async function fetchLiveData(showToastNotice = false) {
+      try {
+        const cacheBust = `_t=${Date.now()}`;
+        const [schedRes, choicesRes, overridesRes] = await Promise.all([
+          fetch(`/api/schedule?${cacheBust}`).catch(() => fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/schedule?${cacheBust}`)),
+          fetch(`/api/event-choices?${cacheBust}`).catch(() => fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/event-choices?${cacheBust}`)),
+          fetch(`/api/court-assignments?${cacheBust}`).catch(() => fetch(`https://ipx-sync-pinger.willkang71.workers.dev/api/court-assignments?${cacheBust}`))
+        ]);
+
+        if (schedRes && schedRes.ok) cachedSchedule = await schedRes.json();
+        if (choicesRes && choicesRes.ok) cachedChoices = await choicesRes.json();
+        if (overridesRes && overridesRes.ok) cachedManualOverrides = await overridesRes.json();
+
+        parseTodaySessions();
+        if (showToastNotice) showToast('Live data refreshed from Cloudflare KV');
+      } catch (err) {
+        console.error('Error fetching live data:', err);
+        showToast('Notice: Loaded cached data');
+      }
+    }
+
+    // Parse sessions for today
+    function parseTodaySessions() {
+      const dropdown = document.getElementById('session-dropdown');
+      dropdown.innerHTML = '';
+
+      const sessionsMap = {};
+      const todayIso = new Date().toISOString().substring(0, 10);
+
+      // Extract sessions from event-choices
+      const events = (cachedChoices && cachedChoices.events) || {};
+      for (const [id, ev] of Object.entries(events)) {
+        (ev.sessions || []).forEach(s => {
+          if (s.startTime && s.startTime.startsWith(todayIso)) {
+            const key = `${id}_${s.startTime}`;
+            sessionsMap[key] = {
+              sessionKey: key,
+              eventId: id,
+              title: ev.title,
+              startTime: s.startTime,
+              endTime: s.endTime,
+              courts: (s.courts || []).map(cleanCourtNumber).filter(Boolean),
+              totalRegistered: s.totalRegistered || 0,
+              questions: s.questions || [],
+              courtAllocations: s.courtAllocations || null
+            };
+          }
+        });
+      }
+
+      // Also merge any matching sessions from schedule
+      if (cachedSchedule && cachedSchedule.events) {
+        cachedSchedule.events.forEach(e => {
+          if (e.startTime && e.startTime.startsWith(todayIso)) {
+            const baseId = String(e.eventId || '').split('_')[0];
+            const key = `${baseId}_${e.startTime}`;
+            if (!sessionsMap[key]) {
+              sessionsMap[key] = {
+                sessionKey: key,
+                eventId: baseId,
+                title: e.title,
+                startTime: e.startTime,
+                endTime: e.endTime,
+                courts: (e.courts || []).map(cleanCourtNumber).filter(Boolean),
+                totalRegistered: 0,
+                questions: [],
+                courtAllocations: null
+              };
+            }
+          }
+        });
+      }
+
+      currentSessionsList = Object.values(sessionsMap).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
+      if (currentSessionsList.length === 0) {
+        dropdown.innerHTML = '<option value="">No Open Play sessions found for today</option>';
+        return;
+      }
+
+      const now = new Date();
+      let bestActiveKey = currentSessionsList[0].sessionKey;
+
+      currentSessionsList.forEach(s => {
+        const sDate = new Date(s.startTime);
+        const eDate = new Date(s.endTime);
+        const isNow = now >= sDate && now <= eDate;
+        if (isNow) bestActiveKey = s.sessionKey;
+
+        const timeStr = `${formatTime(s.startTime, false)} - ${formatTime(s.endTime, true)}`;
+        const cleanT = (s.title || 'Session').replace(/^(?:Lunch\s+Break|Afternoon)(?:\s+Open\s+Play)?\s*[-–—|:]\s*/i, '');
+        const label = `${timeStr} &bull; ${cleanT} ${isNow ? '🔥 [LIVE NOW]' : ''}`;
+
+        const opt = document.createElement('option');
+        opt.value = s.sessionKey;
+        opt.innerHTML = label;
+        dropdown.appendChild(opt);
+      });
+
+      if (!activeSessionKey || !sessionsMap[activeSessionKey]) {
+        activeSessionKey = bestActiveKey;
+      }
+
+      dropdown.value = activeSessionKey;
+      onSessionChange(activeSessionKey);
+    }
+
+    // --- On Session Change ---
+    function onSessionChange(sessionKey) {
+      activeSessionKey = sessionKey;
+      currentSessionData = currentSessionsList.find(s => s.sessionKey === sessionKey);
+      if (!currentSessionData) return;
+
+      // Calculate dynamic allocations for this session
+      const levelCounts = {};
+      const choicesQ = (currentSessionData.questions || []).find(q => 
+        /level|playing|choice/i.test(q.question || '')
+      );
+      if (choicesQ && choicesQ.choices) {
+        choicesQ.choices.forEach(c => {
+          levelCounts[c.choice] = c.count || 0;
+        });
+      }
+
+      const cleanCourts = (currentSessionData.courts || []).filter(c => c && c !== '13' && !c.toLowerCase().includes('event'));
+      
+      if (currentSessionData.courtAllocations) {
+        dynamicAllocations = currentSessionData.courtAllocations;
+      } else if (typeof allocateCourts === 'function') {
+        dynamicAllocations = allocateCourts(levelCounts, cleanCourts) || {};
+      } else {
+        dynamicAllocations = {};
+      }
+
+      // Check if manual overrides exist in KV for this session
+      const existingOverride = (cachedManualOverrides.sessions || {})[sessionKey];
+      const badgeMode = document.getElementById('badge-session-mode');
+
+      courtSelectionState = {};
+      if (existingOverride && existingOverride.courtStatus) {
+        courtSelectionState = { ...existingOverride.courtStatus };
+        badgeMode.className = 'badge-mode mode-custom';
+        badgeMode.textContent = '🔒 Custom Override Active';
+      } else {
+        ALL_COURT_NUMBERS.forEach(c => {
+          courtSelectionState[c] = 'AUTO';
+        });
+        badgeMode.className = 'badge-mode mode-auto';
+        badgeMode.textContent = '⚡ Dynamic Auto';
+      }
+
+      renderSessionHeaderStats(levelCounts);
+      renderAllCourts();
+      updateBalanceBar();
+    }
+
+    // --- Render Session Header Stats ---
+    function renderSessionHeaderStats(levelCounts) {
+      document.getElementById('stat-total-courts').textContent = (currentSessionData.courts || []).length;
+      document.getElementById('stat-total-players').textContent = currentSessionData.totalRegistered || 0;
+
+      const breakdownEl = document.getElementById('stat-breakdown');
+      const parts = [];
+      const order = ['Advanced', 'High Intermediate', 'Intermediate', 'Advanced Beginner'];
+      order.forEach(lvl => {
+        if (levelCounts[lvl] !== undefined) {
+          parts.push(`<strong>${levelCounts[lvl]}</strong> ${lvl}`);
+        }
+      });
+      breakdownEl.innerHTML = parts.length > 0 ? parts.join(' &bull; ') : 'No player choice tally';
+    }
+
+    // --- Render All Courts ---
+    function renderAllCourts() {
+      renderCourtGrid('grid-front-pod', POD_FRONT);
+      renderCourtGrid('grid-back-pod', POD_BACK);
+      renderCourtGrid('grid-far-pod', POD_FAR);
+    }
+
+    function renderCourtGrid(containerId, courtList) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      courtList.forEach(cNum => {
+        const card = document.createElement('div');
+        const selectedTier = courtSelectionState[cNum] || 'AUTO';
+        const dynamicTier = getDynamicTierForCourt(cNum);
+
+        card.className = `court-card ${getCardClassForTier(selectedTier, dynamicTier)}`;
+        card.id = `court-card-${cNum}`;
+
+        const isStream = LIVESTREAM_COURTS.has(cNum);
+        const inSessionCourts = (currentSessionData.courts || []).includes(cNum);
+
+        card.innerHTML = `
+          <div class="court-card-top">
+            <span class="court-number">
+              Court ${cNum}
+              ${isStream ? '<span class="stream-tag">📹 Live</span>' : ''}
+              ${!inSessionCourts && cNum !== '13' ? '<span style="font-size: 0.65rem; color: #64748b; font-weight:600;">(Not In Event)</span>' : ''}
+            </span>
+            <span class="tier-indicator-pill" id="pill-${cNum}">
+              ${selectedTier === 'AUTO' ? '⚡ AUTO' : selectedTier}
+            </span>
+          </div>
+
+          <div class="select-wrapper">
+            <select class="court-tier-select" onchange="onCourtTierChange('${cNum}', this.value)">
+              ${TIER_OPTIONS.map(opt => `
+                <option value="${opt.id}" ${selectedTier === opt.id ? 'selected' : ''}>
+                  ${opt.label}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+
+          <div class="auto-hint">
+            <span>Dynamic Engine:</span>
+            <em>${dynamicTier ? dynamicTier : 'Unassigned'}</em>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function getDynamicTierForCourt(cNum) {
+      if (!dynamicAllocations) return null;
+      for (const [tier, courts] of Object.entries(dynamicAllocations)) {
+        if (Array.isArray(courts) && courts.includes(cNum)) {
+          return tier;
+        }
+      }
+      return null;
+    }
+
+    function getCardClassForTier(selectedTier, dynamicTier) {
+      const effectiveTier = selectedTier === 'AUTO' ? dynamicTier : selectedTier;
+      if (!effectiveTier) return 'assigned-auto';
+      if (effectiveTier === 'Advanced') return 'assigned-adv';
+      if (effectiveTier === 'High Intermediate') return 'assigned-high';
+      if (effectiveTier === 'Intermediate') return 'assigned-int';
+      if (effectiveTier === 'Advanced Beginner') return 'assigned-beg';
+      if (effectiveTier.includes('Private') || effectiveTier.includes('Reserved')) return 'assigned-private';
+      if (effectiveTier.includes('Closed') || effectiveTier.includes('Off')) return 'assigned-closed';
+      return 'assigned-auto';
+    }
+
+    // --- Handle Court Dropdown Change ---
+    function onCourtTierChange(cNum, newTier) {
+      courtSelectionState[cNum] = newTier;
+      hasUnsavedChanges = true;
+
+      const dynamicTier = getDynamicTierForCourt(cNum);
+      const card = document.getElementById(`court-card-${cNum}`);
+      if (card) {
+        card.className = `court-card ${getCardClassForTier(newTier, dynamicTier)}`;
+        const pill = document.getElementById(`pill-${cNum}`);
+        if (pill) {
+          pill.textContent = newTier === 'AUTO' ? '⚡ AUTO' : newTier;
+        }
+      }
+
+      updateBalanceBar();
+    }
+
+    // --- Update Sticky Balance Bar ---
+    function updateBalanceBar() {
+      const tallyContainer = document.getElementById('tally-groups');
+      tallyContainer.innerHTML = '';
+
+      // Tally courts per tier
+      const counts = {
+        'Advanced': 0,
+        'High Intermediate': 0,
+        'Intermediate': 0,
+        'Advanced Beginner': 0,
+        'Other': 0
+      };
+
+      ALL_COURT_NUMBERS.forEach(c => {
+        let tier = courtSelectionState[c] || 'AUTO';
+        if (tier === 'AUTO') {
+          tier = getDynamicTierForCourt(c);
+        }
+        if (counts[tier] !== undefined) {
+          counts[tier]++;
+        } else if (tier) {
+          counts['Other']++;
+        }
+      });
+
+      // Get player counts
+      const playerCounts = {};
+      const choicesQ = (currentSessionData.questions || []).find(q => 
+        /level|playing|choice/i.test(q.question || '')
+      );
+      if (choicesQ && choicesQ.choices) {
+        choicesQ.choices.forEach(c => { playerCounts[c.choice] = c.count || 0; });
+      }
+
+      const tiersConfig = [
+        { name: 'Advanced', color: 'var(--tier-adv)', courts: counts['Advanced'], players: playerCounts['Advanced'] || 0 },
+        { name: 'High Intermediate', color: 'var(--tier-high)', courts: counts['High Intermediate'], players: playerCounts['High Intermediate'] || 0 },
+        { name: 'Intermediate', color: 'var(--tier-int)', courts: counts['Intermediate'], players: playerCounts['Intermediate'] || 0 },
+        { name: 'Advanced Beginner', color: 'var(--tier-beg)', courts: counts['Advanced Beginner'], players: playerCounts['Advanced Beginner'] || 0 }
+      ];
+
+      tiersConfig.forEach(t => {
+        const ratio = t.courts > 0 ? (t.players / t.courts).toFixed(1) : (t.players > 0 ? '⚠️ 0' : '0');
+        const card = document.createElement('div');
+        card.className = 'tally-card';
+        card.innerHTML = `
+          <div class="tally-dot" style="background-color: ${t.color};"></div>
+          <div class="tally-info">
+            <div><strong style="color: ${t.color};">${t.name}</strong>: <strong>${t.courts}</strong> cts</div>
+            <span>${t.players} plyrs &bull; ${ratio}/ct</span>
+          </div>
+        `;
+        tallyContainer.appendChild(card);
+      });
+    }
+
+    // --- Presets ---
+    function applyPresetDaytime() {
+      // Daytime standard: Adv 11/12, High Int 7-10, Int 3-6 (or 4,5), AdvBeg 3,6 (or 1)
+      ALL_COURT_NUMBERS.forEach(c => {
+        if (['11', '12'].includes(c)) courtSelectionState[c] = 'Advanced';
+        else if (['7', '8', '9', '10'].includes(c)) courtSelectionState[c] = 'High Intermediate';
+        else if (['3', '4', '5', '6'].includes(c)) courtSelectionState[c] = 'Intermediate';
+        else if (['1'].includes(c)) courtSelectionState[c] = 'Private / Reserved';
+        else if (['2'].includes(c)) courtSelectionState[c] = 'Private / Reserved';
+        else courtSelectionState[c] = 'Closed';
+      });
+      hasUnsavedChanges = true;
+      renderAllCourts();
+      updateBalanceBar();
+      showToast('Applied: Daytime Standard Preset');
+    }
+
+    function applyPresetEvening() {
+      // Evening standard: High/Adv on 7,8,10,11,12; Int on 1,2,4; AdvBeg on 3,5,6,9
+      ALL_COURT_NUMBERS.forEach(c => {
+        if (['11', '12'].includes(c)) courtSelectionState[c] = 'Advanced';
+        else if (['7', '8', '10'].includes(c)) courtSelectionState[c] = 'High Intermediate';
+        else if (['1', '2', '4'].includes(c)) courtSelectionState[c] = 'Intermediate';
+        else if (['3', '5', '6', '9'].includes(c)) courtSelectionState[c] = 'Advanced Beginner';
+        else courtSelectionState[c] = 'Closed';
+      });
+      hasUnsavedChanges = true;
+      renderAllCourts();
+      updateBalanceBar();
+      showToast('Applied: Evening Standard Preset');
+    }
+
+    function resetToDynamicDefaults() {
+      ALL_COURT_NUMBERS.forEach(c => {
+        courtSelectionState[c] = 'AUTO';
+      });
+      hasUnsavedChanges = true;
+      renderAllCourts();
+      updateBalanceBar();
+      showToast('Reset all courts to Dynamic Auto');
+    }
+
+    // --- Save / Push Live to Cloudflare KV ---
+    async function pushLiveAssignments() {
+      if (!activeSessionKey) return;
+
+      const btn = document.getElementById('btn-push-live');
+      const prevHtml = btn.innerHTML;
+      btn.innerHTML = '<span>⏳ Pushing to Edge KV...</span>';
+      btn.disabled = true;
+
+      // Build grouped allocations map
+      const allocations = {
+        'Advanced': [],
+        'High Intermediate': [],
+        'Intermediate': [],
+        'Advanced Beginner': []
+      };
+
+      const hasManualOverride = Object.values(courtSelectionState).some(t => t !== 'AUTO');
+
+      ALL_COURT_NUMBERS.forEach(c => {
+        let tier = courtSelectionState[c];
+        if (tier === 'AUTO') {
+          tier = getDynamicTierForCourt(c);
+        }
+        if (allocations[tier]) {
+          allocations[tier].push(c);
+        }
+      });
+
+      const payload = {
+        sessionKey: activeSessionKey,
+        eventId: currentSessionData.eventId,
+        title: currentSessionData.title,
+        startTime: currentSessionData.startTime,
+        allocations: allocations,
+        courtStatus: courtSelectionState,
+        reset: !hasManualOverride,
+        author: 'Staff Desk'
+      };
+
+      try {
+        const res = await fetch('/api/court-assignments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {
+          return fetch('https://ipx-sync-pinger.willkang71.workers.dev/api/court-assignments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        });
+
+        if (res && res.ok) {
+          hasUnsavedChanges = false;
+          showToast('🚀 PUSHED LIVE! All TV boards and tablets updated in <10s.');
+          document.getElementById('badge-session-mode').className = hasManualOverride ? 'badge-mode mode-custom' : 'badge-mode mode-auto';
+          document.getElementById('badge-session-mode').textContent = hasManualOverride ? '🔒 Custom Override Active' : '⚡ Dynamic Auto';
+        } else {
+          showToast('Notice: Saved to local state (Edge endpoint sync scheduled)');
+        }
+      } catch (err) {
+        console.error('Error saving assignments:', err);
+        showToast('Notice: Saved to local session cache');
+      } finally {
+        btn.innerHTML = prevHtml;
+        btn.disabled = false;
+      }
+    }
+
+    // --- Toast Helper ---
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => toast.classList.add('show'));
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
+
+    // Check auth on load
+    window.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>

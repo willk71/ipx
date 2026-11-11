@@ -633,6 +633,35 @@ def fetch_cached_choices():
 
     return None
 
+def fetch_manual_court_assignments():
+    """
+    Fetches manual court assignments from Cloudflare KV (or edge API) if set by staff via UI.
+    """
+    account_id = os.environ.get("CF_ACCOUNT_ID", "").strip()
+    namespace_id = os.environ.get("CF_KV_NAMESPACE_ID", "").strip()
+    api_token = os.environ.get("CF_API_TOKEN", "").strip()
+    if account_id and namespace_id and api_token:
+        try:
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/storage/kv/namespaces/{namespace_id}/values/manual_court_assignments"
+            req = urllib.request.Request(url, headers={"Authorization": f"Bearer {api_token}", "User-Agent": "IPX-Splitter"})
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                return data.get('sessions', {})
+        except Exception:
+            pass
+
+    # Fallback to worker API
+    try:
+        url = "https://ipx-sync-pinger.willkang71.workers.dev/api/court-assignments"
+        req = urllib.request.Request(url, headers={'User-Agent': 'IPX-Splitter'})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            return data.get('sessions', {})
+    except Exception:
+        pass
+
+    return {}
+
 def process_schedule(schedule_path='data/schedule.json', choices_path='data/event-choices.json'):
     if not os.path.exists(schedule_path):
         return
@@ -668,6 +697,10 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
     events_choice_data = choices.get('events', {})
     if not events_choice_data:
         return
+
+    manual_sessions = fetch_manual_court_assignments()
+    if manual_sessions:
+        print(f"Loaded {len(manual_sessions)} manual court assignment overrides from staff UI.")
 
     # Build split plan per (eventId, startTime)
     # split_plan[(e_id, start_time)] = {
@@ -719,7 +752,13 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
             if len(clean_courts) < 2:
                 continue
 
-            court_alloc = allocate_courts(level_counts, clean_courts, event_title=e_info.get('title', ''), start_time=start_time)
+            manual_key = f"{str(e_id).strip()}_{str(start_time).strip()}"
+            manual_entry = manual_sessions.get(manual_key) or manual_sessions.get(str(e_id).strip())
+            if manual_entry and manual_entry.get('allocations'):
+                court_alloc = manual_entry['allocations']
+                print(f"Applying manual staff overrides for {e_info.get('title', '')} ({start_time}): {court_alloc}")
+            else:
+                court_alloc = allocate_courts(level_counts, clean_courts, event_title=e_info.get('title', ''), start_time=start_time)
             if not court_alloc:
                 continue
 
