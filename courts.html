@@ -297,22 +297,192 @@
       color: #ffffff;
     }
 
-    /* Courts Grid (Compact, No Pods) */
-    .courts-section {
+    /* Facility Floor Plan Layout */
+    .facility-section {
       margin-bottom: 24px;
     }
 
-    .courts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+    .facility-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
       gap: 10px;
     }
 
-    @media (min-width: 1100px) {
-      .courts-grid {
-        grid-template-columns: repeat(7, 1fr);
-        gap: 12px;
-      }
+    .facility-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffd60a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .facility-subtitle {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .facility-legend {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-aisle {
+      display: inline-block;
+      width: 14px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 1px dashed rgba(255, 255, 255, 0.35);
+      border-right: 1px dashed rgba(255, 255, 255, 0.35);
+    }
+
+    .legend-lounge {
+      display: inline-block;
+      width: 12px;
+      height: 10px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px dashed rgba(245, 158, 11, 0.5);
+      border-radius: 2px;
+    }
+
+    .facility-wrapper {
+      background: #0b0e14;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      overflow-x: auto;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 8 Columns: 5 Court Columns + 3 Aisle Columns */
+    .facility-grid {
+      display: grid;
+      grid-template-columns: minmax(130px, 1fr) 28px minmax(130px, 1fr) minmax(130px, 1fr) 28px minmax(130px, 1fr) 28px minmax(130px, 1fr);
+      grid-template-rows: repeat(3, auto);
+      gap: 12px 10px;
+      min-width: 860px;
+      align-items: stretch;
+    }
+
+    /* Facility Aisles */
+    .facility-aisle {
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 1px dashed rgba(255, 255, 255, 0.15);
+      border-right: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+      padding: 8px 0;
+      min-height: 80px;
+    }
+
+    .aisle-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      opacity: 0.55;
+      transition: opacity 0.2s ease;
+    }
+
+    .facility-aisle:hover .aisle-content {
+      opacity: 0.95;
+    }
+
+    .aisle-icon {
+      font-size: 0.8rem;
+    }
+
+    .aisle-label {
+      font-size: 0.56rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: #94a3b8;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      text-transform: uppercase;
+    }
+
+    /* Players Lounge Card */
+    .facility-lounge {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px dashed rgba(245, 158, 11, 0.45);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 5px;
+      position: relative;
+      box-shadow: inset 0 0 16px rgba(245, 158, 11, 0.05);
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .facility-lounge:hover {
+      border-color: rgba(245, 158, 11, 0.75);
+      background: linear-gradient(135deg, rgba(39, 53, 78, 0.9) 0%, rgba(19, 29, 52, 0.98) 100%);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+    }
+
+    .lounge-top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .lounge-icon {
+      font-size: 1.25rem;
+    }
+
+    .lounge-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffd60a;
+      text-transform: uppercase;
+    }
+
+    .lounge-sub {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .lounge-surround-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 2px;
+      letter-spacing: 0.02em;
     }
 
     /* Court Card (Compact) */
@@ -725,10 +895,24 @@
       <button class="btn-preset btn-preset-reset" onclick="resetToDynamicDefaults()">⚡ Reset to Dynamic Auto</button>
     </div>
 
-    <!-- All 13 Courts Grid (Compact, No Pods) -->
-    <section class="courts-section">
-      <div class="courts-grid" id="grid-all-courts">
-        <!-- Rendered dynamically -->
+    <!-- Facility Physical Layout Floor Plan -->
+    <section class="facility-section">
+      <div class="facility-header">
+        <div class="facility-title">
+          <span>🏢 Facility Floor Plan</span>
+          <span class="facility-subtitle">Physical Layout (13 Courts & Players' Lounge)</span>
+        </div>
+        <div class="facility-legend">
+          <span class="legend-item"><span class="legend-aisle"></span> Walking Aisle</span>
+          <span class="legend-item"><span class="legend-lounge"></span> Lounge</span>
+          <span class="legend-item"><span class="stream-tag" style="display:inline-block;">📹 Live</span> Livestream</span>
+        </div>
+      </div>
+
+      <div class="facility-wrapper">
+        <div class="courts-grid facility-grid" id="grid-all-courts">
+          <!-- Rendered dynamically matching physical facility -->
+        </div>
       </div>
     </section>
 
@@ -1038,7 +1222,32 @@
       breakdownEl.innerHTML = parts.length > 0 ? parts.join(' &bull; ') : 'No player choice tally';
     }
 
-    // --- Render All Courts ---
+    // --- Physical Facility Layout Coordinates (3 rows x 5 court columns + aisles) ---
+    // Row 1: 3, 6, 9, 11, 13
+    // Row 2: 2, 5, 8, 10, 12
+    // Row 3: 1, 4, 7, [Lounge]
+    // Aisles: between 1 & 4 (col 2), between 7 & 10 (col 5), between 10 & 12 (col 7). No aisle between 4 & 7!
+    const COURT_PHYSICAL_LAYOUT = {
+      '3':  { row: 1, col: 1 },
+      '2':  { row: 2, col: 1 },
+      '1':  { row: 3, col: 1 },
+      // Col 2: Aisle between 1/2/3 and 4/5/6
+      '6':  { row: 1, col: 3 },
+      '5':  { row: 2, col: 3 },
+      '4':  { row: 3, col: 3 },
+      // Col 4: Court Col 3 (No aisle between 4 and 7!)
+      '9':  { row: 1, col: 4 },
+      '8':  { row: 2, col: 4 },
+      '7':  { row: 3, col: 4 },
+      // Col 5: Aisle between 7/8/9 and 10/11
+      '11': { row: 1, col: 6 },
+      '10': { row: 2, col: 6 },
+      // Col 7: Aisle between 10/11 and 12/13
+      '13': { row: 1, col: 8 },
+      '12': { row: 2, col: 8 }
+    };
+
+    // --- Render All Courts (Physical Facility Layout) ---
     function renderAllCourts() {
       renderCourtGrid('grid-all-courts', ALL_COURT_NUMBERS);
     }
@@ -1048,13 +1257,19 @@
       if (!container) return;
       container.innerHTML = '';
 
+      // 1. Render Court Cards at exact physical (row, col) positions
       courtList.forEach(cNum => {
+        const pos = COURT_PHYSICAL_LAYOUT[cNum];
+        if (!pos) return;
+
         const card = document.createElement('div');
         const selectedTier = courtSelectionState[cNum] || 'AUTO';
         const dynamicTier = getDynamicTierForCourt(cNum);
 
         card.className = `court-card ${getCardClassForTier(selectedTier, dynamicTier)}`;
         card.id = `court-card-${cNum}`;
+        card.style.gridColumn = String(pos.col);
+        card.style.gridRow = String(pos.row);
 
         const isStream = LIVESTREAM_COURTS.has(cNum);
         const inSessionCourts = (currentSessionData.courts || []).includes(cNum);
@@ -1089,6 +1304,66 @@
 
         container.appendChild(card);
       });
+
+      // 2. Aisle 1 (between 1/2/3 and 4/5/6 columns) - Spans all 3 rows
+      const aisle1 = document.createElement('div');
+      aisle1.className = 'facility-aisle aisle-1-4';
+      aisle1.style.gridColumn = '2';
+      aisle1.style.gridRow = '1 / span 3';
+      aisle1.title = 'Aisle between Court 1-3 & Court 4-6 columns';
+      aisle1.innerHTML = `
+        <div class="aisle-content">
+          <span class="aisle-icon">🚶</span>
+          <span class="aisle-label">AISLE</span>
+        </div>
+      `;
+      container.appendChild(aisle1);
+
+      // 3. Aisle 2 (between 7/8/9 and 10/11 columns) - Spans rows 1-2 down to Lounge
+      const aisle2 = document.createElement('div');
+      aisle2.className = 'facility-aisle aisle-7-10';
+      aisle2.style.gridColumn = '5';
+      aisle2.style.gridRow = '1 / span 2';
+      aisle2.title = 'Aisle between Court 7-9 & Court 10-11 columns';
+      aisle2.innerHTML = `
+        <div class="aisle-content">
+          <span class="aisle-icon">🚶</span>
+          <span class="aisle-label">AISLE</span>
+        </div>
+      `;
+      container.appendChild(aisle2);
+
+      // 4. Aisle 3 (between 10/11 and 12/13 columns) - Spans rows 1-2 down to Lounge
+      const aisle3 = document.createElement('div');
+      aisle3.className = 'facility-aisle aisle-10-12';
+      aisle3.style.gridColumn = '7';
+      aisle3.style.gridRow = '1 / span 2';
+      aisle3.title = 'Aisle between Court 10-11 & Court 12-13 columns';
+      aisle3.innerHTML = `
+        <div class="aisle-content">
+          <span class="aisle-icon">🚶</span>
+          <span class="aisle-label">AISLE</span>
+        </div>
+      `;
+      container.appendChild(aisle3);
+
+      // 5. Players' Lounge (Row 3, spanning Columns 5 through 8, bordered by Courts 7, 10 & 12)
+      const lounge = document.createElement('div');
+      lounge.className = 'facility-lounge';
+      lounge.id = 'facility-lounge';
+      lounge.style.gridColumn = '5 / span 4';
+      lounge.style.gridRow = '3';
+      lounge.innerHTML = `
+        <div class="lounge-top">
+          <span class="lounge-icon">🛋️</span>
+          <span class="lounge-title">PLAYERS' LOUNGE</span>
+        </div>
+        <div class="lounge-sub">Community Viewing & Rest Area</div>
+        <div class="lounge-surround-pill">
+          📍 Surrounded by Courts 7, 10 & 12
+        </div>
+      `;
+      container.appendChild(lounge);
     }
 
     function getDynamicTierForCourt(cNum) {
