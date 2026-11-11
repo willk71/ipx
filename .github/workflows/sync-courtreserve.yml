@@ -1,6 +1,13 @@
 name: Auto Sync CourtReserve
 
 on:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    paths:
+      - '.github/workflows/sync-courtreserve.yml'
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       force_choices:
