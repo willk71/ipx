@@ -45,6 +45,27 @@ export default {
       });
     }
 
+    // 1b. Serve Court Manager UI directly from edge (immune to GitHub Pages build delays)
+    if (url.pathname === '/courts' || url.pathname === '/courts.html') {
+      try {
+        const rawRes = await fetch('https://raw.githubusercontent.com/willk71/ipx/main/courts.html?_t=' + Date.now(), {
+          cf: { cacheTtl: 0, cacheEverything: false }
+        });
+        if (rawRes.ok) {
+          const html = await rawRes.text();
+          return new Response(html, {
+            headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              ...corsHeaders
+            }
+          });
+        }
+      } catch (err) {
+        return new Response('Error loading Court Manager: ' + err.message, { status: 500, headers: corsHeaders });
+      }
+    }
+
     // 2. Manual Court Assignments API: /api/court-assignments
     if (url.pathname === '/api/court-assignments') {
       const KV_KEY = 'manual_court_assignments';
