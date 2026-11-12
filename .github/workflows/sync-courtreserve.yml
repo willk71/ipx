@@ -14,7 +14,7 @@ on:
         description: 'Force refresh 10-day event choices'
         required: false
         default: false
-        type: boolean # trigger: sync-check
+        type: boolean # trigger: sync-2200
 
 concurrency:
   group: sync-courtreserve
