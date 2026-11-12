@@ -33,6 +33,7 @@ DEFAULT_PALETTE = {
     "Sam": "#4F46E5",
     "Jordan": "#D97706",
     "Chris": "#059669",
+    "Ashanti": "#0D9488",
 }
 
 EXTRA_COLORS = [
