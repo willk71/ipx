@@ -26,13 +26,38 @@ jobs:
             echo "id = \"${{ secrets.CF_KV_NAMESPACE_ID }}\"" >> workers/sync-pinger/wrangler.toml
           fi
 
+      - name: Detect and Configure GITHUB_TOKEN Secret
+        working-directory: workers/sync-pinger
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          PAT_TOKEN: ${{ secrets.PAT_GITHUB || secrets.PAT_PINGER || secrets.PINGER_PAT || secrets.PINGER_TOKEN || secrets.GH_PAT || secrets.GITHUB_PAT || secrets.GH_TOKEN || secrets.PAT || secrets.PAT_ACTIONS || secrets.PAT_IPX || secrets.DISPATCH_TOKEN || secrets.SYNC_TOKEN || secrets.PAT_CLASSIC || secrets.CLASSIC_PAT }}
+        run: |
+          [ -n "${{ secrets.PAT_GITHUB }}" ] && echo "Detected secret: PAT_GITHUB"
+          [ -n "${{ secrets.PAT_PINGER }}" ] && echo "Detected secret: PAT_PINGER"
+          [ -n "${{ secrets.PINGER_PAT }}" ] && echo "Detected secret: PINGER_PAT"
+          [ -n "${{ secrets.PINGER_TOKEN }}" ] && echo "Detected secret: PINGER_TOKEN"
+          [ -n "${{ secrets.GH_PAT }}" ] && echo "Detected secret: GH_PAT"
+          [ -n "${{ secrets.GITHUB_PAT }}" ] && echo "Detected secret: GITHUB_PAT"
+          [ -n "${{ secrets.GH_TOKEN }}" ] && echo "Detected secret: GH_TOKEN"
+          [ -n "${{ secrets.PAT }}" ] && echo "Detected secret: PAT"
+          [ -n "${{ secrets.PAT_ACTIONS }}" ] && echo "Detected secret: PAT_ACTIONS"
+          [ -n "${{ secrets.PAT_IPX }}" ] && echo "Detected secret: PAT_IPX"
+          [ -n "${{ secrets.DISPATCH_TOKEN }}" ] && echo "Detected secret: DISPATCH_TOKEN"
+          [ -n "${{ secrets.SYNC_TOKEN }}" ] && echo "Detected secret: SYNC_TOKEN"
+          [ -n "${{ secrets.PAT_CLASSIC }}" ] && echo "Detected secret: PAT_CLASSIC"
+          [ -n "${{ secrets.CLASSIC_PAT }}" ] && echo "Detected secret: CLASSIC_PAT"
+
+          if [ -n "$PAT_TOKEN" ]; then
+            echo "Configuring GITHUB_TOKEN secret in Cloudflare Worker..."
+            echo "$PAT_TOKEN" | npx wrangler secret put GITHUB_TOKEN
+          else
+            echo "No repository PAT secret found. Cloudflare Worker secrets will be preserved."
+          fi
+
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           workingDirectory: 'workers/sync-pinger'
-          secrets: |
-            GITHUB_TOKEN
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_ROSTER_DEV || secrets.PAT_GITHUB || secrets.GH_PAT }}
