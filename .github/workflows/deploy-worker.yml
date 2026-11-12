@@ -31,8 +31,11 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          PAT_TOKEN: ${{ secrets.PAT_GITHUB || secrets.PAT_PINGER || secrets.PINGER_PAT || secrets.PINGER_TOKEN || secrets.GH_PAT || secrets.GITHUB_PAT || secrets.GH_TOKEN || secrets.PAT || secrets.PAT_ACTIONS || secrets.PAT_IPX || secrets.DISPATCH_TOKEN || secrets.SYNC_TOKEN || secrets.PAT_CLASSIC || secrets.CLASSIC_PAT }}
+          PAT_TOKEN: ${{ secrets.CLOUDFLARE_SYNC_PINGER || secrets.SYNC_PINGER || secrets.CF_SYNC_PINGER || secrets.PAT_GITHUB || secrets.PAT_PINGER || secrets.PINGER_PAT || secrets.PINGER_TOKEN || secrets.GH_PAT || secrets.GITHUB_PAT || secrets.GH_TOKEN || secrets.PAT || secrets.PAT_ACTIONS || secrets.PAT_IPX || secrets.DISPATCH_TOKEN || secrets.SYNC_TOKEN || secrets.PAT_CLASSIC || secrets.CLASSIC_PAT }}
         run: |
+          [ -n "${{ secrets.CLOUDFLARE_SYNC_PINGER }}" ] && echo "Detected secret: CLOUDFLARE_SYNC_PINGER"
+          [ -n "${{ secrets.SYNC_PINGER }}" ] && echo "Detected secret: SYNC_PINGER"
+          [ -n "${{ secrets.CF_SYNC_PINGER }}" ] && echo "Detected secret: CF_SYNC_PINGER"
           [ -n "${{ secrets.PAT_GITHUB }}" ] && echo "Detected secret: PAT_GITHUB"
           [ -n "${{ secrets.PAT_PINGER }}" ] && echo "Detected secret: PAT_PINGER"
           [ -n "${{ secrets.PINGER_PAT }}" ] && echo "Detected secret: PINGER_PAT"
