@@ -1294,6 +1294,8 @@
       return matrix[b.length][a.length];
     }
 
+    const EDGE_BASE = 'https://ipx-sync-pinger.willkang71.workers.dev';
+
     // --- CourtReserve API Fetch Handler ---
     async function fetchWaiversFromApi() {
       const btn = document.getElementById('btn-cr-api');
@@ -1301,11 +1303,28 @@
       btn.disabled = true;
       btn.textContent = 'Contacting CourtReserve API...';
 
-      try {
-        const res = await fetch('/api/cr-waivers');
-        const data = await res.json();
+      const endpoints = [
+        `${EDGE_BASE}/api/cr-waivers?_t=${Date.now()}`,
+        `/api/cr-waivers?_t=${Date.now()}`
+      ];
 
-        if (data.success && Array.isArray(data.waivers) && data.waivers.length > 0) {
+      let data = null;
+      let lastErr = null;
+
+      for (const u of endpoints) {
+        try {
+          const res = await fetch(u);
+          if (res.ok) {
+            data = await res.json();
+            if (data) break;
+          }
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+
+      try {
+        if (data && data.success && Array.isArray(data.waivers) && data.waivers.length > 0) {
           // Normalize records from CR API response
           parsedWaivers = data.waivers.map(w => ({
             name: cleanName(`${w.FirstName || ''} ${w.LastName || ''}` || w.MemberName || w.Name || ''),
@@ -1318,15 +1337,20 @@
           document.getElementById('waiver-count-badge').classList.add('active');
           statusBox.innerHTML = `<span style="color: var(--green);">✓ Successfully pulled ${parsedWaivers.length} signed waivers from CourtReserve!</span>`;
           showToast(`Synced ${parsedWaivers.length} waivers from API`);
+        } else if (data) {
+          statusBox.innerHTML = `
+            <div style="color: var(--amber); margin-bottom: 6px;"><strong>Notice:</strong> ${escapeHtml(data.error || 'Waiver report endpoint not enabled on this account.')}</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">${escapeHtml(data.help || 'Please use the Upload Waiver CSV tab.')}</div>
+          `;
         } else {
           statusBox.innerHTML = `
-            <div style="color: var(--amber); margin-bottom: 6px;"><strong>Notice:</strong> ${data.error || 'Waiver report endpoint not enabled on this account.'}</div>
-            <div style="font-size: 0.8rem; color: var(--text-dim);">${data.help || 'Please use the <strong>Upload Waiver CSV</strong> tab.'}</div>
+            <div style="color: var(--amber); margin-bottom: 6px;"><strong>Notice:</strong> CourtReserve API waiver endpoint not accessible yet.</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">Please export your signed waiver report CSV from CourtReserve and use the <strong>Upload Waiver CSV</strong> tab.</div>
           `;
         }
       } catch (err) {
         statusBox.innerHTML = `
-          <div style="color: var(--red);">API request could not connect: ${err.message}</div>
+          <div style="color: var(--red);">API request error: ${escapeHtml(err.message)}</div>
           <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;">Upload your signed waiver report CSV using the <strong>Upload Waiver CSV</strong> tab instead.</div>
         `;
       } finally {
