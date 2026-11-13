@@ -884,11 +884,14 @@
           <div id="kpi-missing-sub" class="kpi-sub">needs action</div>
         </div>
         <div class="kpi-card potential">
-          <div class="kpi-title">Potential Match</div>
+          <div class="kpi-title">Needs Review</div>
           <div id="kpi-potential" class="kpi-val">0</div>
-          <div class="kpi-sub">nickname / typo review</div>
+          <div class="kpi-sub">first name & nickname candidates</div>
         </div>
       </div>
+
+      <!-- Unreviewed Warning Banner -->
+      <div id="unreviewed-alert-banner" style="display: none; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--amber-border); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; align-items: center; justify-content: space-between; gap: 10px;"></div>
 
       <!-- Results Toolbar -->
       <div class="results-toolbar">
@@ -899,7 +902,7 @@
           <button type="button" class="filter-btn" onclick="setFilter('missing', this)">
             ⚠️ Missing <span id="badge-missing" class="filter-badge">0</span>
           </button>
-          <button type="button" class="filter-btn" onclick="setFilter('potential', this)">
+          <button type="button" id="tab-btn-potential" class="filter-btn" onclick="setFilter('potential', this)">
             ❓ Needs Review <span id="badge-potential" class="filter-badge">0</span>
           </button>
           <button type="button" class="filter-btn" onclick="setFilter('verified', this)">
@@ -912,7 +915,7 @@
         </div>
 
         <div class="toolbar-actions">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="copyMissingNames()">
+          <button type="button" id="copy-missing-btn" class="btn btn-secondary btn-sm" onclick="copyMissingNames()">
             <span>📋</span> Copy Missing Names
           </button>
           <button type="button" class="btn btn-secondary btn-sm" onclick="exportCsv()">
@@ -1566,11 +1569,14 @@
 
     function splitFirstLast(cleanStr) {
       const parts = cleanStr.trim().split(/\s+/).filter(Boolean);
-      if (parts.length === 0) return { first: '', last: '' };
-      if (parts.length === 1) return { first: parts[0], last: '' };
+      if (parts.length === 0) return { first: '', last: '', isInitialOnly: false };
+      if (parts.length === 1) return { first: parts[0], last: '', isInitialOnly: false };
+      const rawLast = parts[parts.length - 1].replace(/[^a-zA-Z]/g, '');
+      const isInit = rawLast.length === 1;
       return {
         first: parts[0],
-        last: parts[parts.length - 1]
+        last: rawLast || parts[parts.length - 1],
+        isInitialOnly: isInit
       };
     }
 
@@ -1760,58 +1766,118 @@
           }
         }
 
-        // 4. Nickname / Near-Match Resolution
+        // 4. Nickname / Near-Match Resolution (for Full Names)
         let potentialMatch = null;
         let potentialMethod = '';
 
-        for (let i = 0; i < parsedWaivers.length; i++) {
-          const w = parsedWaivers[i];
-          const { first: wFirst, last: wLast } = splitFirstLast(w.name || '');
-          const wFirstNorm = wFirst.toLowerCase();
-          const wLastNorm = wLast.toLowerCase();
+        if (gLastNorm && gLastNorm.length > 1) {
+          for (let i = 0; i < parsedWaivers.length; i++) {
+            const w = parsedWaivers[i];
+            const { first: wFirst, last: wLast } = splitFirstLast(w.name || '');
+            const wFirstNorm = wFirst.toLowerCase();
+            const wLastNorm = wLast.toLowerCase();
 
-          // If last names match exactly
-          if (gLastNorm && wLastNorm && gLastNorm === wLastNorm) {
-            // Check nickname dictionary
-            if (NICKNAME_MAP[gFirstNorm] === wFirstNorm || NICKNAME_MAP[wFirstNorm] === gFirstNorm) {
-              potentialMatch = w;
-              potentialMethod = `Nickname Match (${gFirst} ↔ ${wFirst})`;
-              break;
-            }
-
-            // Check if one is prefix of other (e.g. "Sam" vs "Samantha")
-            if (gFirstNorm.length >= 3 && wFirstNorm.length >= 3) {
-              if (gFirstNorm.startsWith(wFirstNorm) || wFirstNorm.startsWith(gFirstNorm)) {
+            // If last names match exactly
+            if (gLastNorm === wLastNorm) {
+              // Check nickname dictionary
+              if (NICKNAME_MAP[gFirstNorm] === wFirstNorm || NICKNAME_MAP[wFirstNorm] === gFirstNorm) {
                 potentialMatch = w;
-                potentialMethod = `Name Variation (${gFirst} ↔ ${wFirst})`;
+                potentialMethod = `Nickname Match (${gFirst} ↔ ${wFirst})`;
+                break;
+              }
+
+              // Check if one is prefix of other (e.g. "Sam" vs "Samantha")
+              if (gFirstNorm.length >= 3 && wFirstNorm.length >= 3) {
+                if (gFirstNorm.startsWith(wFirstNorm) || wFirstNorm.startsWith(gFirstNorm)) {
+                  potentialMatch = w;
+                  potentialMethod = `Name Variation (${gFirst} ↔ ${wFirst})`;
+                  break;
+                }
+              }
+
+              // Levenshtein typo on first name (e.g. "Jonathon" vs "Jonathan")
+              if (levenshtein(gFirstNorm, wFirstNorm) <= 1) {
+                potentialMatch = w;
+                potentialMethod = `Minor Typo (${gFirst} ↔ ${wFirst})`;
                 break;
               }
             }
+          }
 
-            // Levenshtein typo on first name (e.g. "Jonathon" vs "Jonathan")
-            if (levenshtein(gFirstNorm, wFirstNorm) <= 1) {
-              potentialMatch = w;
-              potentialMethod = `Minor Typo (${gFirst} ↔ ${wFirst})`;
-              break;
-            }
+          if (potentialMatch) {
+            return {
+              guest,
+              status: 'POTENTIAL',
+              method: potentialMethod,
+              match: potentialMatch,
+              candidates: [potentialMatch]
+            };
           }
         }
 
-        if (potentialMatch) {
-          return {
-            guest,
-            status: 'POTENTIAL',
-            method: potentialMethod,
-            match: potentialMatch
-          };
+        // 5. First-Name-Only & First-Name + Initial Matching
+        // Handles host lists where guests are listed as "Mike", "Jenn", "Karen B", etc.
+        const isFirstNameQuery = !gLastNorm || gLastNorm.length === 1;
+        if (isFirstNameQuery) {
+          const matchedCandidates = [];
+
+          for (let i = 0; i < parsedWaivers.length; i++) {
+            const w = parsedWaivers[i];
+            const { first: wFirst, last: wLast } = splitFirstLast(w.name || '');
+            const wFirstNorm = wFirst.toLowerCase();
+            const wLastNorm = wLast.toLowerCase();
+
+            // Check if first name matches or is a recognized nickname/variation
+            const isFirstMatch =
+              wFirstNorm === gFirstNorm ||
+              NICKNAME_MAP[gFirstNorm] === wFirstNorm ||
+              NICKNAME_MAP[wFirstNorm] === gFirstNorm ||
+              (gFirstNorm.length >= 3 && (wFirstNorm.startsWith(gFirstNorm) || gFirstNorm.startsWith(wFirstNorm))) ||
+              (gFirstNorm.length >= 4 && levenshtein(gFirstNorm, wFirstNorm) <= 1);
+
+            if (!isFirstMatch) continue;
+
+            // If a single last initial was provided (e.g. "Karen B" -> "b"), must match last name initial
+            if (gLastNorm && gLastNorm.length === 1) {
+              if (!wLastNorm.startsWith(gLastNorm)) {
+                continue;
+              }
+            }
+
+            matchedCandidates.push(w);
+            if (matchedCandidates.length >= 6) break; // Keep top 6 candidates
+          }
+
+          if (matchedCandidates.length > 0) {
+            const candLabel = (gLastNorm && gLastNorm.length === 1)
+              ? `First name "${gFirst}" & initial "${gLast.toUpperCase()}."`
+              : (matchedCandidates.length === 1
+                  ? `First name "${gFirst}" match`
+                  : `${matchedCandidates.length} waivers share first name "${gFirst}"`);
+
+            return {
+              guest,
+              status: 'POTENTIAL',
+              method: candLabel,
+              match: matchedCandidates[0],
+              candidates: matchedCandidates
+            };
+          }
         }
 
-        // 5. Missing Waiver
+        // 6. Missing Waiver (No record on file)
+        const missingReason = isFirstNameQuery
+          ? ((gLastNorm && gLastNorm.length === 1)
+              ? `No waiver on file for "${gFirst} ${gLast.toUpperCase()}."`
+              : `No waiver on file with first name "${gFirst}"`)
+          : 'No waiver on file';
+
         return {
           guest,
           status: 'MISSING',
-          method: 'No record on file',
-          match: null
+          method: missingReason,
+          match: null,
+          candidates: []
         };
       });
 
@@ -1839,13 +1905,45 @@
       document.getElementById('badge-potential').textContent = potential;
       document.getElementById('badge-verified').textContent = verified;
 
+      // Update Copy Missing button label
+      const copyBtn = document.getElementById('copy-missing-btn');
+      if (copyBtn) {
+        if (potential > 0) {
+          copyBtn.innerHTML = `<span>📋</span> Copy Missing & Needs Review (${missing + potential})`;
+        } else {
+          copyBtn.innerHTML = `<span>📋</span> Copy Missing Names (${missing})`;
+        }
+      }
+
+      // Display warning banner if guests await review
+      const banner = document.getElementById('unreviewed-alert-banner');
+      if (banner) {
+        if (potential > 0) {
+          banner.style.display = 'flex';
+          banner.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.15rem;">⚠️</span>
+              <div>
+                <span style="font-weight: 700; color: var(--amber); font-size: 0.88rem;">${potential} guest(s) need review.</span>
+                <span style="font-size: 0.78rem; color: var(--text-dim); margin-left: 4px;">Host provided first names only with candidate signed waivers waiting for confirmation.</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="setFilter('potential', document.getElementById('tab-btn-potential'))" style="white-space: nowrap;">
+              Review Candidates (${potential})
+            </button>
+          `;
+        } else {
+          banner.style.display = 'none';
+        }
+      }
+
       filterResults();
     }
 
     function setFilter(filter, btn) {
       activeFilter = filter;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       filterResults();
     }
 
@@ -1868,7 +1966,8 @@
           const gEmail = (item.guest.email || '').toLowerCase();
           const wName = (item.match && item.match.name ? item.match.name : '').toLowerCase();
           const wEmail = (item.match && item.match.email ? item.match.email : '').toLowerCase();
-          if (!gName.includes(query) && !gEmail.includes(query) && !wName.includes(query) && !wEmail.includes(query)) {
+          const candNames = (item.candidates || []).map(c => (c.name || '').toLowerCase()).join(' ');
+          if (!gName.includes(query) && !gEmail.includes(query) && !wName.includes(query) && !wEmail.includes(query) && !candNames.includes(query)) {
             return;
           }
         }
@@ -1883,7 +1982,7 @@
         } else if (item.status === 'MISSING') {
           badgeHtml = `<span class="status-badge missing">⚠️ Missing Waiver</span>`;
         } else if (item.status === 'POTENTIAL') {
-          badgeHtml = `<span class="status-badge potential">❓ Review Match</span>`;
+          badgeHtml = `<span class="status-badge potential">❓ Needs Review</span>`;
         }
 
         // Match Info Details
@@ -1896,13 +1995,38 @@
               <div style="font-size: 0.74rem; color: var(--text-dim); margin-top: 2px;">Method: ${escapeHtml(item.method)}</div>
             </div>
           `;
-        } else if (item.status === 'POTENTIAL' && item.match) {
+        } else if (item.status === 'POTENTIAL') {
+          const cands = item.candidates && item.candidates.length > 0
+            ? item.candidates
+            : (item.match ? [item.match] : []);
+
+          let candsHtml = '';
+          if (cands.length > 0) {
+            candsHtml = `
+              <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                ${cands.map((c, cIdx) => `
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;">
+                    <div>
+                      <span class="match-highlight">${escapeHtml(c.name)}</span>
+                      ${c.date ? `<span style="font-size: 0.74rem; color: var(--text-dim);"> &middot; Signed ${escapeHtml(c.date)}</span>` : ''}
+                      ${c.email ? `<span style="font-size: 0.72rem; color: var(--text-dim); margin-left: 4px;">(${escapeHtml(c.email)})</span>` : ''}
+                    </div>
+                    <button type="button" class="btn-match-action" style="padding: 2px 8px; font-size: 0.74rem; white-space: nowrap;" onclick="approveCandidate(${index}, ${cIdx})">✓ Confirm This</button>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
           matchHtml = `
             <div class="match-info">
-              <div>Found: <span class="match-highlight">${escapeHtml(item.match.name)}</span> (${escapeHtml(item.method)})</div>
-              <div style="margin-top: 6px;">
-                <button type="button" class="btn-match-action" onclick="approveMatch(${index})">✓ Confirm Match</button>
-                <button type="button" class="btn-match-action" onclick="rejectMatch(${index})">✕ Mark Missing</button>
+              <div style="font-size: 0.8rem; color: var(--amber); font-weight: 600;">
+                ❓ Needs Review &middot; ${escapeHtml(item.method)}
+              </div>
+              ${candsHtml}
+              <div style="margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn-match-action" onclick="rejectMatch(${index})">✕ None of These (Mark Missing)</button>
+                <button type="button" class="btn-match-action" onclick="markManualWaiver(${index})">Mark Paper / Tablet Signed</button>
               </div>
             </div>
           `;
@@ -1938,6 +2062,21 @@
     }
 
     // --- Action Handlers ---
+    function approveCandidate(itemIndex, candidateIndex) {
+      const item = reconciledResults[itemIndex];
+      if (item) {
+        const cands = item.candidates || (item.match ? [item.match] : []);
+        const chosen = cands[candidateIndex] || item.match;
+        if (chosen) {
+          item.status = 'VERIFIED';
+          item.method = `Staff Confirmed (${chosen.name})`;
+          item.match = chosen;
+          renderResults();
+          showToast(`Confirmed match: ${item.guest.name} ➔ ${chosen.name}`);
+        }
+      }
+    }
+
     function approveMatch(index) {
       if (reconciledResults[index]) {
         reconciledResults[index].status = 'VERIFIED';
@@ -1949,10 +2088,11 @@
 
     function rejectMatch(index) {
       if (reconciledResults[index]) {
-        reconciledResults[index].status = 'MISSING';
-        reconciledResults[index].method = 'Staff Rejected Match';
+        item = reconciledResults[index];
+        item.status = 'MISSING';
+        item.method = 'Staff Rejected Match';
         renderResults();
-        showToast(`Marked ${reconciledResults[index].guest.name} as Missing Waiver`);
+        showToast(`Marked ${item.guest.name} as Missing Waiver`);
       }
     }
 
@@ -1968,14 +2108,43 @@
 
     function copyMissingNames() {
       const missingList = reconciledResults.filter(r => r.status === 'MISSING');
-      if (missingList.length === 0) {
-        showToast('No missing waivers! All guests have a waiver on file.');
+      const reviewList = reconciledResults.filter(r => r.status === 'POTENTIAL');
+
+      if (missingList.length === 0 && reviewList.length === 0) {
+        showToast('All waivers verified! Zero missing or unreviewed.');
         return;
       }
 
-      const text = `Missing Waivers (${missingList.length}):\n` + missingList.map(r => `• ${r.guest.name}${r.guest.email ? ` (${r.guest.email})` : ''}`).join('\n');
+      const sections = [];
+
+      if (missingList.length > 0) {
+        sections.push(
+          `MISSING WAIVERS (${missingList.length}):\n` +
+          missingList.map(r => `• ${r.guest.name}${r.guest.info ? ` (${r.guest.info.replace(/&middot;/g, '·')})` : ''}`).join('\n')
+        );
+      }
+
+      if (reviewList.length > 0) {
+        sections.push(
+          `NEEDS REVIEW / UNCONFIRMED (${reviewList.length}) - Do not treat as signed:\n` +
+          reviewList.map(r => {
+            const candNames = (r.candidates || (r.match ? [r.match] : [])).map(c => c.name).join(', ');
+            return `• ${r.guest.name}${candNames ? ` [Candidates on file: ${candNames}]` : ' [First name only, no full record]'}`;
+          }).join('\n')
+        );
+      }
+
+      const text = sections.join('\n\n');
       navigator.clipboard.writeText(text).then(() => {
-        showToast(`Copied ${missingList.length} missing guest names to clipboard!`);
+        let msg = '';
+        if (missingList.length > 0 && reviewList.length > 0) {
+          msg = `Copied ${missingList.length} missing + ${reviewList.length} unreviewed guests to clipboard!`;
+        } else if (missingList.length > 0) {
+          msg = `Copied ${missingList.length} missing guest names!`;
+        } else {
+          msg = `Copied ${reviewList.length} unreviewed guest names!`;
+        }
+        showToast(msg);
       }).catch(err => {
         alert(text);
       });
@@ -1983,15 +2152,19 @@
 
     function exportCsv() {
       if (reconciledResults.length === 0) return;
-      const headers = ['Guest Name', 'Guest Email', 'Status', 'Match Method', 'Waiver Record Name', 'Signed Date'];
-      const rows = reconciledResults.map(r => [
-        `"${(r.guest.name || '').replace(/"/g, '""')}"`,
-        `"${(r.guest.email || '').replace(/"/g, '""')}"`,
-        r.status,
-        `"${(r.method || '').replace(/"/g, '""')}"`,
-        `"${(r.match && r.match.name ? r.match.name : '').replace(/"/g, '""')}"`,
-        `"${(r.match && r.match.date ? r.match.date : '').replace(/"/g, '""')}"`
-      ]);
+      const headers = ['Guest Name', 'Guest Info', 'Status', 'Match Method', 'Waiver Record Name', 'Signed Date', 'Potential Candidates'];
+      const rows = reconciledResults.map(r => {
+        const candNames = (r.candidates || []).map(c => c.name).join('; ');
+        return [
+          `"${(r.guest.name || '').replace(/"/g, '""')}"`,
+          `"${(r.guest.info || '').replace(/&middot;/g, '·').replace(/"/g, '""')}"`,
+          r.status,
+          `"${(r.method || '').replace(/"/g, '""')}"`,
+          `"${(r.match && r.match.name ? r.match.name : '').replace(/"/g, '""')}"`,
+          `"${(r.match && r.match.date ? r.match.date : '').replace(/"/g, '""')}"`,
+          `"${candNames.replace(/"/g, '""')}"`
+        ];
+      });
 
       const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
       const encodedUri = encodeURI(csvContent);
