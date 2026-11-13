@@ -7,7 +7,10 @@ export async function onRequest(context) {
   const host = url.hostname.toLowerCase();
   const isStaffHost = host.startsWith('staff.');
 
-  // Check auth credentials via cookie, query param, or Authorization header
+  // Check auth credentials via Cloudflare Zero Trust (Google Workspace), cookie, query param, or Authorization header
+  const cfAccessEmail = (context.request.headers.get('Cf-Access-Authenticated-User-Email') || '').toLowerCase();
+  const isCfAccessAuthed = cfAccessEmail.endsWith('@indoorpickleballx.com');
+
   const cookieHeader = context.request.headers.get('Cookie') || '';
   const authHeader = context.request.headers.get('Authorization') || '';
   const hasAuthCookie = cookieHeader.includes(`${AUTH_COOKIE}=${VALID_TOKEN}`);
@@ -16,7 +19,7 @@ export async function onRequest(context) {
     url.searchParams.get('auth') === VALID_TOKEN ||
     url.searchParams.get('key') === 'ipxstaff' ||
     url.searchParams.get('pin') === 'ipxstaff';
-  const isAuthed = hasAuthCookie || hasAuthQuery || hasAuthHeader;
+  const isAuthed = isCfAccessAuthed || hasAuthCookie || hasAuthQuery || hasAuthHeader;
 
   // Protect sensitive staff data & guest rosters: require authentication
   if (

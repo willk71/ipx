@@ -442,9 +442,14 @@ export default {
       const AUTH_COOKIE = 'ipx_staff_token';
       const VALID_TOKEN = 'c55f0253dcb8aa5fccdb111785e5e38158cad6568778efb0d06b46c40e3d781a'; // SHA-256 of 'ipxstaff'
 
+      // Check Cloudflare Zero Trust (Google Workspace @indoorpickleballx.com), cookie, header, or PIN
+      const cfAccessEmail = (request.headers.get('Cf-Access-Authenticated-User-Email') || '').toLowerCase();
+      const isCfAccessAuthed = cfAccessEmail.endsWith('@indoorpickleballx.com');
+
       const cookieHeader = request.headers.get('Cookie') || '';
       const authHeader = request.headers.get('Authorization') || '';
       const isAuthed =
+        isCfAccessAuthed ||
         cookieHeader.includes(`${AUTH_COOKIE}=${VALID_TOKEN}`) ||
         authHeader === `Bearer ${VALID_TOKEN}` ||
         authHeader === 'Bearer ipxstaff' ||

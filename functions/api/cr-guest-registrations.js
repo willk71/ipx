@@ -19,10 +19,14 @@ export async function onRequest(context) {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Verify staff authentication
+  // Verify staff authentication (Cloudflare Zero Trust Google Workspace, cookie, header, or PIN)
+  const cfAccessEmail = (request.headers.get('Cf-Access-Authenticated-User-Email') || '').toLowerCase();
+  const isCfAccessAuthed = cfAccessEmail.endsWith('@indoorpickleballx.com');
+
   const cookieHeader = request.headers.get('Cookie') || '';
   const authHeader = request.headers.get('Authorization') || '';
   const isAuthed =
+    isCfAccessAuthed ||
     cookieHeader.includes(`${AUTH_COOKIE}=${VALID_TOKEN}`) ||
     authHeader === `Bearer ${VALID_TOKEN}` ||
     authHeader === 'Bearer ipxstaff' ||
