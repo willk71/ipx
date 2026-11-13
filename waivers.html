@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Waiver Reconciliation &mdash; IPX Staff Operations</title>
+  <style>
+    :root {
+      --bg: #090b10;
+      --surface: #11141c;
+      --surface-2: #181d28;
+      --surface-3: #222838;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(56, 189, 248, 0.5);
+      
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.14);
+      --green-border: rgba(16, 185, 129, 0.4);
+      
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.14);
+      --red-border: rgba(239, 68, 68, 0.4);
+      
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.14);
+      --amber-border: rgba(245, 158, 11, 0.4);
+
+      --blue: #38bdf8;
+      --blue-bg: rgba(56, 189, 248, 0.14);
+      --blue-border: rgba(56, 189, 248, 0.4);
+      
+      --accent: #06b6d4;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation */
+    .header {
+      background: #0d1017;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #38bdf8;
+      background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .brand-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--surface-3);
+      color: var(--blue);
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface-2);
+      border-color: var(--border);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px 20px 60px 20px;
+    }
+
+    /* Page Intro */
+    .intro-bar {
+      margin-bottom: 24px;
+    }
+    .intro-bar h1 {
+      margin: 0 0 6px 0;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .intro-bar p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /* Cache Banner */
+    .cache-banner {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--blue-border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .cache-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .cache-icon {
+      font-size: 1.2rem;
+    }
+    .cache-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Input Grid */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Panel Card */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .panel-header {
+      padding: 14px 18px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--surface-3);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .panel-badge.active {
+      background: var(--green-bg);
+      color: var(--green);
+      border-color: var(--green-border);
+    }
+
+    /* Tab Controls */
+    .panel-tabs {
+      display: flex;
+      background: #0d1017;
+      border-bottom: 1px solid var(--border);
+      padding: 4px 8px 0 8px;
+      gap: 4px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+    .tab-btn.active {
+      color: var(--blue);
+      background: var(--surface);
+      border-color: var(--border);
+      border-bottom-color: var(--surface);
+    }
+
+    .panel-body {
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Textarea */
+    textarea.input-box {
+      width: 100%;
+      height: 200px;
+      background: #090b10;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      padding: 12px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    textarea.input-box:focus {
+      border-color: var(--border-focus);
+    }
+    textarea.input-box::placeholder {
+      color: var(--text-dim);
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 32px 16px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.015);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 200px;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--blue);
+      background: var(--blue-bg);
+    }
+    .drop-icon {
+      font-size: 2rem;
+      color: var(--blue);
+    }
+    .drop-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .drop-sub {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+    input[type="file"] {
+      display: none;
+    }
+
+    /* Helper row under input */
+    .panel-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .btn-sample {
+      background: transparent;
+      border: none;
+      color: var(--blue);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    /* API Tab Container */
+    .api-container {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      padding: 16px;
+      background: #090b10;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .api-status-box {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--text-muted);
+      max-width: 440px;
+    }
+
+    /* Main Action Button */
+    .action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-3);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-sm {
+      font-size: 0.82rem;
+      padding: 6px 12px;
+    }
+
+    /* Dashboard & KPI Section */
+    .results-section {
+      display: none; /* revealed when reconciled */
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 800px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .kpi-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .kpi-val {
+      font-size: 1.8rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+    .kpi-sub {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .kpi-card.total .kpi-val { color: var(--blue); }
+    .kpi-card.verified {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+    }
+    .kpi-card.verified .kpi-val { color: var(--green); }
+    .kpi-card.missing {
+      background: var(--red-bg);
+      border-color: var(--red-border);
+    }
+    .kpi-card.missing .kpi-val { color: var(--red); }
+    .kpi-card.potential {
+      background: var(--amber-bg);
+      border-color: var(--amber-border);
+    }
+    .kpi-card.potential .kpi-val { color: var(--amber); }
+
+    /* Results Toolbar */
+    .results-toolbar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px 10px 0 0;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: none;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .filter-btn:hover {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+    .filter-btn.active {
+      background: var(--blue-bg);
+      border-color: var(--blue-border);
+      color: var(--blue);
+    }
+    .filter-badge {
+      font-size: 0.72rem;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 220px;
+    }
+    .search-input {
+      width: 100%;
+      background: #090b10;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .search-input:focus {
+      border-color: var(--border-focus);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Results Table */
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 0 10px 10px;
+      overflow-x: auto;
+    }
+    table.results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+    table.results-table th {
+      background: var(--surface-2);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    table.results-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+    table.results-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Status Pill */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .status-badge.verified {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid var(--green-border);
+    }
+    .status-badge.missing {
+      background: var(--red-bg);
+      color: var(--red);
+      border: 1px solid var(--red-border);
+    }
+    .status-badge.potential {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+
+    .guest-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .guest-sub {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .match-info {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .match-highlight {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .btn-match-action {
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+    .btn-match-action:hover {
+      background: var(--blue-bg);
+      border-color: var(--blue-border);
+      color: var(--blue);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--blue-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .empty-state {
+      padding: 48px 16px;
+      text-align: center;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="header">
+    <div class="brand">
+      <span class="brand-logo">IPX</span>
+      <span class="brand-title">Waiver &amp; Guest Reconciliation</span>
+      <span class="brand-pill">Staff Ops</span>
+    </div>
+    <nav class="nav-links">
+      <a href="/courts.html" class="nav-link">Court Manager</a>
+      <a href="/schedule.html" class="nav-link">Staff Schedule</a>
+      <a href="/daily.html" class="nav-link">Daily Board</a>
+      <a href="/index.html" class="nav-link">Welcome TV</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="intro-bar">
+      <h1>Guest Waiver Checker</h1>
+      <p>Submit today's guest roster and signed waiver report. Instant reconciliation detects verified waivers, identifies missing signers, and handles nickname variations.</p>
+    </div>
+
+    <!-- Cached Waiver Banner (if loaded from localStorage) -->
+    <div id="cache-banner" class="cache-banner">
+      <div class="cache-info">
+        <span class="cache-icon">💾</span>
+        <div>
+          <strong id="cache-count">0 waivers</strong> saved in browser memory from previous upload (<span id="cache-date">-</span>).
+        </div>
+      </div>
+      <div class="cache-actions">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="clearCachedWaivers()">Clear Stored Waivers</button>
+      </div>
+    </div>
+
+    <!-- Dual Input Grid -->
+    <div class="input-grid">
+
+      <!-- Panel 1: Guest List -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>📋</span>
+            <span>1. Guest List</span>
+          </div>
+          <span id="guest-count-badge" class="panel-badge">0 guests</span>
+        </div>
+
+        <div class="panel-tabs">
+          <button type="button" class="tab-btn active" onclick="switchTab('guest', 'paste', this)">Paste Roster</button>
+          <button type="button" class="tab-btn" onclick="switchTab('guest', 'file', this)">Upload File</button>
+        </div>
+
+        <div class="panel-body">
+          <div id="guest-tab-paste">
+            <textarea id="guest-input" class="input-box" placeholder="Paste guest names or roster lines here...&#10;&#10;Supported formats:&#10;• First Last (e.g. John Doe)&#10;• Last, First (e.g. Doe, John)&#10;• With email (e.g. Jane Doe - jane@example.com)&#10;• Tab or CSV copied directly from CourtReserve / Excel"></textarea>
+          </div>
+
+          <div id="guest-tab-file" style="display: none;">
+            <div class="drop-zone" onclick="document.getElementById('guest-file').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'guest')">
+              <span class="drop-icon">📁</span>
+              <span class="drop-label">Choose CSV or TXT File</span>
+              <span class="drop-sub">or drag &amp; drop guest list here</span>
+              <input type="file" id="guest-file" accept=".csv,.tsv,.txt" onchange="handleFileSelect(event, 'guest')" />
+            </div>
+          </div>
+
+          <div class="panel-footer-row">
+            <span>Paste any combination of names or emails</span>
+            <button type="button" class="btn-sample" onclick="loadSampleGuests()">Load sample guests</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 2: Signed Waiver Report -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>✍️</span>
+            <span>2. Signed Waiver Report</span>
+          </div>
+          <span id="waiver-count-badge" class="panel-badge">0 on file</span>
+        </div>
+
+        <div class="panel-tabs">
+          <button type="button" class="tab-btn active" onclick="switchTab('waiver', 'file', this)">Upload Waiver CSV</button>
+          <button type="button" class="tab-btn" onclick="switchTab('waiver', 'paste', this)">Paste Report</button>
+          <button type="button" class="tab-btn" onclick="switchTab('waiver', 'api', this)">CR API (Beta)</button>
+        </div>
+
+        <div class="panel-body">
+          <div id="waiver-tab-file">
+            <div class="drop-zone" onclick="document.getElementById('waiver-file').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'waiver')">
+              <span class="drop-icon">📄</span>
+              <span class="drop-label">Upload Signed Waiver Report CSV</span>
+              <span class="drop-sub">CourtReserve, Smartwaiver, or custom export</span>
+              <input type="file" id="waiver-file" accept=".csv,.tsv,.txt" onchange="handleFileSelect(event, 'waiver')" />
+            </div>
+          </div>
+
+          <div id="waiver-tab-paste" style="display: none;">
+            <textarea id="waiver-input" class="input-box" placeholder="Paste signed waiver export or list of names/emails here...&#10;&#10;Supported formats:&#10;• CSV rows with First Name, Last Name, Email, Signed Date&#10;• Names line-by-line"></textarea>
+          </div>
+
+          <div id="waiver-tab-api" style="display: none;">
+            <div class="api-container">
+              <span style="font-size: 1.8rem;">⚡</span>
+              <button type="button" id="btn-cr-api" class="btn btn-primary btn-sm" onclick="fetchWaiversFromApi()">
+                Fetch from CourtReserve API
+              </button>
+              <div id="api-status-msg" class="api-status-box">
+                Pulls signed waivers automatically using stored facility credentials. If your CourtReserve account does not have waiver API permissions enabled yet, use the <strong>Upload Waiver CSV</strong> tab.
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-footer-row">
+            <span>Auto-saves to browser memory for future visits</span>
+            <button type="button" class="btn-sample" onclick="loadSampleWaivers()">Load sample waivers</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Reconcile Action Bar -->
+    <div class="action-bar">
+      <button type="button" class="btn btn-primary" onclick="reconcileLists()">
+        <span>⚡</span>
+        <span>Reconcile &amp; Check Waivers</span>
+      </button>
+      <button type="button" class="btn btn-secondary" onclick="resetAll()">
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <!-- Results Section -->
+    <section id="results-section" class="results-section">
+
+      <!-- KPI Summary Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card total">
+          <div class="kpi-title">Total Guests</div>
+          <div id="kpi-total" class="kpi-val">0</div>
+          <div class="kpi-sub">submitted on roster</div>
+        </div>
+        <div class="kpi-card verified">
+          <div class="kpi-title">Waiver Verified</div>
+          <div id="kpi-verified" class="kpi-val">0</div>
+          <div id="kpi-verified-sub" class="kpi-sub">0% signed</div>
+        </div>
+        <div class="kpi-card missing">
+          <div class="kpi-title">Missing Waiver</div>
+          <div id="kpi-missing" class="kpi-val">0</div>
+          <div id="kpi-missing-sub" class="kpi-sub">needs action</div>
+        </div>
+        <div class="kpi-card potential">
+          <div class="kpi-title">Potential Match</div>
+          <div id="kpi-potential" class="kpi-val">0</div>
+          <div class="kpi-sub">nickname / typo review</div>
+        </div>
+      </div>
+
+      <!-- Results Toolbar -->
+      <div class="results-toolbar">
+        <div class="filter-tabs">
+          <button type="button" class="filter-btn active" onclick="setFilter('all', this)">
+            All <span id="badge-all" class="filter-badge">0</span>
+          </button>
+          <button type="button" class="filter-btn" onclick="setFilter('missing', this)">
+            ⚠️ Missing <span id="badge-missing" class="filter-badge">0</span>
+          </button>
+          <button type="button" class="filter-btn" onclick="setFilter('potential', this)">
+            ❓ Needs Review <span id="badge-potential" class="filter-badge">0</span>
+          </button>
+          <button type="button" class="filter-btn" onclick="setFilter('verified', this)">
+            ✅ Verified <span id="badge-verified" class="filter-badge">0</span>
+          </button>
+        </div>
+
+        <div class="search-box">
+          <input type="text" id="search-filter" class="search-input" placeholder="Search guests..." oninput="filterResults()" />
+        </div>
+
+        <div class="toolbar-actions">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyMissingNames()">
+            <span>📋</span> Copy Missing Names
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="exportCsv()">
+            <span>📥</span> Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Table View -->
+      <div class="table-container">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th style="width: 28%;">Guest Name</th>
+              <th style="width: 22%;">Contact / Info</th>
+              <th style="width: 18%;">Waiver Status</th>
+              <th style="width: 32%;">Matched Waiver Details</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody">
+            <!-- Dynamic Rows -->
+          </tbody>
+        </table>
+        <div id="empty-results" class="empty-state" style="display: none;">
+          No guests match your current filter.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Toast Element -->
+  <div id="toast" class="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-msg">Copied to clipboard</span>
+  </div>
+
+  <script>
+    // --- State Management ---
+    let parsedGuests = [];
+    let parsedWaivers = [];
+    let reconciledResults = [];
+    let activeFilter = 'all';
+
+    const CACHE_KEY_WAIVERS = 'ipx_cached_waivers';
+    const CACHE_KEY_WAIVERS_DATE = 'ipx_cached_waivers_date';
+
+    // --- Nickname Dictionary for High-Accuracy Fuzzy Resolution ---
+    const NICKNAME_MAP = {
+      'mike': 'michael', 'michael': 'mike',
+      'dan': 'daniel', 'danny': 'daniel', 'daniel': 'dan',
+      'bob': 'robert', 'bobby': 'robert', 'rob': 'robert', 'robert': 'bob',
+      'will': 'william', 'bill': 'william', 'billy': 'william', 'william': 'will',
+      'alex': 'alexander', 'alexander': 'alex', 'alexandra': 'alex',
+      'chris': 'christopher', 'christopher': 'chris', 'christine': 'chris',
+      'matt': 'matthew', 'matthew': 'matt',
+      'sam': 'samuel', 'samuel': 'sam', 'samantha': 'sam',
+      'ben': 'benjamin', 'benjamin': 'ben',
+      'dave': 'david', 'david': 'dave',
+      'tom': 'thomas', 'tommy': 'thomas', 'thomas': 'tom',
+      'jim': 'james', 'jimmy': 'james', 'james': 'jim',
+      'nick': 'nicholas', 'nicholas': 'nick',
+      'liz': 'elizabeth', 'beth': 'elizabeth', 'elizabeth': 'liz',
+      'steve': 'stephen', 'steven': 'stephen', 'stephen': 'steve',
+      'andy': 'andrew', 'drew': 'andrew', 'andrew': 'andy',
+      'jon': 'jonathan', 'jonathan': 'jon',
+      'katie': 'katherine', 'kate': 'katherine', 'katherine': 'katie',
+      'jen': 'jennifer', 'jenny': 'jennifer', 'jennifer': 'jen',
+      'josh': 'joshua', 'joshua': 'josh',
+      'tim': 'timothy', 'timmy': 'timothy', 'timothy': 'tim',
+      'greg': 'gregory', 'gregory': 'greg',
+      'joe': 'joseph', 'joey': 'joseph', 'joseph': 'joe',
+      'zach': 'zachary', 'zack': 'zachary', 'zachary': 'zach',
+      'rich': 'richard', 'rick': 'richard', 'dick': 'richard', 'richard': 'rich',
+      'ed': 'edward', 'eddie': 'edward', 'edward': 'ed',
+      'tony': 'anthony', 'anthony': 'tony',
+      'chuck': 'charles', 'charlie': 'charles', 'charles': 'chuck',
+      'nate': 'nathan', 'nathaniel': 'nathan', 'nathan': 'nate',
+      'phil': 'philip', 'phillip': 'philip', 'philip': 'phil',
+      'ron': 'ronald', 'ronald': 'ron',
+      'ken': 'kenneth', 'kenneth': 'ken',
+      'jeff': 'jeffrey', 'geoffrey': 'jeffrey', 'jeffrey': 'jeff',
+      'steph': 'stephanie', 'stephanie': 'steph',
+      'vicky': 'victoria', 'victoria': 'vicky',
+      'maddie': 'madison', 'madeline': 'madison', 'madison': 'maddie',
+      'abby': 'abigail', 'abigail': 'abby',
+      'becky': 'rebecca', 'rebecca': 'becky'
+    };
+
+    // --- On Load: Initialize from Cache ---
+    window.addEventListener('DOMContentLoaded', () => {
+      checkCachedWaivers();
+
+      // Listen for changes in input box to live-update count
+      document.getElementById('guest-input').addEventListener('input', () => {
+        const text = document.getElementById('guest-input').value.trim();
+        const items = parseGuestText(text);
+        document.getElementById('guest-count-badge').textContent = `${items.length} guests`;
+        if (items.length > 0) {
+          document.getElementById('guest-count-badge').classList.add('active');
+        } else {
+          document.getElementById('guest-count-badge').classList.remove('active');
+        }
+      });
+
+      document.getElementById('waiver-input').addEventListener('input', () => {
+        const text = document.getElementById('waiver-input').value.trim();
+        const items = parseWaiverText(text);
+        document.getElementById('waiver-count-badge').textContent = `${items.length} on file`;
+        if (items.length > 0) {
+          document.getElementById('waiver-count-badge').classList.add('active');
+        } else {
+          document.getElementById('waiver-count-badge').classList.remove('active');
+        }
+      });
+    });
+
+    function checkCachedWaivers() {
+      const stored = localStorage.getItem(CACHE_KEY_WAIVERS);
+      const storedDate = localStorage.getItem(CACHE_KEY_WAIVERS_DATE);
+      if (stored) {
+        try {
+          const list = JSON.parse(stored);
+          if (Array.isArray(list) && list.length > 0) {
+            parsedWaivers = list;
+            document.getElementById('cache-banner').style.display = 'flex';
+            document.getElementById('cache-count').textContent = `${list.length.toLocaleString()} waivers`;
+            document.getElementById('cache-date').textContent = storedDate || 'recently';
+            document.getElementById('waiver-count-badge').textContent = `${list.length.toLocaleString()} on file`;
+            document.getElementById('waiver-count-badge').classList.add('active');
+          }
+        } catch (e) {
+          console.error("Cache read error:", e);
+        }
+      }
+    }
+
+    function clearCachedWaivers() {
+      localStorage.removeItem(CACHE_KEY_WAIVERS);
+      localStorage.removeItem(CACHE_KEY_WAIVERS_DATE);
+      parsedWaivers = [];
+      document.getElementById('cache-banner').style.display = 'none';
+      document.getElementById('waiver-count-badge').textContent = '0 on file';
+      document.getElementById('waiver-count-badge').classList.remove('active');
+      document.getElementById('waiver-input').value = '';
+      showToast('Stored waiver database cleared.');
+    }
+
+    // --- Tab Switching ---
+    function switchTab(group, tab, btn) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (group === 'guest') {
+        document.getElementById('guest-tab-paste').style.display = tab === 'paste' ? 'block' : 'none';
+        document.getElementById('guest-tab-file').style.display = tab === 'file' ? 'block' : 'none';
+      } else if (group === 'waiver') {
+        document.getElementById('waiver-tab-file').style.display = tab === 'file' ? 'block' : 'none';
+        document.getElementById('waiver-tab-paste').style.display = tab === 'paste' ? 'block' : 'none';
+        document.getElementById('waiver-tab-api').style.display = tab === 'api' ? 'block' : 'none';
+      }
+    }
+
+    // --- Drag & Drop Handlers ---
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('dragover');
+    }
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('dragover');
+    }
+    function handleDrop(e, type) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        readFile(files[0], type);
+      }
+    }
+    function handleFileSelect(e, type) {
+      const files = e.target.files;
+      if (files.length > 0) {
+        readFile(files[0], type);
+      }
+    }
+
+    function readFile(file, type) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result;
+        if (type === 'guest') {
+          document.getElementById('guest-input').value = text;
+          parsedGuests = parseGuestText(text);
+          document.getElementById('guest-count-badge').textContent = `${parsedGuests.length} guests`;
+          document.getElementById('guest-count-badge').classList.add('active');
+          showToast(`Loaded ${parsedGuests.length} guests from ${file.name}`);
+        } else {
+          document.getElementById('waiver-input').value = text;
+          parsedWaivers = parseWaiverText(text);
+          saveWaiversToCache(parsedWaivers);
+          document.getElementById('waiver-count-badge').textContent = `${parsedWaivers.length} on file`;
+          document.getElementById('waiver-count-badge').classList.add('active');
+          showToast(`Loaded ${parsedWaivers.length} waivers from ${file.name}`);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function saveWaiversToCache(list) {
+      if (!list || list.length === 0) return;
+      try {
+        localStorage.setItem(CACHE_KEY_WAIVERS, JSON.stringify(list));
+        const dateStr = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', month: 'short', day: 'numeric' });
+        localStorage.setItem(CACHE_KEY_WAIVERS_DATE, dateStr);
+        document.getElementById('cache-banner').style.display = 'flex';
+        document.getElementById('cache-count').textContent = `${list.length.toLocaleString()} waivers`;
+        document.getElementById('cache-date').textContent = dateStr;
+      } catch (err) {
+        console.warn("Storage quota exceeded or error caching waivers:", err);
+      }
+    }
+
+    // --- Text Parsers ---
+    function parseGuestText(raw) {
+      if (!raw) return [];
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const results = [];
+
+      lines.forEach(line => {
+        // Skip obvious header rows
+        if (/^(first\s*name|name|player|member|full\s*name|guest|roster|first)/i.test(line) && line.includes(',')) {
+          return;
+        }
+
+        // Check if tab-separated or comma-separated row
+        let parts = line.split('\t');
+        if (parts.length === 1 && line.includes(',')) {
+          parts = parseCsvLine(line);
+        }
+
+        let name = '';
+        let email = '';
+        let info = '';
+
+        if (parts.length >= 2) {
+          // Check for "LastName, FirstName"
+          if (parts.length === 2 && !parts[0].includes('@') && !parts[1].includes('@') && !/\d{5,}/.test(parts[1])) {
+            name = `${parts[1].trim()} ${parts[0].trim()}`;
+          } else {
+            // Find email column if any
+            parts.forEach(p => {
+              const val = p.trim();
+              if (val.includes('@') && !email) {
+                email = val.toLowerCase();
+              } else if (!name && val.length > 1 && !/^\d+$/.test(val)) {
+                name = val;
+              } else if (val) {
+                info = (info ? info + ' | ' : '') + val;
+              }
+            });
+          }
+        } else {
+          // Single line string: e.g. "John Doe <john@doe.com>" or "Doe, John"
+          let str = line;
+          const emailMatch = str.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
+          if (emailMatch) {
+            email = emailMatch[0].toLowerCase();
+            str = str.replace(emailMatch[0], '').replace(/[<>()]/g, '').trim();
+          }
+
+          if (str.includes(',')) {
+            const sub = str.split(',').map(s => s.trim());
+            if (sub.length === 2) {
+              name = `${sub[1]} ${sub[0]}`;
+            } else {
+              name = str;
+            }
+          } else {
+            name = str;
+          }
+        }
+
+        name = cleanName(name);
+        if (name || email) {
+          results.push({
+            raw: line,
+            name: name || 'Unnamed Guest',
+            email: email,
+            info: info
+          });
+        }
+      });
+
+      return results;
+    }
+
+    function parseWaiverText(raw) {
+      if (!raw) return [];
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const results = [];
+
+      let headerMap = null;
+
+      lines.forEach((line, idx) => {
+        let parts = line.includes('\t') ? line.split('\t') : parseCsvLine(line);
+
+        // Header detection on first few lines
+        if (idx === 0 || (!headerMap && idx < 3)) {
+          const lower = parts.map(p => p.toLowerCase().trim());
+          if (lower.some(h => h.includes('name') || h.includes('email') || h.includes('waiver') || h.includes('signed'))) {
+            headerMap = {};
+            lower.forEach((h, colIdx) => {
+              if (h.includes('first') && !headerMap.first) headerMap.first = colIdx;
+              else if (h.includes('last') && !headerMap.last) headerMap.last = colIdx;
+              else if ((h.includes('full name') || h === 'name' || h.includes('signer') || h.includes('member')) && headerMap.full === undefined) headerMap.full = colIdx;
+              else if (h.includes('email') && headerMap.email === undefined) headerMap.email = colIdx;
+              else if ((h.includes('date') || h.includes('signed') || h.includes('created')) && headerMap.date === undefined) headerMap.date = colIdx;
+            });
+            return;
+          }
+        }
+
+        let name = '';
+        let email = '';
+        let date = '';
+
+        if (headerMap) {
+          if (headerMap.first !== undefined && headerMap.last !== undefined) {
+            const f = (parts[headerMap.first] || '').trim();
+            const l = (parts[headerMap.last] || '').trim();
+            name = `${f} ${l}`.trim();
+          } else if (headerMap.full !== undefined) {
+            name = (parts[headerMap.full] || '').trim();
+          }
+
+          if (headerMap.email !== undefined) {
+            email = (parts[headerMap.email] || '').trim().toLowerCase();
+          }
+          if (headerMap.date !== undefined) {
+            date = (parts[headerMap.date] || '').trim();
+          }
+        } else {
+          // Fallback heuristic for unheadered lines
+          parts.forEach(p => {
+            const val = p.trim();
+            if (val.includes('@') && !email) {
+              email = val.toLowerCase();
+            } else if (!name && val.length > 1 && !/^\d+$/.test(val) && !/\d{4}-\d{2}-\d{2}/.test(val)) {
+              name = val;
+            } else if (/\d{1,2}\/\d{1,2}\/\d{2,4}|\d{4}-\d{2}-\d{2}/.test(val) && !date) {
+              date = val;
+            }
+          });
+        }
+
+        name = cleanName(name);
+        if (name || email) {
+          results.push({
+            name: name,
+            email: email,
+            date: date
+          });
+        }
+      });
+
+      return results;
+    }
+
+    function parseCsvLine(text) {
+      const result = [];
+      let cur = '';
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (c === '"') {
+          inQuotes = !inQuotes;
+        } else if (c === ',' && !inQuotes) {
+          result.push(cur.trim());
+          cur = '';
+        } else {
+          cur += c;
+        }
+      }
+      result.push(cur.trim());
+      return result;
+    }
+
+    function cleanName(str) {
+      if (!str) return '';
+      let s = str.trim();
+      // Remove trailing quotes, parenthesis, bracket info
+      s = s.replace(/^["]+|["]+$/g, '');
+      s = s.replace(/\s*\([^)]*\)/g, '');
+      s = s.replace(/\s*\[[^\]]*\]/g, '');
+      // If "Last, First" format
+      if (s.includes(',')) {
+        const spl = s.split(',').map(x => x.trim());
+        if (spl.length === 2 && spl[0] && spl[1]) {
+          s = `${spl[1]} ${spl[0]}`;
+        }
+      }
+      // Remove middle initials: e.g. "John A. Doe" -> "John Doe"
+      s = s.replace(/\b[A-Za-z]\.\s+/g, '');
+      // Strip common suffixes
+      s = s.replace(/\b(Jr\.?|Sr\.?|III|II|IV)\b/gi, '');
+      // Normalize whitespace
+      return s.replace(/\s+/g, ' ').trim();
+    }
+
+    function normalizeForMatching(name) {
+      if (!name) return '';
+      return cleanName(name)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+    }
+
+    function splitFirstLast(cleanStr) {
+      const parts = cleanStr.trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return { first: '', last: '' };
+      if (parts.length === 1) return { first: parts[0], last: '' };
+      return {
+        first: parts[0],
+        last: parts[parts.length - 1]
+      };
+    }
+
+    // --- Levenshtein Distance for typo matching ---
+    function levenshtein(a, b) {
+      if (a === b) return 0;
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+      const matrix = [];
+      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+            );
+          }
+        }
+      }
+      return matrix[b.length][a.length];
+    }
+
+    // --- CourtReserve API Fetch Handler ---
+    async function fetchWaiversFromApi() {
+      const btn = document.getElementById('btn-cr-api');
+      const statusBox = document.getElementById('api-status-msg');
+      btn.disabled = true;
+      btn.textContent = 'Contacting CourtReserve API...';
+
+      try {
+        const res = await fetch('/api/cr-waivers');
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.waivers) && data.waivers.length > 0) {
+          // Normalize records from CR API response
+          parsedWaivers = data.waivers.map(w => ({
+            name: cleanName(`${w.FirstName || ''} ${w.LastName || ''}` || w.MemberName || w.Name || ''),
+            email: (w.Email || '').toLowerCase(),
+            date: w.WaiverSignedDate || w.SignedDate || w.CreatedOn || ''
+          })).filter(w => w.name || w.email);
+
+          saveWaiversToCache(parsedWaivers);
+          document.getElementById('waiver-count-badge').textContent = `${parsedWaivers.length} on file`;
+          document.getElementById('waiver-count-badge').classList.add('active');
+          statusBox.innerHTML = `<span style="color: var(--green);">✓ Successfully pulled ${parsedWaivers.length} signed waivers from CourtReserve!</span>`;
+          showToast(`Synced ${parsedWaivers.length} waivers from API`);
+        } else {
+          statusBox.innerHTML = `
+            <div style="color: var(--amber); margin-bottom: 6px;"><strong>Notice:</strong> ${data.error || 'Waiver report endpoint not enabled on this account.'}</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">${data.help || 'Please use the <strong>Upload Waiver CSV</strong> tab.'}</div>
+          `;
+        }
+      } catch (err) {
+        statusBox.innerHTML = `
+          <div style="color: var(--red);">API request could not connect: ${err.message}</div>
+          <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;">Upload your signed waiver report CSV using the <strong>Upload Waiver CSV</strong> tab instead.</div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Fetch from CourtReserve API';
+      }
+    }
+
+    // --- Core Reconciliation Logic ---
+    function reconcileLists() {
+      // 1. Gather Guests
+      const guestText = document.getElementById('guest-input').value.trim();
+      parsedGuests = parseGuestText(guestText);
+
+      // 2. Gather Waivers
+      const waiverText = document.getElementById('waiver-input').value.trim();
+      if (waiverText) {
+        parsedWaivers = parseWaiverText(waiverText);
+        saveWaiversToCache(parsedWaivers);
+      } else if (parsedWaivers.length === 0) {
+        // Check cache if input empty
+        checkCachedWaivers();
+      }
+
+      if (parsedGuests.length === 0) {
+        showToast('Please submit at least one guest name or roster.', true);
+        return;
+      }
+      if (parsedWaivers.length === 0) {
+        showToast('Please upload or paste a signed waiver report.', true);
+        return;
+      }
+
+      // Fast lookup indices
+      const emailMap = new Map();
+      const exactNameMap = new Map();
+
+      parsedWaivers.forEach(w => {
+        if (w.email) {
+          emailMap.set(w.email, w);
+        }
+        if (w.name) {
+          const norm = normalizeForMatching(w.name);
+          if (norm && !exactNameMap.has(norm)) {
+            exactNameMap.set(norm, w);
+          }
+        }
+      });
+
+      // Match each guest
+      reconciledResults = parsedGuests.map(guest => {
+        const gEmail = (guest.email || '').toLowerCase().trim();
+        const gNorm = normalizeForMatching(guest.name);
+        const { first: gFirst, last: gLast } = splitFirstLast(guest.name);
+        const gFirstNorm = gFirst.toLowerCase();
+        const gLastNorm = gLast.toLowerCase();
+
+        // 1. Exact Email Match
+        if (gEmail && emailMap.has(gEmail)) {
+          const w = emailMap.get(gEmail);
+          return {
+            guest,
+            status: 'VERIFIED',
+            method: 'Email Match',
+            match: w
+          };
+        }
+
+        // 2. Exact Normalized Name Match
+        if (gNorm && exactNameMap.has(gNorm)) {
+          const w = exactNameMap.get(gNorm);
+          return {
+            guest,
+            status: 'VERIFIED',
+            method: 'Exact Name Match',
+            match: w
+          };
+        }
+
+        // 3. Inverted Name Match (e.g. "Doe John")
+        if (gFirst && gLast) {
+          const invertedNorm = normalizeForMatching(`${gLast} ${gFirst}`);
+          if (exactNameMap.has(invertedNorm)) {
+            const w = exactNameMap.get(invertedNorm);
+            return {
+              guest,
+              status: 'VERIFIED',
+              method: 'Inverted Name Match',
+              match: w
+            };
+          }
+        }
+
+        // 4. Nickname / Near-Match Resolution
+        let potentialMatch = null;
+        let potentialMethod = '';
+
+        for (let i = 0; i < parsedWaivers.length; i++) {
+          const w = parsedWaivers[i];
+          const { first: wFirst, last: wLast } = splitFirstLast(w.name || '');
+          const wFirstNorm = wFirst.toLowerCase();
+          const wLastNorm = wLast.toLowerCase();
+
+          // If last names match exactly
+          if (gLastNorm && wLastNorm && gLastNorm === wLastNorm) {
+            // Check nickname dictionary
+            if (NICKNAME_MAP[gFirstNorm] === wFirstNorm || NICKNAME_MAP[wFirstNorm] === gFirstNorm) {
+              potentialMatch = w;
+              potentialMethod = `Nickname Match (${gFirst} ↔ ${wFirst})`;
+              break;
+            }
+
+            // Check if one is prefix of other (e.g. "Sam" vs "Samantha")
+            if (gFirstNorm.length >= 3 && wFirstNorm.length >= 3) {
+              if (gFirstNorm.startsWith(wFirstNorm) || wFirstNorm.startsWith(gFirstNorm)) {
+                potentialMatch = w;
+                potentialMethod = `Name Variation (${gFirst} ↔ ${wFirst})`;
+                break;
+              }
+            }
+
+            // Levenshtein typo on first name (e.g. "Jonathon" vs "Jonathan")
+            if (levenshtein(gFirstNorm, wFirstNorm) <= 1) {
+              potentialMatch = w;
+              potentialMethod = `Minor Typo (${gFirst} ↔ ${wFirst})`;
+              break;
+            }
+          }
+        }
+
+        if (potentialMatch) {
+          return {
+            guest,
+            status: 'POTENTIAL',
+            method: potentialMethod,
+            match: potentialMatch
+          };
+        }
+
+        // 5. Missing Waiver
+        return {
+          guest,
+          status: 'MISSING',
+          method: 'No record on file',
+          match: null
+        };
+      });
+
+      renderResults();
+      document.getElementById('results-section').style.display = 'block';
+      document.getElementById('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // --- Render Results UI ---
+    function renderResults() {
+      const total = reconciledResults.length;
+      const verified = reconciledResults.filter(r => r.status === 'VERIFIED').length;
+      const missing = reconciledResults.filter(r => r.status === 'MISSING').length;
+      const potential = reconciledResults.filter(r => r.status === 'POTENTIAL').length;
+
+      document.getElementById('kpi-total').textContent = total;
+      document.getElementById('kpi-verified').textContent = verified;
+      document.getElementById('kpi-verified-sub').textContent = `${total > 0 ? Math.round((verified / total) * 100) : 0}% signed`;
+      document.getElementById('kpi-missing').textContent = missing;
+      document.getElementById('kpi-missing-sub').textContent = missing > 0 ? `${missing} need follow-up` : 'All waivers signed!';
+      document.getElementById('kpi-potential').textContent = potential;
+
+      document.getElementById('badge-all').textContent = total;
+      document.getElementById('badge-missing').textContent = missing;
+      document.getElementById('badge-potential').textContent = potential;
+      document.getElementById('badge-verified').textContent = verified;
+
+      filterResults();
+    }
+
+    function setFilter(filter, btn) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterResults();
+    }
+
+    function filterResults() {
+      const query = (document.getElementById('search-filter').value || '').toLowerCase().trim();
+      const tbody = document.getElementById('results-tbody');
+      tbody.innerHTML = '';
+
+      let visibleCount = 0;
+
+      reconciledResults.forEach((item, index) => {
+        // Filter tabs check
+        if (activeFilter === 'missing' && item.status !== 'MISSING') return;
+        if (activeFilter === 'potential' && item.status !== 'POTENTIAL') return;
+        if (activeFilter === 'verified' && item.status !== 'VERIFIED') return;
+
+        // Search query check
+        if (query) {
+          const gName = (item.guest.name || '').toLowerCase();
+          const gEmail = (item.guest.email || '').toLowerCase();
+          const wName = (item.match && item.match.name ? item.match.name : '').toLowerCase();
+          const wEmail = (item.match && item.match.email ? item.match.email : '').toLowerCase();
+          if (!gName.includes(query) && !gEmail.includes(query) && !wName.includes(query) && !wEmail.includes(query)) {
+            return;
+          }
+        }
+
+        visibleCount++;
+        const tr = document.createElement('tr');
+
+        // Status badge HTML
+        let badgeHtml = '';
+        if (item.status === 'VERIFIED') {
+          badgeHtml = `<span class="status-badge verified">✓ Verified</span>`;
+        } else if (item.status === 'MISSING') {
+          badgeHtml = `<span class="status-badge missing">⚠️ Missing Waiver</span>`;
+        } else if (item.status === 'POTENTIAL') {
+          badgeHtml = `<span class="status-badge potential">❓ Review Match</span>`;
+        }
+
+        // Match Info Details
+        let matchHtml = '';
+        if (item.status === 'VERIFIED' && item.match) {
+          matchHtml = `
+            <div class="match-info">
+              <span class="match-highlight">${escapeHtml(item.match.name || item.match.email)}</span>
+              ${item.match.date ? ` &middot; Signed ${escapeHtml(item.match.date)}` : ''}
+              <div style="font-size: 0.74rem; color: var(--text-dim); margin-top: 2px;">Method: ${escapeHtml(item.method)}</div>
+            </div>
+          `;
+        } else if (item.status === 'POTENTIAL' && item.match) {
+          matchHtml = `
+            <div class="match-info">
+              <div>Found: <span class="match-highlight">${escapeHtml(item.match.name)}</span> (${escapeHtml(item.method)})</div>
+              <div style="margin-top: 6px;">
+                <button type="button" class="btn-match-action" onclick="approveMatch(${index})">✓ Confirm Match</button>
+                <button type="button" class="btn-match-action" onclick="rejectMatch(${index})">✕ Mark Missing</button>
+              </div>
+            </div>
+          `;
+        } else {
+          matchHtml = `
+            <div class="match-info" style="color: var(--red);">
+              No matching record found on signed waiver report.
+              <div style="margin-top: 4px;">
+                <button type="button" class="btn-match-action" onclick="markManualWaiver(${index})">Mark Paper / Tablet Signed</button>
+              </div>
+            </div>
+          `;
+        }
+
+        tr.innerHTML = `
+          <td>
+            <div class="guest-name">${escapeHtml(item.guest.name)}</div>
+            ${item.guest.info ? `<div class="guest-sub">${escapeHtml(item.guest.info)}</div>` : ''}
+          </td>
+          <td>
+            <div style="color: var(--text-muted); font-size: 0.85rem;">
+              ${item.guest.email ? escapeHtml(item.guest.email) : '<span style="color: var(--text-dim);">&mdash;</span>'}
+            </div>
+          </td>
+          <td>${badgeHtml}</td>
+          <td>${matchHtml}</td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('empty-results').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // --- Action Handlers ---
+    function approveMatch(index) {
+      if (reconciledResults[index]) {
+        reconciledResults[index].status = 'VERIFIED';
+        reconciledResults[index].method = 'Staff Confirmed';
+        renderResults();
+        showToast(`Approved match for ${reconciledResults[index].guest.name}`);
+      }
+    }
+
+    function rejectMatch(index) {
+      if (reconciledResults[index]) {
+        reconciledResults[index].status = 'MISSING';
+        reconciledResults[index].method = 'Staff Rejected Match';
+        renderResults();
+        showToast(`Marked ${reconciledResults[index].guest.name} as Missing Waiver`);
+      }
+    }
+
+    function markManualWaiver(index) {
+      if (reconciledResults[index]) {
+        reconciledResults[index].status = 'VERIFIED';
+        reconciledResults[index].method = 'Manual Staff Check-in';
+        reconciledResults[index].match = { name: reconciledResults[index].guest.name, date: 'Today (In-Person)' };
+        renderResults();
+        showToast(`Marked ${reconciledResults[index].guest.name} as Verified`);
+      }
+    }
+
+    function copyMissingNames() {
+      const missingList = reconciledResults.filter(r => r.status === 'MISSING');
+      if (missingList.length === 0) {
+        showToast('No missing waivers! All guests have a waiver on file.');
+        return;
+      }
+
+      const text = `Missing Waivers (${missingList.length}):\n` + missingList.map(r => `• ${r.guest.name}${r.guest.email ? ` (${r.guest.email})` : ''}`).join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Copied ${missingList.length} missing guest names to clipboard!`);
+      }).catch(err => {
+        alert(text);
+      });
+    }
+
+    function exportCsv() {
+      if (reconciledResults.length === 0) return;
+      const headers = ['Guest Name', 'Guest Email', 'Status', 'Match Method', 'Waiver Record Name', 'Signed Date'];
+      const rows = reconciledResults.map(r => [
+        `"${(r.guest.name || '').replace(/"/g, '""')}"`,
+        `"${(r.guest.email || '').replace(/"/g, '""')}"`,
+        r.status,
+        `"${(r.method || '').replace(/"/g, '""')}"`,
+        `"${(r.match && r.match.name ? r.match.name : '').replace(/"/g, '""')}"`,
+        `"${(r.match && r.match.date ? r.match.date : '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      const dateTag = new Date().toISOString().slice(0, 10);
+      link.setAttribute('download', `ipx_waiver_report_${dateTag}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Downloaded reconciliation CSV report.');
+    }
+
+    function resetAll() {
+      document.getElementById('guest-input').value = '';
+      document.getElementById('guest-count-badge').textContent = '0 guests';
+      document.getElementById('guest-count-badge').classList.remove('active');
+      document.getElementById('results-section').style.display = 'none';
+      reconciledResults = [];
+      showToast('Cleared guest list and results.');
+    }
+
+    // --- Sample Data Loaders ---
+    function loadSampleGuests() {
+      const sample = [
+        "Michael Chang (mchang@sample.com)",
+        "Doe, Jane",
+        "Alexander Wright",
+        "Sarah Jenkins - s.jenkins@example.com",
+        "David Miller",
+        "Robert Taylor",
+        "Emily Watson",
+        "Lucas Vance",
+        "Olivia Chen",
+        "Daniel Martinez"
+      ].join('\n');
+      document.getElementById('guest-input').value = sample;
+      parsedGuests = parseGuestText(sample);
+      document.getElementById('guest-count-badge').textContent = `${parsedGuests.length} guests`;
+      document.getElementById('guest-count-badge').classList.add('active');
+      showToast(`Loaded ${parsedGuests.length} sample guests`);
+    }
+
+    function loadSampleWaivers() {
+      const sample = [
+        "First Name,Last Name,Email,Signed Date",
+        "Mike,Chang,mchang@sample.com,2026-10-15",
+        "Jane,Doe,jane.doe@gmail.com,2026-09-22",
+        "Alex,Wright,alexw@outlook.com,2026-11-01",
+        "Dave,Miller,dmiller@yahoo.com,2026-08-14",
+        "Bob,Taylor,btaylor@sample.com,2026-10-28",
+        "Emily,Watson,emily.w@gmail.com,2026-11-04",
+        "Samantha,Hill,sam.hill@domain.com,2026-07-19",
+        "Chris,Evans,cevans@domain.com,2026-06-11"
+      ].join('\n');
+      document.getElementById('waiver-input').value = sample;
+      parsedWaivers = parseWaiverText(sample);
+      saveWaiversToCache(parsedWaivers);
+      document.getElementById('waiver-count-badge').textContent = `${parsedWaivers.length} on file`;
+      document.getElementById('waiver-count-badge').classList.add('active');
+      showToast(`Loaded ${parsedWaivers.length} sample waivers`);
+    }
+
+    // --- Helpers ---
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    let toastTimer = null;
+    function showToast(msg, isWarn = false) {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toast-icon');
+      const txt = document.getElementById('toast-msg');
+      txt.textContent = msg;
+      icon.textContent = isWarn ? '⚠️' : '✓';
+      toast.style.borderColor = isWarn ? 'var(--amber-border)' : 'var(--blue-border)';
+      toast.style.display = 'flex';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
