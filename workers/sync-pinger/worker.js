@@ -66,6 +66,94 @@ export default {
       }
     }
 
+    // 1c. Serve Waiver Reconciliation UI directly from edge
+    if (url.pathname === '/waivers' || url.pathname === '/waivers.html') {
+      try {
+        const rawRes = await fetch('https://raw.githubusercontent.com/willk71/ipx/main/waivers.html?_t=' + Date.now(), {
+          cf: { cacheTtl: 0, cacheEverything: false }
+        });
+        if (rawRes.ok) {
+          const html = await rawRes.text();
+          return new Response(html, {
+            headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              ...corsHeaders
+            }
+          });
+        }
+      } catch (err) {
+        return new Response('Error loading Waiver Manager: ' + err.message, { status: 500, headers: corsHeaders });
+      }
+    }
+
+    // 1d. CourtReserve Waiver API integration
+    if (url.pathname === '/api/cr-waivers') {
+      const crUser = env.CR_USERNAME || env.CR_USER || '';
+      const crPass = env.CR_PASSWORD || env.CR_PASS || '';
+
+      if (!crUser || !crPass) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: 'CourtReserve API credentials not configured in Cloudflare environment.',
+            help: 'Upload or paste your signed waiver report CSV directly into the page below, or configure CR_USERNAME / CR_PASSWORD in Cloudflare environment.'
+          }, null, 2),
+          { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+        );
+      }
+
+      const authHeader = 'Basic ' + btoa(`${crUser}:${crPass}`);
+      const userAgent = 'IPX-Staff-Waiver-Sync/1.0';
+      const candidateEndpoints = [
+        'https://api.courtreserve.com/api/v1/waiverreport/list',
+        'https://api.courtreserve.com/api/v1/waiverreport/listactive',
+        'https://api.courtreserve.com/api/v1/waivers/report',
+        'https://api.courtreserve.com/api/v1/waivers'
+      ];
+
+      let lastStatus = 0;
+      let lastErrorText = '';
+
+      for (const endpoint of candidateEndpoints) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+              'Authorization': authHeader,
+              'Accept': 'application/json',
+              'User-Agent': userAgent
+            }
+          });
+          lastStatus = res.status;
+          if (res.ok) {
+            const data = await res.json();
+            const records = Array.isArray(data) ? data : (data.Data || data.data || data.Items || []);
+            return new Response(
+              JSON.stringify({ success: true, count: records.length, waivers: records }, null, 2),
+              { headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+            );
+          } else {
+            lastErrorText = await res.text().catch(() => '');
+          }
+        } catch (err) {
+          lastErrorText = err.message;
+        }
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          statusCode: lastStatus,
+          error: lastStatus === 403 || lastStatus === 401
+            ? 'CourtReserve account does not have permission to access the Waiver API endpoint yet.'
+            : `CourtReserve API responded with HTTP ${lastStatus}.`,
+          help: 'No problem! Simply export your Signed Waiver Report CSV from CourtReserve and drag/drop it into the Waiver Report panel.'
+        }, null, 2),
+        { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
     // 2. Manual Court Assignments API: /api/court-assignments
     if (url.pathname === '/api/court-assignments') {
       const KV_KEY = 'manual_court_assignments';
