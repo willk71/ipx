@@ -322,10 +322,11 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             adv_beg_ratio = adv_beg_count / max(1, adv_beg_courts_len)
             int_ratio = int_count / max(1, int_courts_len)
 
-            # AdvBeg only gets a 2nd court if they have at least 8 players and higher pressure than Intermediate
-            if extra in ['2', '3'] and adv_beg_count >= 8 and adv_beg_ratio > int_ratio:
+            # AdvBeg gets Court 2 or 3 if they have at least 5 players (over capacity on 1 court) and higher pressure than Intermediate
+            if extra in ['2', '3'] and adv_beg_count >= 5 and adv_beg_ratio > int_ratio:
                 assigned_courts['Advanced Beginner'].append(extra)
-            elif extra in ['5', '2', '9'] and int_ratio >= adv_beg_ratio:
+            elif extra in ['2', '3', '5']:
+                # Court 2, 3, 5 are adjacent/near Intermediate courts (4, 5, 7, 8) - never send 2 or 3 to High Intermediate!
                 assigned_courts['Intermediate'].append(extra)
             elif extra == '6':
                 # NEVER give Court 6 to AdvBeg since AdvBeg has Court 1!
@@ -333,11 +334,30 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
                     assigned_courts['Intermediate'].append('6')
                 else:
                     assigned_courts['High Intermediate'].append('6')
+            elif extra == '9':
+                high_int_c = effective_counts.get('High Intermediate', 0)
+                high_int_len = len(assigned_courts.get('High Intermediate', []))
+                high_int_ratio = high_int_c / max(1, high_int_len)
+                if high_int_ratio > int_ratio:
+                    assigned_courts['High Intermediate'].append('9')
+                else:
+                    assigned_courts['Intermediate'].append('9')
             else:
                 assigned_courts['High Intermediate'].append(extra)
 
         for lvl in assigned_courts:
             assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
+
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            adv_courts = [c for c in assigned_courts.get('Advanced', []) if c not in assigned_courts['High Intermediate']]
+            if adv_courts:
+                assigned_courts['High Intermediate'] = sorted(list(set(assigned_courts['High Intermediate'] + adv_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+            assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            adv_beg_courts = [c for c in assigned_courts.get('Advanced Beginner', []) if c not in assigned_courts['Intermediate']]
+            if adv_beg_courts:
+                assigned_courts['Intermediate'] = sorted(list(set(assigned_courts['Intermediate'] + adv_beg_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+            assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
 
         return assigned_courts
 
@@ -374,6 +394,17 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
 
         for lvl in assigned_courts:
             assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
+
+        if adv_merged and 'High Intermediate' in assigned_courts:
+            adv_courts = [c for c in assigned_courts.get('Advanced', []) if c not in assigned_courts['High Intermediate']]
+            if adv_courts:
+                assigned_courts['High Intermediate'] = sorted(list(set(assigned_courts['High Intermediate'] + adv_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+            assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
+        if adv_beg_merged and 'Intermediate' in assigned_courts:
+            adv_beg_courts = [c for c in assigned_courts.get('Advanced Beginner', []) if c not in assigned_courts['Intermediate']]
+            if adv_beg_courts:
+                assigned_courts['Intermediate'] = sorted(list(set(assigned_courts['Intermediate'] + adv_beg_courts)), key=lambda x: int(x) if x.isdigit() else 999)
+            assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
 
         return assigned_courts
 
@@ -884,8 +915,8 @@ def process_schedule(schedule_path='data/schedule.json', choices_path='data/even
         # Dynamic naming rules:
         # If there is no Advanced, High Intermediate becomes High Intermediate+
         # If there is no Advanced nor High Intermediate, Intermediate becomes Intermediate+
-        has_adv = bool(court_alloc.get('Advanced')) and len(court_alloc['Advanced']) > 0
-        has_high_int = bool(court_alloc.get('High Intermediate')) and len(court_alloc['High Intermediate']) > 0
+        has_adv = bool(court_alloc.get('Advanced')) and len(court_alloc['Advanced']) > 0 and (court_alloc.get('Advanced') != court_alloc.get('High Intermediate'))
+        has_high_int = bool(court_alloc.get('High Intermediate')) and len(court_alloc['High Intermediate']) > 0 and (court_alloc.get('High Intermediate') != court_alloc.get('Intermediate'))
 
         display_group = assigned_group
         if not has_adv and assigned_group == 'High Intermediate':

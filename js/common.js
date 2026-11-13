@@ -745,10 +745,11 @@ function allocateCourts(levels, courtsList) {
       const advBegRatio = advBegCount / Math.max(1, advBegCourtsLen);
       const intRatio = intCount / Math.max(1, intCourtsLen);
 
-      // AdvBeg only gets a 2nd court if they have at least 8 players and higher pressure than Intermediate
-      if (['2', '3'].includes(extra) && advBegCount >= 8 && advBegRatio > intRatio) {
+      // AdvBeg gets Court 2 or 3 if they have at least 5 players (over capacity on 1 court) and higher pressure than Intermediate
+      if (['2', '3'].includes(extra) && advBegCount >= 5 && advBegRatio > intRatio) {
         assigned['Advanced Beginner'].push(extra);
-      } else if (['5', '2', '9'].includes(extra) && intRatio >= advBegRatio) {
+      } else if (['2', '3', '5'].includes(extra)) {
+        // Court 2, 3, 5 are adjacent/near Intermediate courts (4, 5, 7, 8) - never send 2 or 3 to High Intermediate!
         assigned['Intermediate'].push(extra);
       } else if (extra === '6') {
         // NEVER give Court 6 to AdvBeg since AdvBeg has Court 1!
@@ -756,6 +757,15 @@ function allocateCourts(levels, courtsList) {
           assigned['Intermediate'].push('6');
         } else {
           assigned['High Intermediate'].push('6');
+        }
+      } else if (extra === '9') {
+        const highIntCount = effectiveCounts['High Intermediate'] || 0;
+        const highIntCourtsLen = assigned['High Intermediate'] ? assigned['High Intermediate'].length : 0;
+        const highIntRatio = highIntCount / Math.max(1, highIntCourtsLen);
+        if (highIntRatio > intRatio) {
+          assigned['High Intermediate'].push('9');
+        } else {
+          assigned['Intermediate'].push('9');
         }
       } else {
         assigned['High Intermediate'].push(extra);
@@ -766,6 +776,23 @@ function allocateCourts(levels, courtsList) {
       assigned[lvl] = Array.from(new Set(assigned[lvl]))
         .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
     });
+
+    if (advMerged && assigned['High Intermediate']) {
+      const advCourts = (assigned['Advanced'] || []).filter(c => !assigned['High Intermediate'].includes(c));
+      if (advCourts.length > 0) {
+        assigned['High Intermediate'] = Array.from(new Set([...assigned['High Intermediate'], ...advCourts]))
+          .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+      }
+      assigned['Advanced'] = [...assigned['High Intermediate']];
+    }
+    if (advBegMerged && assigned['Intermediate']) {
+      const advBegCourts = (assigned['Advanced Beginner'] || []).filter(c => !assigned['Intermediate'].includes(c));
+      if (advBegCourts.length > 0) {
+        assigned['Intermediate'] = Array.from(new Set([...assigned['Intermediate'], ...advBegCourts]))
+          .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+      }
+      assigned['Advanced Beginner'] = [...assigned['Intermediate']];
+    }
 
     return assigned;
   }
@@ -806,6 +833,23 @@ function allocateCourts(levels, courtsList) {
       assigned[lvl] = Array.from(new Set(assigned[lvl]))
         .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
     });
+
+    if (advMerged && assigned['High Intermediate']) {
+      const advCourts = (assigned['Advanced'] || []).filter(c => !assigned['High Intermediate'].includes(c));
+      if (advCourts.length > 0) {
+        assigned['High Intermediate'] = Array.from(new Set([...assigned['High Intermediate'], ...advCourts]))
+          .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+      }
+      assigned['Advanced'] = [...assigned['High Intermediate']];
+    }
+    if (advBegMerged && assigned['Intermediate']) {
+      const advBegCourts = (assigned['Advanced Beginner'] || []).filter(c => !assigned['Intermediate'].includes(c));
+      if (advBegCourts.length > 0) {
+        assigned['Intermediate'] = Array.from(new Set([...assigned['Intermediate'], ...advBegCourts]))
+          .sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+      }
+      assigned['Advanced Beginner'] = [...assigned['Intermediate']];
+    }
 
     return assigned;
   }
