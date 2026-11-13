@@ -437,29 +437,59 @@ export default {
       return fetch(`https://ipxbk.com/data/event-choices.json?_t=${Date.now()}`);
     }
 
-    // 4b. High-speed KV edge delivery for event-guests / cr-guest-registrations
+    // 4b. Protected KV edge delivery for event-guests / cr-guest-registrations
     if (url.pathname === '/api/event-guests' || url.pathname === '/api/cr-guest-registrations') {
-      const cache = caches.default;
-      const cacheKey = new Request(new URL(url.pathname, url.origin), request);
-      let cachedResp = await cache.match(cacheKey);
-      if (cachedResp) {
-        return cachedResp;
+      const AUTH_COOKIE = 'ipx_staff_token';
+      const VALID_TOKEN = 'c55f0253dcb8aa5fccdb111785e5e38158cad6568778efb0d06b46c40e3d781a'; // SHA-256 of 'ipxstaff'
+
+      const cookieHeader = request.headers.get('Cookie') || '';
+      const authHeader = request.headers.get('Authorization') || '';
+      const isAuthed =
+        cookieHeader.includes(`${AUTH_COOKIE}=${VALID_TOKEN}`) ||
+        authHeader === `Bearer ${VALID_TOKEN}` ||
+        authHeader === 'Bearer ipxstaff' ||
+        url.searchParams.get('auth') === VALID_TOKEN ||
+        url.searchParams.get('key') === 'ipxstaff' ||
+        url.searchParams.get('pin') === 'ipxstaff';
+
+      if (!isAuthed) {
+        return new Response(
+          JSON.stringify({ error: 'Unauthorized: Staff authentication required to access guest roster.' }),
+          { status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders } }
+        );
       }
 
       if (env.IPX_DATA) {
         try {
           const liveData = await env.IPX_DATA.get('event_guests_latest');
           if (liveData) {
-            const resp = new Response(liveData, {
+            let parsed = null;
+            try {
+              parsed = JSON.parse(liveData);
+              // Defense-in-depth: Strip email and phone numbers unconditionally
+              if (parsed && Array.isArray(parsed.guests)) {
+                parsed.guests = parsed.guests.map(g => ({
+                  name: g.name || '',
+                  eventId: g.eventId || '',
+                  eventTitle: g.eventTitle || '',
+                  startTime: g.startTime || '',
+                  endTime: g.endTime || '',
+                  hostName: g.hostName || '',
+                  checkedIn: Boolean(g.checkedIn),
+                  source: g.source || 'Event Registration'
+                }));
+              }
+            } catch (_) {}
+
+            const cleanPayload = parsed ? JSON.stringify(parsed, null, 2) : liveData;
+            return new Response(cleanPayload, {
               headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Cache-Control': 'public, max-age=15, s-maxage=15',
-                'Access-Control-Allow-Origin': '*',
-                'X-Data-Source': 'cloudflare-kv'
+                'Cache-Control': 'private, no-store, no-cache, must-revalidate',
+                'X-Data-Source': 'cloudflare-kv',
+                ...corsHeaders
               }
             });
-            ctx.waitUntil(cache.put(cacheKey, resp.clone()));
-            return resp;
           }
         } catch (err) {
           console.error('KV read error for event_guests_latest:', err);
@@ -474,7 +504,7 @@ export default {
           guests: [],
           message: 'No guests currently registered or awaiting sync.'
         }, null, 2),
-        { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' } }
+        { headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders } }
       );
     }
 

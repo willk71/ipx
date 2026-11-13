@@ -7,21 +7,33 @@ export async function onRequest(context) {
   const host = url.hostname.toLowerCase();
   const isStaffHost = host.startsWith('staff.');
 
-  // Check auth credentials via cookie or query param
+  // Check auth credentials via cookie, query param, or Authorization header
   const cookieHeader = context.request.headers.get('Cookie') || '';
+  const authHeader = context.request.headers.get('Authorization') || '';
   const hasAuthCookie = cookieHeader.includes(`${AUTH_COOKIE}=${VALID_TOKEN}`);
+  const hasAuthHeader = authHeader === `Bearer ${VALID_TOKEN}` || authHeader === 'Bearer ipxstaff';
   const hasAuthQuery =
     url.searchParams.get('auth') === VALID_TOKEN ||
     url.searchParams.get('key') === 'ipxstaff' ||
     url.searchParams.get('pin') === 'ipxstaff';
+  const isAuthed = hasAuthCookie || hasAuthQuery || hasAuthHeader;
 
-  // Protect sensitive staff data: require authentication cookie or query token
+  // Protect sensitive staff data & guest rosters: require authentication
   if (
     path.startsWith('/data/staff_') ||
     path.startsWith('/data/raw_') ||
-    path.startsWith('/schedules/')
+    path.startsWith('/schedules/') ||
+    path === '/api/event-guests' ||
+    path === '/api/cr-guest-registrations' ||
+    path === '/api/cr-waivers'
   ) {
-    if (!hasAuthCookie && !hasAuthQuery) {
+    if (!isAuthed) {
+      if (path.startsWith('/api/')) {
+        return new Response(JSON.stringify({ error: 'Unauthorized: Staff authentication required.' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
+        });
+      }
       if (isStaffHost) {
         return new Response('Access Denied: Please unlock the schedule at https://staff.ipxbk.com first.', {
           status: 401,

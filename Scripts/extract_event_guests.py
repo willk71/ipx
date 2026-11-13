@@ -81,13 +81,9 @@ def extract_guests(events_path='data/events.json', reservations_path='data/reser
             # A. Check top-level item if it's a guest registration
             if is_guest_record(item):
                 g_name = clean_name(str(item.get('GuestName') or f"{host_first} {host_last}".strip() or item.get('MemberName', '')))
-                g_email = str(item.get('Email') or item.get('MemberEmail') or '').strip().lower()
-                g_phone = str(item.get('Phone') or item.get('CellPhone') or '').strip()
-                if g_name or g_email:
+                if g_name:
                     guests.append({
-                        'name': g_name or 'Unnamed Guest',
-                        'email': g_email,
-                        'phone': g_phone,
+                        'name': g_name,
                         'eventId': event_id,
                         'eventTitle': title,
                         'startTime': start_time,
@@ -109,13 +105,9 @@ def extract_guests(events_path='data/events.json', reservations_path='data/reser
                             sub_first = str(sub.get('FirstName') or sub.get('MemberFirstName') or '').strip()
                             sub_last = str(sub.get('LastName') or sub.get('MemberLastName') or '').strip()
                             sub_name = clean_name(str(sub.get('GuestName') or f"{sub_first} {sub_last}".strip() or sub.get('MemberName', '')))
-                            sub_email = str(sub.get('Email') or sub.get('MemberEmail') or '').strip().lower()
-                            sub_phone = str(sub.get('Phone') or sub.get('CellPhone') or '').strip()
-                            if sub_name or sub_email:
+                            if sub_name:
                                 guests.append({
-                                    'name': sub_name or 'Unnamed Guest',
-                                    'email': sub_email,
-                                    'phone': sub_phone,
+                                    'name': sub_name,
                                     'eventId': event_id,
                                     'eventTitle': title,
                                     'startTime': start_time,
@@ -157,13 +149,9 @@ def extract_guests(events_path='data/events.json', reservations_path='data/reser
                         p_first = str(p.get('FirstName') or p.get('MemberFirstName') or '').strip()
                         p_last = str(p.get('LastName') or p.get('MemberLastName') or '').strip()
                         p_name = clean_name(str(p.get('GuestName') or f"{p_first} {p_last}".strip() or p.get('MemberName', '')))
-                        p_email = str(p.get('Email') or '').strip().lower()
-                        p_phone = str(p.get('Phone') or '').strip()
-                        if p_name or p_email:
+                        if p_name:
                             guests.append({
-                                'name': p_name or 'Unnamed Guest',
-                                'email': p_email,
-                                'phone': p_phone,
+                                'name': p_name,
                                 'eventId': f"res_{res.get('ReservationId', '')}",
                                 'eventTitle': f"Reservation ({r_court})",
                                 'startTime': r_start,
@@ -173,11 +161,11 @@ def extract_guests(events_path='data/events.json', reservations_path='data/reser
                                 'source': 'Court Reservation'
                             })
 
-    # Deduplicate guests per session (same name and email in same session)
+    # Deduplicate guests per session (same name in same session)
     unique_guests = []
     seen_keys = set()
     for g in guests:
-        dedup_key = (g['name'].lower(), g['email'], g['startTime'])
+        dedup_key = (g['name'].lower(), g.get('eventId', ''), g['startTime'])
         if dedup_key not in seen_keys:
             seen_keys.add(dedup_key)
             unique_guests.append(g)
