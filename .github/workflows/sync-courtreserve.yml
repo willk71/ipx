@@ -293,10 +293,11 @@ jobs:
                 )
               }' > data/schedule.json
 
+            python3 Scripts/extract_event_guests.py || echo "Warning: extract_event_guests failed"
             python3 Scripts/split_choice_events.py || echo "Warning: split_choice_events failed"
             python3 Scripts/upload_to_kv.py || echo "Warning: upload_to_kv failed" 
 
-            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json data/schedule.json data/event-choices.json data/cr_api_discovery.json data/.choices_fresh
+            rm -f data/reservations.json data/events.json data/checkins.json data/hosts.ics data/hosts.json data/schedule.json data/event-choices.json data/event-guests.json data/cr_api_discovery.json data/.choices_fresh
             echo "Live schedule synced to Cloudflare KV successfully (0 git commits)."
           }
 

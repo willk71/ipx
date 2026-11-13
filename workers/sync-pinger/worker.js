@@ -437,6 +437,47 @@ export default {
       return fetch(`https://ipxbk.com/data/event-choices.json?_t=${Date.now()}`);
     }
 
+    // 4b. High-speed KV edge delivery for event-guests / cr-guest-registrations
+    if (url.pathname === '/api/event-guests' || url.pathname === '/api/cr-guest-registrations') {
+      const cache = caches.default;
+      const cacheKey = new Request(new URL(url.pathname, url.origin), request);
+      let cachedResp = await cache.match(cacheKey);
+      if (cachedResp) {
+        return cachedResp;
+      }
+
+      if (env.IPX_DATA) {
+        try {
+          const liveData = await env.IPX_DATA.get('event_guests_latest');
+          if (liveData) {
+            const resp = new Response(liveData, {
+              headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Cache-Control': 'public, max-age=15, s-maxage=15',
+                'Access-Control-Allow-Origin': '*',
+                'X-Data-Source': 'cloudflare-kv'
+              }
+            });
+            ctx.waitUntil(cache.put(cacheKey, resp.clone()));
+            return resp;
+          }
+        } catch (err) {
+          console.error('KV read error for event_guests_latest:', err);
+        }
+      }
+
+      return new Response(
+        JSON.stringify({
+          lastUpdated: new Date().toISOString(),
+          totalGuests: 0,
+          sessions: [],
+          guests: [],
+          message: 'No guests currently registered or awaiting sync.'
+        }, null, 2),
+        { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' } }
+      );
+    }
+
     // 5. Edge Health Check & KV Status
     if (url.pathname === '/status') {
       let kvStatus = 'not_bound';

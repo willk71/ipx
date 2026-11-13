@@ -160,5 +160,9 @@ def main():
     if os.path.exists("data/.choices_fresh") and os.path.exists("data/event-choices.json"):
         upload_key(account_id, namespace_id, api_token, "event_choices_latest", "data/event-choices.json", heartbeat_minutes=30, force=force_upload)
 
+    # Upload extracted event & reservation guests
+    if os.path.exists("data/event-guests.json"):
+        upload_key(account_id, namespace_id, api_token, "event_guests_latest", "data/event-guests.json", heartbeat_minutes=15, force=force_upload)
+
 if __name__ == "__main__":
     main()

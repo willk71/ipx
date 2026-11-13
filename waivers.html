@@ -256,7 +256,58 @@
       flex: 1;
     }
 
-    /* Textarea */
+    /* Event Guest Tab Styles */
+    .event-filter-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .event-guest-list-box {
+      height: 160px;
+      background: #090b10;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-y: auto;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .event-guest-row {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.82rem;
+    }
+    .event-guest-row:hover {
+      background: var(--surface-3);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .event-guest-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .event-guest-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+    .event-guest-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--surface-3);
+      color: var(--blue);
+      border: 1px solid var(--blue-border);
+      white-space: nowrap;
+    }
     textarea.input-box {
       width: 100%;
       height: 200px;
@@ -706,15 +757,34 @@
         </div>
 
         <div class="panel-tabs">
-          <button type="button" class="tab-btn active" onclick="switchTab('guest', 'paste', this)">Paste Roster</button>
+          <button type="button" class="tab-btn active" onclick="switchTab('guest', 'cr', this)">⚡ Event Registrations</button>
+          <button type="button" class="tab-btn" onclick="switchTab('guest', 'paste', this)">Paste Roster</button>
           <button type="button" class="tab-btn" onclick="switchTab('guest', 'file', this)">Upload File</button>
         </div>
 
         <div class="panel-body">
-          <div id="guest-tab-paste">
+          <!-- Sub-tab A: CourtReserve Event Registrations -->
+          <div id="guest-tab-cr">
+            <div class="event-filter-bar">
+              <input type="date" id="event-date-input" class="search-input" style="width: 140px;" onchange="fetchLiveEventGuests(true)" />
+              <select id="event-session-select" class="search-input" style="flex: 1;" onchange="onSessionFilterChange(this.value)">
+                <option value="all">All Event Sessions (Loading...)</option>
+              </select>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="fetchLiveEventGuests(true)" title="Fetch Live Registrations">🔄 Pull</button>
+            </div>
+            <div id="event-guest-list-box" class="event-guest-list-box">
+              <div class="empty-state" style="padding: 24px 8px;">
+                <span>Click <strong>Pull</strong> or choose a session to auto-load CourtReserve event guests.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-tab B: Paste -->
+          <div id="guest-tab-paste" style="display: none;">
             <textarea id="guest-input" class="input-box" placeholder="Paste guest names or roster lines here...&#10;&#10;Supported formats:&#10;• First Last (e.g. John Doe)&#10;• Last, First (e.g. Doe, John)&#10;• With email (e.g. Jane Doe - jane@example.com)&#10;• Tab or CSV copied directly from CourtReserve / Excel"></textarea>
           </div>
 
+          <!-- Sub-tab C: File -->
           <div id="guest-tab-file" style="display: none;">
             <div class="drop-zone" onclick="document.getElementById('guest-file').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'guest')">
               <span class="drop-icon">📁</span>
@@ -725,7 +795,7 @@
           </div>
 
           <div class="panel-footer-row">
-            <span>Paste any combination of names or emails</span>
+            <span id="guest-tab-footer-hint">Auto-pulls guest tickets from CourtReserve</span>
             <button type="button" class="btn-sample" onclick="loadSampleGuests()">Load sample guests</button>
           </div>
         </div>
@@ -883,6 +953,10 @@
 
   <script>
     // --- State Management ---
+    let activeGuestTab = 'cr'; // 'cr', 'paste', or 'file'
+    let allEventGuests = [];
+    let filteredEventGuests = [];
+    let eventSessions = [];
     let parsedGuests = [];
     let parsedWaivers = [];
     let reconciledResults = [];
@@ -937,15 +1011,30 @@
     window.addEventListener('DOMContentLoaded', () => {
       checkCachedWaivers();
 
+      // Set default date to today in New York
+      const nyToday = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      const dateInput = document.getElementById('event-date-input');
+      if (dateInput) {
+        dateInput.value = nyToday;
+      }
+
+      // Check URL query param for default tab (e.g. ?mode=paste)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('mode') === 'paste') {
+        const pasteBtn = document.querySelectorAll('.panel-tabs button')[1];
+        if (pasteBtn) switchTab('guest', 'paste', pasteBtn);
+      } else {
+        // Fetch today's event guests by default
+        fetchLiveEventGuests(false);
+      }
+
       // Listen for changes in input box to live-update count
       document.getElementById('guest-input').addEventListener('input', () => {
         const text = document.getElementById('guest-input').value.trim();
         const items = parseGuestText(text);
-        document.getElementById('guest-count-badge').textContent = `${items.length} guests`;
-        if (items.length > 0) {
-          document.getElementById('guest-count-badge').classList.add('active');
-        } else {
-          document.getElementById('guest-count-badge').classList.remove('active');
+        if (activeGuestTab === 'paste') {
+          parsedGuests = items;
+          updateGuestBadge();
         }
       });
 
@@ -999,13 +1088,144 @@
       btn.classList.add('active');
 
       if (group === 'guest') {
+        activeGuestTab = tab;
+        document.getElementById('guest-tab-cr').style.display = tab === 'cr' ? 'block' : 'none';
         document.getElementById('guest-tab-paste').style.display = tab === 'paste' ? 'block' : 'none';
         document.getElementById('guest-tab-file').style.display = tab === 'file' ? 'block' : 'none';
+        
+        const hint = document.getElementById('guest-tab-footer-hint');
+        if (hint) {
+          if (tab === 'cr') hint.textContent = 'Auto-pulls guest tickets from CourtReserve';
+          else if (tab === 'paste') hint.textContent = 'Paste any combination of names or emails';
+          else hint.textContent = 'Drop CSV roster with name/email columns';
+        }
+        updateGuestBadge();
       } else if (group === 'waiver') {
         document.getElementById('waiver-tab-file').style.display = tab === 'file' ? 'block' : 'none';
         document.getElementById('waiver-tab-paste').style.display = tab === 'paste' ? 'block' : 'none';
         document.getElementById('waiver-tab-api').style.display = tab === 'api' ? 'block' : 'none';
       }
+    }
+
+    // --- Event Registrations Auto-Pull Handlers ---
+    async function fetchLiveEventGuests(userTriggered = false) {
+      const dateInput = document.getElementById('event-date-input');
+      const dateVal = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().slice(0, 10);
+      const statusBox = document.getElementById('event-guest-list-box');
+      
+      if (userTriggered) {
+        statusBox.innerHTML = '<div class="empty-state" style="padding: 24px 8px;"><span>🔄 Pulling event registrations from CourtReserve...</span></div>';
+      }
+
+      const endpoints = [
+        `${EDGE_BASE}/api/event-guests?date=${dateVal}&_t=${Date.now()}`,
+        `/api/event-guests?date=${dateVal}&_t=${Date.now()}`,
+        `${EDGE_BASE}/api/cr-guest-registrations?date=${dateVal}&_t=${Date.now()}`,
+        `/api/cr-guest-registrations?date=${dateVal}&_t=${Date.now()}`
+      ];
+
+      let data = null;
+      for (const u of endpoints) {
+        try {
+          const res = await fetch(u);
+          if (res.ok) {
+            data = await res.json();
+            if (data && Array.isArray(data.guests)) break;
+          }
+        } catch (_) {}
+      }
+
+      if (data && Array.isArray(data.guests) && data.guests.length > 0) {
+        allEventGuests = data.guests;
+        eventSessions = data.sessions || [];
+        populateSessionDropdown(eventSessions);
+        onSessionFilterChange('all');
+        if (userTriggered) showToast(`Loaded ${data.guests.length} event guests for ${dateVal}`);
+      } else {
+        allEventGuests = [];
+        filteredEventGuests = [];
+        populateSessionDropdown([]);
+        statusBox.innerHTML = `
+          <div class="empty-state" style="padding: 24px 8px;">
+            <div style="color: var(--amber); margin-bottom: 4px; font-weight: 600;">No event guests found for ${escapeHtml(dateVal)}</div>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">No guests registered yet under today's sessions, or awaiting sync. You can also paste names in the <strong>Paste Roster</strong> tab.</div>
+          </div>
+        `;
+        updateGuestBadge();
+      }
+    }
+
+    function populateSessionDropdown(sessions) {
+      const select = document.getElementById('event-session-select');
+      if (!select) return;
+      select.innerHTML = `<option value="all">All Event Sessions (${allEventGuests.length} guests)</option>`;
+      sessions.forEach(s => {
+        const timeStr = formatTimeSnippet(s.startTime);
+        const opt = document.createElement('option');
+        opt.value = `${s.eventId}_${s.startTime}`;
+        opt.textContent = `${s.title}${timeStr} (${s.guestCount} guests)`;
+        select.appendChild(opt);
+      });
+    }
+
+    function onSessionFilterChange(sessionKey) {
+      if (sessionKey === 'all') {
+        filteredEventGuests = [...allEventGuests];
+      } else {
+        filteredEventGuests = allEventGuests.filter(g => `${g.eventId}_${g.startTime}` === sessionKey);
+      }
+      renderEventGuestList();
+      updateGuestBadge();
+    }
+
+    function renderEventGuestList() {
+      const box = document.getElementById('event-guest-list-box');
+      if (!box) return;
+      if (filteredEventGuests.length === 0) {
+        box.innerHTML = `
+          <div class="empty-state" style="padding: 24px 8px;">
+            <span>No guests registered under this session.</span>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = filteredEventGuests.map(g => {
+        const timeStr = formatTimeSnippet(g.startTime);
+        return `
+          <div class="event-guest-row">
+            <div>
+              <div class="event-guest-name">${escapeHtml(g.name)}</div>
+              <div class="event-guest-sub">${escapeHtml(g.eventTitle || 'Event')}${timeStr} &middot; Host: ${escapeHtml(g.hostName || 'Member')}</div>
+            </div>
+            <span class="event-guest-badge">${g.checkedIn ? 'Checked-In' : 'Registered Guest'}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function formatTimeSnippet(isoStr) {
+      if (!isoStr) return '';
+      try {
+        const d = new Date(isoStr);
+        return ' (' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true }) + ')';
+      } catch (_) {
+        return '';
+      }
+    }
+
+    function updateGuestBadge() {
+      const badge = document.getElementById('guest-count-badge');
+      if (!badge) return;
+      let count = 0;
+      if (activeGuestTab === 'cr') {
+        count = filteredEventGuests.length;
+      } else {
+        count = parsedGuests.length;
+      }
+      badge.textContent = `${count} guests`;
+      if (count > 0) badge.classList.add('active');
+      else badge.classList.remove('active');
     }
 
     // --- Drag & Drop Handlers ---
@@ -1362,8 +1582,21 @@
     // --- Core Reconciliation Logic ---
     function reconcileLists() {
       // 1. Gather Guests
-      const guestText = document.getElementById('guest-input').value.trim();
-      parsedGuests = parseGuestText(guestText);
+      if (activeGuestTab === 'cr') {
+        if (filteredEventGuests.length === 0) {
+          showToast('No event guests loaded. Click Pull or switch to Paste Roster.', true);
+          return;
+        }
+        parsedGuests = filteredEventGuests.map(g => ({
+          raw: g.name,
+          name: g.name,
+          email: g.email || '',
+          info: `Guest of ${g.hostName || 'Member'} &middot; ${g.eventTitle || 'Event'}${formatTimeSnippet(g.startTime)}`
+        }));
+      } else {
+        const guestText = document.getElementById('guest-input').value.trim();
+        parsedGuests = parseGuestText(guestText);
+      }
 
       // 2. Gather Waivers
       const waiverText = document.getElementById('waiver-input').value.trim();
