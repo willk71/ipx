@@ -19,7 +19,7 @@ export async function onRequest(context) {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Verify staff authentication (Cloudflare Zero Trust Google Workspace, cookie, header, or PIN)
+  // Verify staff authentication (Cloudflare Zero Trust Google Workspace, cookie, or token hash)
   const cfAccessEmail = (request.headers.get('Cf-Access-Authenticated-User-Email') || '').toLowerCase();
   const isCfAccessAuthed = cfAccessEmail.endsWith('@indoorpickleballx.com');
 
@@ -29,14 +29,11 @@ export async function onRequest(context) {
     isCfAccessAuthed ||
     cookieHeader.includes(`${AUTH_COOKIE}=${VALID_TOKEN}`) ||
     authHeader === `Bearer ${VALID_TOKEN}` ||
-    authHeader === 'Bearer ipxstaff' ||
-    url.searchParams.get('auth') === VALID_TOKEN ||
-    url.searchParams.get('key') === 'ipxstaff' ||
-    url.searchParams.get('pin') === 'ipxstaff';
+    url.searchParams.get('auth') === VALID_TOKEN;
 
   if (!isAuthed) {
     return new Response(
-      JSON.stringify({ error: 'Unauthorized: Staff authentication required to access guest roster.' }),
+      JSON.stringify({ error: 'Unauthorized: Staff authentication required via @indoorpickleballx.com or staff session.' }),
       { status: 401, headers: corsHeaders }
     );
   }
