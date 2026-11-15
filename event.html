@@ -561,14 +561,15 @@
             const has14781012 = ['1', '4', '7', '8', '10', '12'].every(c => cleanSet.has(c));
             const advBegMerged = !has14781012 && (advBegCount > 0 && advBegCount < 4 && intCount > 0);
 
-            // 1. Check if server pre-computed courtAllocations are present in session
-            let courtAlloc = session.courtAllocations;
+            // 1. Compute court allocation dynamically via shared allocateCourts engine
+            let courtAlloc = null;
+            if (typeof allocateCourts === 'function' && cleanCourts.length > 0) {
+              courtAlloc = allocateCourts(countByLevel, cleanCourts);
+            }
 
-            // 2. Fall back to shared allocateCourts engine if not pre-computed or dynamically modified
+            // 2. Fall back to server pre-computed courtAllocations if needed
             if (!courtAlloc || Object.keys(courtAlloc).length === 0) {
-              if (typeof allocateCourts === 'function' && cleanCourts.length > 0) {
-                courtAlloc = allocateCourts(countByLevel, cleanCourts);
-              }
+              courtAlloc = session.courtAllocations;
             }
 
             const standardOrder = ['Advanced Beginner', 'Intermediate', 'High Intermediate', 'Advanced'];
