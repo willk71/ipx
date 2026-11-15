@@ -127,21 +127,73 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
                     assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
             return assigned_courts
 
-    # 12-Court Facility Layout:
-    # - Advanced Beginner: Courts 3, 5, 6, 9
-    # - Intermediate: Courts 1, 2, 4
-    # - High Intermediate & Advanced: Courts 7, 8, 10, 11, 12
+    # 12-Court Facility Layout (Dynamic allocation by registered player counts):
     if clean_set == {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
-        assigned_courts = {
-            'Advanced Beginner': ['3', '5', '6', '9'],
-            'Intermediate': ['1', '2', '4'],
-            'High Intermediate': ['7', '8', '10', '11', '12'],
-            'Advanced': ['7', '8', '10', '11', '12']
-        }
+        if total_effective == 0 or not active_levels:
+            return {
+                'Advanced Beginner': ['3', '5', '6', '9'],
+                'Intermediate': ['1', '2', '4'],
+                'High Intermediate': ['7', '8', '10'],
+                'Advanced': ['11', '12']
+            }
+
+        quotas = {lvl: (effective_counts[lvl] / total_effective) * 12 for lvl in active_levels}
+        floors = {lvl: int(quotas[lvl]) for lvl in active_levels}
+        remainders = sorted([(quotas[lvl] - floors[lvl], lvl) for lvl in active_levels], reverse=True)
+        unallocated = 12 - sum(floors.values())
+        for i in range(unallocated):
+            floors[remainders[i][1]] += 1
+
+        rem_courts = set(clean_courts)
+        assigned_courts = {lvl: [] for lvl in active_levels}
+
+        # 1. Advanced takes back courts first (11, 12, 10, 8, 9, 7)
+        if 'Advanced' in active_levels and floors.get('Advanced', 0) > 0:
+            needed = floors['Advanced']
+            for c in ['11', '12', '10', '8', '9', '7']:
+                if c in rem_courts and len(assigned_courts['Advanced']) < needed:
+                    assigned_courts['Advanced'].append(c)
+                    rem_courts.remove(c)
+
+        # 2. High Intermediate takes back/mid courts (11, 12, 10, 8, 7, 9, 4)
+        if 'High Intermediate' in active_levels and floors.get('High Intermediate', 0) > 0:
+            needed = floors['High Intermediate']
+            for c in ['11', '12', '10', '8', '7', '9', '4']:
+                if c in rem_courts and len(assigned_courts['High Intermediate']) < needed:
+                    assigned_courts['High Intermediate'].append(c)
+                    rem_courts.remove(c)
+
+        # 3. Intermediate takes 1, 2, 4, 5, 7, 8, 3
+        if 'Intermediate' in active_levels and floors.get('Intermediate', 0) > 0:
+            needed = floors['Intermediate']
+            for c in ['1', '2', '4', '5', '7', '8', '3']:
+                if c in rem_courts and len(assigned_courts['Intermediate']) < needed:
+                    assigned_courts['Intermediate'].append(c)
+                    rem_courts.remove(c)
+
+        # 4. Advanced Beginner takes 3, 6, 5, 9, 2, 1, 4
+        if 'Advanced Beginner' in active_levels and floors.get('Advanced Beginner', 0) > 0:
+            needed = floors['Advanced Beginner']
+            for c in ['3', '6', '5', '9', '2', '1', '4']:
+                if c in rem_courts and len(assigned_courts['Advanced Beginner']) < needed:
+                    assigned_courts['Advanced Beginner'].append(c)
+                    rem_courts.remove(c)
+
+        # Fill any remainder
+        for lvl in active_levels:
+            while len(assigned_courts[lvl]) < floors.get(lvl, 0) and rem_courts:
+                c = sorted(list(rem_courts), key=lambda x: int(x) if x.isdigit() else 999)[0]
+                assigned_courts[lvl].append(c)
+                rem_courts.remove(c)
+
+        for lvl in assigned_courts:
+            assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
+
         if adv_merged and 'High Intermediate' in assigned_courts:
-            assigned_courts['Advanced'] = assigned_courts['High Intermediate']
+            assigned_courts['Advanced'] = list(assigned_courts['High Intermediate'])
         if adv_beg_merged and 'Intermediate' in assigned_courts:
-            assigned_courts['Advanced Beginner'] = assigned_courts['Intermediate']
+            assigned_courts['Advanced Beginner'] = list(assigned_courts['Intermediate'])
+
         return assigned_courts
 
     # 9-Court Facility Layout (Courts 1, 2, 3, 4, 5, 6, 7, 9, 10):

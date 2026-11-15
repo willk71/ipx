@@ -544,20 +544,103 @@ function allocateCourts(levels, courtsList) {
     return {};
   }
 
-  // 12-Court Facility Layout:
-  // - Advanced Beginner: Courts 3, 5, 6, 9
-  // - Intermediate: Courts 1, 2, 4
-  // - High Intermediate & Advanced: Courts 7, 8, 10, 11, 12
+  // 12-Court Facility Layout (Dynamic allocation by registered player counts):
   const has12Courts = cleanSet.size === 12 && ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].every(c => cleanSet.has(c));
   if (has12Courts) {
-    const assigned = {
-      'Advanced Beginner': ['3', '5', '6', '9'],
-      'Intermediate': ['1', '2', '4'],
-      'High Intermediate': ['7', '8', '10', '11', '12'],
-      'Advanced': ['7', '8', '10', '11', '12']
-    };
-    if (advMerged && assigned['High Intermediate']) assigned['Advanced'] = assigned['High Intermediate'];
-    if (advBegMerged && assigned['Intermediate']) assigned['Advanced Beginner'] = assigned['Intermediate'];
+    if (totalEffective === 0 || activeLevels.length === 0) {
+      return {
+        'Advanced Beginner': ['3', '5', '6', '9'],
+        'Intermediate': ['1', '2', '4'],
+        'High Intermediate': ['7', '8', '10'],
+        'Advanced': ['11', '12']
+      };
+    }
+
+    const quotas = {};
+    const floors = {};
+    activeLevels.forEach(lvl => {
+      quotas[lvl] = (effectiveCounts[lvl] / totalEffective) * 12;
+      floors[lvl] = Math.floor(quotas[lvl]);
+    });
+
+    const assignedSum = activeLevels.reduce((sum, lvl) => sum + floors[lvl], 0);
+    const remainders = activeLevels.map(lvl => ({
+      level: lvl,
+      rem: quotas[lvl] - floors[lvl]
+    })).sort((a, b) => b.rem - a.rem);
+
+    for (let i = 0; i < (12 - assignedSum); i++) {
+      floors[remainders[i].level]++;
+    }
+
+    const remCourts = new Set(cleanCourts);
+    const assigned = {};
+    activeLevels.forEach(lvl => { assigned[lvl] = []; });
+
+    // 1. Advanced takes back courts first (11, 12, 10, 8, 9, 7)
+    if (activeLevels.includes('Advanced') && floors['Advanced'] > 0) {
+      const needed = floors['Advanced'];
+      for (const c of ['11', '12', '10', '8', '9', '7']) {
+        if (remCourts.has(c) && assigned['Advanced'].length < needed) {
+          assigned['Advanced'].push(c);
+          remCourts.delete(c);
+        }
+      }
+    }
+
+    // 2. High Intermediate takes back/mid courts (11, 12, 10, 8, 7, 9, 4)
+    if (activeLevels.includes('High Intermediate') && floors['High Intermediate'] > 0) {
+      const needed = floors['High Intermediate'];
+      for (const c of ['11', '12', '10', '8', '7', '9', '4']) {
+        if (remCourts.has(c) && assigned['High Intermediate'].length < needed) {
+          assigned['High Intermediate'].push(c);
+          remCourts.delete(c);
+        }
+      }
+    }
+
+    // 3. Intermediate takes 1, 2, 4, 5, 7, 8, 3
+    if (activeLevels.includes('Intermediate') && floors['Intermediate'] > 0) {
+      const needed = floors['Intermediate'];
+      for (const c of ['1', '2', '4', '5', '7', '8', '3']) {
+        if (remCourts.has(c) && assigned['Intermediate'].length < needed) {
+          assigned['Intermediate'].push(c);
+          remCourts.delete(c);
+        }
+      }
+    }
+
+    // 4. Advanced Beginner takes 3, 6, 5, 9, 2, 1, 4
+    if (activeLevels.includes('Advanced Beginner') && floors['Advanced Beginner'] > 0) {
+      const needed = floors['Advanced Beginner'];
+      for (const c of ['3', '6', '5', '9', '2', '1', '4']) {
+        if (remCourts.has(c) && assigned['Advanced Beginner'].length < needed) {
+          assigned['Advanced Beginner'].push(c);
+          remCourts.delete(c);
+        }
+      }
+    }
+
+    // Fill any remainder
+    activeLevels.forEach(lvl => {
+      while (assigned[lvl].length < floors[lvl] && remCourts.size > 0) {
+        const first = remCourts.values().next().value;
+        assigned[lvl].push(first);
+        remCourts.delete(first);
+      }
+    });
+
+    Object.keys(assigned).forEach(lvl => {
+      assigned[lvl].sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+    });
+
+    if (advMerged && assigned['High Intermediate']) {
+      assigned['Advanced'] = [...assigned['High Intermediate']];
+    }
+    if (advBegMerged && assigned['Intermediate']) {
+      assigned['Advanced Beginner'] = [...assigned['Intermediate']];
+    }
+
     return assigned;
   }
 
