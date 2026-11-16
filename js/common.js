@@ -373,6 +373,15 @@ function resolveQueueLocation(courtsSet, customText, context) {
         return '📍 - Court 10 Paddle Rack';
       }
 
+      // Courts 8, 12 group queues at Court 10 Paddle Rack
+      if (
+        (courtsSet.has('8') && courtsSet.has('12') && courtsSet.size === 2) ||
+        (nums.length === 2 && nums.includes(8) && nums.includes(12)) ||
+        (nums.includes(8) && nums.includes(12) && !nums.includes(7) && !nums.includes(4))
+      ) {
+        return '📍 - Court 10 Paddle Rack';
+      }
+
       // Courts 3, 6, 9 queue at Court 6 Table/Rack
       if (
         (courtsSet.has('3') && courtsSet.has('6') && courtsSet.has('9') && courtsSet.size === 3) ||
