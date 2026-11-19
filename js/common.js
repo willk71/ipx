@@ -1286,6 +1286,8 @@ function adjustTierTitlesWithPlus(sessionList) {
 function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   if (!Array.isArray(overridesList) || overridesList.length === 0) return;
 
+  const todayIso = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+
   const parseMinutes = (val) => {
     if (!val) return 0;
     const parts = String(val).trim().split(':').map(Number);
@@ -1293,6 +1295,7 @@ function applyCourtOverrides(eventMap, overridesList, currentMinutes) {
   };
 
   const activeOverrides = overridesList.filter(ov => {
+    if (ov.date && ov.date !== todayIso) return false;
     const sMin = parseMinutes(ov.start);
     let eMin = parseMinutes(ov.end);
     // If end time is not provided, default to at most 2 hours after start, NEVER entire day!

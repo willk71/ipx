@@ -60,10 +60,18 @@ export async function onRequest(context) {
                 return new RegExp('\\b' + m.replace(/[+*?^$(){}|[\]\\]/g, '\\$&') + '\\b', 'i').test(t);
               };
 
+              const scheduleDate = scheduleObj.date || (scheduleObj.events && scheduleObj.events[0] && scheduleObj.events[0].startTime && scheduleObj.events[0].startTime.substring(0, 10));
+
               Object.values(manualSessions).forEach(man => {
                 const eId = String(man.eventId || '').trim();
                 const sTime = String(man.startTime || '').trim();
                 const allocs = man.allocations || {};
+
+                // Ignore manual overrides from a different date
+                const manDate = sTime && sTime.includes('T') ? sTime.split('T')[0] : '';
+                if (scheduleDate && manDate && manDate !== scheduleDate) {
+                  return;
+                }
 
                 (scheduleObj.events || []).forEach(ev => {
                   const evId = String(ev.eventId || '').trim();
@@ -111,6 +119,7 @@ export async function onRequest(context) {
                   if (Array.isArray(courts) && courts.length > 0) {
                     scheduleObj.courtOverrides.push({
                       match: tier,
+                      date: manDate,
                       start: sTime && sTime.includes('T') ? sTime.split('T')[1].substring(0, 5) : '',
                       end: endStr,
                       courts: courts
