@@ -126,11 +126,22 @@
 
     function formatNameLastInitial(rawName) {
       if (!rawName) return '';
-      const parts = rawName.trim().split(/\s+/);
+      let s = rawName.trim();
+      if (s.includes(',')) {
+        const p = s.split(',', 2);
+        if (p.length === 2 && p[0] && p[1]) {
+          s = `${p[1].trim()} ${p[0].trim()}`;
+        }
+      }
+      const parts = s.split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return '';
       if (parts.length === 1) return toSentenceCase(parts[0]);
       const first = toSentenceCase(parts[0]);
-      const lastInit = parts[parts.length - 1].charAt(0).toUpperCase();
-      return `${first} ${lastInit}.`;
+      const last = parts[parts.length - 1];
+      if (/^[A-Za-z]\.?$/.test(last)) {
+        return `${first} ${last.replace(/\.?$/, '.')}`;
+      }
+      return `${first} ${last.charAt(0).toUpperCase()}.`;
     }
 
     async function fetchSchedule() {
@@ -408,9 +419,9 @@
           const courtNumbers = extractSortedCourts(r.courts || r.Courts || r.CourtName || r.court);
           const courtLabel = courtNumbers.length > 0 ? courtNumbers.join(', ') : 'TBD';
 
-          const rawMember = (r.holderLabel || r.memberName || r.MemberName || r.title || r.reservedBy || '').trim();
+          const rawMember = (r.holderLabel || r.guestName || r.GuestName || r.contactName || r.ContactName || r.bookedBy || r.BookedBy || r.memberName || r.MemberName || r.title || r.reservedBy || '').trim();
 
-          if (rawMember && rawMember.toLowerCase() !== 'reserved') {
+          if (rawMember && !/^(?:reserved|court\s*reservation|public\s*booking)$/i.test(rawMember)) {
             const memberLabel = /\b[A-Za-z]\.?$/.test(rawMember)
               ? rawMember
               : formatNameLastInitial(rawMember);

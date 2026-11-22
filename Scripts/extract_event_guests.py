@@ -137,7 +137,22 @@ def extract_guests(events_path='data/events.json', reservations_path='data/reser
             r_court = str(res.get('Courts') or res.get('CourtName') or 'Court').strip()
             r_start = str(res.get('StartTime') or '').strip()
             r_end = str(res.get('EndTime') or '').strip()
-            r_host = clean_name(str(res.get('MemberName') or res.get('ReservedBy') or f"{res.get('MemberFirstName', '')} {res.get('MemberLastName', '')}"))
+            r_host = clean_name(str(res.get('MemberName') or res.get('ReservedBy') or res.get('BookedBy') or res.get('ContactName') or f"{res.get('MemberFirstName', '')} {res.get('MemberLastName', '')}".strip() or res.get('GuestName', '')))
+
+            # Check if reservation booker itself is a guest / public booking
+            if is_guest_record(res) or not (res.get('MemberId') or res.get('OrganizationMemberId')):
+                booker_name = clean_name(str(res.get('GuestName') or res.get('ContactName') or res.get('BookedBy') or r_host or ''))
+                if booker_name and booker_name.lower() != 'reserved':
+                    guests.append({
+                        'name': booker_name,
+                        'eventId': f"res_{res.get('ReservationId', '')}",
+                        'eventTitle': f"Public Booking ({r_court})",
+                        'startTime': r_start,
+                        'endTime': r_end,
+                        'hostName': booker_name,
+                        'checkedIn': bool(res.get('CheckedIn') or res.get('IsCheckedIn')),
+                        'source': 'Court Reservation'
+                    })
 
             # Check Players array for guests
             players = res.get('Players') or []

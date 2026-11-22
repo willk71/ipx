@@ -162,8 +162,25 @@ jobs:
             AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
             USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
-            RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
+            RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}&includeCourts=true&includePlayers=true&includeGuests=true&includeCustomFields=true&includeUserDefinedFields=true"
             curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
+
+            echo "=== Sample Reservation Record Keys ==="
+            python3 -c "
+import json
+try:
+    with open('data/reservations.json') as f:
+        d = json.load(f)
+    items = d.get('Data', d) if isinstance(d, dict) else d
+    if items:
+        print('Reservation keys:', list(items[0].keys()))
+        for item in items:
+            if not item.get('MemberFirstName'):
+                print('Public/Non-member reservation sample:', {k: v for k, v in item.items() if k in ['Courts', 'CourtName', 'StartTime', 'EndTime', 'MemberName', 'GuestName', 'ContactName', 'BookedBy', 'ReservedBy', 'Players', 'Title', 'ReservationType', 'IsPublic']})
+                break
+except Exception as e:
+    print('Reservation inspect error:', e)
+" || true
 
             EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
             curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
@@ -213,7 +230,32 @@ jobs:
               --slurpfile ev data/events.json \
               --slurpfile chk data/checkins.json \
               --slurpfile extra data/hosts.json \
-              '{
+              '
+              def clean_label:
+                if . == null or . == "" or (ascii_downcase == "reserved") or (ascii_downcase == "court reservation") or (ascii_downcase == "public booking") then ""
+                elif contains(",") then
+                  (split(",")[1] | split(" ") | map(select(. != ""))) as $firstParts |
+                  (split(",")[0] | split(" ") | map(select(. != ""))) as $lastParts |
+                  if ($firstParts | length) > 0 and ($lastParts | length) > 0 then
+                    ($firstParts[0] + " " + ($lastParts[0][0:1]) + ".")
+                  else
+                    (split(" ") | map(select(. != ""))) as $all |
+                    if ($all | length) > 1 then ($all[0] + " " + ($all[-1][0:1]) + ".")
+                    elif ($all | length) == 1 then $all[0]
+                    else "" end
+                  end
+                else
+                  (split(" ") | map(select(. != ""))) as $parts |
+                  if ($parts | length) == 0 then ""
+                  elif ($parts | length) == 1 then $parts[0]
+                  elif ($parts[-1] | endswith(".")) and (($parts[-1] | length) == 2) then
+                    ($parts[0] + " " + $parts[-1])
+                  else
+                    ($parts[0] + " " + ($parts[-1][0:1]) + ".")
+                  end
+                end;
+
+              {
                 lastUpdated: (now | todate),
                 date: "'"$TODAY_NY"'",
                 courtHosts: ($extra[0].hosts // []),
@@ -223,21 +265,46 @@ jobs:
                   ($res[0].Data // $res[0] // [])[] | {
                     court: (.Courts // .CourtName // ""),
                     holderLabel: (
-                      if (.MemberFirstName and .MemberLastName) then
-                        ((.MemberFirstName | split(" ")[0]) + " " + (.MemberLastName[0:1]) + ".")
-                      elif .FirstName then
-                        ((.FirstName | split(" ")[0]) + (if .LastName then " " + (.LastName[0:1]) + "." else "" end))
-                      elif .MemberName then
-                        ((.MemberName | split(" ")[0]) + " " + ((.MemberName | split(" ")[1] // "")[0:1]) + ".")
-                      elif .ReservedBy then
-                        ((.ReservedBy | split(" ")[0]) + " " + ((.ReservedBy | split(" ")[1] // "")[0:1]) + ".")
-                      elif (.Member and .Member.FirstName) then
-                        ((.Member.FirstName | split(" ")[0]) + " " + ((.Member.LastName // "")[0:1]) + ".")
-                      elif (.Players and (.Players | length > 0)) then
-                        ((.Players[0].FirstName // .Players[0].MemberFirstName // "Reserved") | split(" ")[0]) + 
-                        (if (.Players[0].LastName // .Players[0].MemberLastName) then " " + ((.Players[0].LastName // .Players[0].MemberLastName)[0:1]) + "." else "" end)
-                      else "" end
+                      (
+                        (if ((.MemberFirstName // .FirstName // .GuestFirstName // .ContactFirstName // "") != "" and 
+                             ((.MemberLastName // .LastName // .GuestLastName // .ContactLastName // "") != "")) then
+                           ((.MemberFirstName // .FirstName // .GuestFirstName // .ContactFirstName) + " " + 
+                            (.MemberLastName // .LastName // .GuestLastName // .ContactLastName))
+                         else null end) //
+                        .GuestName //
+                        .ContactName //
+                        .MemberName //
+                        .BookedByName //
+                        .BookedBy //
+                        .ReservedByName //
+                        .ReservedBy //
+                        .PrimaryPlayerName //
+                        .PlayerName //
+                        .FullName //
+                        .Name //
+                        (if (.Member and .Member.FirstName and .Member.LastName) then (.Member.FirstName + " " + .Member.LastName)
+                         elif (.Member and .Member.Name) then .Member.Name
+                         else null end) //
+                        (if (.Players and (.Players | length > 0)) then
+                           (if ((.Players[0].FirstName // .Players[0].MemberFirstName // .Players[0].GuestFirstName // "") != "" and
+                                ((.Players[0].LastName // .Players[0].MemberLastName // .Players[0].GuestLastName // "") != "")) then
+                              ((.Players[0].FirstName // .Players[0].MemberFirstName // .Players[0].GuestFirstName) + " " +
+                               (.Players[0].LastName // .Players[0].MemberLastName // .Players[0].GuestLastName))
+                            else
+                              (.Players[0].GuestName // .Players[0].Name // .Players[0].FullName // .Players[0].PlayerName // .Players[0].MemberName // null)
+                            end)
+                         else null end) //
+                        (if (.Guests and (.Guests | length > 0)) then
+                           (.Guests[0].GuestName // .Guests[0].Name // (.Guests[0].FirstName + " " + .Guests[0].LastName) // null)
+                         else null end) //
+                        .FirstName //
+                        .MemberFirstName //
+                        .GuestFirstName //
+                        ""
+                      ) | clean_label
                     ),
+                    guestName: (.GuestName // .ContactName // .BookedByName // .BookedBy // .Players[0]?.GuestName // .Players[0]?.Name // ""),
+                    memberName: (.MemberName // (if .MemberFirstName then (.MemberFirstName + " " + (.MemberLastName // "")) else "" end)),
                     startTime: .StartTime,
                     endTime: .EndTime
                   }
