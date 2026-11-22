@@ -162,25 +162,8 @@ jobs:
             AUTH_HEADER="Basic $(echo -n "${CR_USER}:${CR_PASS}" | base64 -w 0)"
             USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
-            RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}&includeCourts=true&includePlayers=true&includeGuests=true&includeCustomFields=true&includeUserDefinedFields=true"
+            RES_URL="https://api.courtreserve.com/api/v1/reservationreport/listactive?reservationsFromDate=${FROM_UTC}&reservationsToDate=${TO_UTC}"
             curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$RES_URL" -o data/reservations.json
-
-            echo "=== Sample Reservation Record Keys ==="
-            python3 -c "
-import json
-try:
-    with open('data/reservations.json') as f:
-        d = json.load(f)
-    items = d.get('Data', d) if isinstance(d, dict) else d
-    if items:
-        print('Reservation keys:', list(items[0].keys()))
-        for item in items:
-            if not item.get('MemberFirstName'):
-                print('Public/Non-member reservation sample:', {k: v for k, v in item.items() if k in ['Courts', 'CourtName', 'StartTime', 'EndTime', 'MemberName', 'GuestName', 'ContactName', 'BookedBy', 'ReservedBy', 'Players', 'Title', 'ReservationType', 'IsPublic']})
-                break
-except Exception as e:
-    print('Reservation inspect error:', e)
-" || true
 
             EVENT_URL="https://api.courtreserve.com/api/v1/eventregistrationreport/listactive?eventDateFrom=${FROM_UTC}&eventDateTo=${TO_UTC}&includeCourts=true&includePartnerInfo=true&includeGuests=true"
             curl -s -A "$USER_AGENT" --connect-timeout 10 --max-time 25 -H "Authorization: $AUTH_HEADER" -H "Accept: application/json" "$EVENT_URL" -o data/events.json
@@ -262,7 +245,7 @@ except Exception as e:
                 courtOverrides: ($extra[0].overrides // []),
                 adHocSessions: ($extra[0].adHoc // []),
                 reservations: [
-                  ($res[0].Data // $res[0] // [])[] | {
+                  ($res[0].Data? // $res[0] // [])[] | {
                     court: (.Courts // .CourtName // ""),
                     holderLabel: (
                       (
@@ -303,14 +286,14 @@ except Exception as e:
                         ""
                       ) | clean_label
                     ),
-                    guestName: (.GuestName // .ContactName // .BookedByName // .BookedBy // .Players[0]?.GuestName // .Players[0]?.Name // ""),
+                    guestName: (.GuestName // .ContactName // .BookedByName // .BookedBy // (.Players[0]?.GuestName)? // (.Players[0]?.Name)? // ""),
                     memberName: (.MemberName // (if .MemberFirstName then (.MemberFirstName + " " + (.MemberLastName // "")) else "" end)),
                     startTime: .StartTime,
                     endTime: .EndTime
                   }
                 ],
                 events: (
-                  (($chk[0].Data // $chk[0] // []) | reduce .[] as $item ({};
+                  (($chk[0].Data? // $chk[0] // []) | reduce .[] as $item ({};
                     if ($item.CheckInStatusName == "Checked-in" or ($item.CheckinDateTime != null and $item.CheckinDateTime != "")) then
                       (if ($item.OrganizationMemberId // "") != "" then .["id:" + ($item.OrganizationMemberId | tostring)] = true else . end) |
                       (
@@ -322,7 +305,7 @@ except Exception as e:
                   )) as $checkedMap |
 
                   [
-                    ($ev[0].Data // $ev[0] // [])[] |
+                    ($ev[0].Data? // $ev[0] // [])[] |
                     select(.IsPublic != false and .IsHidden != true) |
                     select((.EventName // .DivisionName // "") | test("\\b(hosts?|guests?)\\b"; "i") | not) |
                     select([.Courts[]? | (.CourtName // . // "") | tostring | test("\\b(hosts?|guests?)\\b"; "i")] | any | not) |
