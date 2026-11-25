@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'workers/sync-pinger/**'
+      - 'lib/ladder-api.js'
       - '.github/workflows/deploy-worker.yml'
     branches:
       - main

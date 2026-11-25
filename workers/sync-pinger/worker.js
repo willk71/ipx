@@ -1,3 +1,5 @@
+import { handleLadderRequest } from '../../lib/ladder-api.js';
+
 export default {
   // Cron Trigger handler: runs reliably on schedule via Cloudflare edge (every 3 minutes)
   async scheduled(event, env, ctx) {
@@ -87,7 +89,39 @@ export default {
       }
     }
 
-    // 1d. CourtReserve Waiver API integration
+    // 1d. Serve Ladder UIs from edge (same pattern as Court Manager / Waivers)
+    if (
+      url.pathname === '/ladder' ||
+      url.pathname === '/ladder.html' ||
+      url.pathname === '/ladder/standings' ||
+      url.pathname === '/ladder/standings.html'
+    ) {
+      const rawPath =
+        url.pathname.includes('standings') ? 'ladder/standings.html' : 'ladder.html';
+      try {
+        const rawRes = await fetch(
+          `https://raw.githubusercontent.com/willk71/ipx/main/${rawPath}?_t=` + Date.now(),
+          { cf: { cacheTtl: 0, cacheEverything: false } }
+        );
+        if (rawRes.ok) {
+          const html = await rawRes.text();
+          return new Response(html, {
+            headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              ...corsHeaders
+            }
+          });
+        }
+      } catch (err) {
+        return new Response('Error loading Ladder UI: ' + err.message, {
+          status: 500,
+          headers: corsHeaders
+        });
+      }
+    }
+
+    // 1e. CourtReserve Waiver API integration
     if (url.pathname === '/api/cr-waivers') {
       const crUser = env.CR_USERNAME || env.CR_USER || '';
       const crPass = env.CR_PASSWORD || env.CR_PASS || '';
@@ -255,6 +289,11 @@ export default {
       }
 
       return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
+    }
+
+    // 2b. Bi-weekly 4.0+ Open Play ladder API
+    if (url.pathname === '/api/ladder') {
+      return handleLadderRequest(request, env, corsHeaders);
     }
 
     // 3. High-speed KV edge delivery for schedule.json with live manual override merging

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Ladder Match Entry — IPX</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --panel: #14161a;
+      --panel-2: #1a1d24;
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #34c759;
+      --danger: #ef4444;
+      --team-a: #38bdf8;
+      --team-b: #f59e0b;
+      --radius: 14px;
+      --font: "SF Pro Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: radial-gradient(ellipse at 50% 0%, #152033 0%, var(--bg) 55%);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      padding: 16px 18px 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+    .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    label.field-label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    select, button, input {
+      font: inherit;
+    }
+    #session-select {
+      width: 100%;
+      padding: 14px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+    .teams {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 720px) {
+      .teams { grid-template-columns: 1fr; }
+    }
+    .team {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      padding: 12px;
+      min-height: 180px;
+    }
+    .team-a { border-color: rgba(56, 189, 248, 0.45); }
+    .team-b { border-color: rgba(245, 158, 11, 0.45); }
+    .team h2 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .team-a h2 { color: var(--team-a); }
+    .team-b h2 { color: var(--team-b); }
+    .slot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 12px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,255,255,0.18);
+      min-height: 52px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .slot.filled {
+      border-style: solid;
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+    }
+    .slot button.clear {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.2rem;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      max-height: 280px;
+      overflow: auto;
+      padding: 2px;
+    }
+    .player-chip {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+    .player-chip:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .player-chip.in-a {
+      border-color: var(--team-a);
+      box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.35);
+    }
+    .player-chip.in-b {
+      border-color: var(--team-b);
+      box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.35);
+    }
+    .games {
+      display: grid;
+      gap: 10px;
+    }
+    .game-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .game-row .label {
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .game-row input {
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      padding: 12px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #0d1118;
+      color: var(--text);
+    }
+    .game-row .vs {
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent-2);
+      color: #04140a;
+      flex: 1;
+      min-width: 180px;
+    }
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .btn-ghost {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+    }
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      background: #111827;
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 50;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.show { opacity: 1; }
+    .toast.ok { border-color: rgba(52, 199, 89, 0.5); }
+    .toast.err { border-color: rgba(239, 68, 68, 0.5); }
+    .hint {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+    .period-pill {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>4.0+ Ladder</h1>
+      <div class="sub">Match entry · first to 11, win by 2 · +3 win / +1 game</div>
+      <div id="period-pill" class="period-pill">Period: —</div>
+    </div>
+    <div class="links">
+      <a href="ladder/standings.html">TV Standings →</a>
+    </div>
+  </header>
+
+  <section class="panel">
+    <label class="field-label" for="session-select">Session</label>
+    <select id="session-select">
+      <option value="">Loading sessions…</option>
+    </select>
+    <div class="hint" id="session-hint">Sessions whose CourtReserve title contains “4.0+ Open Play”.</div>
+  </section>
+
+  <section class="panel">
+    <label class="field-label">Pick 4 players · tap to fill Team A then Team B</label>
+    <div class="teams">
+      <div class="team team-a">
+        <h2>Team A</h2>
+        <div class="slot" id="slot-a0" data-team="a" data-idx="0"><span class="name">Player 1</span></div>
+        <div class="slot" id="slot-a1" data-team="a" data-idx="1"><span class="name">Player 2</span></div>
+      </div>
+      <div class="team team-b">
+        <h2>Team B</h2>
+        <div class="slot" id="slot-b0" data-team="b" data-idx="0"><span class="name">Player 1</span></div>
+        <div class="slot" id="slot-b1" data-team="b" data-idx="1"><span class="name">Player 2</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <label class="field-label">Roster</label>
+    <div class="roster-grid" id="roster-grid">
+      <div class="hint">Select a session to load players.</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <label class="field-label">Game scores</label>
+    <div class="games" id="games">
+      <div class="game-row">
+        <span class="label">Game 1</span>
+        <input type="number" inputmode="numeric" min="0" max="30" id="g1a" placeholder="A" aria-label="Game 1 Team A" />
+        <span class="vs">–</span>
+        <input type="number" inputmode="numeric" min="0" max="30" id="g1b" placeholder="B" aria-label="Game 1 Team B" />
+      </div>
+      <div class="game-row">
+        <span class="label">Game 2</span>
+        <input type="number" inputmode="numeric" min="0" max="30" id="g2a" placeholder="A" aria-label="Game 2 Team A" />
+        <span class="vs">–</span>
+        <input type="number" inputmode="numeric" min="0" max="30" id="g2b" placeholder="B" aria-label="Game 2 Team B" />
+      </div>
+      <div class="game-row">
+        <span class="label">Game 3</span>
+        <input type="number" inputmode="numeric" min="0" max="30" id="g3a" placeholder="A" aria-label="Game 3 Team A" />
+        <span class="vs">–</span>
+        <input type="number" inputmode="numeric" min="0" max="30" id="g3b" placeholder="B" aria-label="Game 3 Team B" />
+      </div>
+    </div>
+    <div class="hint">Best of 3. Leave Game 3 blank if not played. Each game: first to 11, win by 2.</div>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" id="btn-reset">Clear</button>
+      <button type="button" class="btn btn-primary" id="btn-submit">Submit match</button>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const EDGE_BASE = 'https://ipx-sync-pinger.willkang71.workers.dev';
+
+    let sessions = [];
+    let activeSession = null;
+    let teamA = [null, null];
+    let teamB = [null, null];
+
+    function toast(msg, kind) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast show' + (kind ? ' ' + kind : '');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { el.className = 'toast'; }, 3200);
+    }
+
+    async function api(path, opts) {
+      const urls = [
+        `${EDGE_BASE}${path}`,
+        path
+      ];
+      let lastErr = null;
+      for (const u of urls) {
+        try {
+          const res = await fetch(u, opts);
+          const data = await res.json().catch(() => ({}));
+          if (res.ok) return data;
+          lastErr = data.error || `HTTP ${res.status}`;
+        } catch (e) {
+          lastErr = e.message || String(e);
+        }
+      }
+      throw new Error(lastErr || 'Request failed');
+    }
+
+    function formatTime(iso) {
+      if (!iso) return '';
+      try {
+        return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+      } catch (_) {
+        return iso;
+      }
+    }
+
+    function selectedIds() {
+      return new Set(
+        [...teamA, ...teamB].filter(Boolean).map((p) => p.playerId)
+      );
+    }
+
+    function nextEmptySlot() {
+      for (let i = 0; i < 2; i++) if (!teamA[i]) return { team: 'a', idx: i };
+      for (let i = 0; i < 2; i++) if (!teamB[i]) return { team: 'b', idx: i };
+      return null;
+    }
+
+    function renderSlots() {
+      [['a', teamA], ['b', teamB]].forEach(([side, arr]) => {
+        arr.forEach((p, idx) => {
+          const el = document.getElementById(`slot-${side}${idx}`);
+          const nameEl = el.querySelector('.name');
+          if (p) {
+            el.classList.add('filled');
+            nameEl.textContent = p.name;
+            if (!el.querySelector('.clear')) {
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'clear';
+              btn.setAttribute('aria-label', 'Remove');
+              btn.textContent = '×';
+              btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (side === 'a') teamA[idx] = null;
+                else teamB[idx] = null;
+                renderSlots();
+                renderRoster();
+              });
+              el.appendChild(btn);
+            }
+          } else {
+            el.classList.remove('filled');
+            nameEl.textContent = `Player ${idx + 1}`;
+            const btn = el.querySelector('.clear');
+            if (btn) btn.remove();
+          }
+        });
+      });
+      document.getElementById('btn-submit').disabled = selectedIds().size !== 4;
+    }
+
+    function renderRoster() {
+      const grid = document.getElementById('roster-grid');
+      const players = (activeSession && activeSession.players) || [];
+      if (!players.length) {
+        grid.innerHTML = '<div class="hint">No players on this session roster yet.</div>';
+        return;
+      }
+      const taken = selectedIds();
+      grid.innerHTML = '';
+      players.forEach((p) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'player-chip';
+        btn.textContent = p.name + (p.checkedIn ? '' : '');
+        const inA = teamA.some((x) => x && x.playerId === p.playerId);
+        const inB = teamB.some((x) => x && x.playerId === p.playerId);
+        if (inA) btn.classList.add('in-a');
+        if (inB) btn.classList.add('in-b');
+        btn.disabled = taken.has(p.playerId) && !inA && !inB;
+        if (taken.has(p.playerId)) btn.disabled = true;
+        btn.addEventListener('click', () => {
+          if (taken.has(p.playerId)) return;
+          const slot = nextEmptySlot();
+          if (!slot) {
+            toast('All four slots filled — clear one first', 'err');
+            return;
+          }
+          if (slot.team === 'a') teamA[slot.idx] = p;
+          else teamB[slot.idx] = p;
+          renderSlots();
+          renderRoster();
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    function readGames() {
+      const games = [];
+      for (let i = 1; i <= 3; i++) {
+        const a = document.getElementById(`g${i}a`).value;
+        const b = document.getElementById(`g${i}b`).value;
+        if (a === '' && b === '') continue;
+        if (a === '' || b === '') {
+          throw new Error(`Game ${i}: enter both scores or leave blank`);
+        }
+        games.push({ a: Number(a), b: Number(b) });
+      }
+      return games;
+    }
+
+    function clearForm(keepSession) {
+      teamA = [null, null];
+      teamB = [null, null];
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`g${i}a`).value = '';
+        document.getElementById(`g${i}b`).value = '';
+      }
+      renderSlots();
+      renderRoster();
+      if (!keepSession) toast('Cleared');
+    }
+
+    function populateSessions(list, period) {
+      sessions = list || [];
+      const sel = document.getElementById('session-select');
+      sel.innerHTML = '';
+      if (period) {
+        document.getElementById('period-pill').textContent =
+          `Period ${period.periodStart} → ${period.periodEnd} · reset ${period.nextResetSunday}`;
+      }
+      if (!sessions.length) {
+        sel.innerHTML = '<option value="">No 4.0+ Open Play sessions found</option>';
+        activeSession = null;
+        renderRoster();
+        return;
+      }
+      const now = Date.now();
+      let best = sessions[0].sessionKey;
+      sessions.forEach((s) => {
+        const opt = document.createElement('option');
+        opt.value = s.sessionKey;
+        const live = new Date(s.startTime).getTime() <= now && new Date(s.endTime).getTime() >= now;
+        opt.textContent = `${formatTime(s.startTime)} · ${s.title} · ${s.playerCount} players${live ? ' · LIVE' : ''}`;
+        sel.appendChild(opt);
+        if (live) best = s.sessionKey;
+      });
+      sel.value = best;
+      activeSession = sessions.find((s) => s.sessionKey === best) || sessions[0];
+      renderRoster();
+    }
+
+    async function loadSessions() {
+      try {
+        const data = await api('/api/ladder?action=sessions&daysBack=2&_t=' + Date.now());
+        populateSessions(data.sessions || [], data.period);
+        document.getElementById('session-hint').textContent =
+          `Filter: “${data.filter || '4.0+ Open Play'}” · schedule ${data.scheduleDate || '—'}`;
+      } catch (err) {
+        document.getElementById('session-select').innerHTML =
+          '<option value="">Could not load sessions</option>';
+        toast(err.message || 'Failed to load sessions', 'err');
+      }
+    }
+
+    document.getElementById('session-select').addEventListener('change', (e) => {
+      activeSession = sessions.find((s) => s.sessionKey === e.target.value) || null;
+      teamA = [null, null];
+      teamB = [null, null];
+      renderSlots();
+      renderRoster();
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', () => clearForm(false));
+
+    document.getElementById('btn-submit').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-submit');
+      if (selectedIds().size !== 4) {
+        toast('Pick four players', 'err');
+        return;
+      }
+      let games;
+      try {
+        games = readGames();
+      } catch (e) {
+        toast(e.message, 'err');
+        return;
+      }
+      if (!games.length) {
+        toast('Enter at least one game score', 'err');
+        return;
+      }
+      btn.disabled = true;
+      const prev = btn.textContent;
+      btn.textContent = 'Submitting…';
+      try {
+        const payload = {
+          sessionKey: activeSession ? activeSession.sessionKey : '',
+          eventId: activeSession ? activeSession.eventId : '',
+          sessionTitle: activeSession ? activeSession.title : '4.0+ Open Play',
+          startTime: activeSession ? activeSession.startTime : '',
+          teamA: teamA,
+          teamB: teamB,
+          games,
+          author: 'Court Tablet'
+        };
+        const result = await api('/api/ladder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!result.success) throw new Error(result.error || 'Submit failed');
+        const winner = result.match.matchWinner === 'a' ? 'Team A' : 'Team B';
+        toast(`Saved · ${winner} wins · standings updated`, 'ok');
+        clearForm(true);
+      } catch (err) {
+        toast(err.message || 'Submit failed', 'err');
+      } finally {
+        btn.textContent = prev;
+        btn.disabled = selectedIds().size !== 4;
+      }
+    });
+
+    renderSlots();
+    loadSessions();
+    setInterval(loadSessions, 60000);
+  </script>
+</body>
+</html>

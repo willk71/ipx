@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>4.0+ Ladder Standings — IPX</title>
+  <style>
+    :root {
+      --bg0: #05070c;
+      --bg1: #0d1524;
+      --text: #f4f7fb;
+      --muted: #9aa8bc;
+      --line: rgba(255, 255, 255, 0.1);
+      --accent: #7dd3fc;
+      --gold: #f5d76e;
+      --row: rgba(255, 255, 255, 0.03);
+      --row-alt: rgba(255, 255, 255, 0.055);
+      --font: "SF Pro Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% -10%, var(--bg1) 0%, var(--bg0) 60%);
+      color: var(--text);
+      font-family: var(--font);
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      padding: 2.2vh 2.5vw 1.5vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2vw;
+      padding-bottom: 1.4vh;
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .brand {
+      font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .brand span {
+      color: var(--accent);
+    }
+    .meta {
+      text-align: right;
+      color: var(--muted);
+      font-size: clamp(0.95rem, 1.4vw, 1.35rem);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .meta strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+    main {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding-top: 1.6vh;
+    }
+    .scoring {
+      color: var(--muted);
+      font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+      margin-bottom: 1.2vh;
+      font-weight: 600;
+    }
+    .table-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #101825;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: clamp(0.75rem, 1.1vw, 1rem);
+      font-weight: 800;
+      padding: 1.2vh 1vw;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+    th.num, td.num { text-align: center; }
+    th.pts, td.pts { text-align: right; padding-right: 1.5vw; }
+    tbody td {
+      padding: 1.35vh 1vw;
+      font-size: clamp(1.15rem, 2.1vw, 2.2rem);
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    tbody tr:nth-child(odd) { background: var(--row); }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr.rank-1 td.rank { color: var(--gold); }
+    tbody tr.rank-2 td.rank,
+    tbody tr.rank-3 td.rank { color: var(--accent); }
+    td.rank {
+      font-variant-numeric: tabular-nums;
+      width: 4.5vw;
+      min-width: 48px;
+    }
+    td.name { width: 36%; }
+    td.form {
+      font-size: clamp(0.95rem, 1.4vw, 1.35rem);
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    td.form .w { color: #34c759; }
+    td.form .l { color: #f87171; }
+    td.pts {
+      color: var(--accent);
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+    .empty {
+      padding: 8vh 2vw;
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      font-weight: 700;
+    }
+    footer {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.2vh;
+      color: var(--muted);
+      font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+      font-weight: 600;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">IPX <span>4.0+</span> Ladder</div>
+    <div class="meta" id="meta">
+      Loading standings…
+    </div>
+  </header>
+  <main>
+    <div class="scoring">+3 match win · +1 per game won · first to 11, win by 2 · resets every other Sunday</div>
+    <div class="table-wrap" id="table-wrap">
+      <div class="empty">Loading…</div>
+    </div>
+  </main>
+  <footer>
+    <div id="refresh-line">Auto-refresh 20s</div>
+    <a href="../ladder.html">Match entry</a>
+  </footer>
+
+  <script>
+    const EDGE_BASE = 'https://ipx-sync-pinger.willkang71.workers.dev';
+    const REFRESH_MS = 20000;
+
+    async function fetchStandings() {
+      const bust = `_t=${Date.now()}`;
+      const urls = [
+        `${EDGE_BASE}/api/ladder?action=standings&${bust}`,
+        `/api/ladder?action=standings&${bust}`
+      ];
+      for (const u of urls) {
+        try {
+          const res = await fetch(u);
+          if (res.ok) return await res.json();
+        } catch (_) {}
+      }
+      throw new Error('Could not load standings');
+    }
+
+    function formHtml(form) {
+      if (!form || !form.length) return '—';
+      return form.map((c) => {
+        const cls = c === 'W' ? 'w' : 'l';
+        return `<span class="${cls}">${c}</span>`;
+      }).join('');
+    }
+
+    function render(data) {
+      const period = data.period || {};
+      const standings = data.standings || [];
+      const meta = document.getElementById('meta');
+      meta.innerHTML =
+        `<div><strong>Period</strong> ${period.periodStart || '—'} → ${period.periodEnd || '—'}</div>` +
+        `<div>Next reset <strong>${period.nextResetSunday || '—'}</strong> · ${data.matchCount || 0} matches</div>`;
+
+      const wrap = document.getElementById('table-wrap');
+      if (!standings.length) {
+        wrap.innerHTML = '<div class="empty">No matches this period yet — results appear after tablet submit.</div>';
+        return;
+      }
+
+      const rows = standings.map((s, i) => {
+        const rank = i + 1;
+        const cls = rank <= 3 ? `rank-${rank}` : '';
+        return `<tr class="${cls}">
+          <td class="rank num">${rank}</td>
+          <td class="name">${escapeHtml(s.name)}</td>
+          <td class="num">${s.matchWins || 0}-${s.matchLosses || 0}</td>
+          <td class="num">${s.gamesWon || 0}</td>
+          <td class="form">${formHtml(s.form)}</td>
+          <td class="pts">${s.points || 0}</td>
+        </tr>`;
+      }).join('');
+
+      wrap.innerHTML = `<table>
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>Player</th>
+            <th class="num">W-L</th>
+            <th class="num">Games</th>
+            <th>Form</th>
+            <th class="pts">Pts</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function refresh() {
+      try {
+        const data = await fetchStandings();
+        render(data);
+        const now = new Date();
+        document.getElementById('refresh-line').textContent =
+          `Updated ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' })} · auto-refresh 20s`;
+      } catch (err) {
+        document.getElementById('table-wrap').innerHTML =
+          `<div class="empty">${escapeHtml(err.message || 'Error loading standings')}</div>`;
+      }
+    }
+
+    refresh();
+    setInterval(refresh, REFRESH_MS);
+  </script>
+</body>
+</html>
