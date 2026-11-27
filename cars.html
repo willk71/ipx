@@ -4,132 +4,118 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Cars Blocking Driveway | IPX</title>
   <link rel="stylesheet" href="css/common.css?v=2.3.3" />
   <style>
-    html {
+    html, body {
       width: 100%;
-      height: auto !important;
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch;
+      height: 100%;
+      overflow: hidden;
     }
 
     body.page-cars {
-      width: 100% !important;
-      height: auto !important;
-      min-height: 100vh !important;
-      overflow: visible !important;
-      position: static !important;
       background: var(--bg-gradient);
       color: var(--text-main);
       font-family: var(--font-stack);
       display: flex;
       flex-direction: column;
       margin: 0 !important;
-      padding: 0 !important;
+      padding: 2vh 2.2vw 1.6vh !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      overflow: hidden !important;
+      position: relative !important;
     }
 
-    .cars-page {
-      max-width: 920px;
-      margin: 0 auto;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 3vh 4vw 8vh;
-      flex: 1 0 auto;
-    }
-
-    .brand-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 2.5vh;
+    .cars-top {
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 2vw;
       padding-bottom: 1.4vh;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      min-height: 0;
     }
 
-    .brand-bar .brand {
-      font-size: 1.15rem;
-      font-weight: 800;
+    .brand {
+      font-size: clamp(1.4rem, 2.2vw, 2.4rem);
+      font-weight: 900;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--theme-accent, #ffd60a);
+      line-height: 1;
     }
 
-    .brand-bar .meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .hero {
+    .headline {
+      min-width: 0;
       text-align: center;
-      margin-bottom: 3.5vh;
     }
 
-    .hero h1 {
-      font-size: clamp(1.85rem, 5vw, 2.8rem);
+    .headline h1 {
+      font-size: clamp(1.5rem, 2.8vw, 3rem);
       font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin: 0 0 1.2vh;
+      line-height: 1.1;
+      margin: 0;
       color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .hero p {
-      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
-      line-height: 1.45;
+    .headline p {
+      margin: 0.5vh 0 0;
+      font-size: clamp(0.95rem, 1.35vw, 1.45rem);
       color: var(--text-sub);
-      max-width: 36em;
-      margin: 0 auto;
-      opacity: 0.92;
+      opacity: 0.9;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .cta {
-      margin: 2.8vh auto 0;
-      max-width: 34em;
-      padding: 2vh 1.6rem;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 214, 10, 0.45);
-      background: rgba(255, 214, 10, 0.1);
-      text-align: center;
+      justify-self: end;
+      text-align: right;
+      padding: 1.1vh 1.2vw;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 214, 10, 0.5);
+      background: rgba(255, 214, 10, 0.12);
+      max-width: 22vw;
     }
 
     .cta strong {
       display: block;
-      font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+      font-size: clamp(1rem, 1.5vw, 1.55rem);
       font-weight: 800;
       color: var(--theme-accent, #ffd60a);
-      margin-bottom: 0.5vh;
-      letter-spacing: 0.01em;
+      line-height: 1.15;
     }
 
     .cta span {
       display: block;
-      font-size: clamp(0.98rem, 2.1vw, 1.15rem);
+      margin-top: 0.35vh;
+      font-size: clamp(0.8rem, 1.05vw, 1.1rem);
       color: var(--text-sub);
-      line-height: 1.4;
+      line-height: 1.25;
+      opacity: 0.92;
     }
 
     .cars-grid {
+      flex: 1 1 auto;
+      min-height: 0;
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 2.8vh;
-      margin-top: 3.5vh;
-    }
-
-    @media (min-width: 760px) {
-      .cars-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 2vw;
-        align-items: start;
-      }
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6vw;
+      margin-top: 1.6vh;
     }
 
     .car-card {
+      min-height: 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 18px;
@@ -139,9 +125,11 @@
     }
 
     .car-card figure {
+      flex: 1 1 auto;
+      min-height: 0;
       margin: 0;
       background: #000;
-      aspect-ratio: 3 / 4;
+      position: relative;
       overflow: hidden;
     }
 
@@ -149,116 +137,115 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 40%;
+      object-position: center 42%;
       display: block;
     }
 
     .car-meta {
-      padding: 1.6vh 1.3rem 1.9vh;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1vw;
+      padding: 1.2vh 1.2vw;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .car-meta h2 {
-      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      font-size: clamp(1.15rem, 1.8vw, 2rem);
       font-weight: 800;
-      margin: 0 0 0.5vh;
+      margin: 0;
       color: #fff;
       letter-spacing: -0.01em;
-    }
-
-    .car-meta .detail {
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      color: var(--text-sub);
-      opacity: 0.9;
-      margin: 0.15vh 0;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .car-meta .plate {
-      margin-top: 1vh;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
+      flex-shrink: 0;
       font-weight: 800;
       letter-spacing: 0.08em;
-      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      font-size: clamp(1.2rem, 2vw, 2.2rem);
       color: var(--theme-accent, #ffd60a);
       text-transform: uppercase;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
 
     .car-meta .plate::before {
-      content: "Plate";
-      font-size: 0.72em;
+      content: "PLATE ";
+      font-size: 0.55em;
       font-weight: 700;
       letter-spacing: 0.12em;
       color: var(--text-muted);
-      text-transform: uppercase;
+      vertical-align: 0.15em;
     }
 
-    .footnote {
-      margin-top: 3.5vh;
-      text-align: center;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      line-height: 1.45;
+    @media (max-aspect-ratio: 4/3) {
+      .cars-top {
+        grid-template-columns: 1fr;
+        gap: 1vh;
+        text-align: center;
+      }
+
+      .cta {
+        justify-self: center;
+        text-align: center;
+        max-width: none;
+      }
+
+      .headline h1,
+      .headline p {
+        white-space: normal;
+      }
     }
   </style>
 </head>
 <body class="page-cars theme-apple">
-  <div class="cars-page">
-    <div class="brand-bar">
-      <div class="brand">IPX</div>
-      <div class="meta">Driveway notice</div>
-    </div>
-
-    <section class="hero">
+  <header class="cars-top">
+    <div class="brand">IPX</div>
+    <div class="headline">
       <h1>These cars are blocking our driveway</h1>
-      <p>
-        If one of these is yours, please register the vehicle with the front desk
-        so we can reach you when it needs to be moved.
-      </p>
-      <div class="cta">
-        <strong>Register at the front desk</strong>
-        <span>Leave your name, plate, and a phone number we can call.</span>
+      <p>If one is yours, register at the front desk so we can reach you.</p>
+    </div>
+    <div class="cta">
+      <strong>Register at the front desk</strong>
+      <span>Name, plate, and phone number</span>
+    </div>
+  </header>
+
+  <section class="cars-grid" aria-label="Cars blocking the driveway">
+    <article class="car-card">
+      <figure>
+        <img
+          src="img/cars/IMG_2711.jpg"
+          alt="Dark blue Volkswagen Golf Alltrack with California plate 7WRB210"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+      <div class="car-meta">
+        <h2>Dark blue VW Alltrack</h2>
+        <p class="plate">7WRB210</p>
       </div>
-    </section>
+    </article>
 
-    <section class="cars-grid" aria-label="Cars blocking the driveway">
-      <article class="car-card">
-        <figure>
-          <img
-            src="img/cars/IMG_2711.jpg"
-            alt="Dark blue Volkswagen Golf Alltrack with California plate 7WRB210"
-            loading="eager"
-            decoding="async"
-          />
-        </figure>
-        <div class="car-meta">
-          <h2>Dark blue VW Alltrack</h2>
-          <p class="detail">Volkswagen Golf Alltrack &middot; California</p>
-          <p class="plate">7WRB210</p>
-        </div>
-      </article>
-
-      <article class="car-card">
-        <figure>
-          <img
-            src="img/cars/IMG_2712.jpg"
-            alt="White Porsche SUV with New York plate FSK-8889"
-            loading="eager"
-            decoding="async"
-          />
-        </figure>
-        <div class="car-meta">
-          <h2>White Porsche SUV</h2>
-          <p class="detail">Porsche &middot; New York</p>
-          <p class="plate">FSK-8889</p>
-        </div>
-      </article>
-    </section>
-
-    <p class="footnote">
-      We only need to contact you when the driveway has to be cleared.
-      Thanks for helping us keep access open.
-    </p>
-  </div>
+    <article class="car-card">
+      <figure>
+        <img
+          src="img/cars/IMG_2712.jpg"
+          alt="White Porsche SUV with New York plate FSK-8889"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+      <div class="car-meta">
+        <h2>White Porsche SUV</h2>
+        <p class="plate">FSK-8889</p>
+      </div>
+    </article>
+  </section>
 </body>
 </html>
