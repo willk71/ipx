@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Cars Blocking Driveway | IPX</title>
+  <link rel="stylesheet" href="css/common.css?v=2.3.3" />
+  <style>
+    html {
+      width: 100%;
+      height: auto !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body.page-cars {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 100vh !important;
+      overflow: visible !important;
+      position: static !important;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      display: flex;
+      flex-direction: column;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .cars-page {
+      max-width: 920px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 3vh 4vw 8vh;
+      flex: 1 0 auto;
+    }
+
+    .brand-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2.5vh;
+      padding-bottom: 1.4vh;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .brand-bar .brand {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--theme-accent, #ffd60a);
+    }
+
+    .brand-bar .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 3.5vh;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.85rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 0 1.2vh;
+      color: #fff;
+    }
+
+    .hero p {
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      line-height: 1.45;
+      color: var(--text-sub);
+      max-width: 36em;
+      margin: 0 auto;
+      opacity: 0.92;
+    }
+
+    .cta {
+      margin: 2.8vh auto 0;
+      max-width: 34em;
+      padding: 2vh 1.6rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 214, 10, 0.45);
+      background: rgba(255, 214, 10, 0.1);
+      text-align: center;
+    }
+
+    .cta strong {
+      display: block;
+      font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+      font-weight: 800;
+      color: var(--theme-accent, #ffd60a);
+      margin-bottom: 0.5vh;
+      letter-spacing: 0.01em;
+    }
+
+    .cta span {
+      display: block;
+      font-size: clamp(0.98rem, 2.1vw, 1.15rem);
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    .cars-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.8vh;
+      margin-top: 3.5vh;
+    }
+
+    @media (min-width: 760px) {
+      .cars-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2vw;
+        align-items: start;
+      }
+    }
+
+    .car-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .car-card figure {
+      margin: 0;
+      background: #000;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+    }
+
+    .car-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    .car-meta {
+      padding: 1.6vh 1.3rem 1.9vh;
+    }
+
+    .car-meta h2 {
+      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      font-weight: 800;
+      margin: 0 0 0.5vh;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .car-meta .detail {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: var(--text-sub);
+      opacity: 0.9;
+      margin: 0.15vh 0;
+    }
+
+    .car-meta .plate {
+      margin-top: 1vh;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      color: var(--theme-accent, #ffd60a);
+      text-transform: uppercase;
+    }
+
+    .car-meta .plate::before {
+      content: "Plate";
+      font-size: 0.72em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .footnote {
+      margin-top: 3.5vh;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body class="page-cars theme-apple">
+  <div class="cars-page">
+    <div class="brand-bar">
+      <div class="brand">IPX</div>
+      <div class="meta">Driveway notice</div>
+    </div>
+
+    <section class="hero">
+      <h1>These cars are blocking our driveway</h1>
+      <p>
+        If one of these is yours, please register the vehicle with the front desk
+        so we can reach you when it needs to be moved.
+      </p>
+      <div class="cta">
+        <strong>Register at the front desk</strong>
+        <span>Leave your name, plate, and a phone number we can call.</span>
+      </div>
+    </section>
+
+    <section class="cars-grid" aria-label="Cars blocking the driveway">
+      <article class="car-card">
+        <figure>
+          <img
+            src="img/cars/IMG_2711.jpg"
+            alt="Dark blue Volkswagen Golf Alltrack with California plate 7WRB210"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <div class="car-meta">
+          <h2>Dark blue VW Alltrack</h2>
+          <p class="detail">Volkswagen Golf Alltrack &middot; California</p>
+          <p class="plate">7WRB210</p>
+        </div>
+      </article>
+
+      <article class="car-card">
+        <figure>
+          <img
+            src="img/cars/IMG_2712.jpg"
+            alt="White Porsche SUV with New York plate FSK-8889"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <div class="car-meta">
+          <h2>White Porsche SUV</h2>
+          <p class="detail">Porsche &middot; New York</p>
+          <p class="plate">FSK-8889</p>
+        </div>
+      </article>
+    </section>
+
+    <p class="footnote">
+      We only need to contact you when the driveway has to be cleared.
+      Thanks for helping us keep access open.
+    </p>
+  </div>
+</body>
+</html>
