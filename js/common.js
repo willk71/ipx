@@ -339,6 +339,15 @@ function resolveQueueLocation(courtsSet, customText, context) {
         return '📍 - Court 6 Paddle Rack';
       }
 
+      // Courts 2, 3, 6, 9 queue at Court 6 Paddle Rack
+      if (
+        (courtsSet.has('2') && courtsSet.has('3') && courtsSet.has('6') && courtsSet.has('9')) ||
+        (nums.includes(2) && nums.includes(3) && nums.includes(6) && nums.includes(9)) ||
+        (nums.every(n => [2, 3, 6, 9].includes(n)) && nums.length >= 3)
+      ) {
+        return '📍 - Court 6 Paddle Rack';
+      }
+
       // Courts 1, 2, 3, 6 (or subsets containing 6, and 2, 3, 5, 6) queue at Court 6 Paddle Rack
       if (
         (courtsSet.has('1') && courtsSet.has('2') && courtsSet.has('3') && courtsSet.has('6')) ||
@@ -993,10 +1002,14 @@ function allocateCourts(levels, courtsList) {
 
     // Level-specific preferred pods:
     // Advanced Beginner:
-    // 1. Bay 3 pair: 3 & 6 ("try to put 3&6 together")
-    // 2. Bay 1 pair: 1 & 2
+    // 1. 4-court pod around 3, 6, 9: 2, 3, 6, 9
+    // 2. Bay 3 pair: 3 & 6 ("try to put 3&6 together")
+    // 3. Bay 1 pair: 1 & 2
     if (lvl === 'Advanced Beginner') {
-      if (needed >= 2 && remSet.has('3') && remSet.has('6')) {
+      if (needed >= 4 && ['2', '3', '6', '9'].every(c => remSet.has(c))) {
+        lvlCourts.push('2', '3', '6', '9');
+        ['2', '3', '6', '9'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 2 && remSet.has('3') && remSet.has('6')) {
         lvlCourts.push('3', '6');
         ['3', '6'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
       } else if (needed >= 2 && remSet.has('1') && remSet.has('2')) {
@@ -1046,6 +1059,9 @@ function allocateCourts(levels, courtsList) {
       if (needed >= 4 && ['7', '8', '10', '11'].every(c => remSet.has(c))) {
         lvlCourts.push('7', '8', '10', '11');
         ['7', '8', '10', '11'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
+      } else if (needed >= 4 && ['2', '3', '6', '9'].every(c => remSet.has(c)) && !['10', '11'].some(c => remSet.has(c))) {
+        lvlCourts.push('2', '3', '6', '9');
+        ['2', '3', '6', '9'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
       } else if (needed >= 3 && ['10', '11', '12'].every(c => remSet.has(c))) {
         lvlCourts.push('10', '11', '12');
         ['10', '11', '12'].forEach(c => remainingCourts.splice(remainingCourts.indexOf(c), 1));
@@ -1197,6 +1213,28 @@ function allocateCourts(levels, courtsList) {
         assignedCourts['Advanced Beginner'].push('6');
       } else if (assignedCourts['Intermediate'] && !assignedCourts['Intermediate'].includes('1') && !assignedCourts['Intermediate'].includes('6')) {
         assignedCourts['Intermediate'].push('6');
+      }
+    }
+  });
+
+  // Universal IPX rule 4: Never group 3, 6, 8, 9! For a 4-court group around 3, 6, 9, use 2, 3, 6, 9 instead.
+  Object.keys(assignedCourts).forEach(lvl => {
+    const clist = assignedCourts[lvl] || [];
+    const cSet = new Set(clist);
+    if (['3', '6', '8', '9'].every(c => cSet.has(c))) {
+      for (const otherLvl of Object.keys(assignedCourts)) {
+        if (otherLvl !== lvl && (assignedCourts[otherLvl] || []).includes('2')) {
+          const idx8 = clist.indexOf('8');
+          if (idx8 !== -1) clist.splice(idx8, 1);
+          clist.push('2');
+          const otherClist = assignedCourts[otherLvl];
+          const idx2 = otherClist.indexOf('2');
+          if (idx2 !== -1) otherClist.splice(idx2, 1);
+          otherClist.push('8');
+          clist.sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+          otherClist.sort((a, b) => (parseInt(a, 10) || 999) - (parseInt(b, 10) || 999));
+          break;
+        }
       }
     }
   });

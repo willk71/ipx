@@ -486,10 +486,14 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
 
         # Level-specific preferred pods:
         # Advanced Beginner:
-        # 1. Bay 3 pair: 3 & 6 ("try to put 3&6 together")
-        # 2. Bay 1 pair: 1 & 2
+        # 1. 4-court pod around 3, 6, 9: 2, 3, 6, 9
+        # 2. Bay 3 pair: 3 & 6 ("try to put 3&6 together")
+        # 3. Bay 1 pair: 1 & 2
         if lvl == 'Advanced Beginner':
-            if needed >= 2 and {'3', '6'}.issubset(rem_set):
+            if needed >= 4 and {'2', '3', '6', '9'}.issubset(rem_set):
+                lvl_courts.extend(['2', '3', '6', '9'])
+                for c in ['2', '3', '6', '9']: remaining_courts.remove(c)
+            elif needed >= 2 and {'3', '6'}.issubset(rem_set):
                 lvl_courts.extend(['3', '6'])
                 for c in ['3', '6']: remaining_courts.remove(c)
             elif needed >= 2 and {'1', '2'}.issubset(rem_set):
@@ -540,6 +544,9 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             if needed >= 4 and {'7', '8', '10', '11'}.issubset(rem_set):
                 lvl_courts.extend(['7', '8', '10', '11'])
                 for c in ['7', '8', '10', '11']: remaining_courts.remove(c)
+            elif needed >= 4 and {'2', '3', '6', '9'}.issubset(rem_set) and not ({'10', '11'}.intersection(rem_set)):
+                lvl_courts.extend(['2', '3', '6', '9'])
+                for c in ['2', '3', '6', '9']: remaining_courts.remove(c)
             elif needed >= 3 and {'10', '11', '12'}.issubset(rem_set):
                 lvl_courts.extend(['10', '11', '12'])
                 for c in ['10', '11', '12']: remaining_courts.remove(c)
@@ -661,6 +668,20 @@ def allocate_courts(levels, courts_list, event_title='', start_time=''):
             elif 'Intermediate' in assigned_courts and '1' not in assigned_courts['Intermediate'] and '6' not in assigned_courts['Intermediate']:
                 assigned_courts['Intermediate'].append('6')
             assigned_courts[lvl] = sorted(list(set(clist)), key=lambda x: int(x) if x.isdigit() else 999)
+
+    # Universal IPX rule 4: Never group 3, 6, 8, 9! For a 4-court group around 3, 6, 9, use 2, 3, 6, 9 instead.
+    for lvl, clist in list(assigned_courts.items()):
+        c_set = set(clist)
+        if {'3', '6', '8', '9'}.issubset(c_set):
+            for other_lvl, other_clist in assigned_courts.items():
+                if other_lvl != lvl and '2' in other_clist:
+                    clist.remove('8')
+                    clist.append('2')
+                    other_clist.remove('2')
+                    other_clist.append('8')
+                    clist.sort(key=lambda x: int(x) if x.isdigit() else 999)
+                    other_clist.sort(key=lambda x: int(x) if x.isdigit() else 999)
+                    break
 
     for lvl in assigned_courts:
         assigned_courts[lvl] = sorted(list(set(assigned_courts[lvl])), key=lambda x: int(x) if x.isdigit() else 999)
