@@ -463,6 +463,8 @@ function resolveQueueLocation(courtsSet, customText, context) {
       else if (nums.length === 1) {
         if (nums[0] === 3) {
           location = 'Court 3 Table';
+        } else if (nums[0] === 8) {
+          location = 'Court 10 Paddle Rack';
         } else if ([2, 5, 6].includes(nums[0])) {
           location = 'Court 6 Paddle Rack';
         } else if ([1, 4, 7, 9, 12].includes(nums[0])) {
