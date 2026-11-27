@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Ladder Match Entry — IPX</title>
+  <title>Open Play Ladder — Match Entry — IPX</title>
   <style>
     :root {
       --bg: #0a0b0d;
@@ -269,7 +269,7 @@
 <body>
   <header>
     <div>
-      <h1>4.0+ Ladder</h1>
+      <h1>Open Play Ladder</h1>
       <div class="sub">Match entry · first to 11, win by 2 · +3 win / +1 game</div>
       <div id="period-pill" class="period-pill">Period: —</div>
     </div>
@@ -283,7 +283,7 @@
     <select id="session-select">
       <option value="">Loading sessions…</option>
     </select>
-    <div class="hint" id="session-hint">Sessions whose CourtReserve title contains “4.0+ Open Play”.</div>
+    <div class="hint" id="session-hint">Any peak-time Open Play session (5pm+, not lunch/afternoon/early/coached).</div>
   </section>
 
   <section class="panel">
@@ -501,7 +501,7 @@
           `Period ${period.periodStart} → ${period.periodEnd} · reset ${period.nextResetSunday}`;
       }
       if (!sessions.length) {
-        sel.innerHTML = '<option value="">No 4.0+ Open Play sessions found</option>';
+        sel.innerHTML = '<option value="">No peak Open Play sessions found</option>';
         activeSession = null;
         renderRoster();
         return;
@@ -526,7 +526,7 @@
         const data = await api('/api/ladder?action=sessions&daysBack=2&_t=' + Date.now());
         populateSessions(data.sessions || [], data.period);
         document.getElementById('session-hint').textContent =
-          `Filter: “${data.filter || '4.0+ Open Play'}” · schedule ${data.scheduleDate || '—'}`;
+          `Filter: “${data.filter || 'Peak Open Play'}” · schedule ${data.scheduleDate || '—'}`;
       } catch (err) {
         document.getElementById('session-select').innerHTML =
           '<option value="">Could not load sessions</option>';
@@ -568,7 +568,7 @@
         const payload = {
           sessionKey: activeSession ? activeSession.sessionKey : '',
           eventId: activeSession ? activeSession.eventId : '',
-          sessionTitle: activeSession ? activeSession.title : '4.0+ Open Play',
+          sessionTitle: activeSession ? activeSession.title : 'Open Play',
           startTime: activeSession ? activeSession.startTime : '',
           teamA: teamA,
           teamB: teamB,

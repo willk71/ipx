@@ -291,7 +291,7 @@ export default {
       return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
     }
 
-    // 2b. Bi-weekly 4.0+ Open Play ladder API
+    // 2b. Bi-weekly peak-time Open Play ladder API
     if (url.pathname === '/api/ladder') {
       return handleLadderRequest(request, env, corsHeaders);
     }

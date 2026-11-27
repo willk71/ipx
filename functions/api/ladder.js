@@ -1,5 +1,5 @@
 // Cloudflare Pages Function: /api/ladder
-// Bi-weekly 4.0+ Open Play ladder — sessions, roster, match submit, standings.
+// Bi-weekly peak-time Open Play ladder — sessions, roster, match submit, standings.
 
 import { handleLadderRequest } from '../../lib/ladder-api.js';
 
