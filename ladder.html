@@ -264,6 +264,41 @@
       font-size: 0.85rem;
       font-weight: 700;
     }
+    .demo-banner {
+      display: none;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .demo-banner.on { display: block; }
+    .header-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .btn-demo {
+      border: 1px solid rgba(245, 158, 11, 0.55);
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-demo.active {
+      background: rgba(245, 158, 11, 0.28);
+      box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.35);
+    }
+    body.demo-mode {
+      background: radial-gradient(ellipse at 50% 0%, #332415 0%, var(--bg) 55%);
+    }
   </style>
 </head>
 <body>
@@ -273,10 +308,17 @@
       <div class="sub">Match entry · first to 11, win by 2 · +3 win / +1 game</div>
       <div id="period-pill" class="period-pill">Period: —</div>
     </div>
-    <div class="links">
-      <a href="ladder/standings.html">TV Standings →</a>
+    <div class="header-actions">
+      <div class="links">
+        <a id="standings-link" href="ladder/standings.html">TV Standings →</a>
+      </div>
+      <button type="button" class="btn-demo" id="btn-demo" aria-pressed="false">Demo roster</button>
     </div>
   </header>
+
+  <div class="demo-banner" id="demo-banner">
+    DEMO MODE — fake roster · submits go to separate KV keys (<code>ladder_*_demo</code>) and never touch live standings.
+  </div>
 
   <section class="panel">
     <label class="field-label" for="session-select">Session</label>
@@ -347,6 +389,35 @@
     let activeSession = null;
     let teamA = [null, null];
     let teamB = [null, null];
+    let demoMode = false;
+
+    function readDemoFromUrl() {
+      try {
+        return new URLSearchParams(window.location.search).get('demo') === '1';
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function setDemoMode(on, { pushUrl } = { pushUrl: true }) {
+      demoMode = !!on;
+      document.body.classList.toggle('demo-mode', demoMode);
+      const banner = document.getElementById('demo-banner');
+      banner.classList.toggle('on', demoMode);
+      const btn = document.getElementById('btn-demo');
+      btn.classList.toggle('active', demoMode);
+      btn.setAttribute('aria-pressed', demoMode ? 'true' : 'false');
+      btn.textContent = demoMode ? 'Exit demo' : 'Demo roster';
+      document.getElementById('standings-link').href = demoMode
+        ? 'ladder/standings.html?demo=1'
+        : 'ladder/standings.html';
+      if (pushUrl) {
+        const url = new URL(window.location.href);
+        if (demoMode) url.searchParams.set('demo', '1');
+        else url.searchParams.delete('demo');
+        history.replaceState({}, '', url.pathname + url.search + url.hash);
+      }
+    }
 
     function toast(msg, kind) {
       const el = document.getElementById('toast');
@@ -356,10 +427,17 @@
       toast._t = setTimeout(() => { el.className = 'toast'; }, 3200);
     }
 
+    function withDemoQuery(path) {
+      if (!demoMode) return path;
+      const join = path.includes('?') ? '&' : '?';
+      return `${path}${join}demo=1`;
+    }
+
     async function api(path, opts) {
+      const resolved = withDemoQuery(path);
       const urls = [
-        `${EDGE_BASE}${path}`,
-        path
+        `${EDGE_BASE}${resolved}`,
+        resolved
       ];
       let lastErr = null;
       for (const u of urls) {
@@ -525,8 +603,13 @@
       try {
         const data = await api('/api/ladder?action=sessions&daysBack=2&_t=' + Date.now());
         populateSessions(data.sessions || [], data.period);
-        document.getElementById('session-hint').textContent =
-          `Filter: “${data.filter || '4.0+ Open Play'}” · schedule ${data.scheduleDate || '—'}`;
+        if (demoMode || data.demo) {
+          document.getElementById('session-hint').textContent =
+            'Demo roster · 12 fake players · writes to ladder_matches_4_0_demo / ladder_standings_4_0_demo';
+        } else {
+          document.getElementById('session-hint').textContent =
+            `Filter: “${data.filter || '4.0+ Open Play'}” · schedule ${data.scheduleDate || '—'}`;
+        }
       } catch (err) {
         document.getElementById('session-select').innerHTML =
           '<option value="">Could not load sessions</option>';
@@ -540,6 +623,13 @@
       teamB = [null, null];
       renderSlots();
       renderRoster();
+    });
+
+    document.getElementById('btn-demo').addEventListener('click', () => {
+      setDemoMode(!demoMode);
+      clearForm(true);
+      loadSessions();
+      toast(demoMode ? 'Demo roster on — safe to practice' : 'Live sessions', demoMode ? 'ok' : undefined);
     });
 
     document.getElementById('btn-reset').addEventListener('click', () => clearForm(false));
@@ -573,7 +663,8 @@
           teamA: teamA,
           teamB: teamB,
           games,
-          author: 'Court Tablet'
+          author: demoMode ? 'Demo Tablet' : 'Court Tablet',
+          demo: demoMode
         };
         const result = await api('/api/ladder', {
           method: 'POST',
@@ -582,7 +673,12 @@
         });
         if (!result.success) throw new Error(result.error || 'Submit failed');
         const winner = result.match.matchWinner === 'a' ? 'Team A' : 'Team B';
-        toast(`Saved · ${winner} wins · standings updated`, 'ok');
+        toast(
+          demoMode
+            ? `Demo saved · ${winner} wins · demo standings updated`
+            : `Saved · ${winner} wins · standings updated`,
+          'ok'
+        );
         clearForm(true);
       } catch (err) {
         toast(err.message || 'Submit failed', 'err');
@@ -592,6 +688,7 @@
       }
     });
 
+    setDemoMode(readDemoFromUrl(), { pushUrl: false });
     renderSlots();
     loadSessions();
     setInterval(loadSessions, 60000);

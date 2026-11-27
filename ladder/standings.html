@@ -156,35 +156,69 @@
       text-decoration: none;
       font-weight: 700;
     }
+    .demo-badge {
+      display: none;
+      margin-left: 0.6em;
+      padding: 0.15em 0.55em;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 158, 11, 0.55);
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      font-size: 0.45em;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      vertical-align: middle;
+    }
+    .demo-badge.on { display: inline-block; }
+    body.demo-mode {
+      background: radial-gradient(ellipse at 50% -10%, #2a1a0c 0%, var(--bg0) 60%);
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand">IPX <span>4.0+</span> Ladder</div>
+    <div class="brand">IPX <span>4.0+</span> Ladder <span class="demo-badge" id="demo-badge">DEMO</span></div>
     <div class="meta" id="meta">
       Loading standings…
     </div>
   </header>
   <main>
-    <div class="scoring">+3 match win · +1 per game won · first to 11, win by 2 · resets every other Sunday</div>
+    <div class="scoring" id="scoring-line">+3 match win · +1 per game won · first to 11, win by 2 · resets every other Sunday</div>
     <div class="table-wrap" id="table-wrap">
       <div class="empty">Loading…</div>
     </div>
   </main>
   <footer>
     <div id="refresh-line">Auto-refresh 20s</div>
-    <a href="../ladder.html">Match entry</a>
+    <a id="entry-link" href="../ladder.html">Match entry</a>
   </footer>
 
   <script>
     const EDGE_BASE = 'https://ipx-sync-pinger.willkang71.workers.dev';
     const REFRESH_MS = 20000;
+    const demoMode = (() => {
+      try {
+        return new URLSearchParams(window.location.search).get('demo') === '1';
+      } catch (_) {
+        return false;
+      }
+    })();
+
+    if (demoMode) {
+      document.body.classList.add('demo-mode');
+      document.getElementById('demo-badge').classList.add('on');
+      document.getElementById('entry-link').href = '../ladder.html?demo=1';
+      document.getElementById('scoring-line').textContent =
+        'DEMO standings · separate KV (ladder_*_demo) · +3 match win · +1 per game · does not affect live ladder';
+      document.title = 'DEMO 4.0+ Ladder Standings — IPX';
+    }
 
     async function fetchStandings() {
       const bust = `_t=${Date.now()}`;
+      const demoQ = demoMode ? 'demo=1&' : '';
       const urls = [
-        `${EDGE_BASE}/api/ladder?action=standings&${bust}`,
-        `/api/ladder?action=standings&${bust}`
+        `${EDGE_BASE}/api/ladder?action=standings&${demoQ}${bust}`,
+        `/api/ladder?action=standings&${demoQ}${bust}`
       ];
       for (const u of urls) {
         try {
@@ -209,11 +243,14 @@
       const meta = document.getElementById('meta');
       meta.innerHTML =
         `<div><strong>Period</strong> ${period.periodStart || '—'} → ${period.periodEnd || '—'}</div>` +
-        `<div>Next reset <strong>${period.nextResetSunday || '—'}</strong> · ${data.matchCount || 0} matches</div>`;
+        `<div>Next reset <strong>${period.nextResetSunday || '—'}</strong> · ${data.matchCount || 0} matches` +
+        `${demoMode || data.demo ? ' · <strong>DEMO</strong>' : ''}</div>`;
 
       const wrap = document.getElementById('table-wrap');
       if (!standings.length) {
-        wrap.innerHTML = '<div class="empty">No matches this period yet — results appear after tablet submit.</div>';
+        wrap.innerHTML = demoMode
+          ? '<div class="empty">No demo matches yet — submit from Match entry (?demo=1).</div>'
+          : '<div class="empty">No matches this period yet — results appear after tablet submit.</div>';
         return;
       }
 
