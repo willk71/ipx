@@ -271,6 +271,11 @@
               matchesQueue = true;
             }
 
+            // Flexible matching for court 7: match any queue location at Court 7 (whether labeled "Table" or "Paddle Rack")
+            if (targetFilter.includes('court 7') && queueLoc.includes('court 7')) {
+              matchesQueue = true;
+            }
+
             // Fallback for Court 10 tablets (table10-r, table10-l, rack10):
             // If the session is queued at Court 10 and not explicitly assigned to the opposite split, display it.
             let isCourt10Fallback = false;
@@ -285,8 +290,8 @@
               }
             }
 
-            if (!matchesQueue && !hasCourt && !isCourt10Fallback) {
-              return; // Skip if it doesn't match the tablet's location
+            if (!matchesQueue && !isCourt10Fallback && (queueLoc || !hasCourt)) {
+              return; // Skip if it doesn't match the tablet's queue location
             }
           }
 
@@ -334,7 +339,7 @@
                   ${courtQueueTitle}
                 </h2>
                 <p style="font-size: clamp(1.8rem, 2.8vw, 3.4rem); font-weight: 500; color: rgba(255, 255, 255, 0.7); margin: 0;">
-                  See TVs for queue locations
+                  Refer to TV screens for Queue info
                 </p>
               </div>
               <div class="tablet-status-footer" style="font-size: clamp(1.1rem, 1.4vw, 1.8rem); color: rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; gap: 2vw; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1.5vh; width: 100%;">
